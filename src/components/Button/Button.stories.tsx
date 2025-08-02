@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 import type { Meta, StoryObj } from '@storybook/react'
 import { Button, ButtonProps } from './Button'
 
-// Form Integration Component
 const FormIntegrationComponent = () => {
   const [formData, setFormData] = useState({ name: '', email: '' })
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -221,79 +220,6 @@ const ButtonWithState = ({
   )
 }
 
-/**
- * # Button Component
- *
- * A comprehensive button component for user interactions with extensive customization options.
- *
- * ## Features
- * - **Multiple Variants**: 9 visual styles from basic to eye-catching designs (default, filled, outlined, ghost, solid, gradient, glass, neon, link)
- * - **Flexible Sizing**: 6 size options from extra small to extra extra large (xs, sm, md, lg, xl, 2xl)
- * - **Status States**: Built-in semantic status colors for different contexts (default, success, warning, error, info, primary, secondary)
- * - **Interactive Elements**: Support for icons, loading states, and various click handlers with hover effects
- * - **Loading & Disabled States**: Handle async operations and disabled states gracefully
- * - **Compound Components**: Use Button.Icon, Button.Label, and Button.Spinner for full control
- * - **Extensive Styling**: Over 80 style props for complete visual customization
- * - **Smooth Animations**: Multiple animation effects (pulse, bounce, shake, glow) with customizable timing
- * - **Accessibility First**: Full ARIA support, keyboard navigation, and screen reader compatibility
- * - **Form Integration**: Works seamlessly in forms with different button types
- *
- * ## Usage
- *
- * ### Basic Usage:
- * ```tsx
- * <Button>Click me</Button>
- * <Button variant="filled" size="lg" status="success">Success Button</Button>
- * ```
- *
- * ### Interactive Buttons:
- * ```tsx
- * <Button
- *   variant="gradient"
- *   icon="⭐"
- *   loading={isLoading}
- *   onClick={() => console.log('clicked')}
- * >
- *   Interactive Button
- * </Button>
- * ```
- *
- * ### Compound Component Usage:
- * ```tsx
- * <Button>
- *   <Button.Icon>🔔</Button.Icon>
- *   <Button.Label>Notification</Button.Label>
- *   <Button.Spinner />
- * </Button>
- * ```
- *
- * ### Custom Styling:
- * ```tsx
- * <Button
- *   backgroundColor="#6366f1"
- *   textColor="white"
- *   borderRadius="20px"
- *   padding="8px 16px"
- *   boxShadow="0 4px 6px -1px rgba(0, 0, 0, 0.1)"
- *   hoverScale="1.05"
- * >
- *   Custom Styled Button
- * </Button>
- * ```
- *
- * ### Form Integration:
- * ```tsx
- * <form onSubmit={handleSubmit}>
- *   <Button type="submit" variant="filled" status="primary">
- *     Submit Form
- *   </Button>
- *   <Button type="reset" variant="outlined">
- *     Reset
- *   </Button>
- * </form>
- * ```
- */
-
 const meta = {
   title: 'Components/Button',
   component: Button,
@@ -301,8 +227,76 @@ const meta = {
     layout: 'centered',
     docs: {
       description: {
-        component:
-          'A comprehensive button component with extensive customization options, multiple variants, and compound component architecture.',
+        component: `
+Button is a comprehensive interactive component for user actions with extensive customization options.
+
+## Features
+- **Multiple Variants**: 9 visual styles from basic to eye-catching designs (default, filled, outlined, ghost, solid, gradient, glass, neon, link)
+- **Flexible Sizing**: 6 size options from extra small to extra extra large (xs, sm, md, lg, xl, 2xl)
+- **Status States**: Built-in semantic status colors for different contexts (default, success, warning, error, info, primary, secondary)
+- **Interactive Elements**: Support for icons, loading states, and various click handlers with hover effects
+- **Loading & Disabled States**: Handle async operations and disabled states gracefully
+- **Compound Components**: Use Button.Icon, Button.Label, and Button.Spinner for full control
+- **Extensive Styling**: Over 80 style props for complete visual customization
+- **Smooth Animations**: Multiple animation effects (pulse, bounce, shake, glow) with customizable timing
+- **Accessibility First**: Full ARIA support, keyboard navigation, and screen reader compatibility
+- **Form Integration**: Works seamlessly in forms with different button types
+
+## Usage
+
+### Basic Usage:
+\`\`\`tsx
+<Button>Click me</Button>
+<Button variant="filled" size="lg" status="success">Success Button</Button>
+\`\`\`
+
+### Interactive Buttons:
+\`\`\`tsx
+<Button
+  variant="gradient"
+  icon="⭐"
+  loading={isLoading}
+  onClick={() => console.log('clicked')}
+>
+  Interactive Button
+</Button>
+\`\`\`
+
+### Compound Component Usage:
+\`\`\`tsx
+<Button>
+  <Button.Icon>🔔</Button.Icon>
+  <Button.Label>Notification</Button.Label>
+  <Button.Spinner />
+</Button>
+\`\`\`
+
+### Custom Styling:
+\`\`\`tsx
+<Button
+  backgroundColor="#6366f1"
+  textColor="white"
+  borderRadius="20px"
+  padding="8px 16px"
+  boxShadow="0 4px 6px -1px rgba(0, 0, 0, 0.1)"
+  hoverScale="1.05"
+>
+  Custom Styled Button
+</Button>
+\`\`\`
+
+### Form Integration:
+\`\`\`tsx
+<form onSubmit={handleSubmit}>
+  <Button type="submit" variant="filled" status="primary">
+    Submit Form
+  </Button>
+  <Button type="reset" variant="outlined">
+    Reset
+  </Button>
+</form>
+\`\`\`
+        `,
       },
     },
   },
@@ -1405,7 +1399,7 @@ export const CustomStyling: Story = {
             fontWeight="600"
             transform="rotate(-2deg)"
             hoverTransform="rotate(0deg)"
-            transition="all"
+            transition="slide"
             transitionDuration="300ms"
           >
             Tilted Green
@@ -1440,7 +1434,7 @@ export const CustomStyling: Story = {
             boxShadow="0 8px 16px rgba(255, 107, 107, 0.3)"
             hoverScale="1.1"
             hoverBoxShadow="0 12px 24px rgba(255, 107, 107, 0.4)"
-            transition="all"
+            transition="slide"
             transitionDuration="250ms"
           >
             Gradient Magic
