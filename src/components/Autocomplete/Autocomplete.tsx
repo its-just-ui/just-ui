@@ -8,7 +8,7 @@ export interface AutocompleteOption {
   group?: string
   icon?: React.ReactNode
   description?: string
-  [key: string]: any
+  [key: string]: unknown
 }
 
 export interface AutocompleteProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'onChange'> {
@@ -711,7 +711,7 @@ const AutocompleteInput = React.forwardRef<HTMLInputElement, AutocompleteInputPr
             ...(placeholderColor &&
               ({
                 '--placeholder-color': placeholderColor,
-              } as any)),
+              } as React.CSSProperties)),
           }}
           value={displayValue as string}
           onChange={handleInputChange}

@@ -6,7 +6,7 @@ export interface BreadcrumbItem {
   href?: string
   icon?: React.ReactNode
   disabled?: boolean
-  [key: string]: any
+  [key: string]: unknown
 }
 
 export interface BreadcrumbProps extends Omit<React.HTMLAttributes<HTMLElement>, 'onChange'> {
@@ -332,7 +332,11 @@ const Breadcrumb = React.forwardRef<HTMLElement, BreadcrumbProps>(
                       {index > 0 && defaultSeparator}
                       <BreadcrumbItem
                         index={index}
-                        item={{ label: '...', __collapsed: true, items: item.items }}
+                        item={{
+                          label: '...',
+                          __collapsed: true,
+                          items: item.items as BreadcrumbItem[],
+                        }}
                         isLast={false}
                         renderCollapsed={renderCollapsed}
                         collapsedOpen={collapsedOpen}

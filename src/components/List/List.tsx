@@ -108,7 +108,7 @@ const List = React.forwardRef<HTMLDivElement, ListProps>(
     )
 
     const handleItemSelect = useCallback(
-      (item: ListItem) => {
+      (item: ListItemData) => {
         if (onItemSelect) {
           onItemSelect(item)
         }
