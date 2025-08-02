@@ -9,7 +9,7 @@ export interface BreadcrumbItem {
   [key: string]: any
 }
 
-export interface BreadcrumbProps extends React.HTMLAttributes<HTMLElement> {
+export interface BreadcrumbProps extends Omit<React.HTMLAttributes<HTMLElement>, 'onChange'> {
   items?: BreadcrumbItem[]
   value?: number | null
   onChange?: (index: number, item: BreadcrumbItem) => void
@@ -343,11 +343,13 @@ const Breadcrumb = React.forwardRef<HTMLElement, BreadcrumbProps>(
                 }
 
                 return (
-                  <React.Fragment key={`item-${index}-${item.label}`}>
+                  <React.Fragment
+                    key={`item-${index}-${(item as BreadcrumbItem).label || 'collapsed'}`}
+                  >
                     {index > 0 && defaultSeparator}
                     <BreadcrumbItem
                       index={index}
-                      item={item}
+                      item={item as BreadcrumbItem}
                       isLast={index === processedItems.length - 1}
                     />
                   </React.Fragment>

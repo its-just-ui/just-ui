@@ -622,96 +622,100 @@ export const StyleVariations: Story = {
   ),
 }
 
-export const CustomRendering: Story = {
-  render: () => {
-    const [value, setValue] = useState<number | null>(null)
+const CustomRenderingComponent = () => {
+  const [value, setValue] = useState<number | null>(null)
 
-    return (
+  return (
+    <Breadcrumb
+      items={iconItems}
+      value={value}
+      onChange={setValue}
+      renderItem={(item, index, isLast) => (
+        <div
+          className={`flex items-center gap-2 px-3 py-2 rounded-lg transition-all ${
+            isLast ? 'bg-blue-100 text-blue-700 font-medium' : 'hover:bg-gray-100'
+          }`}
+        >
+          {item.icon}
+          <span>{item.label}</span>
+          {!isLast && <span className="text-xs text-gray-500">({index + 1})</span>}
+        </div>
+      )}
+      separator={
+        <svg className="w-5 h-5 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+          <path
+            fillRule="evenodd"
+            d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z"
+            clipRule="evenodd"
+          />
+        </svg>
+      }
+    />
+  )
+}
+
+export const CustomRendering: Story = {
+  render: () => <CustomRenderingComponent />,
+}
+
+const ControlledWithNavigationComponent = () => {
+  const [value, setValue] = useState<number | null>(2)
+  const [navigationHistory, setNavigationHistory] = useState<string[]>([])
+
+  return (
+    <div className="space-y-4">
       <Breadcrumb
-        items={iconItems}
+        items={basicItems}
         value={value}
-        onChange={setValue}
-        renderItem={(item, index, isLast) => (
-          <div
-            className={`flex items-center gap-2 px-3 py-2 rounded-lg transition-all ${
-              isLast ? 'bg-blue-100 text-blue-700 font-medium' : 'hover:bg-gray-100'
-            }`}
+        onChange={(index, _item) => {
+          setValue(index)
+        }}
+        onNavigate={(index, item) => {
+          setNavigationHistory([...navigationHistory, `Navigated to: ${item.label}`])
+        }}
+        variant="bordered"
+      />
+
+      <div className="mt-4 p-4 bg-gray-100 rounded">
+        <h4 className="font-medium mb-2">Active Index: {value ?? 'None'}</h4>
+        <div className="space-y-2">
+          <button
+            className="px-3 py-1 bg-blue-500 text-white rounded mr-2"
+            onClick={() => setValue(0)}
           >
-            {item.icon}
-            <span>{item.label}</span>
-            {!isLast && <span className="text-xs text-gray-500">({index + 1})</span>}
+            Go to Home
+          </button>
+          <button
+            className="px-3 py-1 bg-blue-500 text-white rounded mr-2"
+            onClick={() => setValue(2)}
+          >
+            Go to Electronics
+          </button>
+          <button
+            className="px-3 py-1 bg-gray-500 text-white rounded"
+            onClick={() => setValue(null)}
+          >
+            Clear Selection
+          </button>
+        </div>
+
+        {navigationHistory.length > 0 && (
+          <div className="mt-4">
+            <h4 className="font-medium mb-2">Navigation History:</h4>
+            <ul className="text-sm text-gray-600">
+              {navigationHistory.map((item, index) => (
+                <li key={index}>{item}</li>
+              ))}
+            </ul>
           </div>
         )}
-        separator={
-          <svg className="w-5 h-5 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
-            <path
-              fillRule="evenodd"
-              d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z"
-              clipRule="evenodd"
-            />
-          </svg>
-        }
-      />
-    )
-  },
+      </div>
+    </div>
+  )
 }
 
 export const ControlledWithNavigation: Story = {
-  render: () => {
-    const [value, setValue] = useState<number | null>(2)
-    const [navigationHistory, setNavigationHistory] = useState<string[]>([])
-
-    return (
-      <div className="space-y-4">
-        <Breadcrumb
-          items={basicItems}
-          value={value}
-          onChange={(index, item) => {
-            setValue(index)
-          }}
-          onNavigate={(index, item) => {
-            setNavigationHistory([...navigationHistory, `Navigated to: ${item.label}`])
-          }}
-          variant="bordered"
-        />
-
-        <div className="mt-4 p-4 bg-gray-100 rounded">
-          <h4 className="font-medium mb-2">Active Index: {value ?? 'None'}</h4>
-          <div className="space-y-2">
-            <button
-              className="px-3 py-1 bg-blue-500 text-white rounded mr-2"
-              onClick={() => setValue(0)}
-            >
-              Go to Home
-            </button>
-            <button
-              className="px-3 py-1 bg-blue-500 text-white rounded mr-2"
-              onClick={() => setValue(2)}
-            >
-              Go to Electronics
-            </button>
-            <button
-              className="px-3 py-1 bg-gray-500 text-white rounded"
-              onClick={() => setValue(null)}
-            >
-              Clear Selection
-            </button>
-          </div>
-
-          {navigationHistory.length > 0 && (
-            <div className="mt-4">
-              <h4 className="font-medium mb-2">Navigation History:</h4>
-              <ul className="text-sm text-gray-600">
-                {navigationHistory.map((item, index) => (
-                  <li key={index}>{item}</li>
-                ))}
-              </ul>
-            </div>
-          )}
-        </div>
-      </div>
-    )
-  },
+  render: () => <ControlledWithNavigationComponent />,
 }
 
 export const CompoundComponents: Story = {
@@ -756,63 +760,65 @@ export const CompoundComponents: Story = {
   ),
 }
 
-export const RealWorldExample: Story = {
-  render: () => {
-    const [currentPath, setCurrentPath] = useState('/products/electronics/laptops/gaming')
+const RealWorldExampleComponent = () => {
+  const [currentPath, setCurrentPath] = useState('/products/electronics/laptops/gaming')
 
-    const pathToBreadcrumbs = (path: string): BreadcrumbItem[] => {
-      const segments = path.split('/').filter(Boolean)
-      return [
-        { label: 'Home', href: '/' },
-        ...segments.map((segment, index) => ({
-          label: segment.charAt(0).toUpperCase() + segment.slice(1),
-          href: '/' + segments.slice(0, index + 1).join('/'),
-        })),
-      ]
-    }
+  const pathToBreadcrumbs = (path: string): BreadcrumbItem[] => {
+    const segments = path.split('/').filter(Boolean)
+    return [
+      { label: 'Home', href: '/' },
+      ...segments.map((segment, index) => ({
+        label: segment.charAt(0).toUpperCase() + segment.slice(1),
+        href: '/' + segments.slice(0, index + 1).join('/'),
+      })),
+    ]
+  }
 
-    return (
-      <div className="space-y-6">
-        <div className="p-4 bg-gray-50 rounded-lg">
-          <Breadcrumb
-            items={pathToBreadcrumbs(currentPath)}
-            variant="underline"
-            onNavigate={(index, item) => {
-              if (item.href) {
-                setCurrentPath(item.href)
-              }
-            }}
-            itemHoverTextColor="#2563eb"
-            itemActiveTextColor="#1d4ed8"
-            focusRingColor="#2563eb"
-          />
-        </div>
-
-        <div className="p-4 bg-white border rounded-lg">
-          <h3 className="font-medium mb-2">Simulate Navigation:</h3>
-          <div className="space-x-2">
-            <button
-              className="px-3 py-1 text-sm bg-gray-200 rounded hover:bg-gray-300"
-              onClick={() => setCurrentPath('/products')}
-            >
-              Go to Products
-            </button>
-            <button
-              className="px-3 py-1 text-sm bg-gray-200 rounded hover:bg-gray-300"
-              onClick={() => setCurrentPath('/products/electronics/phones')}
-            >
-              Go to Phones
-            </button>
-            <button
-              className="px-3 py-1 text-sm bg-gray-200 rounded hover:bg-gray-300"
-              onClick={() => setCurrentPath('/blog/articles/tech/latest')}
-            >
-              Go to Blog
-            </button>
-          </div>
-          <p className="mt-4 text-sm text-gray-600">Current path: {currentPath}</p>
-        </div>
+  return (
+    <div className="space-y-6">
+      <div className="p-4 bg-gray-50 rounded-lg">
+        <Breadcrumb
+          items={pathToBreadcrumbs(currentPath)}
+          variant="underline"
+          onNavigate={(index, item) => {
+            if (item.href) {
+              setCurrentPath(item.href)
+            }
+          }}
+          itemHoverTextColor="#2563eb"
+          itemActiveTextColor="#1d4ed8"
+          focusRingColor="#2563eb"
+        />
       </div>
-    )
-  },
+
+      <div className="p-4 bg-white border rounded-lg">
+        <h3 className="font-medium mb-2">Simulate Navigation:</h3>
+        <div className="space-x-2">
+          <button
+            className="px-3 py-1 text-sm bg-gray-200 rounded hover:bg-gray-300"
+            onClick={() => setCurrentPath('/products')}
+          >
+            Go to Products
+          </button>
+          <button
+            className="px-3 py-1 text-sm bg-gray-200 rounded hover:bg-gray-300"
+            onClick={() => setCurrentPath('/products/electronics/phones')}
+          >
+            Go to Phones
+          </button>
+          <button
+            className="px-3 py-1 text-sm bg-gray-200 rounded hover:bg-gray-300"
+            onClick={() => setCurrentPath('/blog/articles/tech/latest')}
+          >
+            Go to Blog
+          </button>
+        </div>
+        <p className="mt-4 text-sm text-gray-600">Current path: {currentPath}</p>
+      </div>
+    </div>
+  )
+}
+
+export const RealWorldExample: Story = {
+  render: () => <RealWorldExampleComponent />,
 }

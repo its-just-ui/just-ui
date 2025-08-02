@@ -668,84 +668,82 @@ export const TopPlacement: Story = {
   ],
 }
 
+const ControlledComponent = () => {
+  const [value, setValue] = useState<AutocompleteOption | null>(null)
+
+  return (
+    <div className="space-y-4">
+      <div className="flex gap-2">
+        <button className="px-3 py-1 bg-gray-200 rounded" onClick={() => setValue(basicOptions[0])}>
+          Select React
+        </button>
+        <button className="px-3 py-1 bg-gray-200 rounded" onClick={() => setValue(basicOptions[1])}>
+          Select Vue
+        </button>
+        <button className="px-3 py-1 bg-gray-200 rounded" onClick={() => setValue(null)}>
+          Clear
+        </button>
+      </div>
+      <Autocomplete
+        options={basicOptions}
+        value={value}
+        onChange={(value) => setValue(value as AutocompleteOption | null)}
+        placeholder="Controlled autocomplete"
+        label="Controlled Value"
+      />
+      {value && (
+        <p className="text-sm text-gray-600">
+          Selected: {value.label} ({value.value})
+        </p>
+      )}
+    </div>
+  )
+}
+
 export const Controlled: Story = {
   args: { options: basicOptions },
-  render: () => {
-    const [value, setValue] = useState<AutocompleteOption | null>(null)
+  render: () => <ControlledComponent />,
+}
 
-    return (
-      <div className="space-y-4">
-        <div className="flex gap-2">
-          <button
-            className="px-3 py-1 bg-gray-200 rounded"
-            onClick={() => setValue(basicOptions[0])}
-          >
-            Select React
-          </button>
-          <button
-            className="px-3 py-1 bg-gray-200 rounded"
-            onClick={() => setValue(basicOptions[1])}
-          >
-            Select Vue
-          </button>
-          <button className="px-3 py-1 bg-gray-200 rounded" onClick={() => setValue(null)}>
-            Clear
-          </button>
-        </div>
-        <Autocomplete
-          options={basicOptions}
-          value={value}
-          onChange={(value) => setValue(value as AutocompleteOption | null)}
-          placeholder="Controlled autocomplete"
-          label="Controlled Value"
-        />
-        {value && (
-          <p className="text-sm text-gray-600">
-            Selected: {value.label} ({value.value})
-          </p>
-        )}
-      </div>
-    )
-  },
+const AsyncSearchComponent = () => {
+  const [options, setOptions] = useState<AutocompleteOption[]>([])
+  const [loading, setLoading] = useState(false)
+  const [value, setValue] = useState<AutocompleteOption | null>(null)
+
+  const handleInputChange = (value: string) => {
+    if (!value) {
+      setOptions([])
+      return
+    }
+
+    setLoading(true)
+    setTimeout(() => {
+      const filtered = basicOptions.filter((opt) =>
+        opt.label.toLowerCase().includes(value.toLowerCase())
+      )
+      setOptions(filtered)
+      setLoading(false)
+    }, 1000)
+  }
+
+  return (
+    <Autocomplete
+      options={options}
+      value={value}
+      onChange={(value) => setValue(value as AutocompleteOption | null)}
+      loading={loading}
+      searchable
+      onInputChange={handleInputChange}
+      placeholder="Type to search..."
+      label="Async Search"
+      helperText="Results are loaded asynchronously"
+    />
+  )
 }
 
 export const AsyncSearch: Story = {
   args: { options: [] },
-  render: () => {
-    const [options, setOptions] = useState<AutocompleteOption[]>([])
-    const [loading, setLoading] = useState(false)
-    const [value, setValue] = useState<AutocompleteOption | null>(null)
-
-    const handleInputChange = (value: string) => {
-      if (!value) {
-        setOptions([])
-        return
-      }
-
-      setLoading(true)
-      setTimeout(() => {
-        const filtered = basicOptions.filter((opt) =>
-          opt.label.toLowerCase().includes(value.toLowerCase())
-        )
-        setOptions(filtered)
-        setLoading(false)
-      }, 1000)
-    }
-
-    return (
-      <Autocomplete
-        options={options}
-        value={value}
-        onChange={(value) => setValue(value as AutocompleteOption | null)}
-        loading={loading}
-        searchable
-        onInputChange={handleInputChange}
-        placeholder="Type to search..."
-        label="Async Search"
-        helperText="Results are loaded asynchronously"
-      />
-    )
-  },
+  render: () => <AsyncSearchComponent />,
 }
 
 export const CustomIcons: Story = {
@@ -980,74 +978,76 @@ export const StyleVariations: Story = {
 }
 
 // Example showing how to use in a form
+const FormExampleComponent = () => {
+  const [formData, setFormData] = useState({
+    framework: null as AutocompleteOption | null,
+    country: null as AutocompleteOption | null,
+    skills: [] as AutocompleteOption[],
+  })
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+    console.log('Form submitted:', formData)
+    alert(`Form submitted!\n${JSON.stringify(formData, null, 2)}`)
+  }
+
+  return (
+    <form onSubmit={handleSubmit} className="space-y-6">
+      <Autocomplete
+        options={basicOptions}
+        value={formData.framework}
+        onChange={(value) =>
+          setFormData({ ...formData, framework: value as AutocompleteOption | null })
+        }
+        label="Preferred Framework"
+        placeholder="Select a framework"
+        required
+        helperText="Choose your primary framework"
+      />
+
+      <Autocomplete
+        options={countryOptions}
+        value={formData.country}
+        onChange={(value) =>
+          setFormData({ ...formData, country: value as AutocompleteOption | null })
+        }
+        label="Country"
+        placeholder="Select your country"
+        required
+      />
+
+      <Autocomplete
+        options={basicOptions}
+        value={formData.skills}
+        onChange={(value) => setFormData({ ...formData, skills: value as AutocompleteOption[] })}
+        multiple
+        label="Skills"
+        placeholder="Select your skills"
+        helperText="Select all that apply"
+      />
+
+      <div className="flex gap-4">
+        <button
+          type="submit"
+          className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+        >
+          Submit
+        </button>
+        <button
+          type="button"
+          onClick={() => setFormData({ framework: null, country: null, skills: [] })}
+          className="px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300"
+        >
+          Reset
+        </button>
+      </div>
+    </form>
+  )
+}
+
 export const FormExample: Story = {
   args: {
     options: basicOptions,
   },
-  render: () => {
-    const [formData, setFormData] = useState({
-      framework: null as AutocompleteOption | null,
-      country: null as AutocompleteOption | null,
-      skills: [] as AutocompleteOption[],
-    })
-
-    const handleSubmit = (e: React.FormEvent) => {
-      e.preventDefault()
-      console.log('Form submitted:', formData)
-      alert(`Form submitted!\n${JSON.stringify(formData, null, 2)}`)
-    }
-
-    return (
-      <form onSubmit={handleSubmit} className="space-y-6">
-        <Autocomplete
-          options={basicOptions}
-          value={formData.framework}
-          onChange={(value) =>
-            setFormData({ ...formData, framework: value as AutocompleteOption | null })
-          }
-          label="Preferred Framework"
-          placeholder="Select a framework"
-          required
-          helperText="Choose your primary framework"
-        />
-
-        <Autocomplete
-          options={countryOptions}
-          value={formData.country}
-          onChange={(value) =>
-            setFormData({ ...formData, country: value as AutocompleteOption | null })
-          }
-          label="Country"
-          placeholder="Select your country"
-          required
-        />
-
-        <Autocomplete
-          options={basicOptions}
-          value={formData.skills}
-          onChange={(value) => setFormData({ ...formData, skills: value as AutocompleteOption[] })}
-          multiple
-          label="Skills"
-          placeholder="Select your skills"
-          helperText="Select all that apply"
-        />
-
-        <div className="flex gap-4">
-          <button
-            type="submit"
-            className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
-          >
-            Submit
-          </button>
-          <button
-            type="button"
-            onClick={() => setFormData({ framework: null, country: null, skills: [] })}
-            className="px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300"
-          >
-            Reset
-          </button>
-        </div>
-      </form>
-    )
-  },
+  render: () => <FormExampleComponent />,
 }

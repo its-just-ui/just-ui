@@ -61,8 +61,8 @@ import { Chip, ChipContainer, ChipItem, ChipInput } from './Chip'
  *     {chips.map(chip => (
  *       <ChipItem key={chip} value={chip} />
  *     ))}
- *     <ChipInput 
- *       placeholder="Add chip..." 
+ *     <ChipInput
+ *       placeholder="Add chip..."
  *       validateInput={(value) => {
  *         if (value.length < 2) return 'Minimum 2 characters'
  *         if (!/^[a-zA-Z]+$/.test(value)) return 'Only letters allowed'
@@ -723,16 +723,10 @@ const statusChips = ['Active', 'Pending', 'Completed', 'Cancelled']
 // Wrapper component to handle state for stories
 const ChipWithState = (props: any) => {
   const [value, setValue] = useState<string | string[] | null>(
-    props.multiple ? (props.value || []) : (props.value || null)
+    props.multiple ? props.value || [] : props.value || null
   )
-  
-  return (
-    <Chip
-      {...props}
-      value={value}
-      onChange={setValue}
-    />
-  )
+
+  return <Chip {...props} value={value} onChange={setValue} />
 }
 
 export const Default: Story = {
@@ -776,36 +770,11 @@ export const Removable: Story = {
 export const Variants: Story = {
   render: () => (
     <div className="space-y-6">
-      <ChipWithState
-        value={sampleChips[0]}
-        variant="default"
-        label="Default"
-        selectable
-      />
-      <ChipWithState
-        value={sampleChips[1]}
-        variant="filled"
-        label="Filled"
-        selectable
-      />
-      <ChipWithState
-        value={sampleChips[2]}
-        variant="outlined"
-        label="Outlined"
-        selectable
-      />
-      <ChipWithState
-        value={sampleChips[3]}
-        variant="soft"
-        label="Soft"
-        selectable
-      />
-      <ChipWithState
-        value={sampleChips[0]}
-        variant="gradient"
-        label="Gradient"
-        selectable
-      />
+      <ChipWithState value={sampleChips[0]} variant="default" label="Default" selectable />
+      <ChipWithState value={sampleChips[1]} variant="filled" label="Filled" selectable />
+      <ChipWithState value={sampleChips[2]} variant="outlined" label="Outlined" selectable />
+      <ChipWithState value={sampleChips[3]} variant="soft" label="Soft" selectable />
+      <ChipWithState value={sampleChips[0]} variant="gradient" label="Gradient" selectable />
     </div>
   ),
 }
@@ -813,24 +782,9 @@ export const Variants: Story = {
 export const Sizes: Story = {
   render: () => (
     <div className="space-y-6">
-      <ChipWithState
-        value={sampleChips[0]}
-        size="sm"
-        label="Small"
-        selectable
-      />
-      <ChipWithState
-        value={sampleChips[1]}
-        size="md"
-        label="Medium"
-        selectable
-      />
-      <ChipWithState
-        value={sampleChips[2]}
-        size="lg"
-        label="Large"
-        selectable
-      />
+      <ChipWithState value={sampleChips[0]} size="sm" label="Small" selectable />
+      <ChipWithState value={sampleChips[1]} size="md" label="Medium" selectable />
+      <ChipWithState value={sampleChips[2]} size="lg" label="Large" selectable />
     </div>
   ),
 }
@@ -838,59 +792,22 @@ export const Sizes: Story = {
 export const Statuses: Story = {
   render: () => (
     <div className="space-y-6">
-      <ChipWithState
-        value={statusChips[0]}
-        status="success"
-        label="Success"
-        selectable
-      />
-      <ChipWithState
-        value={statusChips[1]}
-        status="warning"
-        label="Warning"
-        selectable
-      />
-      <ChipWithState
-        value={statusChips[2]}
-        status="error"
-        label="Error"
-        selectable
-      />
-      <ChipWithState
-        value={statusChips[3]}
-        status="info"
-        label="Info"
-        selectable
-      />
+      <ChipWithState value={statusChips[0]} status="success" label="Success" selectable />
+      <ChipWithState value={statusChips[1]} status="warning" label="Warning" selectable />
+      <ChipWithState value={statusChips[2]} status="error" label="Error" selectable />
+      <ChipWithState value={statusChips[3]} status="info" label="Info" selectable />
     </div>
   ),
 }
 
 export const WithIcons: Story = {
   render: () => (
-    <ChipWithState
-      value={sampleChips}
-      multiple
-      removable
-      label="Technologies with Icons"
-    >
+    <ChipWithState value={sampleChips} multiple removable label="Technologies with Icons">
       <ChipContainer>
-        <ChipItem 
-          value="React" 
-          icon={<span>⚛️</span>}
-        />
-        <ChipItem 
-          value="Vue" 
-          icon={<span>💚</span>}
-        />
-        <ChipItem 
-          value="Angular" 
-          icon={<span>🅰️</span>}
-        />
-        <ChipItem 
-          value="Svelte" 
-          icon={<span>⚡</span>}
-        />
+        <ChipItem value="React" icon={<span>⚛️</span>} />
+        <ChipItem value="Vue" icon={<span>💚</span>} />
+        <ChipItem value="Angular" icon={<span>🅰️</span>} />
+        <ChipItem value="Svelte" icon={<span>⚡</span>} />
       </ChipContainer>
     </ChipWithState>
   ),
@@ -905,17 +822,29 @@ export const WithAvatars: Story = {
       label="Team Members"
     >
       <ChipContainer>
-        <ChipItem 
-          value="John Doe" 
-          avatar={<div className="w-6 h-6 rounded-full bg-blue-500 text-white text-xs flex items-center justify-center">JD</div>}
+        <ChipItem
+          value="John Doe"
+          avatar={
+            <div className="w-6 h-6 rounded-full bg-blue-500 text-white text-xs flex items-center justify-center">
+              JD
+            </div>
+          }
         />
-        <ChipItem 
-          value="Jane Smith" 
-          avatar={<div className="w-6 h-6 rounded-full bg-pink-500 text-white text-xs flex items-center justify-center">JS</div>}
+        <ChipItem
+          value="Jane Smith"
+          avatar={
+            <div className="w-6 h-6 rounded-full bg-pink-500 text-white text-xs flex items-center justify-center">
+              JS
+            </div>
+          }
         />
-        <ChipItem 
-          value="Bob Johnson" 
-          avatar={<div className="w-6 h-6 rounded-full bg-green-500 text-white text-xs flex items-center justify-center">BJ</div>}
+        <ChipItem
+          value="Bob Johnson"
+          avatar={
+            <div className="w-6 h-6 rounded-full bg-green-500 text-white text-xs flex items-center justify-center">
+              BJ
+            </div>
+          }
         />
       </ChipContainer>
     </ChipWithState>
@@ -924,14 +853,9 @@ export const WithAvatars: Story = {
 
 export const WithInput: Story = {
   render: () => (
-    <ChipWithState
-      value={sampleChips.slice(0, 2)}
-      multiple
-      removable
-      label="Add Technologies"
-    >
+    <ChipWithState value={sampleChips.slice(0, 2)} multiple removable label="Add Technologies">
       <ChipContainer>
-        {sampleChips.slice(0, 2).map(chip => (
+        {sampleChips.slice(0, 2).map((chip) => (
           <ChipItem key={chip} value={chip} />
         ))}
         <ChipInput placeholder="Add technology..." />
@@ -951,7 +875,7 @@ export const MaxChips: Story = {
       helperText="You can only select up to 3 technologies"
     >
       <ChipContainer>
-        {techChips.slice(0, 3).map(chip => (
+        {techChips.slice(0, 3).map((chip) => (
           <ChipItem key={chip} value={chip} />
         ))}
         <ChipInput placeholder="Add technology..." />
@@ -961,26 +885,23 @@ export const MaxChips: Story = {
 }
 
 export const Loading: Story = {
-  render: () => (
-    <ChipWithState
-      loading
-      label="Loading Chips"
+  render: () => <ChipWithState loading label="Loading Chips" />,
+}
+
+const DisabledComponent = () => {
+  const [value] = useState<string[]>(sampleChips.slice(0, 2))
+  return (
+    <Chip
+      value={value}
+      disabled
+      label="Disabled Chips"
+      helperText="These chips cannot be modified"
     />
-  ),
+  )
 }
 
 export const Disabled: Story = {
-  render: () => {
-    const [value] = useState<string[]>(sampleChips.slice(0, 2))
-    return (
-      <Chip
-        value={value}
-        disabled
-        label="Disabled Chips"
-        helperText="These chips cannot be modified"
-      />
-    )
-  },
+  render: () => <DisabledComponent />,
 }
 
 export const CustomRendering: Story = {
@@ -1000,46 +921,35 @@ export const CustomRendering: Story = {
   ),
 }
 
-export const Controlled: Story = {
-  render: () => {
-    const [value, setValue] = useState<string | null>(sampleChips[0])
-    
-    return (
-      <div className="space-y-4">
-        <div className="flex gap-2">
-          <button
-            className="px-3 py-1 bg-gray-200 rounded"
-            onClick={() => setValue(sampleChips[0])}
-          >
-            Select React
-          </button>
-          <button
-            className="px-3 py-1 bg-gray-200 rounded"
-            onClick={() => setValue(sampleChips[1])}
-          >
-            Select Vue
-          </button>
-          <button
-            className="px-3 py-1 bg-gray-200 rounded"
-            onClick={() => setValue(null)}
-          >
-            Clear
-          </button>
-        </div>
-        <Chip
-          value={value}
-          onChange={(newValue) => setValue(newValue as string | null)}
-          selectable
-          label="Controlled Chip"
-        />
-        {value && (
-          <p className="text-sm text-gray-600">
-            Selected: {value}
-          </p>
-        )}
+const ControlledComponent = () => {
+  const [value, setValue] = useState<string | null>(sampleChips[0])
+
+  return (
+    <div className="space-y-4">
+      <div className="flex gap-2">
+        <button className="px-3 py-1 bg-gray-200 rounded" onClick={() => setValue(sampleChips[0])}>
+          Select React
+        </button>
+        <button className="px-3 py-1 bg-gray-200 rounded" onClick={() => setValue(sampleChips[1])}>
+          Select Vue
+        </button>
+        <button className="px-3 py-1 bg-gray-200 rounded" onClick={() => setValue(null)}>
+          Clear
+        </button>
       </div>
-    )
-  },
+      <Chip
+        value={value}
+        onChange={(newValue) => setValue(newValue as string | null)}
+        selectable
+        label="Controlled Chip"
+      />
+      {value && <p className="text-sm text-gray-600">Selected: {value}</p>}
+    </div>
+  )
+}
+
+export const Controlled: Story = {
+  render: () => <ControlledComponent />,
 }
 
 export const Validation: Story = {
@@ -1051,8 +961,8 @@ export const Validation: Story = {
       helperText="Only alphanumeric values are allowed"
     >
       <ChipContainer>
-        <ChipInput 
-          placeholder="Add validated chip..." 
+        <ChipInput
+          placeholder="Add validated chip..."
           validateInput={(value) => {
             if (!/^[a-zA-Z0-9]+$/.test(value)) {
               return 'Only alphanumeric characters are allowed'
@@ -1264,125 +1174,125 @@ export const StyleVariations: Story = {
 }
 
 // Example showing how to use in a form
+const FormExampleComponent = () => {
+  const [formData, setFormData] = useState({
+    skills: [] as string[],
+    interests: [] as string[],
+    languages: [] as string[],
+  })
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+    console.log('Form submitted:', formData)
+    alert(`Form submitted!\n${JSON.stringify(formData, null, 2)}`)
+  }
+
+  return (
+    <form onSubmit={handleSubmit} className="space-y-6">
+      <Chip
+        value={formData.skills}
+        onChange={(value) => setFormData({ ...formData, skills: value as string[] })}
+        multiple
+        label="Skills"
+        helperText="Select your technical skills"
+      >
+        <ChipContainer>
+          {formData.skills.map((skill) => (
+            <ChipItem key={skill} value={skill} />
+          ))}
+          <ChipInput placeholder="Add skill..." />
+        </ChipContainer>
+      </Chip>
+
+      <Chip
+        value={formData.interests}
+        onChange={(value) => setFormData({ ...formData, interests: value as string[] })}
+        multiple
+        maxChips={5}
+        label="Interests"
+        helperText="Select up to 5 interests"
+      >
+        <ChipContainer>
+          {formData.interests.map((interest) => (
+            <ChipItem key={interest} value={interest} />
+          ))}
+          <ChipInput placeholder="Add interest..." />
+        </ChipContainer>
+      </Chip>
+
+      <Chip
+        value={formData.languages}
+        onChange={(value) => setFormData({ ...formData, languages: value as string[] })}
+        multiple
+        label="Programming Languages"
+        helperText="Select languages you know"
+      >
+        <ChipContainer>
+          {formData.languages.map((lang) => (
+            <ChipItem key={lang} value={lang} />
+          ))}
+          <ChipInput
+            placeholder="Add language..."
+            validateInput={(value) => {
+              if (value.length < 2) return 'Minimum 2 characters'
+              if (!/^[a-zA-Z]+$/.test(value)) return 'Only letters allowed'
+              return true
+            }}
+          />
+        </ChipContainer>
+      </Chip>
+
+      <div className="flex gap-4">
+        <button
+          type="submit"
+          className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+        >
+          Submit
+        </button>
+        <button
+          type="button"
+          onClick={() => setFormData({ skills: [], interests: [], languages: [] })}
+          className="px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300"
+        >
+          Reset
+        </button>
+      </div>
+    </form>
+  )
+}
+
 export const FormExample: Story = {
-  render: () => {
-    const [formData, setFormData] = useState({
-      skills: [] as string[],
-      interests: [] as string[],
-      languages: [] as string[],
-    })
+  render: () => <FormExampleComponent />,
+}
 
-    const handleSubmit = (e: React.FormEvent) => {
-      e.preventDefault()
-      console.log('Form submitted:', formData)
-      alert(`Form submitted!\n${JSON.stringify(formData, null, 2)}`)
-    }
+const CompoundComponentsComponent = () => {
+  const [chips, setChips] = useState<string[]>(['React', 'Vue'])
 
-    return (
-      <form onSubmit={handleSubmit} className="space-y-6">
-        <Chip
-          value={formData.skills}
-          onChange={(value) => setFormData({ ...formData, skills: value as string[] })}
-          multiple
-          label="Skills"
-          helperText="Select your technical skills"
-        >
-          <ChipContainer>
-            {formData.skills.map(skill => (
-              <ChipItem key={skill} value={skill} />
-            ))}
-            <ChipInput placeholder="Add skill..." />
-          </ChipContainer>
-        </Chip>
+  return (
+    <div className="space-y-6">
+      <h3 className="text-lg font-semibold">Using Compound Components</h3>
+      <Chip value={chips} onChange={setChips} multiple label="Custom Layout">
+        <ChipContainer>
+          {chips.map((chip) => (
+            <ChipItem key={chip} value={chip} icon={<span>🔧</span>} />
+          ))}
+          <ChipInput placeholder="Add technology..." />
+        </ChipContainer>
+      </Chip>
 
-        <Chip
-          value={formData.interests}
-          onChange={(value) => setFormData({ ...formData, interests: value as string[] })}
-          multiple
-          maxChips={5}
-          label="Interests"
-          helperText="Select up to 5 interests"
-        >
-          <ChipContainer>
-            {formData.interests.map(interest => (
-              <ChipItem key={interest} value={interest} />
-            ))}
-            <ChipInput placeholder="Add interest..." />
-          </ChipContainer>
-        </Chip>
-
-        <Chip
-          value={formData.languages}
-          onChange={(value) => setFormData({ ...formData, languages: value as string[] })}
-          multiple
-          label="Programming Languages"
-          helperText="Select languages you know"
-        >
-          <ChipContainer>
-            {formData.languages.map(lang => (
-              <ChipItem key={lang} value={lang} />
-            ))}
-            <ChipInput 
-              placeholder="Add language..." 
-              validateInput={(value) => {
-                if (value.length < 2) return 'Minimum 2 characters'
-                if (!/^[a-zA-Z]+$/.test(value)) return 'Only letters allowed'
-                return true
-              }}
-            />
-          </ChipContainer>
-        </Chip>
-
-        <div className="flex gap-4">
-          <button
-            type="submit"
-            className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
-          >
-            Submit
-          </button>
-          <button
-            type="button"
-            onClick={() => setFormData({ skills: [], interests: [], languages: [] })}
-            className="px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300"
-          >
-            Reset
-          </button>
-        </div>
-      </form>
-    )
-  },
+      <div className="text-sm text-gray-600">
+        <p>This demonstrates using the compound component pattern:</p>
+        <ul className="list-disc list-inside mt-2 space-y-1">
+          <li>Chip - Main container with context</li>
+          <li>ChipContainer - Wrapper for chips and input</li>
+          <li>ChipItem - Individual chip with remove button</li>
+          <li>ChipInput - Input field for adding new chips</li>
+        </ul>
+      </div>
+    </div>
+  )
 }
 
 export const CompoundComponents: Story = {
-  render: () => {
-    const [chips, setChips] = useState<string[]>(['React', 'Vue'])
-    
-    return (
-      <div className="space-y-6">
-        <h3 className="text-lg font-semibold">Using Compound Components</h3>
-        <Chip value={chips} onChange={setChips} multiple label="Custom Layout">
-          <ChipContainer>
-            {chips.map(chip => (
-              <ChipItem 
-                key={chip} 
-                value={chip} 
-                icon={<span>🔧</span>}
-              />
-            ))}
-            <ChipInput placeholder="Add technology..." />
-          </ChipContainer>
-        </Chip>
-        
-        <div className="text-sm text-gray-600">
-          <p>This demonstrates using the compound component pattern:</p>
-          <ul className="list-disc list-inside mt-2 space-y-1">
-            <li>Chip - Main container with context</li>
-            <li>ChipContainer - Wrapper for chips and input</li>
-            <li>ChipItem - Individual chip with remove button</li>
-            <li>ChipInput - Input field for adding new chips</li>
-          </ul>
-        </div>
-      </div>
-    )
-  },
-} 
+  render: () => <CompoundComponentsComponent />,
+}

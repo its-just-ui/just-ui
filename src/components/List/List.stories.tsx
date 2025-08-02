@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import type { Meta, StoryObj } from '@storybook/react'
-import { List, ListContainer, ListItem, ListHeader, ListFooter } from './List'
+import { List, ListContainer, ListItemData, ListHeader, ListFooter } from './List'
 
 /**
  * List is a versatile component for displaying selectable or interactive items with extensive customization options.
@@ -11,7 +11,7 @@ import { List, ListContainer, ListItem, ListHeader, ListFooter } from './List'
  * - **Status States**: Built-in semantic status colors for different contexts (default, success, warning, error, info)
  * - **Interactive Elements**: Support for selection, click handlers, and hover effects
  * - **Loading & Disabled States**: Handle async operations and disabled states gracefully
- * - **Compound Components**: Use ListContainer, ListItem, ListHeader, and ListFooter for full control
+ * - **Compound Components**: Use ListContainer, ListItemData, ListHeader, and ListFooter for full control
  * - **Extensive Styling**: Over 60 style props for complete visual customization
  * - **Form Integration**: Works seamlessly in forms with controlled/uncontrolled modes
  * - **Accessibility First**: Full ARIA support, keyboard navigation, and screen reader compatibility
@@ -42,7 +42,7 @@ import { List, ListContainer, ListItem, ListHeader, ListFooter } from './List'
  *   <ListHeader>User List</ListHeader>
  *   <ListContainer>
  *     {items.map(item => (
- *       <ListItem key={item.id} item={item} />
+ *       <ListItemData key={item.id} item={item} />
  *     ))}
  *   </ListContainer>
  *   <ListFooter>Total: {items.length}</ListFooter>
@@ -104,7 +104,7 @@ const meta = {
       description: 'Array of list items to display',
       table: {
         category: 'Core Props',
-        type: { summary: 'ListItem[]' },
+        type: { summary: 'ListItemData[]' },
       },
     },
     value: {
@@ -255,7 +255,7 @@ const meta = {
       description: 'Custom render function for items',
       table: {
         category: 'Content',
-        type: { summary: '(item: ListItem, isSelected: boolean) => React.ReactNode' },
+        type: { summary: '(item: ListItemData, isSelected: boolean) => React.ReactNode' },
       },
     },
 
@@ -1065,7 +1065,7 @@ const meta = {
       description: 'Callback fired when an item is clicked',
       table: {
         category: 'Event Handlers',
-        type: { summary: '(item: ListItem) => void' },
+        type: { summary: '(item: ListItemData) => void' },
       },
     },
     onItemSelect: {
@@ -1073,7 +1073,7 @@ const meta = {
       description: 'Callback fired when an item is selected',
       table: {
         category: 'Event Handlers',
-        type: { summary: '(item: ListItem) => void' },
+        type: { summary: '(item: ListItemData) => void' },
       },
     },
     onClick: {
@@ -1185,23 +1185,39 @@ const sampleItems = [
     id: '1',
     title: 'John Doe',
     description: 'Software Engineer at Tech Corp',
-    avatar: <div className="w-10 h-10 rounded-full bg-blue-500 text-white flex items-center justify-center">JD</div>,
-    badge: <span className="px-2 py-1 text-xs bg-green-100 text-green-800 rounded-full">Active</span>,
+    avatar: (
+      <div className="w-10 h-10 rounded-full bg-blue-500 text-white flex items-center justify-center">
+        JD
+      </div>
+    ),
+    badge: (
+      <span className="px-2 py-1 text-xs bg-green-100 text-green-800 rounded-full">Active</span>
+    ),
     action: <span>→</span>,
   },
   {
     id: '2',
     title: 'Jane Smith',
     description: 'Product Manager at Design Studio',
-    avatar: <div className="w-10 h-10 rounded-full bg-pink-500 text-white flex items-center justify-center">JS</div>,
-    badge: <span className="px-2 py-1 text-xs bg-yellow-100 text-yellow-800 rounded-full">Away</span>,
+    avatar: (
+      <div className="w-10 h-10 rounded-full bg-pink-500 text-white flex items-center justify-center">
+        JS
+      </div>
+    ),
+    badge: (
+      <span className="px-2 py-1 text-xs bg-yellow-100 text-yellow-800 rounded-full">Away</span>
+    ),
     action: <span>→</span>,
   },
   {
     id: '3',
     title: 'Bob Johnson',
     description: 'UX Designer at Creative Agency',
-    avatar: <div className="w-10 h-10 rounded-full bg-green-500 text-white flex items-center justify-center">BJ</div>,
+    avatar: (
+      <div className="w-10 h-10 rounded-full bg-green-500 text-white flex items-center justify-center">
+        BJ
+      </div>
+    ),
     badge: <span className="px-2 py-1 text-xs bg-red-100 text-red-800 rounded-full">Busy</span>,
     action: <span>→</span>,
   },
@@ -1213,21 +1229,27 @@ const techItems = [
     title: 'React',
     description: 'A JavaScript library for building user interfaces',
     icon: <span>⚛️</span>,
-    badge: <span className="px-2 py-1 text-xs bg-blue-100 text-blue-800 rounded-full">Popular</span>,
+    badge: (
+      <span className="px-2 py-1 text-xs bg-blue-100 text-blue-800 rounded-full">Popular</span>
+    ),
   },
   {
     id: 'vue',
     title: 'Vue.js',
     description: 'The Progressive JavaScript Framework',
     icon: <span>💚</span>,
-    badge: <span className="px-2 py-1 text-xs bg-green-100 text-green-800 rounded-full">Trending</span>,
+    badge: (
+      <span className="px-2 py-1 text-xs bg-green-100 text-green-800 rounded-full">Trending</span>
+    ),
   },
   {
     id: 'angular',
     title: 'Angular',
     description: 'Platform for building mobile and desktop web applications',
     icon: <span>🅰️</span>,
-    badge: <span className="px-2 py-1 text-xs bg-red-100 text-red-800 rounded-full">Enterprise</span>,
+    badge: (
+      <span className="px-2 py-1 text-xs bg-red-100 text-red-800 rounded-full">Enterprise</span>
+    ),
   },
 ]
 
@@ -1237,14 +1259,18 @@ const statusItems = [
     title: 'Success Status',
     description: 'Everything is working correctly',
     icon: <span>✅</span>,
-    badge: <span className="px-2 py-1 text-xs bg-green-100 text-green-800 rounded-full">Success</span>,
+    badge: (
+      <span className="px-2 py-1 text-xs bg-green-100 text-green-800 rounded-full">Success</span>
+    ),
   },
   {
     id: 'warning',
     title: 'Warning Status',
     description: 'Something needs attention',
     icon: <span>⚠️</span>,
-    badge: <span className="px-2 py-1 text-xs bg-yellow-100 text-yellow-800 rounded-full">Warning</span>,
+    badge: (
+      <span className="px-2 py-1 text-xs bg-yellow-100 text-yellow-800 rounded-full">Warning</span>
+    ),
   },
   {
     id: 'error',
@@ -1258,16 +1284,10 @@ const statusItems = [
 // Wrapper component to handle state for stories
 const ListWithState = (props: any) => {
   const [value, setValue] = useState<string | string[] | null>(
-    props.multiple ? (props.value || []) : (props.value || null)
+    props.multiple ? props.value || [] : props.value || null
   )
-  
-  return (
-    <List
-      {...props}
-      value={value}
-      onChange={setValue}
-    />
-  )
+
+  return <List {...props} value={value} onChange={setValue} />
 }
 
 export const Default: Story = {
@@ -1310,41 +1330,13 @@ export const Multiple: Story = {
 export const Variants: Story = {
   render: () => (
     <div className="space-y-6">
-      <ListWithState
-        items={sampleItems}
-        variant="default"
-        label="Default Variant"
-      />
-      <ListWithState
-        items={sampleItems}
-        variant="bordered"
-        label="Bordered Variant"
-      />
-      <ListWithState
-        items={sampleItems}
-        variant="card"
-        label="Card Variant"
-      />
-      <ListWithState
-        items={sampleItems}
-        variant="minimal"
-        label="Minimal Variant"
-      />
-      <ListWithState
-        items={sampleItems}
-        variant="elevated"
-        label="Elevated Variant"
-      />
-      <ListWithState
-        items={sampleItems}
-        variant="glass"
-        label="Glass Variant"
-      />
-      <ListWithState
-        items={sampleItems}
-        variant="gradient"
-        label="Gradient Variant"
-      />
+      <ListWithState items={sampleItems} variant="default" label="Default Variant" />
+      <ListWithState items={sampleItems} variant="bordered" label="Bordered Variant" />
+      <ListWithState items={sampleItems} variant="card" label="Card Variant" />
+      <ListWithState items={sampleItems} variant="minimal" label="Minimal Variant" />
+      <ListWithState items={sampleItems} variant="elevated" label="Elevated Variant" />
+      <ListWithState items={sampleItems} variant="glass" label="Glass Variant" />
+      <ListWithState items={sampleItems} variant="gradient" label="Gradient Variant" />
     </div>
   ),
 }
@@ -1352,21 +1344,9 @@ export const Variants: Story = {
 export const Sizes: Story = {
   render: () => (
     <div className="space-y-6">
-      <ListWithState
-        items={sampleItems}
-        size="sm"
-        label="Small Size"
-      />
-      <ListWithState
-        items={sampleItems}
-        size="md"
-        label="Medium Size"
-      />
-      <ListWithState
-        items={sampleItems}
-        size="lg"
-        label="Large Size"
-      />
+      <ListWithState items={sampleItems} size="sm" label="Small Size" />
+      <ListWithState items={sampleItems} size="md" label="Medium Size" />
+      <ListWithState items={sampleItems} size="lg" label="Large Size" />
     </div>
   ),
 }
@@ -1374,57 +1354,37 @@ export const Sizes: Story = {
 export const Statuses: Story = {
   render: () => (
     <div className="space-y-6">
-      <ListWithState
-        items={statusItems}
-        status="success"
-        label="Success Status"
-      />
-      <ListWithState
-        items={statusItems}
-        status="warning"
-        label="Warning Status"
-      />
-      <ListWithState
-        items={statusItems}
-        status="error"
-        label="Error Status"
-      />
+      <ListWithState items={statusItems} status="success" label="Success Status" />
+      <ListWithState items={statusItems} status="warning" label="Warning Status" />
+      <ListWithState items={statusItems} status="error" label="Error Status" />
     </div>
   ),
 }
 
 export const WithIcons: Story = {
-  render: () => (
-    <ListWithState
-      items={techItems}
-      label="Technologies with Icons"
-    />
-  ),
+  render: () => <ListWithState items={techItems} label="Technologies with Icons" />,
 }
 
 export const Loading: Story = {
-  render: () => (
-    <ListWithState
-      loading
-      label="Loading State"
+  render: () => <ListWithState loading label="Loading State" />,
+}
+
+const DisabledComponent = () => {
+  const [value] = useState<string[]>(['1'])
+  return (
+    <List
+      items={sampleItems}
+      disabled
+      label="Disabled List"
+      helperText="This list cannot be interacted with"
+      value={value}
+      onChange={() => {}}
     />
-  ),
+  )
 }
 
 export const Disabled: Story = {
-  render: () => {
-    const [value] = useState<string[]>(['1'])
-    return (
-      <List
-        items={sampleItems}
-        disabled
-        label="Disabled List"
-        helperText="This list cannot be interacted with"
-        value={value}
-        onChange={() => {}}
-      />
-    )
-  },
+  render: () => <DisabledComponent />,
 }
 
 export const EmptyState: Story = {
@@ -1443,7 +1403,9 @@ export const CustomRendering: Story = {
       items={sampleItems}
       label="Custom Rendered Items"
       renderItem={(item, isSelected) => (
-        <div className={`p-4 rounded-lg ${isSelected ? 'bg-blue-100 border-blue-300' : 'bg-gray-50 border-gray-200'} border`}>
+        <div
+          className={`p-4 rounded-lg ${isSelected ? 'bg-blue-100 border-blue-300' : 'bg-gray-50 border-gray-200'} border`}
+        >
           <div className="flex items-center justify-between">
             <div>
               <h3 className={`font-semibold ${isSelected ? 'text-blue-900' : 'text-gray-900'}`}>
@@ -1463,26 +1425,17 @@ export const CustomRendering: Story = {
 
 const ControlledComponent = () => {
   const [value, setValue] = useState<string | null>('1')
-  
+
   return (
     <div className="space-y-4">
       <div className="flex gap-2">
-        <button
-          className="px-3 py-1 bg-gray-200 rounded"
-          onClick={() => setValue('1')}
-        >
+        <button className="px-3 py-1 bg-gray-200 rounded" onClick={() => setValue('1')}>
           Select John
         </button>
-        <button
-          className="px-3 py-1 bg-gray-200 rounded"
-          onClick={() => setValue('2')}
-        >
+        <button className="px-3 py-1 bg-gray-200 rounded" onClick={() => setValue('2')}>
           Select Jane
         </button>
-        <button
-          className="px-3 py-1 bg-gray-200 rounded"
-          onClick={() => setValue(null)}
-        >
+        <button className="px-3 py-1 bg-gray-200 rounded" onClick={() => setValue(null)}>
           Clear
         </button>
       </div>
@@ -1495,7 +1448,7 @@ const ControlledComponent = () => {
       />
       {value && (
         <p className="text-sm text-gray-600">
-          Selected: {sampleItems.find(item => item.id === value)?.title}
+          Selected: {sampleItems.find((item) => item.id === value)?.title}
         </p>
       )}
     </div>
@@ -1508,18 +1461,13 @@ export const Controlled: Story = {
 
 const CompoundComponentsExample = () => {
   const [value, setValue] = useState<string | string[] | null>(null)
-  
+
   return (
-    <List
-      items={sampleItems}
-      value={value}
-      onChange={setValue}
-      label="Compound Component Usage"
-    >
+    <List items={sampleItems} value={value} onChange={setValue} label="Compound Component Usage">
       <ListHeader>Team Members</ListHeader>
       <ListContainer>
-        {sampleItems.map(item => (
-          <ListItem key={item.id} item={item} />
+        {sampleItems.map((item) => (
+          <ListItemData key={item.id} item={item} />
         ))}
       </ListContainer>
       <ListFooter>Total: {sampleItems.length} members</ListFooter>
@@ -1679,7 +1627,7 @@ export const DarkMode: Story = {
         selectable
         multiple
       />
-      
+
       <ListWithState
         items={techItems}
         variant="glass"
@@ -1688,7 +1636,7 @@ export const DarkMode: Story = {
         helperText="Glass effect in dark mode"
         selectable
       />
-      
+
       <ListWithState
         items={statusItems}
         variant="gradient"
@@ -1718,7 +1666,7 @@ export const EnhancedSelection: Story = {
         selectionIndicatorBackgroundColor="#3b82f6"
         selectionIndicatorTextColor="#ffffff"
       />
-      
+
       <ListWithState
         items={techItems}
         selectable
@@ -1749,7 +1697,7 @@ export const AnimatedList: Story = {
         boxShadow="0 2px 4px rgba(0, 0, 0, 0.1)"
         hoverBoxShadow="0 8px 16px rgba(0, 0, 0, 0.15)"
       />
-      
+
       <ListWithState
         items={techItems}
         variant="card"
@@ -1831,4 +1779,4 @@ const FormExampleComponent = () => {
 
 export const FormExample: Story = {
   render: () => <FormExampleComponent />,
-} 
+}

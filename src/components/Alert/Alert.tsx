@@ -1,4 +1,4 @@
-import React, { createContext, useContext, forwardRef, useMemo } from 'react'
+import React, { createContext, useContext, forwardRef, useMemo, useCallback } from 'react'
 import { cn } from '@/utils'
 
 // Context for sharing state between Alert components
@@ -175,11 +175,11 @@ const Alert = forwardRef<HTMLDivElement, AlertProps>(
     // State management for controlled/uncontrolled
     const [isOpen, setIsOpen] = React.useState(true)
 
-    const handleDismiss = () => {
+    const handleDismiss = useCallback(() => {
       if (disabled || loading) return
       setIsOpen(false)
       onDismiss?.()
-    }
+    }, [disabled, loading, onDismiss])
 
     const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
       if (event.key === 'Escape' && dismissible) {

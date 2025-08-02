@@ -1,7 +1,8 @@
 import React, { createContext, useContext, useState, useCallback, useMemo } from 'react'
 import { cn } from '@/utils'
 
-export interface ChipProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'onChange'> {
+export interface ChipProps
+  extends Omit<React.HTMLAttributes<HTMLDivElement>, 'onChange' | 'onSelect'> {
   value?: string | string[]
   onChange?: (value: string | string[] | null) => void
   variant?: 'default' | 'filled' | 'outlined' | 'soft' | 'gradient'
@@ -22,62 +23,62 @@ export interface ChipProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'o
   onSelect?: (value: string) => void
   renderChip?: (value: string, isSelected: boolean) => React.ReactNode
   children?: React.ReactNode
-  
+
   // Border styles
   borderWidth?: string
   borderColor?: string
   borderStyle?: string
   borderRadius?: string
-  
+
   // Typography
   fontSize?: string
   fontWeight?: string
   fontFamily?: string
   textColor?: string
-  
+
   // Colors
   backgroundColor?: string
   selectedBackgroundColor?: string
   hoverBackgroundColor?: string
   disabledBackgroundColor?: string
-  
+
   // Focus styles
   focusRingColor?: string
   focusRingWidth?: string
   focusRingOffset?: string
   focusBorderColor?: string
   focusBackgroundColor?: string
-  
+
   // Shadows
   boxShadow?: string
   focusBoxShadow?: string
   hoverBoxShadow?: string
-  
+
   // Spacing
   padding?: string
   paddingX?: string
   paddingY?: string
   gap?: string
-  
+
   // Icon customization
   iconColor?: string
   removeIconColor?: string
   loadingIconColor?: string
-  
+
   // Label styles
   labelFontSize?: string
   labelFontWeight?: string
   labelColor?: string
   labelMarginBottom?: string
-  
+
   // Helper text styles
   helperTextFontSize?: string
   helperTextColor?: string
   helperTextMarginTop?: string
-  
+
   // Required asterisk styles
   requiredColor?: string
-  
+
   // Container styles
   containerBackgroundColor?: string
   containerBorderColor?: string
@@ -104,7 +105,7 @@ interface ChipContextValue {
   renderChip?: (value: string, isSelected: boolean) => React.ReactNode
   emptyMessage?: string
   loadingMessage?: string
-  
+
   // Style props
   borderWidth?: string
   borderColor?: string
@@ -114,6 +115,7 @@ interface ChipContextValue {
   fontWeight?: string
   fontFamily?: string
   textColor?: string
+  placeholderColor?: string
   backgroundColor?: string
   selectedBackgroundColor?: string
   hoverBackgroundColor?: string
@@ -152,109 +154,121 @@ export const useChip = () => {
 }
 
 const Chip = React.forwardRef<HTMLDivElement, ChipProps>(
-  ({
-    className,
-    value,
-    onChange,
-    variant = 'default',
-    size = 'md',
-    status = 'default',
-    disabled = false,
-    loading = false,
-    removable = false,
-    selectable = false,
-    multiple = false,
-    maxChips,
-    label,
-    helperText,
-    required = false,
-    emptyMessage = 'No chips selected',
-    loadingMessage = 'Loading...',
-    onRemove,
-    onSelect,
-    renderChip,
-    children,
-    // Style props
-    borderWidth,
-    borderColor,
-    borderStyle,
-    borderRadius,
-    fontSize,
-    fontWeight,
-    fontFamily,
-    textColor,
-    backgroundColor,
-    selectedBackgroundColor,
-    hoverBackgroundColor,
-    disabledBackgroundColor,
-    focusRingColor,
-    focusRingWidth,
-    focusRingOffset,
-    focusBorderColor,
-    focusBackgroundColor,
-    boxShadow,
-    focusBoxShadow,
-    hoverBoxShadow,
-    padding,
-    paddingX,
-    paddingY,
-    gap,
-    iconColor,
-    removeIconColor,
-    loadingIconColor,
-    labelFontSize,
-    labelFontWeight,
-    labelColor,
-    labelMarginBottom,
-    helperTextFontSize,
-    helperTextColor,
-    helperTextMarginTop,
-    requiredColor,
-    containerBackgroundColor,
-    containerBorderColor,
-    containerBorderWidth,
-    containerBorderRadius,
-    containerPadding,
-    containerGap,
-    ...props
-  }, ref) => {
-    const handleChange = useCallback((newValue: string | string[] | null) => {
-      if (onChange) {
-        onChange(newValue)
-      }
-    }, [onChange])
-
-    const handleRemove = useCallback((chipValue: string) => {
-      if (onRemove) {
-        onRemove(chipValue)
-      }
-      
-      if (Array.isArray(value)) {
-        const newValue = value.filter(v => v !== chipValue)
-        handleChange(newValue.length > 0 ? newValue : null)
-      } else if (value === chipValue) {
-        handleChange(null)
-      }
-    }, [value, onRemove, handleChange])
-
-    const handleSelect = useCallback((chipValue: string) => {
-      if (onSelect) {
-        onSelect(chipValue)
-      }
-      
-      if (multiple && Array.isArray(value)) {
-        const isSelected = value.includes(chipValue)
-        if (isSelected) {
-          const newValue = value.filter(v => v !== chipValue)
-          handleChange(newValue.length > 0 ? newValue : null)
-        } else {
-          if (maxChips && value.length >= maxChips) return
-          handleChange([...value, chipValue])
+  (
+    {
+      className,
+      value,
+      onChange,
+      variant = 'default',
+      size = 'md',
+      status = 'default',
+      disabled = false,
+      loading = false,
+      removable = false,
+      selectable = false,
+      multiple = false,
+      maxChips,
+      label,
+      helperText,
+      required = false,
+      emptyMessage = 'No chips selected',
+      loadingMessage = 'Loading...',
+      onRemove,
+      onSelect,
+      renderChip,
+      children,
+      // Style props
+      borderWidth,
+      borderColor,
+      borderStyle,
+      borderRadius,
+      fontSize,
+      fontWeight,
+      fontFamily,
+      textColor,
+      backgroundColor,
+      selectedBackgroundColor,
+      hoverBackgroundColor,
+      disabledBackgroundColor,
+      focusRingColor,
+      focusRingWidth,
+      focusRingOffset,
+      focusBorderColor,
+      focusBackgroundColor,
+      boxShadow,
+      focusBoxShadow,
+      hoverBoxShadow,
+      padding,
+      paddingX,
+      paddingY,
+      gap,
+      iconColor,
+      removeIconColor,
+      loadingIconColor,
+      labelFontSize,
+      labelFontWeight,
+      labelColor,
+      labelMarginBottom,
+      helperTextFontSize,
+      helperTextColor,
+      helperTextMarginTop,
+      requiredColor,
+      containerBackgroundColor,
+      containerBorderColor,
+      containerBorderWidth,
+      containerBorderRadius,
+      containerPadding,
+      containerGap,
+      ...props
+    },
+    ref
+  ) => {
+    const handleChange = useCallback(
+      (newValue: string | string[] | null) => {
+        if (onChange) {
+          onChange(newValue)
         }
-      } else {
-        handleChange(chipValue)
-      }
-    }, [value, multiple, maxChips, onSelect, handleChange])
+      },
+      [onChange]
+    )
+
+    const handleRemove = useCallback(
+      (chipValue: string) => {
+        if (onRemove) {
+          onRemove(chipValue)
+        }
+
+        if (Array.isArray(value)) {
+          const newValue = value.filter((v) => v !== chipValue)
+          handleChange(newValue.length > 0 ? newValue : null)
+        } else if (value === chipValue) {
+          handleChange(null)
+        }
+      },
+      [value, onRemove, handleChange]
+    )
+
+    const handleSelect = useCallback(
+      (chipValue: string) => {
+        if (onSelect) {
+          onSelect(chipValue)
+        }
+
+        if (multiple && Array.isArray(value)) {
+          const isSelected = value.includes(chipValue)
+          if (isSelected) {
+            const newValue = value.filter((v) => v !== chipValue)
+            handleChange(newValue.length > 0 ? newValue : null)
+          } else {
+            if (maxChips && value.length >= maxChips) return
+            handleChange([...value, chipValue])
+          }
+        } else {
+          handleChange(chipValue)
+        }
+      },
+      [value, multiple, maxChips, onSelect, handleChange]
+    )
 
     const baseStyles = 'relative'
 
@@ -313,13 +327,9 @@ const Chip = React.forwardRef<HTMLDivElement, ChipProps>(
           containerGap,
         }}
       >
-        <div
-          ref={ref}
-          className={cn(baseStyles, className)}
-          {...props}
-        >
+        <div ref={ref} className={cn(baseStyles, className)} {...props}>
           {label && (
-            <label 
+            <label
               className={cn(
                 'block mb-2 font-medium',
                 size === 'sm' && 'text-sm',
@@ -337,10 +347,7 @@ const Chip = React.forwardRef<HTMLDivElement, ChipProps>(
             >
               {label}
               {required && (
-                <span 
-                  className="text-red-500 ml-1"
-                  style={{ color: requiredColor }}
-                >
+                <span className="text-red-500 ml-1" style={{ color: requiredColor }}>
                   *
                 </span>
               )}
@@ -348,7 +355,7 @@ const Chip = React.forwardRef<HTMLDivElement, ChipProps>(
           )}
           {children || <ChipContainer />}
           {helperText && (
-            <p 
+            <p
               className={cn(
                 'mt-2',
                 size === 'sm' && 'text-xs',
@@ -404,7 +411,7 @@ const ChipContainer = React.forwardRef<HTMLDivElement, ChipContainerProps>(
 
     // Build custom container styles
     const customContainerStyles: React.CSSProperties = {}
-    
+
     if (containerBackgroundColor) customContainerStyles.backgroundColor = containerBackgroundColor
     if (containerBorderColor) customContainerStyles.borderColor = containerBorderColor
     if (containerBorderWidth) customContainerStyles.borderWidth = containerBorderWidth
@@ -439,18 +446,11 @@ const ChipContainer = React.forwardRef<HTMLDivElement, ChipContainerProps>(
     }
 
     return (
-      <div
-        ref={ref}
-        className={cn(baseStyles, className)}
-        style={customContainerStyles}
-        {...props}
-      >
+      <div ref={ref} className={cn(baseStyles, className)} style={customContainerStyles} {...props}>
         {children || (
           <>
             {Array.isArray(value) ? (
-              value.map((chipValue) => (
-                <ChipItem key={chipValue} value={chipValue} />
-              ))
+              value.map((chipValue) => <ChipItem key={chipValue} value={chipValue} />)
             ) : (
               <ChipItem value={value} />
             )}
@@ -479,7 +479,7 @@ const ChipItem = React.forwardRef<HTMLDivElement, ChipItemProps>(
       disabled,
       removable,
       selectable,
-      multiple,
+      multiple: _multiple,
       onRemove,
       onSelect,
       renderChip,
@@ -494,13 +494,13 @@ const ChipItem = React.forwardRef<HTMLDivElement, ChipItemProps>(
       textColor,
       backgroundColor,
       selectedBackgroundColor,
-      hoverBackgroundColor,
+      hoverBackgroundColor: _hoverBackgroundColor,
       disabledBackgroundColor,
-      focusRingColor,
-      focusRingWidth,
-      focusRingOffset,
-      focusBorderColor,
-      focusBackgroundColor,
+      focusRingColor: _focusRingColor,
+      focusRingWidth: _focusRingWidth,
+      focusRingOffset: _focusRingOffset,
+      focusBorderColor: _focusBorderColor,
+      focusBackgroundColor: _focusBackgroundColor,
       boxShadow,
       focusBoxShadow,
       hoverBoxShadow,
@@ -591,28 +591,29 @@ const ChipItem = React.forwardRef<HTMLDivElement, ChipItemProps>(
 
     // Build custom styles
     const customStyles: React.CSSProperties = {}
-    
+
     // Border styles
     if (borderWidth) customStyles.borderWidth = borderWidth
     if (borderColor) customStyles.borderColor = borderColor
     if (borderStyle) customStyles.borderStyle = borderStyle
     if (borderRadius) customStyles.borderRadius = borderRadius
-    
+
     // Text styles
     if (fontSize) customStyles.fontSize = fontSize
     if (fontWeight) customStyles.fontWeight = fontWeight
     if (fontFamily) customStyles.fontFamily = fontFamily
     if (textColor) customStyles.color = textColor
-    
+
     // Background
     if (backgroundColor) customStyles.backgroundColor = backgroundColor
-    if (isSelected && selectedBackgroundColor) customStyles.backgroundColor = selectedBackgroundColor
+    if (isSelected && selectedBackgroundColor)
+      customStyles.backgroundColor = selectedBackgroundColor
     if (disabled && disabledBackgroundColor) customStyles.backgroundColor = disabledBackgroundColor
-    
+
     // Shadow
     if (boxShadow) customStyles.boxShadow = boxShadow
     if (isSelected && focusBoxShadow) customStyles.boxShadow = focusBoxShadow
-    
+
     // Padding
     if (padding) customStyles.padding = padding
     if (paddingX) {
@@ -623,23 +624,28 @@ const ChipItem = React.forwardRef<HTMLDivElement, ChipItemProps>(
       customStyles.paddingTop = paddingY
       customStyles.paddingBottom = paddingY
     }
-    
+
     // Gap
     if (gap) customStyles.gap = gap
 
-    // Focus styles
-    const focusStyles = {
-      ...(focusBorderColor && { borderColor: focusBorderColor }),
-      ...(focusBackgroundColor && { backgroundColor: focusBackgroundColor }),
-      ...(focusBoxShadow && { boxShadow: focusBoxShadow }),
-      ...(focusRingColor && focusRingWidth && {
-        boxShadow: `0 0 0 ${focusRingWidth} ${focusRingColor}${focusRingOffset ? `, 0 0 0 calc(${focusRingWidth} + ${focusRingOffset}) transparent` : ''}`,
-      }),
-    }
+    // Focus styles (commented out as not currently used)
+    // const focusStyles = {
+    //   ...(focusBorderColor && { borderColor: focusBorderColor }),
+    //   ...(focusBackgroundColor && { backgroundColor: focusBackgroundColor }),
+    //   ...(focusBoxShadow && { boxShadow: focusBoxShadow }),
+    //   ...(focusRingColor && focusRingWidth && {
+    //     boxShadow: `0 0 0 ${focusRingWidth} ${focusRingColor}${focusRingOffset ? `, 0 0 0 calc(${focusRingWidth} + ${focusRingOffset}) transparent` : ''}`,
+    //   }),
+    // }
 
     const defaultRemoveIcon = (
       <svg className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth={2}
+          d="M6 18L18 6M6 6l12 12"
+        />
       </svg>
     )
 
@@ -647,17 +653,13 @@ const ChipItem = React.forwardRef<HTMLDivElement, ChipItemProps>(
       return (
         <div
           ref={ref}
-          className={cn(
-            baseStyles,
-            variants[variant || 'default'],
-            sizes[size || 'md'],
-            className
-          )}
+          className={cn(baseStyles, variants[variant || 'default'], sizes[size || 'md'], className)}
           style={{
             ...customStyles,
-            ...(hoverBoxShadow && {
-              ':hover': { boxShadow: hoverBoxShadow },
-            } as any),
+            ...(hoverBoxShadow &&
+              ({
+                ':hover': { boxShadow: hoverBoxShadow },
+              } as any)),
           }}
           onClick={handleClick}
           {...props}
@@ -670,27 +672,20 @@ const ChipItem = React.forwardRef<HTMLDivElement, ChipItemProps>(
     return (
       <div
         ref={ref}
-        className={cn(
-          baseStyles,
-          variants[variant || 'default'],
-          sizes[size || 'md'],
-          className
-        )}
+        className={cn(baseStyles, variants[variant || 'default'], sizes[size || 'md'], className)}
         style={{
           ...customStyles,
-          ...(hoverBoxShadow && {
-            ':hover': { boxShadow: hoverBoxShadow },
-          } as any),
+          ...(hoverBoxShadow &&
+            ({
+              ':hover': { boxShadow: hoverBoxShadow },
+            } as any)),
         }}
         onClick={handleClick}
         {...props}
       >
         {avatar && <span className="flex-shrink-0">{avatar}</span>}
         {icon && (
-          <span 
-            className="flex-shrink-0"
-            style={{ color: iconColor }}
-          >
+          <span className="flex-shrink-0" style={{ color: iconColor }}>
             {icon}
           </span>
         )}
@@ -766,7 +761,7 @@ const ChipInput = React.forwardRef<HTMLInputElement, ChipInputProps>(
       if (onAdd) {
         onAdd(chipValue)
       }
-      
+
       if (multiple && Array.isArray(value)) {
         if (!value.includes(chipValue) && (!maxChips || value.length < maxChips)) {
           onChange([...value, chipValue])
@@ -781,10 +776,7 @@ const ChipInput = React.forwardRef<HTMLInputElement, ChipInputProps>(
       setInputValue(e.target.value)
     }
 
-    const baseStyles = cn(
-      'flex-1 min-w-0 bg-transparent outline-none',
-      'placeholder:text-gray-400'
-    )
+    const baseStyles = cn('flex-1 min-w-0 bg-transparent outline-none', 'placeholder:text-gray-400')
 
     const sizes = {
       sm: 'text-xs',
@@ -794,24 +786,20 @@ const ChipInput = React.forwardRef<HTMLInputElement, ChipInputProps>(
 
     // Build custom input styles
     const customInputStyles: React.CSSProperties = {}
-    
+
     if (fontSize) customInputStyles.fontSize = fontSize
     if (fontWeight) customInputStyles.fontWeight = fontWeight
     if (fontFamily) customInputStyles.fontFamily = fontFamily
     if (textColor) customInputStyles.color = textColor
     if (placeholderColor) {
-      customInputStyles['--placeholder-color'] = placeholderColor
+      ;(customInputStyles as any)['--placeholder-color'] = placeholderColor
     }
 
     return (
       <input
         ref={ref}
         type="text"
-        className={cn(
-          baseStyles,
-          sizes[size || 'md'],
-          className
-        )}
+        className={cn(baseStyles, sizes[size || 'md'], className)}
         style={customInputStyles}
         value={inputValue}
         onChange={handleChange}
@@ -826,4 +814,4 @@ const ChipInput = React.forwardRef<HTMLInputElement, ChipInputProps>(
 
 ChipInput.displayName = 'ChipInput'
 
-export { Chip, ChipContainer, ChipItem, ChipInput } 
+export { Chip, ChipContainer, ChipItem, ChipInput }

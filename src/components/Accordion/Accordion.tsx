@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useCallback } from 'react'
+import React, { createContext, useContext, useState, useCallback, useMemo } from 'react'
 import { cn } from '@/utils'
 
 export interface AccordionProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -277,12 +277,15 @@ const Accordion = React.forwardRef<HTMLDivElement, AccordionProps>(
       return []
     })
 
-    const value =
-      controlledValue !== undefined
-        ? Array.isArray(controlledValue)
-          ? controlledValue
-          : [controlledValue]
-        : uncontrolledValue
+    const value = useMemo(
+      () =>
+        controlledValue !== undefined
+          ? Array.isArray(controlledValue)
+            ? controlledValue
+            : [controlledValue]
+          : uncontrolledValue,
+      [controlledValue, uncontrolledValue]
+    )
 
     const onItemToggle = useCallback(
       (itemValue: string) => {
