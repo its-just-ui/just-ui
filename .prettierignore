@@ -1,0 +1,26 @@
+# Dependencies
+node_modules
+
+# Production
+dist
+build
+
+# Storybook
+storybook-static
+
+# Generated files
+*.d.ts
+tsconfig.tsbuildinfo
+
+# Lock files
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Coverage
+coverage
+.nyc_output
+
+# Misc
+.DS_Store
+*.log
