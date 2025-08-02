@@ -721,12 +721,16 @@ const techChips = ['TypeScript', 'JavaScript', 'Python', 'Go', 'Rust', 'C++']
 const statusChips = ['Active', 'Pending', 'Completed', 'Cancelled']
 
 // Wrapper component to handle state for stories
-const ChipWithState = (props: any) => {
-  const [value, setValue] = useState<string | string[] | null>(
-    props.multiple ? props.value || [] : props.value || null
+const ChipWithState = (props: React.ComponentProps<typeof Chip>) => {
+  const [value, setValue] = useState<string | string[] | undefined>(
+    props.multiple ? props.value || [] : props.value || undefined
   )
 
-  return <Chip {...props} value={value} onChange={setValue} />
+  const handleChange = (newValue: string | string[] | null) => {
+    setValue(newValue === null ? undefined : newValue)
+  }
+
+  return <Chip {...props} value={value} onChange={handleChange} />
 }
 
 export const Default: Story = {
@@ -922,7 +926,7 @@ export const CustomRendering: Story = {
 }
 
 const ControlledComponent = () => {
-  const [value, setValue] = useState<string | null>(sampleChips[0])
+  const [value, setValue] = useState<string | undefined>(sampleChips[0])
 
   return (
     <div className="space-y-4">
@@ -933,13 +937,15 @@ const ControlledComponent = () => {
         <button className="px-3 py-1 bg-gray-200 rounded" onClick={() => setValue(sampleChips[1])}>
           Select Vue
         </button>
-        <button className="px-3 py-1 bg-gray-200 rounded" onClick={() => setValue(null)}>
+        <button className="px-3 py-1 bg-gray-200 rounded" onClick={() => setValue(undefined)}>
           Clear
         </button>
       </div>
       <Chip
         value={value}
-        onChange={(newValue) => setValue(newValue as string | null)}
+        onChange={(newValue) =>
+          setValue(newValue === null ? undefined : (newValue as string | undefined))
+        }
         selectable
         label="Controlled Chip"
       />
@@ -981,7 +987,7 @@ export const Validation: Story = {
 export const EmptyState: Story = {
   render: () => (
     <ChipWithState
-      value={null}
+      value={undefined}
       label="Empty State"
       emptyMessage="No chips selected. Add some to get started."
     />
@@ -1268,10 +1274,18 @@ export const FormExample: Story = {
 const CompoundComponentsComponent = () => {
   const [chips, setChips] = useState<string[]>(['React', 'Vue'])
 
+  const handleChange = (newValue: string | string[] | null) => {
+    if (Array.isArray(newValue)) {
+      setChips(newValue)
+    } else if (newValue === null) {
+      setChips([])
+    }
+  }
+
   return (
     <div className="space-y-6">
       <h3 className="text-lg font-semibold">Using Compound Components</h3>
-      <Chip value={chips} onChange={setChips} multiple label="Custom Layout">
+      <Chip value={chips} onChange={handleChange} multiple label="Custom Layout">
         <ChipContainer>
           {chips.map((chip) => (
             <ChipItem key={chip} value={chip} icon={<span>🔧</span>} />

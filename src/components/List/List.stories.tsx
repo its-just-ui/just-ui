@@ -1282,7 +1282,7 @@ const statusItems = [
 ]
 
 // Wrapper component to handle state for stories
-const ListWithState = (props: any) => {
+const ListWithState = (props: React.ComponentProps<typeof List>) => {
   const [value, setValue] = useState<string | string[] | null>(
     props.multiple ? props.value || [] : props.value || null
   )

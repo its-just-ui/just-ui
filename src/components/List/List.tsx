@@ -577,7 +577,8 @@ const List = React.forwardRef<HTMLDivElement, ListProps>(
           ref={ref}
           className={cn(baseStyles, className)}
           style={{
-            ...(customCSS && ({ '--custom-css': customCSS } as any)),
+            ...(customCSS &&
+              ({ '--custom-css': customCSS } as React.CSSProperties & Record<string, string>)),
           }}
           {...props}
         >
@@ -689,7 +690,9 @@ const ListContainer = React.forwardRef<HTMLDivElement, ListContainerProps>(
           className={cn(baseStyles, 'justify-center items-center py-8', className)}
           style={{
             ...customContainerStyles,
-            ...(customContainerCSS && ({ '--custom-container-css': customContainerCSS } as any)),
+            ...(customContainerCSS &&
+              ({ '--custom-container-css': customContainerCSS } as React.CSSProperties &
+                Record<string, string>)),
           }}
           {...props}
         >
@@ -705,7 +708,9 @@ const ListContainer = React.forwardRef<HTMLDivElement, ListContainerProps>(
           className={cn(baseStyles, 'justify-center items-center py-8', className)}
           style={{
             ...customContainerStyles,
-            ...(customContainerCSS && ({ '--custom-container-css': customContainerCSS } as any)),
+            ...(customContainerCSS &&
+              ({ '--custom-container-css': customContainerCSS } as React.CSSProperties &
+                Record<string, string>)),
           }}
           {...props}
         >
@@ -720,7 +725,9 @@ const ListContainer = React.forwardRef<HTMLDivElement, ListContainerProps>(
         className={cn(baseStyles, className)}
         style={{
           ...customContainerStyles,
-          ...(customContainerCSS && ({ '--custom-container-css': customContainerCSS } as any)),
+          ...(customContainerCSS &&
+            ({ '--custom-container-css': customContainerCSS } as React.CSSProperties &
+              Record<string, string>)),
         }}
         {...props}
       >
@@ -991,7 +998,7 @@ const ListItem = React.forwardRef<HTMLDivElement, ListItemProps>(
             ...(hoverBoxShadow &&
               ({
                 ':hover': { boxShadow: hoverBoxShadow },
-              } as any)),
+              } as React.CSSProperties)),
             ...(customItemCSS && { css: customItemCSS }),
           }}
           onClick={handleClick}
@@ -1011,7 +1018,7 @@ const ListItem = React.forwardRef<HTMLDivElement, ListItemProps>(
           ...(hoverBoxShadow &&
             ({
               ':hover': { boxShadow: hoverBoxShadow },
-            } as any)),
+            } as React.CSSProperties)),
           ...(customItemCSS && { css: customItemCSS }),
         }}
         onClick={handleClick}
