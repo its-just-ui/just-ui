@@ -1,3 +1,8 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Custom placeholder color support for Autocomplete component */
+input[style*="--placeholder-color"]::placeholder {
+  color: var(--placeholder-color) !important;
+}
