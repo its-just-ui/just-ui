@@ -48,39 +48,39 @@ export interface AutocompleteProps extends Omit<React.HTMLAttributes<HTMLDivElem
   dropdownIcon?: React.ReactNode
   loadingIcon?: React.ReactNode
   children?: React.ReactNode
-  
+
   // Border styles
   borderWidth?: string
   borderColor?: string
   borderStyle?: string
   borderRadius?: string
-  
+
   // Text customization
   fontSize?: string
   fontWeight?: string
   fontFamily?: string
-  
+
   // Color customization
   backgroundColor?: string
   textColor?: string
   placeholderColor?: string
-  
+
   // Focus styles
   focusRingColor?: string
   focusRingWidth?: string
   focusRingOffset?: string
   focusBorderColor?: string
   focusBackgroundColor?: string
-  
+
   // Shadow options
   boxShadow?: string
   focusBoxShadow?: string
-  
+
   // Padding and spacing
   padding?: string
   paddingX?: string
   paddingY?: string
-  
+
   // Dropdown style props
   dropdownBackgroundColor?: string
   dropdownBorderColor?: string
@@ -88,7 +88,7 @@ export interface AutocompleteProps extends Omit<React.HTMLAttributes<HTMLDivElem
   dropdownBorderRadius?: string
   dropdownBoxShadow?: string
   dropdownZIndex?: string
-  
+
   // Item styles
   itemPadding?: string
   itemHoverBackgroundColor?: string
@@ -96,24 +96,24 @@ export interface AutocompleteProps extends Omit<React.HTMLAttributes<HTMLDivElem
   itemSelectedTextColor?: string
   itemHighlightedBackgroundColor?: string
   itemDisabledOpacity?: string
-  
+
   // Icon customization
   iconColor?: string
   clearIconColor?: string
   dropdownIconColor?: string
   loadingIconColor?: string
-  
+
   // Label styles
   labelFontSize?: string
   labelFontWeight?: string
   labelColor?: string
   labelMarginBottom?: string
-  
+
   // Helper text styles
   helperTextFontSize?: string
   helperTextColor?: string
   helperTextMarginTop?: string
-  
+
   // Required asterisk styles
   requiredColor?: string
 }
@@ -145,7 +145,7 @@ interface AutocompleteContextValue {
   createMessage?: (inputValue: string) => string
   creatable?: boolean
   onCreate?: (inputValue: string) => void
-  
+
   // Style props
   borderWidth?: string
   borderColor?: string
@@ -200,91 +200,94 @@ const defaultFilterOption = (option: AutocompleteOption, inputValue: string) => 
 }
 
 const Autocomplete = React.forwardRef<HTMLDivElement, AutocompleteProps>(
-  ({
-    className,
-    options,
-    value,
-    onChange,
-    onInputChange,
-    placeholder = 'Select...',
-    disabled = false,
-    loading = false,
-    multiple = false,
-    clearable = true,
-    searchable = true,
-    creatable = false,
-    onCreate,
-    variant = 'default',
-    size = 'md',
-    status = 'default',
-    helperText,
-    label,
-    required = false,
-    filterOption = defaultFilterOption,
-    renderOption,
-    renderValue,
-    groupBy,
-    maxHeight = 300,
-    transition = 'scale',
-    transitionDuration = 200,
-    placement = 'bottom',
-    offset = 4,
-    flip = true,
-    preventOverflow = true,
-    emptyMessage = 'No options found',
-    loadingMessage = 'Loading...',
-    createMessage = (inputValue) => `Create "${inputValue}"`,
-    clearIcon,
-    dropdownIcon,
-    loadingIcon,
-    children,
-    // Style props
-    borderWidth,
-    borderColor,
-    borderStyle,
-    borderRadius,
-    fontSize,
-    fontWeight,
-    fontFamily,
-    backgroundColor,
-    textColor,
-    placeholderColor,
-    focusRingColor,
-    focusRingWidth,
-    focusRingOffset,
-    focusBorderColor,
-    focusBackgroundColor,
-    boxShadow,
-    focusBoxShadow,
-    padding,
-    paddingX,
-    paddingY,
-    dropdownBackgroundColor,
-    dropdownBorderColor,
-    dropdownBorderWidth,
-    dropdownBorderRadius,
-    dropdownBoxShadow,
-    dropdownZIndex,
-    itemPadding,
-    itemHoverBackgroundColor,
-    itemSelectedBackgroundColor,
-    itemSelectedTextColor,
-    itemHighlightedBackgroundColor,
-    itemDisabledOpacity,
-    iconColor,
-    clearIconColor,
-    dropdownIconColor,
-    loadingIconColor,
-    labelFontSize,
-    labelFontWeight,
-    labelColor,
-    labelMarginBottom,
-    helperTextFontSize,
-    helperTextColor,
-    helperTextMarginTop,
-    requiredColor,
-    ...props
-  }, ref) => {
+  (
+    {
+      className,
+      options,
+      value,
+      onChange,
+      onInputChange,
+      placeholder = 'Select...',
+      disabled = false,
+      loading = false,
+      multiple = false,
+      clearable = true,
+      searchable = true,
+      creatable = false,
+      onCreate,
+      variant = 'default',
+      size = 'md',
+      status = 'default',
+      helperText,
+      label,
+      required = false,
+      filterOption = defaultFilterOption,
+      renderOption,
+      renderValue,
+      groupBy: _groupBy,
+      maxHeight = 300,
+      transition = 'scale',
+      transitionDuration = 200,
+      placement = 'bottom',
+      offset = 4,
+      flip: _flip = true,
+      preventOverflow: _preventOverflow = true,
+      emptyMessage = 'No options found',
+      loadingMessage = 'Loading...',
+      createMessage = (inputValue) => `Create "${inputValue}"`,
+      clearIcon,
+      dropdownIcon,
+      loadingIcon,
+      children,
+      // Style props
+      borderWidth,
+      borderColor,
+      borderStyle,
+      borderRadius,
+      fontSize,
+      fontWeight,
+      fontFamily,
+      backgroundColor,
+      textColor,
+      placeholderColor,
+      focusRingColor,
+      focusRingWidth,
+      focusRingOffset,
+      focusBorderColor,
+      focusBackgroundColor,
+      boxShadow,
+      focusBoxShadow,
+      padding,
+      paddingX,
+      paddingY,
+      dropdownBackgroundColor,
+      dropdownBorderColor,
+      dropdownBorderWidth,
+      dropdownBorderRadius,
+      dropdownBoxShadow,
+      dropdownZIndex,
+      itemPadding,
+      itemHoverBackgroundColor,
+      itemSelectedBackgroundColor,
+      itemSelectedTextColor,
+      itemHighlightedBackgroundColor,
+      itemDisabledOpacity,
+      iconColor,
+      clearIconColor,
+      dropdownIconColor,
+      loadingIconColor,
+      labelFontSize,
+      labelFontWeight,
+      labelColor,
+      labelMarginBottom,
+      helperTextFontSize,
+      helperTextColor,
+      helperTextMarginTop,
+      requiredColor,
+      ...props
+    },
+    ref
+  ) => {
     const [open, setOpen] = useState(false)
     const [inputValue, setInputValue] = useState('')
     const [highlightedIndex, setHighlightedIndex] = useState(-1)
@@ -292,9 +295,9 @@ const Autocomplete = React.forwardRef<HTMLDivElement, AutocompleteProps>(
     const filteredOptions = useMemo(() => {
       if (!searchable || !inputValue) return options
 
-      const filtered = options.filter(option => filterOption(option, inputValue))
+      const filtered = options.filter((option) => filterOption(option, inputValue))
 
-      if (creatable && inputValue && !filtered.some(opt => opt.label === inputValue)) {
+      if (creatable && inputValue && !filtered.some((opt) => opt.label === inputValue)) {
         filtered.push({
           value: inputValue,
           label: createMessage(inputValue),
@@ -305,25 +308,31 @@ const Autocomplete = React.forwardRef<HTMLDivElement, AutocompleteProps>(
       return filtered
     }, [options, inputValue, searchable, filterOption, creatable, createMessage])
 
-    const handleChange = useCallback((newValue: AutocompleteOption | AutocompleteOption[] | null) => {
-      if (onChange) {
-        onChange(newValue)
-      }
-      if (!multiple) {
-        setOpen(false)
-        setInputValue('')
-      }
-    }, [onChange, multiple])
+    const handleChange = useCallback(
+      (newValue: AutocompleteOption | AutocompleteOption[] | null) => {
+        if (onChange) {
+          onChange(newValue)
+        }
+        if (!multiple) {
+          setOpen(false)
+          setInputValue('')
+        }
+      },
+      [onChange, multiple]
+    )
 
-    const handleInputChange = useCallback((value: string) => {
-      setInputValue(value)
-      if (onInputChange) {
-        onInputChange(value)
-      }
-      if (!open && value) {
-        setOpen(true)
-      }
-    }, [onInputChange, open])
+    const handleInputChange = useCallback(
+      (value: string) => {
+        setInputValue(value)
+        if (onInputChange) {
+          onInputChange(value)
+        }
+        if (!open && value) {
+          setOpen(true)
+        }
+      },
+      [onInputChange, open]
+    )
 
     const baseStyles = 'relative w-full'
 
@@ -395,13 +404,9 @@ const Autocomplete = React.forwardRef<HTMLDivElement, AutocompleteProps>(
           loadingIconColor,
         }}
       >
-        <div
-          ref={ref}
-          className={cn(baseStyles, className)}
-          {...props}
-        >
+        <div ref={ref} className={cn(baseStyles, className)} {...props}>
           {label && (
-            <label 
+            <label
               className={cn(
                 'block mb-2 font-medium',
                 size === 'sm' && 'text-sm',
@@ -419,10 +424,7 @@ const Autocomplete = React.forwardRef<HTMLDivElement, AutocompleteProps>(
             >
               {label}
               {required && (
-                <span 
-                  className="text-red-500 ml-1"
-                  style={{ color: requiredColor }}
-                >
+                <span className="text-red-500 ml-1" style={{ color: requiredColor }}>
                   *
                 </span>
               )}
@@ -442,7 +444,7 @@ const Autocomplete = React.forwardRef<HTMLDivElement, AutocompleteProps>(
             </>
           )}
           {helperText && (
-            <p 
+            <p
               className={cn(
                 'mt-2',
                 size === 'sm' && 'text-xs',
@@ -470,7 +472,8 @@ const Autocomplete = React.forwardRef<HTMLDivElement, AutocompleteProps>(
 
 Autocomplete.displayName = 'Autocomplete'
 
-export interface AutocompleteInputProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'size'> {
+export interface AutocompleteInputProps
+  extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'size'> {
   clearable?: boolean
   clearIcon?: React.ReactNode
   dropdownIcon?: React.ReactNode
@@ -479,15 +482,10 @@ export interface AutocompleteInputProps extends Omit<React.InputHTMLAttributes<H
 }
 
 const AutocompleteInput = React.forwardRef<HTMLInputElement, AutocompleteInputProps>(
-  ({ 
-    className, 
-    clearable = true,
-    clearIcon,
-    dropdownIcon,
-    loadingIcon,
-    renderValue,
-    ...props 
-  }, _ref) => {
+  (
+    { className, clearable = true, clearIcon, dropdownIcon, loadingIcon, renderValue, ...props },
+    _ref
+  ) => {
     const {
       open,
       setOpen,
@@ -566,15 +564,15 @@ const AutocompleteInput = React.forwardRef<HTMLInputElement, AutocompleteInputPr
     const displayValue = useMemo(() => {
       if (inputValue && searchable) return inputValue
       if (!value) return ''
-      
+
       if (renderValue) {
         return renderValue(value)
       }
 
       if (Array.isArray(value)) {
-        return value.map(v => v.label).join(', ')
+        return value.map((v) => v.label).join(', ')
       }
-      
+
       return value.label
     }, [value, inputValue, searchable, renderValue])
 
@@ -583,20 +581,26 @@ const AutocompleteInput = React.forwardRef<HTMLInputElement, AutocompleteInputPr
     const variants = {
       default: cn(
         'border rounded-md bg-white',
-        status === 'error' ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 focus:ring-primary-600',
+        status === 'error'
+          ? 'border-red-500 focus:ring-red-500'
+          : 'border-gray-300 focus:ring-primary-600',
         'focus:ring-2 focus:ring-offset-2'
       ),
       filled: cn(
         'border-0 rounded-md',
-        status === 'error' ? 'bg-red-50 focus:bg-red-100' : 'bg-gray-100 focus:bg-gray-200',
+        status === 'error' ? 'bg-red-50 focus:bg-red-100' : 'bg-gray-100 focus:bg-gray-200'
       ),
       outlined: cn(
         'border-2 rounded-md bg-transparent',
-        status === 'error' ? 'border-red-500 focus:border-red-600' : 'border-gray-300 focus:border-primary-600',
+        status === 'error'
+          ? 'border-red-500 focus:border-red-600'
+          : 'border-gray-300 focus:border-primary-600'
       ),
       underlined: cn(
         'border-0 border-b-2 rounded-none bg-transparent px-0',
-        status === 'error' ? 'border-red-500 focus:border-red-600' : 'border-gray-300 focus:border-primary-600',
+        status === 'error'
+          ? 'border-red-500 focus:border-red-600'
+          : 'border-gray-300 focus:border-primary-600'
       ),
     }
 
@@ -608,10 +612,7 @@ const AutocompleteInput = React.forwardRef<HTMLInputElement, AutocompleteInputPr
 
     const defaultDropdownIcon = (
       <svg
-        className={cn(
-          'h-4 w-4 transition-transform',
-          open && 'rotate-180'
-        )}
+        className={cn('h-4 w-4 transition-transform', open && 'rotate-180')}
         fill="none"
         viewBox="0 0 24 24"
         stroke="currentColor"
@@ -622,13 +623,25 @@ const AutocompleteInput = React.forwardRef<HTMLInputElement, AutocompleteInputPr
 
     const defaultClearIcon = (
       <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth={2}
+          d="M6 18L18 6M6 6l12 12"
+        />
       </svg>
     )
 
     const defaultLoadingIcon = (
       <svg className="h-4 w-4 animate-spin" fill="none" viewBox="0 0 24 24">
-        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+        <circle
+          className="opacity-25"
+          cx="12"
+          cy="12"
+          r="10"
+          stroke="currentColor"
+          strokeWidth="4"
+        />
         <path
           className="opacity-75"
           fill="currentColor"
@@ -639,25 +652,25 @@ const AutocompleteInput = React.forwardRef<HTMLInputElement, AutocompleteInputPr
 
     // Build custom styles object
     const customStyles: React.CSSProperties = {}
-    
+
     // Border styles
     if (borderWidth) customStyles.borderWidth = borderWidth
     if (borderColor) customStyles.borderColor = borderColor
     if (borderStyle) customStyles.borderStyle = borderStyle
     if (borderRadius) customStyles.borderRadius = borderRadius
-    
+
     // Text styles
     if (fontSize) customStyles.fontSize = fontSize
     if (fontWeight) customStyles.fontWeight = fontWeight
     if (fontFamily) customStyles.fontFamily = fontFamily
     if (textColor) customStyles.color = textColor
-    
+
     // Background
     if (backgroundColor) customStyles.backgroundColor = backgroundColor
-    
+
     // Shadow
     if (boxShadow) customStyles.boxShadow = boxShadow
-    
+
     // Padding
     if (padding) customStyles.padding = padding
     if (paddingX) {
@@ -674,9 +687,10 @@ const AutocompleteInput = React.forwardRef<HTMLInputElement, AutocompleteInputPr
       ...(focusBorderColor && { borderColor: focusBorderColor }),
       ...(focusBackgroundColor && { backgroundColor: focusBackgroundColor }),
       ...(focusBoxShadow && { boxShadow: focusBoxShadow }),
-      ...(focusRingColor && focusRingWidth && {
-        boxShadow: `0 0 0 ${focusRingWidth} ${focusRingColor}${focusRingOffset ? `, 0 0 0 calc(${focusRingWidth} + ${focusRingOffset}) transparent` : ''}`,
-      }),
+      ...(focusRingColor &&
+        focusRingWidth && {
+          boxShadow: `0 0 0 ${focusRingWidth} ${focusRingColor}${focusRingOffset ? `, 0 0 0 calc(${focusRingWidth} + ${focusRingOffset}) transparent` : ''}`,
+        }),
     }
 
     return (
@@ -694,9 +708,10 @@ const AutocompleteInput = React.forwardRef<HTMLInputElement, AutocompleteInputPr
           style={{
             ...customStyles,
             ...(isFocused && focusStyles),
-            ...(placeholderColor && {
-              '--placeholder-color': placeholderColor,
-            } as any),
+            ...(placeholderColor &&
+              ({
+                '--placeholder-color': placeholderColor,
+              } as any)),
           }}
           value={displayValue as string}
           onChange={handleInputChange}
@@ -709,10 +724,7 @@ const AutocompleteInput = React.forwardRef<HTMLInputElement, AutocompleteInputPr
         />
         <div className="absolute inset-y-0 right-0 flex items-center pr-3 gap-2">
           {loading && (
-            <span 
-              className="text-gray-400"
-              style={{ color: loadingIconColor || iconColor }}
-            >
+            <span className="text-gray-400" style={{ color: loadingIconColor || iconColor }}>
               {loadingIcon || defaultLoadingIcon}
             </span>
           )}
@@ -727,7 +739,7 @@ const AutocompleteInput = React.forwardRef<HTMLInputElement, AutocompleteInputPr
               {clearIcon || defaultClearIcon}
             </button>
           )}
-          <span 
+          <span
             className="text-gray-400 pointer-events-none"
             style={{ color: dropdownIconColor || iconColor }}
           >
@@ -804,7 +816,7 @@ const AutocompleteList = React.forwardRef<HTMLUListElement, AutocompleteListProp
       maxHeight,
       marginTop: offset,
     }
-    
+
     if (dropdownBackgroundColor) customDropdownStyles.backgroundColor = dropdownBackgroundColor
     if (dropdownBorderColor) customDropdownStyles.borderColor = dropdownBorderColor
     if (dropdownBorderWidth) customDropdownStyles.borderWidth = dropdownBorderWidth
@@ -815,29 +827,18 @@ const AutocompleteList = React.forwardRef<HTMLUListElement, AutocompleteListProp
     return (
       <ul
         ref={listRef}
-        className={cn(
-          baseStyles,
-          transitions[transition || 'scale'],
-          className
-        )}
+        className={cn(baseStyles, transitions[transition || 'scale'], className)}
         style={customDropdownStyles}
         {...props}
       >
         {loading ? (
-          <li className="px-4 py-3 text-center text-gray-500">
-            {loadingMessage}
-          </li>
+          <li className="px-4 py-3 text-center text-gray-500">{loadingMessage}</li>
         ) : filteredOptions.length === 0 ? (
-          <li className="px-4 py-3 text-center text-gray-500">
-            {emptyMessage}
-          </li>
+          <li className="px-4 py-3 text-center text-gray-500">{emptyMessage}</li>
         ) : (
-          children || filteredOptions.map((option, index) => (
-            <AutocompleteItem
-              key={option.value}
-              option={option}
-              index={index}
-            />
+          children ||
+          filteredOptions.map((option, index) => (
+            <AutocompleteItem key={option.value} option={option} index={index} />
           ))
         )}
       </ul>
@@ -878,7 +879,7 @@ const AutocompleteItem = React.forwardRef<HTMLLIElement, AutocompleteItemProps>(
     const isSelected = useMemo(() => {
       if (!value) return false
       if (Array.isArray(value)) {
-        return value.some(v => v.value === option.value)
+        return value.some((v) => v.value === option.value)
       }
       return value.value === option.value
     }, [value, option])
@@ -899,7 +900,7 @@ const AutocompleteItem = React.forwardRef<HTMLLIElement, AutocompleteItemProps>(
 
       if (multiple && Array.isArray(value)) {
         if (isSelected) {
-          onChange(value.filter(v => v.value !== option.value))
+          onChange(value.filter((v) => v.value !== option.value))
         } else {
           onChange([...value, option])
         }
@@ -932,13 +933,14 @@ const AutocompleteItem = React.forwardRef<HTMLLIElement, AutocompleteItemProps>(
 
     // Build custom item styles
     const customItemStyles: React.CSSProperties = {}
-    
+
     if (itemPadding) customItemStyles.padding = itemPadding
     if (option.disabled && itemDisabledOpacity) customItemStyles.opacity = itemDisabledOpacity
-    
+
     // State-based styles
     if (isSelected) {
-      if (itemSelectedBackgroundColor) customItemStyles.backgroundColor = itemSelectedBackgroundColor
+      if (itemSelectedBackgroundColor)
+        customItemStyles.backgroundColor = itemSelectedBackgroundColor
       if (itemSelectedTextColor) customItemStyles.color = itemSelectedTextColor
     } else if (isHighlighted && !option.disabled && itemHighlightedBackgroundColor) {
       customItemStyles.backgroundColor = itemHighlightedBackgroundColor
@@ -948,23 +950,18 @@ const AutocompleteItem = React.forwardRef<HTMLLIElement, AutocompleteItemProps>(
       return (
         <li
           ref={ref}
-          className={cn(
-            baseStyles,
-            sizes[size || 'md'],
-            stateStyles,
-            className
-          )}
+          className={cn(baseStyles, sizes[size || 'md'], stateStyles, className)}
           style={customItemStyles}
           onClick={handleClick}
           onMouseEnter={handleMouseEnter}
           onMouseOver={(e) => {
             if (!option.disabled && itemHoverBackgroundColor && !isSelected && !isHighlighted) {
-              (e.currentTarget as HTMLLIElement).style.backgroundColor = itemHoverBackgroundColor
+              ;(e.currentTarget as HTMLLIElement).style.backgroundColor = itemHoverBackgroundColor
             }
           }}
           onMouseOut={(e) => {
             if (!option.disabled && itemHoverBackgroundColor && !isSelected && !isHighlighted) {
-              (e.currentTarget as HTMLLIElement).style.backgroundColor = ''
+              ;(e.currentTarget as HTMLLIElement).style.backgroundColor = ''
             }
           }}
           {...props}
@@ -977,23 +974,18 @@ const AutocompleteItem = React.forwardRef<HTMLLIElement, AutocompleteItemProps>(
     return (
       <li
         ref={ref}
-        className={cn(
-          baseStyles,
-          sizes[size || 'md'],
-          stateStyles,
-          className
-        )}
+        className={cn(baseStyles, sizes[size || 'md'], stateStyles, className)}
         style={customItemStyles}
         onClick={handleClick}
         onMouseEnter={handleMouseEnter}
         onMouseOver={(e) => {
           if (!option.disabled && itemHoverBackgroundColor && !isSelected && !isHighlighted) {
-            (e.currentTarget as HTMLLIElement).style.backgroundColor = itemHoverBackgroundColor
+            ;(e.currentTarget as HTMLLIElement).style.backgroundColor = itemHoverBackgroundColor
           }
         }}
         onMouseOut={(e) => {
           if (!option.disabled && itemHoverBackgroundColor && !isSelected && !isHighlighted) {
-            (e.currentTarget as HTMLLIElement).style.backgroundColor = ''
+            ;(e.currentTarget as HTMLLIElement).style.backgroundColor = ''
           }
         }}
         {...props}
@@ -1042,11 +1034,7 @@ const AutocompleteEmpty = React.forwardRef<HTMLDivElement, AutocompleteEmptyProp
     return (
       <div
         ref={ref}
-        className={cn(
-          'text-center text-gray-500',
-          sizes[size || 'md'],
-          className
-        )}
+        className={cn('text-center text-gray-500', sizes[size || 'md'], className)}
         {...props}
       >
         {children || emptyMessage}

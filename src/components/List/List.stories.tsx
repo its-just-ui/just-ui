@@ -41,7 +41,7 @@ import { List, ListContainer, ListItem, ListHeader, ListFooter } from './List'
  *   <ListHeader>User List</ListHeader>
  *   <ListContainer>
  *     {items.map(item => (
- *       <ListItem key={item.id} item={item} />
+ *       <ListItemData key={item.id} item={item} />
  *     ))}
  *   </ListContainer>
  *   <ListFooter>Total: {items.length}</ListFooter>
@@ -75,7 +75,7 @@ const meta = {
       description: 'Array of list items to display',
       table: {
         category: 'Core Props',
-        type: { summary: 'ListItem[]' },
+        type: { summary: 'ListItemData[]' },
       },
     },
     value: {
@@ -226,7 +226,7 @@ const meta = {
       description: 'Custom render function for items',
       table: {
         category: 'Content',
-        type: { summary: '(item: ListItem, isSelected: boolean) => React.ReactNode' },
+        type: { summary: '(item: ListItemData, isSelected: boolean) => React.ReactNode' },
       },
     },
 
@@ -236,7 +236,7 @@ const meta = {
       description: 'Callback fired when an item is clicked',
       table: {
         category: 'Event Handlers',
-        type: { summary: '(item: ListItem) => void' },
+        type: { summary: '(item: ListItemData) => void' },
       },
     },
     onItemSelect: {
@@ -244,7 +244,7 @@ const meta = {
       description: 'Callback fired when an item is selected',
       table: {
         category: 'Event Handlers',
-        type: { summary: '(item: ListItem) => void' },
+        type: { summary: '(item: ListItemData) => void' },
       },
     },
   },

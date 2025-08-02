@@ -15,9 +15,24 @@ export interface BadgeContextValue {
   onIconClick?: () => void
 }
 
-export type BadgeVariant = 'default' | 'filled' | 'outlined' | 'ghost' | 'solid' | 'gradient' | 'glass' | 'neon'
+export type BadgeVariant =
+  | 'default'
+  | 'filled'
+  | 'outlined'
+  | 'ghost'
+  | 'solid'
+  | 'gradient'
+  | 'glass'
+  | 'neon'
 export type BadgeSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl'
-export type BadgeStatus = 'default' | 'success' | 'warning' | 'error' | 'info' | 'primary' | 'secondary'
+export type BadgeStatus =
+  | 'default'
+  | 'success'
+  | 'warning'
+  | 'error'
+  | 'info'
+  | 'primary'
+  | 'secondary'
 
 export interface BadgeBaseProps {
   // Core props
@@ -30,7 +45,7 @@ export interface BadgeBaseProps {
   interactive?: boolean
   animated?: boolean
   animation?: 'pulse' | 'bounce' | 'shake' | 'glow'
-  
+
   // Content props
   label?: string
   helperText?: string
@@ -38,34 +53,34 @@ export interface BadgeBaseProps {
   closeButton?: boolean
   onClose?: () => void
   onIconClick?: () => void
-  
+
   // Loading props
   loadingText?: string
   loadingSpinner?: React.ReactNode
-  
+
   // Styling props
   className?: string
   style?: React.CSSProperties
-  
+
   // Border styling
   borderWidth?: string | number
   borderColor?: string
   borderStyle?: 'solid' | 'dashed' | 'dotted' | 'none'
   borderRadius?: string | number
-  
+
   // Typography
   fontSize?: string | number
   fontWeight?: string | number
   fontFamily?: string
   textColor?: string
   placeholderColor?: string
-  
+
   // Colors
   backgroundColor?: string
   color?: string
   hoverBackgroundColor?: string
   hoverTextColor?: string
-  
+
   // Transform and hover effects
   scale?: string
   hoverScale?: string
@@ -73,19 +88,19 @@ export interface BadgeBaseProps {
   hoverOpacity?: string
   transform?: string
   hoverTransform?: string
-  
+
   // Focus styles
   focusRingColor?: string
   focusRingWidth?: string | number
   focusRingOffset?: string | number
   focusBorderColor?: string
   focusBackgroundColor?: string
-  
+
   // Shadows
   boxShadow?: string
   focusBoxShadow?: string
   hoverBoxShadow?: string
-  
+
   // Spacing
   padding?: string | number
   paddingX?: string | number
@@ -93,23 +108,23 @@ export interface BadgeBaseProps {
   margin?: string | number
   marginX?: string | number
   marginY?: string | number
-  
+
   // Transitions
   transitionDuration?: string
   transitionProperty?: string
   transitionTimingFunction?: string
-  
+
   // Animation props
   animationDuration?: number
   animationDelay?: number
   animationIterationCount?: string | number
-  
+
   // Accessibility
   'aria-label'?: string
   'aria-describedby'?: string
   'aria-invalid'?: boolean
   'aria-required'?: boolean
-  
+
   // Event handlers
   onClick?: (event: React.MouseEvent<HTMLDivElement>) => void
   onMouseEnter?: (event: React.MouseEvent<HTMLDivElement>) => void
@@ -165,194 +180,193 @@ const useBadgeContext = () => {
 }
 
 // Sub-components
-const BadgeIcon = memo(forwardRef<HTMLSpanElement, BadgeIconProps>(
-  ({ className, style, color, size, onClick, children, ...props }, ref) => {
-    const { isDisabled, onIconClick } = useBadgeContext()
-    
-    return (
-      <span
-        ref={ref}
-        className={cn(
-          'inline-flex items-center justify-center',
-          isDisabled && 'opacity-50 cursor-not-allowed',
-          !isDisabled && onClick && 'cursor-pointer hover:opacity-80',
-          className
-        )}
-        style={{
-          color,
-          fontSize: size,
-          ...style
-        }}
-        onClick={isDisabled ? undefined : (onClick || onIconClick)}
-        {...props}
-      >
-        {children}
-      </span>
-    )
-  }
-))
+const BadgeIcon = memo(
+  forwardRef<HTMLSpanElement, BadgeIconProps>(
+    ({ className, style, color, size, onClick, children, ...props }, ref) => {
+      const { isDisabled, onIconClick } = useBadgeContext()
+
+      return (
+        <span
+          ref={ref}
+          className={cn(
+            'inline-flex items-center justify-center',
+            isDisabled && 'opacity-50 cursor-not-allowed',
+            !isDisabled && onClick && 'cursor-pointer hover:opacity-80',
+            className
+          )}
+          style={{
+            color,
+            fontSize: size,
+            ...style,
+          }}
+          onClick={isDisabled ? undefined : onClick || onIconClick}
+          {...props}
+        >
+          {children}
+        </span>
+      )
+    }
+  )
+)
 
 BadgeIcon.displayName = 'BadgeIcon'
 
-const BadgeCloseButton = memo(forwardRef<HTMLButtonElement, BadgeCloseButtonProps>(
-  ({ className, style, color, size, onClick, 'aria-label': ariaLabel, ...props }, ref) => {
-    const { isDisabled, onClose } = useBadgeContext()
-    
-    return (
-      <button
-        ref={ref}
-        type="button"
-        className={cn(
-          'inline-flex items-center justify-center rounded-full transition-opacity',
-          isDisabled && 'opacity-50 cursor-not-allowed',
-          !isDisabled && 'hover:opacity-80 focus:outline-none focus:ring-2 focus:ring-offset-2',
-          className
-        )}
-        style={{
-          color,
-          fontSize: size,
-          ...style
-        }}
-        onClick={isDisabled ? undefined : (onClick || onClose)}
-        aria-label={ariaLabel || 'Remove badge'}
-        disabled={isDisabled}
-        {...props}
-      >
-        <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-          <path
-            d="M9 3L3 9M3 3L9 9"
-            stroke="currentColor"
-            strokeWidth="1.5"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-        </svg>
-      </button>
-    )
-  }
-))
+const BadgeCloseButton = memo(
+  forwardRef<HTMLButtonElement, BadgeCloseButtonProps>(
+    ({ className, style, color, size, onClick, 'aria-label': ariaLabel, ...props }, ref) => {
+      const { isDisabled, onClose } = useBadgeContext()
+
+      return (
+        <button
+          ref={ref}
+          type="button"
+          className={cn(
+            'inline-flex items-center justify-center rounded-full transition-opacity',
+            isDisabled && 'opacity-50 cursor-not-allowed',
+            !isDisabled && 'hover:opacity-80 focus:outline-none focus:ring-2 focus:ring-offset-2',
+            className
+          )}
+          style={{
+            color,
+            fontSize: size,
+            ...style,
+          }}
+          onClick={isDisabled ? undefined : onClick || onClose}
+          aria-label={ariaLabel || 'Remove badge'}
+          disabled={isDisabled}
+          {...props}
+        >
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+            <path
+              d="M9 3L3 9M3 3L9 9"
+              stroke="currentColor"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
+        </button>
+      )
+    }
+  )
+)
 
 BadgeCloseButton.displayName = 'BadgeCloseButton'
 
-const BadgeLabel = memo(forwardRef<HTMLSpanElement, BadgeLabelProps>(
-  ({ className, style, children, ...props }, ref) => {
+const BadgeLabel = memo(
+  forwardRef<HTMLSpanElement, BadgeLabelProps>(({ className, style, children, ...props }, ref) => {
     return (
-      <span
-        ref={ref}
-        className={cn('font-medium', className)}
-        style={style}
-        {...props}
-      >
+      <span ref={ref} className={cn('font-medium', className)} style={style} {...props}>
         {children}
       </span>
     )
-  }
-))
+  })
+)
 
 BadgeLabel.displayName = 'BadgeLabel'
 
-const BadgeHelperText = memo(forwardRef<HTMLSpanElement, BadgeHelperTextProps>(
-  ({ className, style, children, ...props }, ref) => {
-    return (
-      <span
-        ref={ref}
-        className={cn('text-xs opacity-75', className)}
-        style={style}
-        {...props}
-      >
-        {children}
-      </span>
-    )
-  }
-))
+const BadgeHelperText = memo(
+  forwardRef<HTMLSpanElement, BadgeHelperTextProps>(
+    ({ className, style, children, ...props }, ref) => {
+      return (
+        <span ref={ref} className={cn('text-xs opacity-75', className)} style={style} {...props}>
+          {children}
+        </span>
+      )
+    }
+  )
+)
 
 BadgeHelperText.displayName = 'BadgeHelperText'
 
 // Main Badge Component
 const Badge = forwardRef<HTMLDivElement, BadgeProps>(
-  ({
-    // Core props
-    variant = 'default',
-    size = 'md',
-    status = 'default',
-    disabled = false,
-    loading = false,
-    required = false,
-    
-    // Content props
-    label,
-    helperText,
-    icon,
-    closeButton = false,
-    onClose,
-    onIconClick,
-    
-    // Loading props
-    loadingSpinner,
-    
-    // Styling props
-    className,
-    style,
-    
-    // Border styling
-    borderWidth,
-    borderColor,
-    borderStyle,
-    borderRadius,
-    
-    // Typography
-    fontSize,
-    fontWeight,
-    fontFamily,
-    textColor,
-    
-    // Colors
-    backgroundColor,
-    color,
-    
-    // Focus styles
-    focusRingColor,
-    focusRingWidth,
-    focusRingOffset,
-    focusBorderColor,
-    
-    // Shadows
-    boxShadow,
-    focusBoxShadow,
-    
-    // Spacing
-    padding,
-    paddingX,
-    paddingY,
-    margin,
-    marginX,
-    marginY,
-    
-    // Transitions
-    transitionDuration = '150ms',
-    transitionProperty = 'all',
-    transitionTimingFunction = 'ease-in-out',
-    
-    // Accessibility
-    'aria-label': ariaLabel,
-    'aria-describedby': ariaDescribedby,
-    'aria-invalid': ariaInvalid,
-    'aria-required': ariaRequired,
-    
-    // Event handlers
-    onClick,
-    onMouseEnter,
-    onMouseLeave,
-    onFocus,
-    onBlur,
-    onKeyDown,
-    
-    children,
-    ...props
-  }, ref) => {
+  (
+    {
+      // Core props
+      variant = 'default',
+      size = 'md',
+      status = 'default',
+      disabled = false,
+      loading = false,
+      required = false,
+
+      // Content props
+      label,
+      helperText,
+      icon,
+      closeButton = false,
+      onClose,
+      onIconClick,
+
+      // Loading props
+      loadingSpinner,
+
+      // Styling props
+      className,
+      style,
+
+      // Border styling
+      borderWidth,
+      borderColor,
+      borderStyle,
+      borderRadius,
+
+      // Typography
+      fontSize,
+      fontWeight,
+      fontFamily,
+      textColor,
+
+      // Colors
+      backgroundColor,
+      color,
+
+      // Focus styles
+      focusRingColor,
+      focusRingWidth,
+      focusRingOffset,
+      focusBorderColor,
+
+      // Shadows
+      boxShadow,
+      focusBoxShadow,
+
+      // Spacing
+      padding,
+      paddingX,
+      paddingY,
+      margin,
+      marginX,
+      marginY,
+
+      // Transitions
+      transitionDuration = '150ms',
+      transitionProperty = 'all',
+      transitionTimingFunction = 'ease-in-out',
+
+      // Accessibility
+      'aria-label': ariaLabel,
+      'aria-describedby': ariaDescribedby,
+      'aria-invalid': ariaInvalid,
+      'aria-required': ariaRequired,
+
+      // Event handlers
+      onClick,
+      onMouseEnter,
+      onMouseLeave,
+      onFocus,
+      onBlur,
+      onKeyDown,
+
+      children,
+      ...props
+    },
+    ref
+  ) => {
     // Base styles
     const baseStyles = 'inline-flex items-center justify-center font-medium transition-all'
-    
+
     // Variant styles
     const variants = {
       default: 'bg-gray-100 text-gray-800 border border-gray-200',
@@ -364,7 +378,7 @@ const Badge = forwardRef<HTMLDivElement, BadgeProps>(
       glass: 'bg-white/20 backdrop-blur-sm border border-white/30 text-gray-800',
       neon: 'bg-cyan-400 text-cyan-900 shadow-lg shadow-cyan-400/50',
     }
-    
+
     // Size styles
     const sizes = {
       xs: 'px-1.5 py-0.5 text-xs',
@@ -374,7 +388,7 @@ const Badge = forwardRef<HTMLDivElement, BadgeProps>(
       xl: 'px-4 py-2 text-base',
       '2xl': 'px-5 py-2.5 text-lg',
     }
-    
+
     // Status styles
     const statusStyles = {
       default: '',
@@ -385,16 +399,16 @@ const Badge = forwardRef<HTMLDivElement, BadgeProps>(
       primary: 'bg-indigo-100 text-indigo-800 border-indigo-200',
       secondary: 'bg-gray-100 text-gray-600 border-gray-200',
     }
-    
+
     // Disabled styles
     const disabledStyles = disabled ? 'opacity-50 cursor-not-allowed' : ''
-    
+
     // Loading styles
     const loadingStyles = loading ? 'opacity-75 cursor-wait' : ''
-    
+
     // Required styles
     const requiredStyles = required ? 'ring-1 ring-red-500' : ''
-    
+
     // Custom styles object
     const customStyles: React.CSSProperties = {
       borderWidth: borderWidth,
@@ -422,7 +436,7 @@ const Badge = forwardRef<HTMLDivElement, BadgeProps>(
       transitionTimingFunction,
       ...style,
     }
-    
+
     // Focus styles
     const focusStyles = {
       '--tw-ring-color': focusRingColor,
@@ -431,7 +445,7 @@ const Badge = forwardRef<HTMLDivElement, BadgeProps>(
       '--tw-ring-offset-color': focusBorderColor,
       '--tw-ring-offset-shadow': focusBoxShadow,
     } as React.CSSProperties
-    
+
     // Context value
     const contextValue: BadgeContextValue = {
       variant,
@@ -445,7 +459,7 @@ const Badge = forwardRef<HTMLDivElement, BadgeProps>(
       onClose,
       onIconClick,
     }
-    
+
     return (
       <BadgeContext.Provider value={contextValue}>
         <div
@@ -499,30 +513,16 @@ const Badge = forwardRef<HTMLDivElement, BadgeProps>(
               )}
             </span>
           )}
-          
-          {icon && !loading && (
-            <BadgeIcon className="mr-1">
-              {icon}
-            </BadgeIcon>
-          )}
-          
-          {label && (
-            <BadgeLabel>
-              {label}
-            </BadgeLabel>
-          )}
-          
+
+          {icon && !loading && <BadgeIcon className="mr-1">{icon}</BadgeIcon>}
+
+          {label && <BadgeLabel>{label}</BadgeLabel>}
+
           {children}
-          
-          {closeButton && !loading && (
-            <BadgeCloseButton className="ml-1" />
-          )}
-          
-          {helperText && (
-            <BadgeHelperText className="ml-2">
-              {helperText}
-            </BadgeHelperText>
-          )}
+
+          {closeButton && !loading && <BadgeCloseButton className="ml-1" />}
+
+          {helperText && <BadgeHelperText className="ml-2">{helperText}</BadgeHelperText>}
         </div>
       </BadgeContext.Provider>
     )
@@ -532,7 +532,8 @@ const Badge = forwardRef<HTMLDivElement, BadgeProps>(
 Badge.displayName = 'Badge'
 
 // Compound component interface
-interface BadgeComponent extends React.ForwardRefExoticComponent<BadgeProps & React.RefAttributes<HTMLDivElement>> {
+interface BadgeComponent
+  extends React.ForwardRefExoticComponent<BadgeProps & React.RefAttributes<HTMLDivElement>> {
   Icon: typeof BadgeIcon
   CloseButton: typeof BadgeCloseButton
   Label: typeof BadgeLabel

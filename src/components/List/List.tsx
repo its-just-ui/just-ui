@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useCallback, useMemo } from 'react'
 import { cn } from '@/utils'
 
-export interface ListItem {
+export interface ListItemData {
   id: string
   title: string
   description?: string
@@ -14,7 +14,7 @@ export interface ListItem {
 }
 
 export interface ListProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'onChange'> {
-  items?: ListItem[]
+  items?: ListItemData[]
   value?: string | string[] | null
   onChange?: (value: string | string[] | null) => void
   variant?: 'default' | 'bordered' | 'card' | 'minimal' | 'elevated'
@@ -30,9 +30,9 @@ export interface ListProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'o
   required?: boolean
   emptyMessage?: string
   loadingMessage?: string
-  onItemClick?: (item: ListItem) => void
-  onItemSelect?: (item: ListItem) => void
-  renderItem?: (item: ListItem, isSelected: boolean) => React.ReactNode
+  onItemClick?: (item: ListItemData) => void
+  onItemSelect?: (item: ListItemData) => void
+  renderItem?: (item: ListItemData, isSelected: boolean) => React.ReactNode
   children?: React.ReactNode
 
   // Custom styles
@@ -41,7 +41,7 @@ export interface ListProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'o
 }
 
 interface ListContextValue {
-  items: ListItem[]
+  items: ListItemData[]
   value: string | string[] | null
   onChange: (value: string | string[] | null) => void
   variant?: 'default' | 'bordered' | 'card' | 'minimal' | 'elevated'
@@ -52,9 +52,9 @@ interface ListContextValue {
   selectable?: boolean
   multiple?: boolean
   maxSelection?: number
-  onItemClick?: (item: ListItem) => void
-  onItemSelect?: (item: ListItem) => void
-  renderItem?: (item: ListItem, isSelected: boolean) => React.ReactNode
+  onItemClick?: (item: ListItemData) => void
+  onItemSelect?: (item: ListItemData) => void
+  renderItem?: (item: ListItemData, isSelected: boolean) => React.ReactNode
   emptyMessage?: string
   loadingMessage?: string
 }
@@ -249,7 +249,7 @@ const ListContainer = React.forwardRef<HTMLDivElement, ListContainerProps>(
 ListContainer.displayName = 'ListContainer'
 
 export interface ListItemProps extends React.HTMLAttributes<HTMLDivElement> {
-  item: ListItem
+  item: ListItemData
 }
 
 const ListItem = React.forwardRef<HTMLDivElement, ListItemProps>(
