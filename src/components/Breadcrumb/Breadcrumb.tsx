@@ -122,66 +122,69 @@ export const useBreadcrumb = () => {
 }
 
 const Breadcrumb = React.forwardRef<HTMLElement, BreadcrumbProps>(
-  ({
-    className,
-    items = [],
-    value,
-    onChange,
-    onNavigate,
-    variant = 'default',
-    size = 'md',
-    separator,
-    maxItems,
-    itemsBeforeCollapse = 1,
-    itemsAfterCollapse = 1,
-    renderCollapsed,
-    renderItem,
-    loading = false,
-    disabled = false,
-    transition = 'none',
-    transitionDuration = 200,
-    // Style props
-    backgroundColor,
-    textColor,
-    fontSize,
-    fontWeight,
-    fontFamily,
-    borderWidth,
-    borderColor,
-    borderStyle,
-    borderRadius,
-    padding,
-    paddingX,
-    paddingY,
-    gap,
-    itemBackgroundColor,
-    itemTextColor,
-    itemHoverBackgroundColor,
-    itemHoverTextColor,
-    itemActiveBackgroundColor,
-    itemActiveTextColor,
-    itemDisabledOpacity,
-    itemPadding,
-    itemPaddingX,
-    itemPaddingY,
-    itemBorderRadius,
-    separatorColor,
-    separatorSize,
-    separatorMargin,
-    focusRingColor,
-    focusRingWidth,
-    focusRingOffset,
-    focusRingOffsetColor,
-    boxShadow,
-    itemBoxShadow,
-    itemHoverBoxShadow,
-    iconSize,
-    iconColor,
-    iconMargin,
-    children,
-    style,
-    ...props
-  }, ref) => {
+  (
+    {
+      className,
+      items = [],
+      value,
+      onChange,
+      onNavigate,
+      variant = 'default',
+      size = 'md',
+      separator,
+      maxItems,
+      itemsBeforeCollapse = 1,
+      itemsAfterCollapse = 1,
+      renderCollapsed,
+      renderItem,
+      loading = false,
+      disabled = false,
+      transition = 'none',
+      transitionDuration = 200,
+      // Style props
+      backgroundColor,
+      textColor,
+      fontSize,
+      fontWeight,
+      fontFamily,
+      borderWidth,
+      borderColor,
+      borderStyle,
+      borderRadius,
+      padding,
+      paddingX,
+      paddingY,
+      gap,
+      itemBackgroundColor,
+      itemTextColor,
+      itemHoverBackgroundColor,
+      itemHoverTextColor,
+      itemActiveBackgroundColor,
+      itemActiveTextColor,
+      itemDisabledOpacity,
+      itemPadding,
+      itemPaddingX,
+      itemPaddingY,
+      itemBorderRadius,
+      separatorColor,
+      separatorSize,
+      separatorMargin,
+      focusRingColor,
+      focusRingWidth,
+      focusRingOffset,
+      focusRingOffsetColor,
+      boxShadow,
+      itemBoxShadow,
+      itemHoverBoxShadow,
+      iconSize,
+      iconColor,
+      iconMargin,
+      children,
+      style,
+      ...props
+    },
+    ref
+  ) => {
     const [collapsedOpen, setCollapsedOpen] = useState(false)
 
     const processedItems = useMemo(() => {
@@ -226,22 +229,43 @@ const Breadcrumb = React.forwardRef<HTMLElement, BreadcrumbProps>(
     )
 
     const customStyles: React.CSSProperties = {
-      backgroundColor: backgroundColor || (variant === 'solid' ? '#f3f4f6' : variant === 'bordered' || variant === 'underline' ? 'transparent' : undefined),
+      backgroundColor:
+        backgroundColor ||
+        (variant === 'solid'
+          ? '#f3f4f6'
+          : variant === 'bordered' || variant === 'underline'
+            ? 'transparent'
+            : undefined),
       color: textColor || '#374151',
       fontSize: fontSize || (size === 'sm' ? '0.875rem' : size === 'lg' ? '1.125rem' : '1rem'),
       fontWeight: fontWeight || '400',
       fontFamily,
-      borderWidth: borderWidth || (variant === 'bordered' ? '1px' : variant === 'underline' ? '0 0 1px 0' : '0'),
+      borderWidth:
+        borderWidth ||
+        (variant === 'bordered' ? '1px' : variant === 'underline' ? '0 0 1px 0' : '0'),
       borderColor: borderColor || '#e5e7eb',
       borderStyle: borderStyle || 'solid',
-      borderRadius: borderRadius || (variant === 'solid' || variant === 'bordered' ? '0.5rem' : '0'),
-      padding: padding || (paddingX || paddingY ? undefined : variant === 'solid' || variant === 'bordered' ? '0.5rem' : variant === 'underline' ? '0 0 0.5rem 0' : '0'),
+      borderRadius:
+        borderRadius || (variant === 'solid' || variant === 'bordered' ? '0.5rem' : '0'),
+      padding:
+        padding ||
+        (paddingX || paddingY
+          ? undefined
+          : variant === 'solid' || variant === 'bordered'
+            ? '0.5rem'
+            : variant === 'underline'
+              ? '0 0 0.5rem 0'
+              : '0'),
       paddingLeft: paddingX,
       paddingRight: paddingX,
       paddingTop: paddingY,
       paddingBottom: paddingY,
       gap: gap || '0',
-      boxShadow: boxShadow || (variant === 'solid' || variant === 'bordered' ? '0 1px 2px 0 rgba(0, 0, 0, 0.05)' : 'none'),
+      boxShadow:
+        boxShadow ||
+        (variant === 'solid' || variant === 'bordered'
+          ? '0 1px 2px 0 rgba(0, 0, 0, 0.05)'
+          : 'none'),
       ...style,
     }
 
@@ -349,17 +373,20 @@ export interface BreadcrumbItemComponentProps extends React.LiHTMLAttributes<HTM
 }
 
 const BreadcrumbItem = React.forwardRef<HTMLLIElement, BreadcrumbItemComponentProps>(
-  ({ 
-    className, 
-    index, 
-    item, 
-    isLast, 
-    renderCollapsed,
-    collapsedOpen,
-    setCollapsedOpen,
-    style,
-    ...props 
-  }, ref) => {
+  (
+    {
+      className,
+      index,
+      item,
+      isLast,
+      renderCollapsed,
+      collapsedOpen,
+      setCollapsedOpen,
+      style,
+      ...props
+    },
+    ref
+  ) => {
     const {
       value,
       onChange,
@@ -396,30 +423,37 @@ const BreadcrumbItem = React.forwardRef<HTMLLIElement, BreadcrumbItemComponentPr
     const isActive = value === index
     const isDisabled = item.disabled || breadcrumbDisabled
 
-    const handleClick = useCallback((e: React.MouseEvent) => {
-      if (isDisabled || isLast) {
-        e.preventDefault()
-        return
-      }
+    const handleClick = useCallback(
+      (e: React.MouseEvent) => {
+        if (isDisabled || isLast) {
+          e.preventDefault()
+          return
+        }
 
-      if (item.__collapsed && setCollapsedOpen) {
-        e.preventDefault()
-        setCollapsedOpen(!collapsedOpen)
-        return
-      }
+        if (item.__collapsed && setCollapsedOpen) {
+          e.preventDefault()
+          setCollapsedOpen(!collapsedOpen)
+          return
+        }
 
-      if (onChange) {
-        onChange(index, item)
-      }
+        if (onChange) {
+          onChange(index, item)
+        }
 
-      if (onNavigate) {
-        onNavigate(index, item)
-      }
-    }, [isDisabled, isLast, item, onChange, onNavigate, index, setCollapsedOpen, collapsedOpen])
+        if (onNavigate) {
+          onNavigate(index, item)
+        }
+      },
+      [isDisabled, isLast, item, onChange, onNavigate, index, setCollapsedOpen, collapsedOpen]
+    )
 
     if (renderItem && !item.__collapsed) {
       const customElement = renderItem(item, index, isLast)
-      return <li ref={ref} className={className} {...props}>{customElement}</li>
+      return (
+        <li ref={ref} className={className} {...props}>
+          {customElement}
+        </li>
+      )
     }
 
     const baseStyles = cn(
@@ -434,10 +468,7 @@ const BreadcrumbItem = React.forwardRef<HTMLLIElement, BreadcrumbItemComponentPr
       solid: '',
       bordered: '',
       underline: '',
-      pills: cn(
-        'rounded-full px-3 py-1',
-        !isLast && !isDisabled && 'hover:bg-gray-100'
-      ),
+      pills: cn('rounded-full px-3 py-1', !isLast && !isDisabled && 'hover:bg-gray-100'),
     }
 
     const sizeStyles = {
@@ -454,24 +485,30 @@ const BreadcrumbItem = React.forwardRef<HTMLLIElement, BreadcrumbItemComponentPr
     }
 
     const customStyles: React.CSSProperties = {
-      backgroundColor: isActive 
-        ? (itemActiveBackgroundColor || (variant === 'pills' ? '#3b82f6' : 'transparent'))
-        : isHovered 
-          ? (itemHoverBackgroundColor || (variant === 'pills' ? '#f3f4f6' : 'transparent'))
-          : (itemBackgroundColor || 'transparent'),
-      color: isActive 
-        ? (itemActiveTextColor || (variant === 'pills' ? '#ffffff' : '#3b82f6'))
-        : isHovered 
-          ? (itemHoverTextColor || '#1f2937')
-          : (itemTextColor || '#4b5563'),
-      opacity: isDisabled ? (itemDisabledOpacity || '0.5') : undefined,
-      padding: itemPadding || (itemPaddingX || itemPaddingY ? undefined : variant === 'pills' ? '0.25rem 0.75rem' : '0.25rem 0.5rem'),
+      backgroundColor: isActive
+        ? itemActiveBackgroundColor || (variant === 'pills' ? '#3b82f6' : 'transparent')
+        : isHovered
+          ? itemHoverBackgroundColor || (variant === 'pills' ? '#f3f4f6' : 'transparent')
+          : itemBackgroundColor || 'transparent',
+      color: isActive
+        ? itemActiveTextColor || (variant === 'pills' ? '#ffffff' : '#3b82f6')
+        : isHovered
+          ? itemHoverTextColor || '#1f2937'
+          : itemTextColor || '#4b5563',
+      opacity: isDisabled ? itemDisabledOpacity || '0.5' : undefined,
+      padding:
+        itemPadding ||
+        (itemPaddingX || itemPaddingY
+          ? undefined
+          : variant === 'pills'
+            ? '0.25rem 0.75rem'
+            : '0.25rem 0.5rem'),
       paddingLeft: itemPaddingX,
       paddingRight: itemPaddingX,
       paddingTop: itemPaddingY,
       paddingBottom: itemPaddingY,
       borderRadius: itemBorderRadius || (variant === 'pills' ? '9999px' : '0.375rem'),
-      boxShadow: isHovered ? (itemHoverBoxShadow || 'none') : (itemBoxShadow || 'none'),
+      boxShadow: isHovered ? itemHoverBoxShadow || 'none' : itemBoxShadow || 'none',
       ...style,
     }
 
@@ -486,7 +523,12 @@ const BreadcrumbItem = React.forwardRef<HTMLLIElement, BreadcrumbItemComponentPr
       return (
         <li ref={ref} className="relative" {...props}>
           <button
-            className={cn(baseStyles, variantStyles[variant || 'default'], sizeStyles[size || 'md'], className)}
+            className={cn(
+              baseStyles,
+              variantStyles[variant || 'default'],
+              sizeStyles[size || 'md'],
+              className
+            )}
             onClick={handleClick}
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
@@ -508,10 +550,11 @@ const BreadcrumbItem = React.forwardRef<HTMLLIElement, BreadcrumbItemComponentPr
     const content = (
       <>
         {item.icon && (
-          <span 
-            className="flex-shrink-0" 
-            style={{ 
-              fontSize: iconSize || (size === 'sm' ? '1rem' : size === 'lg' ? '1.25rem' : '1.125rem'),
+          <span
+            className="flex-shrink-0"
+            style={{
+              fontSize:
+                iconSize || (size === 'sm' ? '1rem' : size === 'lg' ? '1.25rem' : '1.125rem'),
               color: iconColor || 'currentColor',
               marginRight: iconMargin || '0.5rem',
             }}
@@ -627,24 +670,27 @@ const BreadcrumbLink = React.forwardRef<HTMLAnchorElement, BreadcrumbLinkProps>(
     const isActive = value === index
     const isDisabled = item.disabled || disabled
 
-    const handleClick = useCallback((e: React.MouseEvent<HTMLAnchorElement>) => {
-      if (isDisabled || isLast) {
-        e.preventDefault()
-        return
-      }
+    const handleClick = useCallback(
+      (e: React.MouseEvent<HTMLAnchorElement>) => {
+        if (isDisabled || isLast) {
+          e.preventDefault()
+          return
+        }
 
-      if (!item.href) {
-        e.preventDefault()
-      }
+        if (!item.href) {
+          e.preventDefault()
+        }
 
-      if (onChange) {
-        onChange(index, item)
-      }
+        if (onChange) {
+          onChange(index, item)
+        }
 
-      if (onNavigate) {
-        onNavigate(index, item)
-      }
-    }, [isDisabled, isLast, item, onChange, onNavigate, index])
+        if (onNavigate) {
+          onNavigate(index, item)
+        }
+      },
+      [isDisabled, isLast, item, onChange, onNavigate, index]
+    )
 
     const sizeStyles = {
       sm: 'text-sm',
@@ -653,11 +699,11 @@ const BreadcrumbLink = React.forwardRef<HTMLAnchorElement, BreadcrumbLinkProps>(
     }
 
     const customStyles: React.CSSProperties = {
-      color: isActive 
-        ? (itemActiveTextColor || '#3b82f6')
-        : isHovered 
-          ? (itemHoverTextColor || '#1f2937')
-          : (itemTextColor || '#4b5563'),
+      color: isActive
+        ? itemActiveTextColor || '#3b82f6'
+        : isHovered
+          ? itemHoverTextColor || '#1f2937'
+          : itemTextColor || '#4b5563',
       opacity: isDisabled ? '0.5' : undefined,
       '--tw-ring-color': focusRingColor || '#3b82f6',
       '--tw-ring-offset-width': focusRingOffset || '2px',
@@ -687,9 +733,7 @@ const BreadcrumbLink = React.forwardRef<HTMLAnchorElement, BreadcrumbLinkProps>(
         aria-disabled={isDisabled}
         {...props}
       >
-        {item.icon && (
-          <span className="mr-2 flex-shrink-0">{item.icon}</span>
-        )}
+        {item.icon && <span className="mr-2 flex-shrink-0">{item.icon}</span>}
         {item.label}
       </a>
     )
@@ -698,4 +742,9 @@ const BreadcrumbLink = React.forwardRef<HTMLAnchorElement, BreadcrumbLinkProps>(
 
 BreadcrumbLink.displayName = 'BreadcrumbLink'
 
-export { Breadcrumb, BreadcrumbItem as BreadcrumbItemComponent, BreadcrumbSeparator, BreadcrumbLink }
+export {
+  Breadcrumb,
+  BreadcrumbItem as BreadcrumbItemComponent,
+  BreadcrumbSeparator,
+  BreadcrumbLink,
+}

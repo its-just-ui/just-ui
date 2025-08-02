@@ -95,7 +95,7 @@
   "homepage": "https://github.com/yourusername/ui-library-template#readme",
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [
-      "eslint --fix",
+      "eslint",
       "prettier --write"
     ],
     "*.{json,css,md}": [

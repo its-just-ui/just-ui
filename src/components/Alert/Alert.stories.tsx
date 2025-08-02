@@ -9,7 +9,7 @@ const AlertWithState = ({
   onDismiss,
   defaultOpen = true,
   ...props
-}: any) => {
+}: React.ComponentProps<typeof Alert> & { defaultOpen?: boolean }) => {
   const [isOpen, setIsOpen] = useState(defaultOpen)
 
   const handleDismiss = () => {

@@ -46,9 +46,7 @@ export const Interactive: Story = {
         <CardTitle>Interactive Card</CardTitle>
       </CardHeader>
       <CardContent>
-        <p className="text-sm text-gray-600">
-          This card has hover effects. Try hovering over it!
-        </p>
+        <p className="text-sm text-gray-600">This card has hover effects. Try hovering over it!</p>
       </CardContent>
     </Card>
   ),

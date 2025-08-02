@@ -4,7 +4,7 @@ import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from './
 
 /**
  * Accordion is a vertically stacked set of interactive headings that reveal or hide associated content sections.
- * 
+ *
  * ## Features
  * - **Single or Multiple Mode**: Control whether one or multiple items can be expanded
  * - **Controlled & Uncontrolled**: Works in both controlled and uncontrolled modes
@@ -14,9 +14,9 @@ import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from './
  * - **Loading & Empty States**: Handle async data and empty content gracefully
  * - **Keyboard Navigation**: Full keyboard support with customizable focus styles
  * - **Compound Components**: Use AccordionItem, AccordionTrigger, and AccordionContent for full control
- * 
+ *
  * ## Usage
- * 
+ *
  * ### Basic Usage (Uncontrolled):
  * ```tsx
  * <Accordion type="single" collapsible>
@@ -28,27 +28,27 @@ import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from './
  *   </AccordionItem>
  * </Accordion>
  * ```
- * 
+ *
  * ### Controlled Usage:
  * ```tsx
  * const [value, setValue] = useState<string>('')
- * 
- * <Accordion 
- *   type="single" 
- *   value={value} 
+ *
+ * <Accordion
+ *   type="single"
+ *   value={value}
  *   onValueChange={setValue}
  * >
  *   {items}
  * </Accordion>
  * ```
- * 
+ *
  * ### Multiple Selection:
  * ```tsx
  * const [values, setValues] = useState<string[]>(['item-1'])
- * 
- * <Accordion 
- *   type="multiple" 
- *   value={values} 
+ *
+ * <Accordion
+ *   type="multiple"
+ *   value={values}
  *   onValueChange={setValues}
  * >
  *   {items}
@@ -430,7 +430,7 @@ const defaultItems = [
   {
     value: 'item-3',
     trigger: 'Is it animated?',
-    content: 'Yes. It\'s animated by default, but you can disable it if you prefer.',
+    content: "Yes. It's animated by default, but you can disable it if you prefer.",
   },
 ]
 
@@ -438,41 +438,40 @@ const faqItems = [
   {
     value: 'faq-1',
     trigger: 'What payment methods do you accept?',
-    content: 'We accept all major credit cards (Visa, MasterCard, American Express), PayPal, and bank transfers. For enterprise customers, we also offer invoicing options.',
+    content:
+      'We accept all major credit cards (Visa, MasterCard, American Express), PayPal, and bank transfers. For enterprise customers, we also offer invoicing options.',
   },
   {
     value: 'faq-2',
     trigger: 'How do I cancel my subscription?',
-    content: 'You can cancel your subscription at any time from your account settings. Your access will continue until the end of your billing period.',
+    content:
+      'You can cancel your subscription at any time from your account settings. Your access will continue until the end of your billing period.',
   },
   {
     value: 'faq-3',
     trigger: 'Can I get a refund?',
-    content: 'We offer a 30-day money-back guarantee for all new subscriptions. If you\'re not satisfied, contact our support team for a full refund.',
+    content:
+      "We offer a 30-day money-back guarantee for all new subscriptions. If you're not satisfied, contact our support team for a full refund.",
   },
   {
     value: 'faq-4',
     trigger: 'Do you offer student discounts?',
-    content: 'Yes! Students get 50% off all plans. Simply verify your student status with your .edu email address.',
+    content:
+      'Yes! Students get 50% off all plans. Simply verify your student status with your .edu email address.',
   },
 ]
 
 // Wrapper component for controlled stories
-const AccordionWithState = ({ type = 'single', defaultValue, ...props }: any) => {
+const AccordionWithState = ({
+  type = 'single',
+  defaultValue,
+  ...props
+}: React.ComponentProps<typeof Accordion> & { defaultValue?: string | string[] }) => {
   const [value, setValue] = useState<string | string[]>(
-    type === 'multiple' 
-      ? defaultValue || [] 
-      : defaultValue || ''
+    type === 'multiple' ? defaultValue || [] : defaultValue || ''
   )
-  
-  return (
-    <Accordion
-      {...props}
-      type={type}
-      value={value}
-      onValueChange={setValue}
-    />
-  )
+
+  return <Accordion {...props} type={type} value={value} onValueChange={setValue} />
 }
 
 export const Default: Story = {
@@ -507,7 +506,7 @@ export const ShowingDefaults: Story = {
         </Accordion>
         <p className="text-xs text-gray-500 mt-2">All default styles and behaviors applied</p>
       </div>
-      
+
       <div>
         <h3 className="text-sm font-medium text-gray-700 mb-2">With Default Expanded</h3>
         <Accordion defaultValue="item-2">
@@ -519,7 +518,7 @@ export const ShowingDefaults: Story = {
           ))}
         </Accordion>
       </div>
-      
+
       <div>
         <h3 className="text-sm font-medium text-gray-700 mb-2">Multiple Mode with Defaults</h3>
         <Accordion type="multiple" defaultValue={['item-1', 'item-3']}>
@@ -549,7 +548,7 @@ export const Variants: Story = {
           ))}
         </AccordionWithState>
       </div>
-      
+
       <div>
         <h3 className="text-sm font-medium text-gray-700 mb-2">Bordered</h3>
         <AccordionWithState variant="bordered">
@@ -561,7 +560,7 @@ export const Variants: Story = {
           ))}
         </AccordionWithState>
       </div>
-      
+
       <div>
         <h3 className="text-sm font-medium text-gray-700 mb-2">Filled</h3>
         <AccordionWithState variant="filled">
@@ -573,7 +572,7 @@ export const Variants: Story = {
           ))}
         </AccordionWithState>
       </div>
-      
+
       <div>
         <h3 className="text-sm font-medium text-gray-700 mb-2">Separated</h3>
         <AccordionWithState variant="separated">
@@ -585,7 +584,7 @@ export const Variants: Story = {
           ))}
         </AccordionWithState>
       </div>
-      
+
       <div>
         <h3 className="text-sm font-medium text-gray-700 mb-2">Outlined</h3>
         <AccordionWithState variant="outlined">
@@ -615,7 +614,7 @@ export const Sizes: Story = {
           ))}
         </AccordionWithState>
       </div>
-      
+
       <div>
         <h3 className="text-sm font-medium text-gray-700 mb-2">Medium (Default)</h3>
         <AccordionWithState size="md">
@@ -627,7 +626,7 @@ export const Sizes: Story = {
           ))}
         </AccordionWithState>
       </div>
-      
+
       <div>
         <h3 className="text-sm font-medium text-gray-700 mb-2">Large</h3>
         <AccordionWithState size="lg">
@@ -657,7 +656,7 @@ export const StatusStates: Story = {
           ))}
         </AccordionWithState>
       </div>
-      
+
       <div>
         <h3 className="text-sm font-medium text-gray-700 mb-2">Success Status</h3>
         <AccordionWithState status="success" variant="bordered">
@@ -669,7 +668,7 @@ export const StatusStates: Story = {
           ))}
         </AccordionWithState>
       </div>
-      
+
       <div>
         <h3 className="text-sm font-medium text-gray-700 mb-2">Warning Status</h3>
         <AccordionWithState status="warning" variant="bordered">
@@ -681,7 +680,7 @@ export const StatusStates: Story = {
           ))}
         </AccordionWithState>
       </div>
-      
+
       <div>
         <h3 className="text-sm font-medium text-gray-700 mb-2">Error Status</h3>
         <AccordionWithState status="error" variant="bordered">
@@ -711,7 +710,7 @@ export const Transitions: Story = {
           ))}
         </AccordionWithState>
       </div>
-      
+
       <div>
         <h3 className="text-sm font-medium text-gray-700 mb-2">Fade Transition</h3>
         <AccordionWithState transition="fade" transitionDuration={200}>
@@ -723,7 +722,7 @@ export const Transitions: Story = {
           ))}
         </AccordionWithState>
       </div>
-      
+
       <div>
         <h3 className="text-sm font-medium text-gray-700 mb-2">Slide Transition</h3>
         <AccordionWithState transition="slide" transitionDuration={250}>
@@ -735,7 +734,7 @@ export const Transitions: Story = {
           ))}
         </AccordionWithState>
       </div>
-      
+
       <div>
         <h3 className="text-sm font-medium text-gray-700 mb-2">Zoom Transition</h3>
         <AccordionWithState transition="zoom" transitionDuration={200}>
@@ -747,7 +746,7 @@ export const Transitions: Story = {
           ))}
         </AccordionWithState>
       </div>
-      
+
       <div>
         <h3 className="text-sm font-medium text-gray-700 mb-2">Smooth Transition</h3>
         <AccordionWithState transition="smooth" transitionDuration={400}>
@@ -777,7 +776,7 @@ export const IconPositions: Story = {
           ))}
         </AccordionWithState>
       </div>
-      
+
       <div>
         <h3 className="text-sm font-medium text-gray-700 mb-2">Icon at Start</h3>
         <AccordionWithState expandIconPosition="start">
@@ -789,13 +788,18 @@ export const IconPositions: Story = {
           ))}
         </AccordionWithState>
       </div>
-      
+
       <div>
         <h3 className="text-sm font-medium text-gray-700 mb-2">Custom Icon</h3>
-        <AccordionWithState 
+        <AccordionWithState
           expandIcon={
             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+              />
             </svg>
           }
         >
@@ -825,7 +829,7 @@ export const DisabledState: Story = {
           ))}
         </Accordion>
       </div>
-      
+
       <div>
         <h3 className="text-sm font-medium text-gray-700 mb-2">Individual Items Disabled</h3>
         <AccordionWithState>
@@ -856,7 +860,7 @@ export const LoadingAndEmpty: Story = {
           {/* Children won't be rendered when loading */}
         </Accordion>
       </div>
-      
+
       <div>
         <h3 className="text-sm font-medium text-gray-700 mb-2">Empty State</h3>
         <Accordion emptyMessage="No FAQ items available at the moment">
@@ -957,7 +961,7 @@ export const StyleVariations: Story = {
           ))}
         </AccordionWithState>
       </div>
-      
+
       <div>
         <h3 className="text-lg font-semibold mb-4">Minimal Flat</h3>
         <AccordionWithState
@@ -985,7 +989,7 @@ export const StyleVariations: Story = {
           ))}
         </AccordionWithState>
       </div>
-      
+
       <div>
         <h3 className="text-lg font-semibold mb-4">Dark Mode</h3>
         <AccordionWithState
@@ -1018,7 +1022,7 @@ export const StyleVariations: Story = {
           ))}
         </AccordionWithState>
       </div>
-      
+
       <div>
         <h3 className="text-lg font-semibold mb-4">Material Design</h3>
         <AccordionWithState
@@ -1049,7 +1053,7 @@ export const StyleVariations: Story = {
           ))}
         </AccordionWithState>
       </div>
-      
+
       <div>
         <h3 className="text-lg font-semibold mb-4">Glassmorphism</h3>
         <div className="p-8 rounded-2xl bg-gradient-to-br from-purple-100 to-pink-100">
@@ -1087,125 +1091,122 @@ export const StyleVariations: Story = {
   ),
 }
 
+const MultipleSelectionComponent = () => {
+  const [values, setValues] = useState<string[]>(['item-1', 'item-3'])
+
+  return (
+    <div className="space-y-4">
+      <Accordion type="multiple" value={values} onValueChange={setValues} variant="separated">
+        {defaultItems.map((item) => (
+          <AccordionItem key={item.value} value={item.value}>
+            <AccordionTrigger>{item.trigger}</AccordionTrigger>
+            <AccordionContent>{item.content}</AccordionContent>
+          </AccordionItem>
+        ))}
+      </Accordion>
+
+      <div className="mt-4 p-4 bg-gray-100 rounded">
+        <h4 className="font-medium mb-2">
+          Expanded Items: {values.length > 0 ? values.join(', ') : 'None'}
+        </h4>
+        <div className="space-x-2">
+          <button
+            className="px-3 py-1 bg-blue-500 text-white rounded text-sm"
+            onClick={() => setValues(['item-1', 'item-2', 'item-3'])}
+          >
+            Expand All
+          </button>
+          <button
+            className="px-3 py-1 bg-gray-500 text-white rounded text-sm"
+            onClick={() => setValues([])}
+          >
+            Collapse All
+          </button>
+          <button
+            className="px-3 py-1 bg-green-500 text-white rounded text-sm"
+            onClick={() => setValues(['item-2'])}
+          >
+            Only Item 2
+          </button>
+        </div>
+      </div>
+    </div>
+  )
+}
+
 export const MultipleSelection: Story = {
-  render: () => {
-    const [values, setValues] = useState<string[]>(['item-1', 'item-3'])
-    
-    return (
-      <div className="space-y-4">
-        <Accordion
-          type="multiple"
-          value={values}
-          onValueChange={setValues}
-          variant="separated"
-        >
-          {defaultItems.map((item) => (
-            <AccordionItem key={item.value} value={item.value}>
-              <AccordionTrigger>{item.trigger}</AccordionTrigger>
-              <AccordionContent>{item.content}</AccordionContent>
-            </AccordionItem>
-          ))}
-        </Accordion>
-        
-        <div className="mt-4 p-4 bg-gray-100 rounded">
-          <h4 className="font-medium mb-2">Expanded Items: {values.length > 0 ? values.join(', ') : 'None'}</h4>
-          <div className="space-x-2">
-            <button
-              className="px-3 py-1 bg-blue-500 text-white rounded text-sm"
-              onClick={() => setValues(['item-1', 'item-2', 'item-3'])}
-            >
-              Expand All
-            </button>
-            <button
-              className="px-3 py-1 bg-gray-500 text-white rounded text-sm"
-              onClick={() => setValues([])}
-            >
-              Collapse All
-            </button>
-            <button
-              className="px-3 py-1 bg-green-500 text-white rounded text-sm"
-              onClick={() => setValues(['item-2'])}
-            >
-              Only Item 2
-            </button>
+  render: () => <MultipleSelectionComponent />,
+}
+
+const ControlledExampleComponent = () => {
+  const [value, setValue] = useState<string>('item-2')
+  const [history, setHistory] = useState<string[]>(['item-2'])
+
+  const handleChange = (newValue: string) => {
+    setValue(newValue)
+    if (newValue) {
+      setHistory([...history, newValue])
+    }
+  }
+
+  return (
+    <div className="space-y-4">
+      <Accordion type="single" value={value} onValueChange={handleChange} collapsible>
+        {defaultItems.map((item) => (
+          <AccordionItem key={item.value} value={item.value}>
+            <AccordionTrigger>{item.trigger}</AccordionTrigger>
+            <AccordionContent>{item.content}</AccordionContent>
+          </AccordionItem>
+        ))}
+      </Accordion>
+
+      <div className="mt-4 p-4 bg-gray-100 rounded">
+        <h4 className="font-medium mb-2">Current: {value || 'None'}</h4>
+        <div className="space-x-2 mb-4">
+          <button
+            className="px-3 py-1 bg-blue-500 text-white rounded text-sm"
+            onClick={() => setValue('item-1')}
+          >
+            Open Item 1
+          </button>
+          <button
+            className="px-3 py-1 bg-blue-500 text-white rounded text-sm"
+            onClick={() => setValue('item-2')}
+          >
+            Open Item 2
+          </button>
+          <button
+            className="px-3 py-1 bg-blue-500 text-white rounded text-sm"
+            onClick={() => setValue('item-3')}
+          >
+            Open Item 3
+          </button>
+          <button
+            className="px-3 py-1 bg-gray-500 text-white rounded text-sm"
+            onClick={() => setValue('')}
+          >
+            Close All
+          </button>
+        </div>
+
+        <div>
+          <h4 className="font-medium mb-1">History:</h4>
+          <div className="text-sm text-gray-600">
+            {history.map((item, index) => (
+              <span key={index}>
+                {item}
+                {index < history.length - 1 ? ' → ' : ''}
+              </span>
+            ))}
           </div>
         </div>
       </div>
-    )
-  },
+    </div>
+  )
 }
 
 export const ControlledExample: Story = {
-  render: () => {
-    const [value, setValue] = useState<string>('item-2')
-    const [history, setHistory] = useState<string[]>(['item-2'])
-    
-    const handleChange = (newValue: string) => {
-      setValue(newValue)
-      if (newValue) {
-        setHistory([...history, newValue])
-      }
-    }
-    
-    return (
-      <div className="space-y-4">
-        <Accordion
-          type="single"
-          value={value}
-          onValueChange={handleChange}
-          collapsible
-        >
-          {defaultItems.map((item) => (
-            <AccordionItem key={item.value} value={item.value}>
-              <AccordionTrigger>{item.trigger}</AccordionTrigger>
-              <AccordionContent>{item.content}</AccordionContent>
-            </AccordionItem>
-          ))}
-        </Accordion>
-        
-        <div className="mt-4 p-4 bg-gray-100 rounded">
-          <h4 className="font-medium mb-2">Current: {value || 'None'}</h4>
-          <div className="space-x-2 mb-4">
-            <button
-              className="px-3 py-1 bg-blue-500 text-white rounded text-sm"
-              onClick={() => setValue('item-1')}
-            >
-              Open Item 1
-            </button>
-            <button
-              className="px-3 py-1 bg-blue-500 text-white rounded text-sm"
-              onClick={() => setValue('item-2')}
-            >
-              Open Item 2
-            </button>
-            <button
-              className="px-3 py-1 bg-blue-500 text-white rounded text-sm"
-              onClick={() => setValue('item-3')}
-            >
-              Open Item 3
-            </button>
-            <button
-              className="px-3 py-1 bg-gray-500 text-white rounded text-sm"
-              onClick={() => setValue('')}
-            >
-              Close All
-            </button>
-          </div>
-          
-          <div>
-            <h4 className="font-medium mb-1">History:</h4>
-            <div className="text-sm text-gray-600">
-              {history.map((item, index) => (
-                <span key={index}>
-                  {item}{index < history.length - 1 ? ' → ' : ''}
-                </span>
-              ))}
-            </div>
-          </div>
-        </div>
-      </div>
-    )
-  },
+  render: () => <ControlledExampleComponent />,
 }
 
 export const RealWorldExample: Story = {
@@ -1249,29 +1250,20 @@ export const NestedAccordions: Story = {
       <AccordionItem value="item-1">
         <AccordionTrigger>Product Categories</AccordionTrigger>
         <AccordionContent>
-          <AccordionWithState 
-            type="multiple" 
-            variant="default"
-            size="sm"
-            itemPaddingX="16px"
-          >
+          <AccordionWithState type="multiple" variant="default" size="sm" itemPaddingX="16px">
             <AccordionItem value="electronics">
               <AccordionTrigger>Electronics</AccordionTrigger>
-              <AccordionContent>
-                Laptops, Phones, Tablets, Cameras, and more...
-              </AccordionContent>
+              <AccordionContent>Laptops, Phones, Tablets, Cameras, and more...</AccordionContent>
             </AccordionItem>
             <AccordionItem value="clothing">
               <AccordionTrigger>Clothing</AccordionTrigger>
               <AccordionContent>
-                Men's, Women's, Kids, Shoes, Accessories...
+                Men&apos;s, Women&apos;s, Kids, Shoes, Accessories...
               </AccordionContent>
             </AccordionItem>
             <AccordionItem value="home">
               <AccordionTrigger>Home & Garden</AccordionTrigger>
-              <AccordionContent>
-                Furniture, Decor, Kitchen, Outdoor...
-              </AccordionContent>
+              <AccordionContent>Furniture, Decor, Kitchen, Outdoor...</AccordionContent>
             </AccordionItem>
           </AccordionWithState>
         </AccordionContent>
@@ -1279,24 +1271,20 @@ export const NestedAccordions: Story = {
       <AccordionItem value="item-2">
         <AccordionTrigger>Account Settings</AccordionTrigger>
         <AccordionContent>
-          <AccordionWithState 
-            type="single" 
-            collapsible 
+          <AccordionWithState
+            type="single"
+            collapsible
             variant="default"
             size="sm"
             itemPaddingX="16px"
           >
             <AccordionItem value="profile">
               <AccordionTrigger>Profile Information</AccordionTrigger>
-              <AccordionContent>
-                Update your name, email, and profile picture.
-              </AccordionContent>
+              <AccordionContent>Update your name, email, and profile picture.</AccordionContent>
             </AccordionItem>
             <AccordionItem value="security">
               <AccordionTrigger>Security</AccordionTrigger>
-              <AccordionContent>
-                Change password, enable 2FA, manage sessions.
-              </AccordionContent>
+              <AccordionContent>Change password, enable 2FA, manage sessions.</AccordionContent>
             </AccordionItem>
             <AccordionItem value="notifications">
               <AccordionTrigger>Notifications</AccordionTrigger>
@@ -1350,7 +1338,7 @@ export const WithComplexContent: Story = {
           </div>
         </AccordionContent>
       </AccordionItem>
-      
+
       <AccordionItem value="item-2">
         <AccordionTrigger>
           <div className="flex items-center justify-between w-full">
@@ -1367,7 +1355,9 @@ export const WithComplexContent: Story = {
             </div>
             <div className="flex justify-between items-center">
               <span className="font-medium">Tracking Number:</span>
-              <a href="#" className="text-blue-600 hover:underline">1234567890</a>
+              <a href="#" className="text-blue-600 hover:underline">
+                1234567890
+              </a>
             </div>
           </div>
         </AccordionContent>

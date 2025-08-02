@@ -1,14 +1,20 @@
 import React, { useState } from 'react'
 import type { Meta, StoryObj } from '@storybook/react'
-import { Breadcrumb, BreadcrumbItem, BreadcrumbItemComponent, BreadcrumbSeparator, BreadcrumbLink } from './Breadcrumb'
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbItemComponent,
+  BreadcrumbSeparator,
+  BreadcrumbLink,
+} from './Breadcrumb'
 
 /**
  * Breadcrumb is a navigation component that shows the user's current location within a website's hierarchy.
- * 
+ *
  * ## Usage
- * 
+ *
  * The Breadcrumb component can be used in both controlled and uncontrolled modes:
- * 
+ *
  * ### Basic Usage (Uncontrolled):
  * ```tsx
  * <Breadcrumb
@@ -20,11 +26,11 @@ import { Breadcrumb, BreadcrumbItem, BreadcrumbItemComponent, BreadcrumbSeparato
  *   ]}
  * />
  * ```
- * 
+ *
  * ### Controlled Usage:
  * ```tsx
  * const [activeIndex, setActiveIndex] = useState<number | null>(null)
- * 
+ *
  * <Breadcrumb
  *   items={items}
  *   value={activeIndex}
@@ -34,7 +40,7 @@ import { Breadcrumb, BreadcrumbItem, BreadcrumbItemComponent, BreadcrumbSeparato
  *   }}
  * />
  * ```
- * 
+ *
  * ### Item Structure:
  * ```tsx
  * interface BreadcrumbItem {
@@ -45,7 +51,7 @@ import { Breadcrumb, BreadcrumbItem, BreadcrumbItemComponent, BreadcrumbSeparato
  *   [key: string]: any     // Additional custom properties
  * }
  * ```
- * 
+ *
  * ### Custom Rendering:
  * You can also use the compound components for full control:
  * ```tsx
@@ -177,7 +183,9 @@ const meta = {
       control: false,
       description: 'Custom render function for items',
       table: {
-        type: { summary: '(item: BreadcrumbItem, index: number, isLast: boolean) => React.ReactNode' },
+        type: {
+          summary: '(item: BreadcrumbItem, index: number, isLast: boolean) => React.ReactNode',
+        },
       },
     },
     renderCollapsed: {
@@ -203,32 +211,52 @@ const basicItems: BreadcrumbItem[] = [
 ]
 
 const iconItems: BreadcrumbItem[] = [
-  { 
-    label: 'Home', 
+  {
+    label: 'Home',
     href: '/',
-    icon: <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-      <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" />
-    </svg>
+    icon: (
+      <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+        <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" />
+      </svg>
+    ),
   },
-  { 
-    label: 'Documents', 
+  {
+    label: 'Documents',
     href: '/documents',
-    icon: <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-      <path fillRule="evenodd" d="M4 4a2 2 0 00-2 2v8a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-5L9 2H4z" clipRule="evenodd" />
-    </svg>
+    icon: (
+      <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+        <path
+          fillRule="evenodd"
+          d="M4 4a2 2 0 00-2 2v8a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-5L9 2H4z"
+          clipRule="evenodd"
+        />
+      </svg>
+    ),
   },
-  { 
-    label: 'Projects', 
+  {
+    label: 'Projects',
     href: '/documents/projects',
-    icon: <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-      <path fillRule="evenodd" d="M2 5a2 2 0 012-2h12a2 2 0 012 2v10a2 2 0 01-2 2H4a2 2 0 01-2-2V5zm3.293 1.293a1 1 0 011.414 0l3 3a1 1 0 010 1.414l-3 3a1 1 0 01-1.414-1.414L7.586 10 5.293 7.707a1 1 0 010-1.414zM11 12a1 1 0 100 2h3a1 1 0 100-2h-3z" clipRule="evenodd" />
-    </svg>
+    icon: (
+      <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+        <path
+          fillRule="evenodd"
+          d="M2 5a2 2 0 012-2h12a2 2 0 012 2v10a2 2 0 01-2 2H4a2 2 0 01-2-2V5zm3.293 1.293a1 1 0 011.414 0l3 3a1 1 0 010 1.414l-3 3a1 1 0 01-1.414-1.414L7.586 10 5.293 7.707a1 1 0 010-1.414zM11 12a1 1 0 100 2h3a1 1 0 100-2h-3z"
+          clipRule="evenodd"
+        />
+      </svg>
+    ),
   },
-  { 
+  {
     label: 'Q4 Report',
-    icon: <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-      <path fillRule="evenodd" d="M4 4a2 2 0 00-2 2v8a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-5L9 2H4z" clipRule="evenodd" />
-    </svg>
+    icon: (
+      <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+        <path
+          fillRule="evenodd"
+          d="M4 4a2 2 0 00-2 2v8a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-5L9 2H4z"
+          clipRule="evenodd"
+        />
+      </svg>
+    ),
   },
 ]
 
@@ -246,7 +274,7 @@ const longPath: BreadcrumbItem[] = [
 // Wrapper component for controlled stories
 const BreadcrumbWithState = (props: any) => {
   const [value, setValue] = useState<number | null>(null)
-  
+
   return (
     <Breadcrumb
       {...props}
@@ -270,19 +298,25 @@ export const ShowingDefaults: Story = {
   render: () => (
     <div className="space-y-6">
       <div>
-        <h3 className="text-sm font-medium text-gray-700 mb-2">Default Breadcrumb (no props except items)</h3>
+        <h3 className="text-sm font-medium text-gray-700 mb-2">
+          Default Breadcrumb (no props except items)
+        </h3>
         <Breadcrumb items={basicItems} />
-        <p className="text-xs text-gray-500 mt-1">Default separator: &gt; | Default colors and styles applied</p>
+        <p className="text-xs text-gray-500 mt-1">
+          Default separator: &gt; | Default colors and styles applied
+        </p>
       </div>
-      
+
       <div>
         <h3 className="text-sm font-medium text-gray-700 mb-2">With Icons (default icon styles)</h3>
         <Breadcrumb items={iconItems} />
         <p className="text-xs text-gray-500 mt-1">Icons use currentColor by default</p>
       </div>
-      
+
       <div>
-        <h3 className="text-sm font-medium text-gray-700 mb-2">Pills Variant (default pill styles)</h3>
+        <h3 className="text-sm font-medium text-gray-700 mb-2">
+          Pills Variant (default pill styles)
+        </h3>
         <Breadcrumb items={basicItems} variant="pills" />
         <p className="text-xs text-gray-500 mt-1">Pills have default hover and active colors</p>
       </div>
@@ -360,11 +394,16 @@ export const CustomSeparators: Story = {
       </div>
       <div>
         <h3 className="text-sm font-medium text-gray-700 mb-2">Custom Icon Separator</h3>
-        <BreadcrumbWithState 
-          items={basicItems} 
+        <BreadcrumbWithState
+          items={basicItems}
           separator={
             <svg className="w-4 h-4 mx-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 5l7 7-7 7M5 5l7 7-7 7" />
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M13 5l7 7-7 7M5 5l7 7-7 7"
+              />
             </svg>
           }
         />
@@ -405,7 +444,7 @@ export const DisabledState: Story = {
       </div>
       <div>
         <h3 className="text-sm font-medium text-gray-700 mb-2">Individual Items Disabled</h3>
-        <BreadcrumbWithState 
+        <BreadcrumbWithState
           items={[
             { label: 'Home', href: '/' },
             { label: 'Products', href: '/products', disabled: true },
@@ -586,16 +625,18 @@ export const StyleVariations: Story = {
 export const CustomRendering: Story = {
   render: () => {
     const [value, setValue] = useState<number | null>(null)
-    
+
     return (
       <Breadcrumb
         items={iconItems}
         value={value}
         onChange={setValue}
         renderItem={(item, index, isLast) => (
-          <div className={`flex items-center gap-2 px-3 py-2 rounded-lg transition-all ${
-            isLast ? 'bg-blue-100 text-blue-700 font-medium' : 'hover:bg-gray-100'
-          }`}>
+          <div
+            className={`flex items-center gap-2 px-3 py-2 rounded-lg transition-all ${
+              isLast ? 'bg-blue-100 text-blue-700 font-medium' : 'hover:bg-gray-100'
+            }`}
+          >
             {item.icon}
             <span>{item.label}</span>
             {!isLast && <span className="text-xs text-gray-500">({index + 1})</span>}
@@ -603,7 +644,11 @@ export const CustomRendering: Story = {
         )}
         separator={
           <svg className="w-5 h-5 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
-            <path fillRule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clipRule="evenodd" />
+            <path
+              fillRule="evenodd"
+              d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z"
+              clipRule="evenodd"
+            />
           </svg>
         }
       />
@@ -615,7 +660,7 @@ export const ControlledWithNavigation: Story = {
   render: () => {
     const [value, setValue] = useState<number | null>(2)
     const [navigationHistory, setNavigationHistory] = useState<string[]>([])
-    
+
     return (
       <div className="space-y-4">
         <Breadcrumb
@@ -629,7 +674,7 @@ export const ControlledWithNavigation: Story = {
           }}
           variant="bordered"
         />
-        
+
         <div className="mt-4 p-4 bg-gray-100 rounded">
           <h4 className="font-medium mb-2">Active Index: {value ?? 'None'}</h4>
           <div className="space-y-2">
@@ -652,7 +697,7 @@ export const ControlledWithNavigation: Story = {
               Clear Selection
             </button>
           </div>
-          
+
           {navigationHistory.length > 0 && (
             <div className="mt-4">
               <h4 className="font-medium mb-2">Navigation History:</h4>
@@ -688,17 +733,15 @@ export const CompoundComponents: Story = {
               isLast={false}
             />
             <BreadcrumbSeparator>/</BreadcrumbSeparator>
-            <BreadcrumbItemComponent
-              index={2}
-              item={{ label: 'Current Page' }}
-              isLast={true}
-            />
+            <BreadcrumbItemComponent index={2} item={{ label: 'Current Page' }} isLast={true} />
           </ol>
         </Breadcrumb>
       </div>
 
       <div>
-        <h3 className="text-sm font-medium text-gray-700 mb-2">Custom Layout with BreadcrumbLink</h3>
+        <h3 className="text-sm font-medium text-gray-700 mb-2">
+          Custom Layout with BreadcrumbLink
+        </h3>
         <Breadcrumb variant="solid" size="lg">
           <div className="flex items-center gap-4">
             <BreadcrumbLink item={{ label: '🏠 Home', href: '/' }} index={0} />
@@ -716,7 +759,7 @@ export const CompoundComponents: Story = {
 export const RealWorldExample: Story = {
   render: () => {
     const [currentPath, setCurrentPath] = useState('/products/electronics/laptops/gaming')
-    
+
     const pathToBreadcrumbs = (path: string): BreadcrumbItem[] => {
       const segments = path.split('/').filter(Boolean)
       return [
@@ -724,10 +767,10 @@ export const RealWorldExample: Story = {
         ...segments.map((segment, index) => ({
           label: segment.charAt(0).toUpperCase() + segment.slice(1),
           href: '/' + segments.slice(0, index + 1).join('/'),
-        }))
+        })),
       ]
     }
-    
+
     return (
       <div className="space-y-6">
         <div className="p-4 bg-gray-50 rounded-lg">
@@ -744,7 +787,7 @@ export const RealWorldExample: Story = {
             focusRingColor="#2563eb"
           />
         </div>
-        
+
         <div className="p-4 bg-white border rounded-lg">
           <h3 className="font-medium mb-2">Simulate Navigation:</h3>
           <div className="space-x-2">
