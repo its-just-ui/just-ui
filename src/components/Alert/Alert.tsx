@@ -2,7 +2,7 @@ import React from 'react'
 import { cn } from '@/utils'
 
 export interface AlertProps extends React.HTMLAttributes<HTMLDivElement> {
-  variant?: 'default' | 'success' | 'warning' | 'destructive'
+  variant?: 'default' | 'success' | 'warning' | 'error'
   children: React.ReactNode
 }
 
@@ -14,7 +14,7 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(
       default: 'bg-white border-gray-200 text-gray-900',
       success: 'bg-green-50 border-green-200 text-green-900',
       warning: 'bg-yellow-50 border-yellow-200 text-yellow-900',
-      destructive: 'bg-red-50 border-red-200 text-red-900',
+      error: 'bg-red-50 border-red-200 text-red-900',
     }
     
     return (
