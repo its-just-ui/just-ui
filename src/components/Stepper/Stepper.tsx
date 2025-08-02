@@ -57,37 +57,7 @@ export interface StepperProps extends React.HTMLAttributes<HTMLDivElement> {
   helperText?: string
   /** Error message to display */
   errorMessage?: string
-  // Styling props
-  borderWidth?: string
-  borderColor?: string
-  borderStyle?: string
-  borderRadius?: string
-  fontSize?: string
-  fontWeight?: string
-  fontFamily?: string
-  textColor?: string
-  backgroundColor?: string
-  focusRingColor?: string
-  focusRingWidth?: string
-  focusRingOffset?: string
-  focusBorderColor?: string
-  focusBackgroundColor?: string
-  boxShadow?: string
-  focusBoxShadow?: string
-  padding?: string
-  paddingX?: string
-  paddingY?: string
-  // Sub-component styles
-  completedStepColor?: string
-  currentStepColor?: string
-  pendingStepColor?: string
-  errorStepColor?: string
-  connectorColor?: string
-  connectorWidth?: string
-  // Custom render functions
-  renderStepIcon?: (step: StepperStep, index: number) => React.ReactNode
-  renderStepContent?: (step: StepperStep, index: number) => React.ReactNode
-  // Event handlers
+  /** Event handlers */
   onStepClick?: (step: StepperStep, index: number) => void
   onStepComplete?: (step: StepperStep, index: number) => void
   onStepError?: (step: StepperStep, index: number) => void
@@ -143,40 +113,7 @@ const Stepper = forwardRef<HTMLDivElement, StepperProps>(
       errorMessage,
       className,
       children,
-      // Styling props
-      borderWidth,
-      borderColor,
-      borderStyle,
-      borderRadius,
-      fontSize,
-      fontWeight,
-      fontFamily,
-      textColor,
-      backgroundColor,
-      focusRingColor,
-      focusRingWidth,
-      focusRingOffset,
-      focusBorderColor,
-      focusBackgroundColor,
-      boxShadow,
-      focusBoxShadow,
-      padding,
-      paddingX,
-      paddingY,
-      // Sub-component styles
-      connectorColor,
-      connectorWidth,
-      completedStepColor,
-      currentStepColor,
-      pendingStepColor,
-      errorStepColor,
-      // Custom render functions
-      renderStepIcon,
-      renderStepContent,
-      // Event handlers
       onStepClick,
-      onStepComplete,
-      onStepError,
       ...props
     },
     ref
@@ -226,39 +163,11 @@ const Stepper = forwardRef<HTMLDivElement, StepperProps>(
       className
     )
 
-    const containerStyles = {
-      borderWidth,
-      borderColor,
-      borderStyle,
-      borderRadius,
-      fontSize,
-      fontWeight,
-      fontFamily,
-      color: textColor,
-      backgroundColor,
-      boxShadow,
-      padding,
-      paddingLeft: paddingX,
-      paddingRight: paddingX,
-      paddingTop: paddingY,
-      paddingBottom: paddingY,
-    }
-
-    const focusStyles = {
-      '--focus-ring-color': focusRingColor,
-      '--focus-ring-width': focusRingWidth,
-      '--focus-ring-offset': focusRingOffset,
-      '--focus-border-color': focusBorderColor,
-      '--focus-background-color': focusBackgroundColor,
-      '--focus-box-shadow': focusBoxShadow,
-    } as React.CSSProperties
-
     if (loading) {
       return (
         <div
           ref={ref}
           className={cn(baseStyles, 'items-center justify-center')}
-          style={{ ...containerStyles, ...focusStyles }}
           {...props}
         >
           <div className="flex items-center space-x-2">
@@ -274,7 +183,6 @@ const Stepper = forwardRef<HTMLDivElement, StepperProps>(
         <div
           ref={ref}
           className={cn(baseStyles, 'focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2')}
-          style={{ ...containerStyles, ...focusStyles }}
           role="navigation"
           aria-label={label || 'Stepper navigation'}
           {...props}
@@ -341,10 +249,10 @@ const Step = memo(forwardRef<HTMLDivElement, StepProps>(
     }
 
     const statusColors = {
-      completed: 'bg-gradient-to-r from-green-500 to-emerald-500 text-white shadow-lg shadow-green-200',
-      current: 'bg-gradient-to-r from-blue-500 to-indigo-500 text-white shadow-lg shadow-blue-200 ring-2 ring-blue-200',
-      pending: 'bg-gray-100 text-gray-600 border-2 border-gray-200',
-      error: 'bg-gradient-to-r from-red-500 to-pink-500 text-white shadow-lg shadow-red-200',
+      completed: 'bg-primary-600 text-white',
+      current: 'bg-primary-600 text-white ring-2 ring-primary-200',
+      pending: 'bg-gray-100 text-gray-600 border border-gray-300',
+      error: 'bg-red-600 text-white',
     }
 
     const handleClick = () => {
@@ -357,10 +265,10 @@ const Step = memo(forwardRef<HTMLDivElement, StepProps>(
       <div
         ref={ref}
         className={cn(
-          'flex items-center transition-all duration-300 ease-in-out',
+          'flex items-center transition-all duration-200',
           stepVariants[variant],
           {
-            'cursor-pointer hover:opacity-80 hover:scale-105 transform': isAccessible,
+            'cursor-pointer hover:opacity-80': isAccessible,
             'cursor-not-allowed opacity-50': !isAccessible,
           },
           className
@@ -375,14 +283,13 @@ const Step = memo(forwardRef<HTMLDivElement, StepProps>(
         {/* Step Icon/Number */}
         <div
           className={cn(
-            'flex items-center justify-center rounded-full border-2 transition-all duration-300 ease-in-out',
+            'flex items-center justify-center rounded-full border-2 transition-all duration-200',
             stepSizes[size],
             statusColors[status],
             {
-              'border-green-500 shadow-lg shadow-green-200': status === 'completed',
-              'border-blue-500 shadow-lg shadow-blue-200': status === 'current',
+              'border-primary-600': status === 'completed' || status === 'current',
               'border-gray-300': status === 'pending',
-              'border-red-500 shadow-lg shadow-red-200': status === 'error',
+              'border-red-600': status === 'error',
             }
           )}
         >
@@ -405,7 +312,7 @@ const Step = memo(forwardRef<HTMLDivElement, StepProps>(
                 'font-medium transition-colors duration-200',
                 {
                   'text-gray-900': status === 'current',
-                  'text-green-600': status === 'completed',
+                  'text-primary-600': status === 'completed',
                   'text-gray-500': status === 'pending',
                   'text-red-600': status === 'error',
                 }
@@ -452,17 +359,17 @@ const Connector = memo(forwardRef<HTMLDivElement, ConnectorProps>(
     }
 
     const connectorColors = {
-      completed: 'bg-gradient-to-r from-green-500 to-emerald-500',
-      current: 'bg-gradient-to-r from-blue-500 to-indigo-500',
+      completed: 'bg-primary-600',
+      current: 'bg-primary-600',
       pending: 'bg-gray-200',
-      error: 'bg-gradient-to-r from-red-500 to-pink-500',
+      error: 'bg-red-600',
     }
 
     return (
       <div
         ref={ref}
         className={cn(
-          'transition-all duration-300 ease-in-out rounded-full',
+          'transition-all duration-200',
           connectorVariants[variant],
           connectorColors[nextStepStatus],
           className
@@ -530,7 +437,7 @@ const Content = memo(forwardRef<HTMLDivElement, ContentProps>(
     return (
       <div
         ref={ref}
-        className={cn('mt-6 p-6 border border-gray-200 rounded-xl bg-white shadow-sm', className)}
+        className={cn('mt-6 p-4 border border-gray-200 rounded-lg bg-white', className)}
         {...props}
       >
         {renderContent ? (
@@ -619,7 +526,7 @@ const Navigation = memo(forwardRef<HTMLDivElement, NavigationProps>(
               type="button"
               onClick={handlePrevious}
               disabled={disabled}
-              className="px-6 py-3 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200"
+              className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-600 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {previousText}
             </button>
@@ -632,7 +539,7 @@ const Navigation = memo(forwardRef<HTMLDivElement, NavigationProps>(
               type="button"
               onClick={handleNext}
               disabled={disabled}
-              className="px-6 py-3 text-sm font-medium text-white bg-gradient-to-r from-blue-600 to-indigo-600 border border-transparent rounded-lg hover:from-blue-700 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 shadow-md hover:shadow-lg"
+              className="px-4 py-2 text-sm font-medium text-white bg-primary-600 border border-transparent rounded-md hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-600 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {nextText}
             </button>
@@ -643,7 +550,7 @@ const Navigation = memo(forwardRef<HTMLDivElement, NavigationProps>(
               type="button"
               onClick={handleComplete}
               disabled={disabled}
-              className="px-6 py-3 text-sm font-medium text-white bg-gradient-to-r from-green-600 to-emerald-600 border border-transparent rounded-lg hover:from-green-700 hover:to-emerald-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 shadow-md hover:shadow-lg"
+              className="px-4 py-2 text-sm font-medium text-white bg-green-600 border border-transparent rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {completeText}
             </button>
