@@ -17,6 +17,7 @@
     "noFallthroughCasesInSwitch": true,
     "declaration": true,
     "declarationMap": true,
+    "stripInternal": false,
     "outDir": "./dist",
     "baseUrl": ".",
     "paths": {

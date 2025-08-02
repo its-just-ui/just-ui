@@ -570,7 +570,7 @@ export const CustomStyling: Story = {
         buttonTextColorSelected="#10b981"
         buttonBorderWidth="2px"
         focusRingColor="#10b981"
-        groupGap="8px"
+        gap="8px"
       >
         <ToggleButtons.Button value="option1" icon="✨" label="Magic" />
         <ToggleButtons.Button value="option2" icon="✓" label="Done" />
@@ -641,7 +641,7 @@ const FormExampleComponent = () => {
     <form onSubmit={handleSubmit} className="space-y-6 max-w-md">
       <ToggleButtons
         value={textFormat}
-        onChange={setTextFormat}
+        onChange={(value) => setTextFormat(value as string[])}
         selectionMode="multiple"
         label="Text Formatting"
         helperText="Select formatting options"
@@ -664,7 +664,12 @@ const FormExampleComponent = () => {
         />
       </ToggleButtons>
 
-      <ToggleButtons value={alignment} onChange={setAlignment} label="Text Alignment" required>
+      <ToggleButtons
+        value={alignment}
+        onChange={(value) => setAlignment(value as string)}
+        label="Text Alignment"
+        required
+      >
         <ToggleButtons.Button value="left" icon="◀" label="Left" />
         <ToggleButtons.Button value="center" icon="▬" label="Center" />
         <ToggleButtons.Button value="right" icon="▶" label="Right" />

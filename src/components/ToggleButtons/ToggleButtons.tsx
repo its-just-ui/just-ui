@@ -73,6 +73,13 @@ export interface ToggleButtonsProps extends Omit<React.HTMLAttributes<HTMLDivEle
 
   // Button styles
   buttonBorderRadius?: string
+  buttonBackgroundColor?: string
+  buttonBackgroundColorSelected?: string
+  buttonTextColor?: string
+  buttonTextColorSelected?: string
+  buttonBorderColorSelected?: string
+  buttonBorderWidth?: string
+  groupGap?: string
 
   // Label styles
   labelColor?: string
@@ -580,6 +587,13 @@ const ToggleButtonsBase = forwardRef<HTMLDivElement, ToggleButtonsProps>(
 
       // Button styles
       buttonBorderRadius,
+      buttonBackgroundColor,
+      buttonBackgroundColorSelected,
+      buttonTextColor,
+      buttonTextColorSelected,
+      buttonBorderColorSelected,
+      buttonBorderWidth,
+      groupGap: _groupGap,
 
       // Label styles
       labelColor,
@@ -773,6 +787,17 @@ const ToggleButtonsBase = forwardRef<HTMLDivElement, ToggleButtonsProps>(
           key: button.props.value,
           style: { ...button.props.style, ...positionStyles },
           className: cn(button.props.className, fullWidth && 'flex-1'),
+          // Pass down button styling props if not already set on the button
+          ...(buttonBackgroundColor &&
+            !button.props.buttonBackgroundColor && { buttonBackgroundColor }),
+          ...(buttonBackgroundColorSelected &&
+            !button.props.buttonBackgroundColorSelected && { buttonBackgroundColorSelected }),
+          ...(buttonTextColor && !button.props.buttonTextColor && { buttonTextColor }),
+          ...(buttonTextColorSelected &&
+            !button.props.buttonTextColorSelected && { buttonTextColorSelected }),
+          ...(buttonBorderColorSelected &&
+            !button.props.buttonBorderColorSelected && { buttonBorderColorSelected }),
+          ...(buttonBorderWidth && !button.props.buttonBorderWidth && { buttonBorderWidth }),
         })
       })
     }

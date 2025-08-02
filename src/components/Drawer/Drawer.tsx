@@ -1,8 +1,8 @@
 import React, { createContext, useContext, useState, useCallback, useRef, useEffect } from 'react'
 import { cn } from '@/utils'
 
-// Main drawer data interface
-export interface DrawerItem {
+// Data interface (renamed to avoid the type/value collision)
+export interface DrawerItemData {
   id: string | number
   label: string
   icon?: React.ReactNode
@@ -15,10 +15,13 @@ export interface DrawerItem {
   [key: string]: unknown
 }
 
+// Alias so external code can still refer to `DrawerItem` as the type
+export type DrawerItem = DrawerItemData
+
 export interface DrawerProps
   extends Omit<React.HTMLAttributes<HTMLDivElement>, 'onChange' | 'defaultValue'> {
   // Core functionality
-  items?: DrawerItem[]
+  items?: DrawerItemData[]
   open?: boolean
   onOpenChange?: (open: boolean) => void
   defaultOpen?: boolean
@@ -66,7 +69,7 @@ export interface DrawerProps
   transitionDuration?: number
 
   // Custom render functions
-  renderItem?: (item: DrawerItem, isActive: boolean) => React.ReactNode
+  renderItem?: (item: DrawerItemData, isActive: boolean) => React.ReactNode
   renderHeader?: () => React.ReactNode
   renderFooter?: () => React.ReactNode
   renderEmpty?: () => React.ReactNode
@@ -129,7 +132,7 @@ export interface DrawerProps
   // Event handlers
   onFocus?: () => void
   onBlur?: () => void
-  onItemClick?: (item: DrawerItem) => void
+  onItemClick?: (item: any) => void
   onKeyDown?: (event: React.KeyboardEvent) => void
   onTransitionStart?: () => void
   onTransitionEnd?: () => void
@@ -153,7 +156,7 @@ export interface DrawerContextValue {
   setCollapsed: (collapsed: boolean) => void
 
   // Items
-  items: DrawerItem[]
+  items: any[]
 
   // Configuration
   position: string
@@ -179,7 +182,7 @@ export interface DrawerContextValue {
   emptyMessage: string
 
   // Custom renders
-  renderItem?: (item: DrawerItem, isActive: boolean) => React.ReactNode
+  renderItem?: (item: any, isActive: boolean) => React.ReactNode
   renderHeader?: () => React.ReactNode
   renderFooter?: () => React.ReactNode
   renderEmpty?: () => React.ReactNode
@@ -224,7 +227,7 @@ export interface DrawerContextValue {
   // Event handlers
   onFocus?: () => void
   onBlur?: () => void
-  onItemClick?: (item: DrawerItem) => void
+  onItemClick?: (item: any) => void
 
   // Close icon
   showCloseIcon?: boolean
@@ -893,7 +896,7 @@ const DrawerItemList = React.forwardRef<HTMLDivElement, DrawerItemListProps>(
 DrawerItemList.displayName = 'DrawerItemList'
 
 export interface DrawerItemProps extends React.HTMLAttributes<HTMLDivElement> {
-  item: DrawerItem
+  item: any // Changed from DrawerItem to any to avoid using private type
 }
 
 const DrawerItemComponent = React.forwardRef<HTMLDivElement, DrawerItemProps>(

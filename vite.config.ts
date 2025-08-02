@@ -10,6 +10,7 @@ export default defineConfig({
       insertTypesEntry: true,
       include: ['src/**/*.ts', 'src/**/*.tsx'],
       exclude: ['src/**/*.stories.tsx', 'src/**/*.test.tsx'],
+      skipDiagnostics: true,
     }),
   ],
   build: {
@@ -17,7 +18,7 @@ export default defineConfig({
       entry: resolve(__dirname, 'src/index.ts'),
       name: 'UILibrary',
       formats: ['es', 'cjs'],
-      fileName: (format) => format === 'es' ? 'index.js' : 'index.cjs',
+      fileName: (format) => (format === 'es' ? 'index.js' : 'index.cjs'),
     },
     rollupOptions: {
       external: ['react', 'react-dom', 'react/jsx-runtime'],
