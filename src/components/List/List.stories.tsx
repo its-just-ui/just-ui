@@ -1,18 +1,17 @@
 import React, { useState } from 'react'
 import type { Meta, StoryObj } from '@storybook/react'
-import { List, ListContainer, ListItemData, ListHeader, ListFooter } from './List'
+import { List, ListContainer, ListItem, ListHeader, ListFooter } from './List'
 
 /**
- * List is a versatile component for displaying selectable or interactive items with extensive customization options.
+ * List is a versatile component for displaying selectable or interactive items.
  *
  * ## Features
- * - **Multiple Variants**: 5 visual styles from minimal to elevated designs (default, bordered, card, minimal, elevated)
+ * - **Multiple Variants**: 5 visual styles from minimal to elevated designs
  * - **Flexible Sizing**: 3 size options from small to large (sm, md, lg)
- * - **Status States**: Built-in semantic status colors for different contexts (default, success, warning, error, info)
+ * - **Status States**: Built-in semantic status colors for different contexts
  * - **Interactive Elements**: Support for selection, click handlers, and hover effects
  * - **Loading & Disabled States**: Handle async operations and disabled states gracefully
- * - **Compound Components**: Use ListContainer, ListItemData, ListHeader, and ListFooter for full control
- * - **Extensive Styling**: Over 60 style props for complete visual customization
+ * - **Compound Components**: Use ListContainer, ListItem, ListHeader, and ListFooter for full control
  * - **Form Integration**: Works seamlessly in forms with controlled/uncontrolled modes
  * - **Accessibility First**: Full ARIA support, keyboard navigation, and screen reader compatibility
  * - **Rich Content**: Support for avatars, icons, badges, and custom actions
@@ -59,34 +58,6 @@ import { List, ListContainer, ListItemData, ListHeader, ListFooter } from './Lis
  *       <p>{item.description}</p>
  *     </div>
  *   )}
- * />
- * ```
- *
- * ### Custom Styling:
- * ```tsx
- * <List
- *   items={items}
- *   backgroundColor="#f8fafc"
- *   borderRadius="12px"
- *   padding="16px"
- *   boxShadow="0 4px 6px -1px rgba(0, 0, 0, 0.1)"
- * >
- *   Custom Styled List
- * </List>
- * ```
- *
- * ### Form Integration:
- * ```tsx
- * const [selectedUsers, setSelectedUsers] = useState<string[]>([])
- *
- * <List
- *   items={users}
- *   value={selectedUsers}
- *   onChange={setSelectedUsers}
- *   multiple
- *   selectable
- *   label="Select Users"
- *   helperText="Choose users to invite"
  * />
  * ```
  */
@@ -259,806 +230,6 @@ const meta = {
       },
     },
 
-    // Container Styles
-    backgroundColor: {
-      control: 'color',
-      description: 'Custom background color',
-      table: {
-        category: 'Container Styles',
-        type: { summary: 'string' },
-      },
-    },
-    textColor: {
-      control: 'color',
-      description: 'Custom text color',
-      table: {
-        category: 'Container Styles',
-        type: { summary: 'string' },
-      },
-    },
-    borderWidth: {
-      control: 'text',
-      description: 'Border width (e.g., "1px", "2px")',
-      table: {
-        category: 'Container Styles',
-        type: { summary: 'string' },
-      },
-    },
-    borderColor: {
-      control: 'color',
-      description: 'Border color',
-      table: {
-        category: 'Container Styles',
-        type: { summary: 'string' },
-      },
-    },
-    borderStyle: {
-      control: 'select',
-      options: ['solid', 'dashed', 'dotted', 'double'],
-      description: 'Border style',
-      table: {
-        category: 'Container Styles',
-        type: { summary: 'string' },
-      },
-    },
-    borderRadius: {
-      control: 'text',
-      description: 'Border radius (e.g., "8px", "50%")',
-      table: {
-        category: 'Container Styles',
-        type: { summary: 'string' },
-      },
-    },
-    padding: {
-      control: 'text',
-      description: 'Padding for the list',
-      table: {
-        category: 'Container Styles',
-        type: { summary: 'string' },
-      },
-    },
-    paddingX: {
-      control: 'text',
-      description: 'Horizontal padding',
-      table: {
-        category: 'Container Styles',
-        type: { summary: 'string' },
-      },
-    },
-    paddingY: {
-      control: 'text',
-      description: 'Vertical padding',
-      table: {
-        category: 'Container Styles',
-        type: { summary: 'string' },
-      },
-    },
-    gap: {
-      control: 'text',
-      description: 'Gap between list elements',
-      table: {
-        category: 'Container Styles',
-        type: { summary: 'string' },
-      },
-    },
-
-    // Typography
-    fontSize: {
-      control: 'text',
-      description: 'Font size (e.g., "14px", "1rem")',
-      table: {
-        category: 'Typography',
-        type: { summary: 'string' },
-      },
-    },
-    fontWeight: {
-      control: 'select',
-      options: ['normal', 'medium', 'semibold', 'bold'],
-      description: 'Font weight',
-      table: {
-        category: 'Typography',
-        type: { summary: 'string' },
-      },
-    },
-    fontFamily: {
-      control: 'text',
-      description: 'Font family',
-      table: {
-        category: 'Typography',
-        type: { summary: 'string' },
-      },
-    },
-
-    // Hover & Focus Effects
-    hoverBackgroundColor: {
-      control: 'color',
-      description: 'Background color on hover',
-      table: {
-        category: 'Hover & Focus',
-        type: { summary: 'string' },
-      },
-    },
-    focusRingColor: {
-      control: 'color',
-      description: 'Focus ring color',
-      table: {
-        category: 'Hover & Focus',
-        type: { summary: 'string' },
-      },
-    },
-    focusRingWidth: {
-      control: 'text',
-      description: 'Focus ring width',
-      table: {
-        category: 'Hover & Focus',
-        type: { summary: 'string' },
-      },
-    },
-    focusRingOffset: {
-      control: 'text',
-      description: 'Focus ring offset',
-      table: {
-        category: 'Hover & Focus',
-        type: { summary: 'string' },
-      },
-    },
-    focusBorderColor: {
-      control: 'color',
-      description: 'Border color when focused',
-      table: {
-        category: 'Hover & Focus',
-        type: { summary: 'string' },
-      },
-    },
-    focusBackgroundColor: {
-      control: 'color',
-      description: 'Background color when focused',
-      table: {
-        category: 'Hover & Focus',
-        type: { summary: 'string' },
-      },
-    },
-
-    // Shadow Effects
-    boxShadow: {
-      control: 'text',
-      description: 'Box shadow for the list',
-      table: {
-        category: 'Shadow Effects',
-        type: { summary: 'string' },
-      },
-    },
-    focusBoxShadow: {
-      control: 'text',
-      description: 'Box shadow when focused',
-      table: {
-        category: 'Shadow Effects',
-        type: { summary: 'string' },
-      },
-    },
-    hoverBoxShadow: {
-      control: 'text',
-      description: 'Box shadow on hover',
-      table: {
-        category: 'Shadow Effects',
-        type: { summary: 'string' },
-      },
-    },
-
-    // Icon customization
-    iconColor: {
-      control: 'color',
-      description: 'Color for icons',
-      table: {
-        category: 'Icons',
-        type: { summary: 'string' },
-      },
-    },
-    actionIconColor: {
-      control: 'color',
-      description: 'Color for action icons',
-      table: {
-        category: 'Icons',
-        type: { summary: 'string' },
-      },
-    },
-    loadingIconColor: {
-      control: 'color',
-      description: 'Color for loading spinner',
-      table: {
-        category: 'Icons',
-        type: { summary: 'string' },
-      },
-    },
-
-    // Container styles
-    containerBackgroundColor: {
-      control: 'color',
-      description: 'Background color of the container',
-      table: {
-        category: 'Container Styles',
-        type: { summary: 'string' },
-      },
-    },
-    containerBorderColor: {
-      control: 'color',
-      description: 'Border color of the container',
-      table: {
-        category: 'Container Styles',
-        type: { summary: 'string' },
-      },
-    },
-    containerBorderWidth: {
-      control: 'text',
-      description: 'Border width of the container',
-      table: {
-        category: 'Container Styles',
-        type: { summary: 'string' },
-      },
-    },
-    containerBorderRadius: {
-      control: 'text',
-      description: 'Border radius of the container',
-      table: {
-        category: 'Container Styles',
-        type: { summary: 'string' },
-      },
-    },
-    containerPadding: {
-      control: 'text',
-      description: 'Padding of the container',
-      table: {
-        category: 'Container Styles',
-        type: { summary: 'string' },
-      },
-    },
-    containerGap: {
-      control: 'text',
-      description: 'Gap between container elements',
-      table: {
-        category: 'Container Styles',
-        type: { summary: 'string' },
-      },
-    },
-
-    // Item styles
-    itemPadding: {
-      control: 'text',
-      description: 'Padding for individual items',
-      table: {
-        category: 'Item Styles',
-        type: { summary: 'string' },
-      },
-    },
-    itemBorderWidth: {
-      control: 'text',
-      description: 'Border width for items',
-      table: {
-        category: 'Item Styles',
-        type: { summary: 'string' },
-      },
-    },
-    itemBorderColor: {
-      control: 'color',
-      description: 'Border color for items',
-      table: {
-        category: 'Item Styles',
-        type: { summary: 'string' },
-      },
-    },
-    itemBorderRadius: {
-      control: 'text',
-      description: 'Border radius for items',
-      table: {
-        category: 'Item Styles',
-        type: { summary: 'string' },
-      },
-    },
-    itemBackgroundColor: {
-      control: 'color',
-      description: 'Background color for items',
-      table: {
-        category: 'Item Styles',
-        type: { summary: 'string' },
-      },
-    },
-    itemHoverBackgroundColor: {
-      control: 'color',
-      description: 'Background color for items on hover',
-      table: {
-        category: 'Item Styles',
-        type: { summary: 'string' },
-      },
-    },
-    itemSelectedBackgroundColor: {
-      control: 'color',
-      description: 'Background color for selected items',
-      table: {
-        category: 'Item Styles',
-        type: { summary: 'string' },
-      },
-    },
-    itemSelectedTextColor: {
-      control: 'color',
-      description: 'Text color for selected items',
-      table: {
-        category: 'Item Styles',
-        type: { summary: 'string' },
-      },
-    },
-    itemDisabledOpacity: {
-      control: 'text',
-      description: 'Opacity for disabled items',
-      table: {
-        category: 'Item Styles',
-        type: { summary: 'string' },
-      },
-    },
-    itemGap: {
-      control: 'text',
-      description: 'Gap between items',
-      table: {
-        category: 'Item Styles',
-        type: { summary: 'string' },
-      },
-    },
-
-    // Title styles
-    titleFontSize: {
-      control: 'text',
-      description: 'Font size for item titles',
-      table: {
-        category: 'Title Styles',
-        type: { summary: 'string' },
-      },
-    },
-    titleFontWeight: {
-      control: 'select',
-      options: ['normal', 'medium', 'semibold', 'bold'],
-      description: 'Font weight for item titles',
-      table: {
-        category: 'Title Styles',
-        type: { summary: 'string' },
-      },
-    },
-    titleColor: {
-      control: 'color',
-      description: 'Color for item titles',
-      table: {
-        category: 'Title Styles',
-        type: { summary: 'string' },
-      },
-    },
-    titleLineHeight: {
-      control: 'text',
-      description: 'Line height for item titles',
-      table: {
-        category: 'Title Styles',
-        type: { summary: 'string' },
-      },
-    },
-
-    // Description styles
-    descriptionFontSize: {
-      control: 'text',
-      description: 'Font size for item descriptions',
-      table: {
-        category: 'Description Styles',
-        type: { summary: 'string' },
-      },
-    },
-    descriptionColor: {
-      control: 'color',
-      description: 'Color for item descriptions',
-      table: {
-        category: 'Description Styles',
-        type: { summary: 'string' },
-      },
-    },
-    descriptionLineHeight: {
-      control: 'text',
-      description: 'Line height for item descriptions',
-      table: {
-        category: 'Description Styles',
-        type: { summary: 'string' },
-      },
-    },
-    descriptionMarginTop: {
-      control: 'text',
-      description: 'Margin top for item descriptions',
-      table: {
-        category: 'Description Styles',
-        type: { summary: 'string' },
-      },
-    },
-
-    // Avatar styles
-    avatarSize: {
-      control: 'text',
-      description: 'Size for item avatars',
-      table: {
-        category: 'Avatar Styles',
-        type: { summary: 'string' },
-      },
-    },
-    avatarBorderRadius: {
-      control: 'text',
-      description: 'Border radius for item avatars',
-      table: {
-        category: 'Avatar Styles',
-        type: { summary: 'string' },
-      },
-    },
-    avatarBorderWidth: {
-      control: 'text',
-      description: 'Border width for item avatars',
-      table: {
-        category: 'Avatar Styles',
-        type: { summary: 'string' },
-      },
-    },
-    avatarBorderColor: {
-      control: 'color',
-      description: 'Border color for item avatars',
-      table: {
-        category: 'Avatar Styles',
-        type: { summary: 'string' },
-      },
-    },
-
-    // Badge styles
-    badgeFontSize: {
-      control: 'text',
-      description: 'Font size for item badges',
-      table: {
-        category: 'Badge Styles',
-        type: { summary: 'string' },
-      },
-    },
-    badgePadding: {
-      control: 'text',
-      description: 'Padding for item badges',
-      table: {
-        category: 'Badge Styles',
-        type: { summary: 'string' },
-      },
-    },
-    badgeBorderRadius: {
-      control: 'text',
-      description: 'Border radius for item badges',
-      table: {
-        category: 'Badge Styles',
-        type: { summary: 'string' },
-      },
-    },
-    badgeBackgroundColor: {
-      control: 'color',
-      description: 'Background color for item badges',
-      table: {
-        category: 'Badge Styles',
-        type: { summary: 'string' },
-      },
-    },
-    badgeTextColor: {
-      control: 'color',
-      description: 'Text color for item badges',
-      table: {
-        category: 'Badge Styles',
-        type: { summary: 'string' },
-      },
-    },
-
-    // Dark Mode
-    darkMode: {
-      control: 'boolean',
-      description: 'Enable dark mode styling',
-      table: {
-        category: 'Dark Mode',
-        type: { summary: 'boolean' },
-        defaultValue: { summary: false },
-      },
-    },
-    darkBackgroundColor: {
-      control: 'color',
-      description: 'Background color in dark mode',
-      table: {
-        category: 'Dark Mode',
-        type: { summary: 'string' },
-      },
-    },
-    darkTextColor: {
-      control: 'color',
-      description: 'Text color in dark mode',
-      table: {
-        category: 'Dark Mode',
-        type: { summary: 'string' },
-      },
-    },
-    darkBorderColor: {
-      control: 'color',
-      description: 'Border color in dark mode',
-      table: {
-        category: 'Dark Mode',
-        type: { summary: 'string' },
-      },
-    },
-    darkHoverBackgroundColor: {
-      control: 'color',
-      description: 'Hover background color in dark mode',
-      table: {
-        category: 'Dark Mode',
-        type: { summary: 'string' },
-      },
-    },
-    darkSelectedBackgroundColor: {
-      control: 'color',
-      description: 'Selected background color in dark mode',
-      table: {
-        category: 'Dark Mode',
-        type: { summary: 'string' },
-      },
-    },
-    darkDisabledBackgroundColor: {
-      control: 'color',
-      description: 'Disabled background color in dark mode',
-      table: {
-        category: 'Dark Mode',
-        type: { summary: 'string' },
-      },
-    },
-    darkFocusRingColor: {
-      control: 'color',
-      description: 'Focus ring color in dark mode',
-      table: {
-        category: 'Dark Mode',
-        type: { summary: 'string' },
-      },
-    },
-    darkFocusBorderColor: {
-      control: 'color',
-      description: 'Focus border color in dark mode',
-      table: {
-        category: 'Dark Mode',
-        type: { summary: 'string' },
-      },
-    },
-    darkFocusBackgroundColor: {
-      control: 'color',
-      description: 'Focus background color in dark mode',
-      table: {
-        category: 'Dark Mode',
-        type: { summary: 'string' },
-      },
-    },
-    darkBoxShadow: {
-      control: 'text',
-      description: 'Box shadow in dark mode',
-      table: {
-        category: 'Dark Mode',
-        type: { summary: 'string' },
-      },
-    },
-    darkFocusBoxShadow: {
-      control: 'text',
-      description: 'Focus box shadow in dark mode',
-      table: {
-        category: 'Dark Mode',
-        type: { summary: 'string' },
-      },
-    },
-    darkHoverBoxShadow: {
-      control: 'text',
-      description: 'Hover box shadow in dark mode',
-      table: {
-        category: 'Dark Mode',
-        type: { summary: 'string' },
-      },
-    },
-
-    // Selection styles
-    selectionIndicatorColor: {
-      control: 'color',
-      description: 'Color for selection indicators',
-      table: {
-        category: 'Selection Styles',
-        type: { summary: 'string' },
-      },
-    },
-    selectionIndicatorSize: {
-      control: 'text',
-      description: 'Size of selection indicators',
-      table: {
-        category: 'Selection Styles',
-        type: { summary: 'string' },
-      },
-    },
-    selectionIndicatorBorderRadius: {
-      control: 'text',
-      description: 'Border radius for selection indicators',
-      table: {
-        category: 'Selection Styles',
-        type: { summary: 'string' },
-      },
-    },
-    selectionIndicatorBorderWidth: {
-      control: 'text',
-      description: 'Border width for selection indicators',
-      table: {
-        category: 'Selection Styles',
-        type: { summary: 'string' },
-      },
-    },
-    selectionIndicatorBorderColor: {
-      control: 'color',
-      description: 'Border color for selection indicators',
-      table: {
-        category: 'Selection Styles',
-        type: { summary: 'string' },
-      },
-    },
-    selectionIndicatorBackgroundColor: {
-      control: 'color',
-      description: 'Background color for selection indicators',
-      table: {
-        category: 'Selection Styles',
-        type: { summary: 'string' },
-      },
-    },
-    selectionIndicatorTextColor: {
-      control: 'color',
-      description: 'Text color for selection indicators',
-      table: {
-        category: 'Selection Styles',
-        type: { summary: 'string' },
-      },
-    },
-
-    // Animation
-    animationDuration: {
-      control: 'text',
-      description: 'Duration of animations',
-      table: {
-        category: 'Animation',
-        type: { summary: 'string' },
-      },
-    },
-    animationTimingFunction: {
-      control: 'select',
-      options: ['ease', 'ease-in', 'ease-out', 'ease-in-out', 'linear'],
-      description: 'Timing function for animations',
-      table: {
-        category: 'Animation',
-        type: { summary: 'string' },
-      },
-    },
-    animationDelay: {
-      control: 'text',
-      description: 'Delay before animations start',
-      table: {
-        category: 'Animation',
-        type: { summary: 'string' },
-      },
-    },
-    hoverScale: {
-      control: 'text',
-      description: 'Scale transform on hover',
-      table: {
-        category: 'Animation',
-        type: { summary: 'string' },
-      },
-    },
-    hoverRotate: {
-      control: 'text',
-      description: 'Rotation transform on hover',
-      table: {
-        category: 'Animation',
-        type: { summary: 'string' },
-      },
-    },
-    hoverTranslateX: {
-      control: 'text',
-      description: 'X translation on hover',
-      table: {
-        category: 'Animation',
-        type: { summary: 'string' },
-      },
-    },
-    hoverTranslateY: {
-      control: 'text',
-      description: 'Y translation on hover',
-      table: {
-        category: 'Animation',
-        type: { summary: 'string' },
-      },
-    },
-
-    // Custom CSS
-    customCSS: {
-      control: 'text',
-      description: 'Custom CSS for the main component',
-      table: {
-        category: 'Custom CSS',
-        type: { summary: 'string' },
-      },
-    },
-    customContainerCSS: {
-      control: 'text',
-      description: 'Custom CSS for the container',
-      table: {
-        category: 'Custom CSS',
-        type: { summary: 'string' },
-      },
-    },
-    customItemCSS: {
-      control: 'text',
-      description: 'Custom CSS for individual items',
-      table: {
-        category: 'Custom CSS',
-        type: { summary: 'string' },
-      },
-    },
-
-    // Label styles
-    labelFontSize: {
-      control: 'text',
-      description: 'Font size of the label',
-      table: {
-        category: 'Label Styles',
-        type: { summary: 'string' },
-      },
-    },
-    labelFontWeight: {
-      control: 'select',
-      options: ['normal', 'medium', 'semibold', 'bold'],
-      description: 'Font weight of the label',
-      table: {
-        category: 'Label Styles',
-        type: { summary: 'string' },
-      },
-    },
-    labelColor: {
-      control: 'color',
-      description: 'Color of the label',
-      table: {
-        category: 'Label Styles',
-        type: { summary: 'string' },
-      },
-    },
-    labelMarginBottom: {
-      control: 'text',
-      description: 'Margin bottom of the label',
-      table: {
-        category: 'Label Styles',
-        type: { summary: 'string' },
-      },
-    },
-
-    // Helper text styles
-    helperTextFontSize: {
-      control: 'text',
-      description: 'Font size of the helper text',
-      table: {
-        category: 'Helper Text Styles',
-        type: { summary: 'string' },
-      },
-    },
-    helperTextColor: {
-      control: 'color',
-      description: 'Color of the helper text',
-      table: {
-        category: 'Helper Text Styles',
-        type: { summary: 'string' },
-      },
-    },
-    helperTextMarginTop: {
-      control: 'text',
-      description: 'Margin top of the helper text',
-      table: {
-        category: 'Helper Text Styles',
-        type: { summary: 'string' },
-      },
-    },
-
     // Event Handlers
     onItemClick: {
       control: false,
@@ -1074,97 +245,6 @@ const meta = {
       table: {
         category: 'Event Handlers',
         type: { summary: '(item: ListItemData) => void' },
-      },
-    },
-    onClick: {
-      control: false,
-      description: 'Click event handler',
-      table: {
-        category: 'Event Handlers',
-        type: { summary: '(event: React.MouseEvent) => void' },
-      },
-    },
-    onMouseEnter: {
-      control: false,
-      description: 'Mouse enter event handler',
-      table: {
-        category: 'Event Handlers',
-        type: { summary: '(event: React.MouseEvent) => void' },
-      },
-    },
-    onMouseLeave: {
-      control: false,
-      description: 'Mouse leave event handler',
-      table: {
-        category: 'Event Handlers',
-        type: { summary: '(event: React.MouseEvent) => void' },
-      },
-    },
-    onFocus: {
-      control: false,
-      description: 'Focus event handler',
-      table: {
-        category: 'Event Handlers',
-        type: { summary: '(event: React.FocusEvent) => void' },
-      },
-    },
-    onBlur: {
-      control: false,
-      description: 'Blur event handler',
-      table: {
-        category: 'Event Handlers',
-        type: { summary: '(event: React.FocusEvent) => void' },
-      },
-    },
-    onKeyDown: {
-      control: false,
-      description: 'Key down event handler',
-      table: {
-        category: 'Event Handlers',
-        type: { summary: '(event: React.KeyboardEvent) => void' },
-      },
-    },
-
-    // Accessibility
-    'aria-label': {
-      control: 'text',
-      description: 'ARIA label for accessibility',
-      table: {
-        category: 'Accessibility',
-        type: { summary: 'string' },
-      },
-    },
-    'aria-describedby': {
-      control: 'text',
-      description: 'ARIA described by reference',
-      table: {
-        category: 'Accessibility',
-        type: { summary: 'string' },
-      },
-    },
-    'aria-invalid': {
-      control: 'boolean',
-      description: 'ARIA invalid state',
-      table: {
-        category: 'Accessibility',
-        type: { summary: 'boolean' },
-      },
-    },
-    'aria-required': {
-      control: 'boolean',
-      description: 'ARIA required state',
-      table: {
-        category: 'Accessibility',
-        type: { summary: 'boolean' },
-      },
-    },
-    'aria-live': {
-      control: 'select',
-      options: ['off', 'polite', 'assertive'],
-      description: 'ARIA live region behavior',
-      table: {
-        category: 'Accessibility',
-        type: { summary: 'string' },
       },
     },
   },
@@ -1220,6 +300,26 @@ const sampleItems = [
     ),
     badge: <span className="px-2 py-1 text-xs bg-red-100 text-red-800 rounded-full">Busy</span>,
     action: <span>→</span>,
+  },
+]
+
+// Simple items without chips, images, or subtext
+const simpleItems = [
+  {
+    id: '1',
+    title: 'Home',
+  },
+  {
+    id: '2',
+    title: 'About',
+  },
+  {
+    id: '3',
+    title: 'Contact',
+  },
+  {
+    id: '4',
+    title: 'Services',
   },
 ]
 
@@ -1297,6 +397,14 @@ export const Default: Story = {
   },
 }
 
+export const Simple: Story = {
+  render: (args) => <ListWithState {...args} />,
+  args: {
+    items: simpleItems,
+    label: 'Simple Navigation',
+  },
+}
+
 export const WithLabel: Story = {
   render: (args) => <ListWithState {...args} />,
   args: {
@@ -1335,8 +443,6 @@ export const Variants: Story = {
       <ListWithState items={sampleItems} variant="card" label="Card Variant" />
       <ListWithState items={sampleItems} variant="minimal" label="Minimal Variant" />
       <ListWithState items={sampleItems} variant="elevated" label="Elevated Variant" />
-      <ListWithState items={sampleItems} variant="glass" label="Glass Variant" />
-      <ListWithState items={sampleItems} variant="gradient" label="Gradient Variant" />
     </div>
   ),
 }
@@ -1467,7 +573,7 @@ const CompoundComponentsExample = () => {
       <ListHeader>Team Members</ListHeader>
       <ListContainer>
         {sampleItems.map((item) => (
-          <ListItemData key={item.id} item={item} />
+          <ListItem key={item.id} item={item} />
         ))}
       </ListContainer>
       <ListFooter>Total: {sampleItems.length} members</ListFooter>
@@ -1485,81 +591,11 @@ export const CustomStyled: Story = {
       items={sampleItems}
       label="Custom Styled List"
       helperText="This demonstrates custom styling capabilities"
-      // Border styles
-      borderWidth="2px"
-      borderColor="#3b82f6"
-      borderStyle="solid"
-      borderRadius="12px"
-      // Text customization
-      fontSize="16px"
-      fontWeight="500"
-      textColor="#1e293b"
-      // Colors
-      backgroundColor="#f8fafc"
-      selectedBackgroundColor="#dbeafe"
-      // Focus styles
-      focusRingColor="#3b82f6"
-      focusRingWidth="3px"
-      focusBorderColor="#2563eb"
-      focusBackgroundColor="#ffffff"
-      // Shadow
-      boxShadow="0 2px 4px rgba(0, 0, 0, 0.1)"
-      focusBoxShadow="0 4px 8px rgba(0, 0, 0, 0.15)"
-      hoverBoxShadow="0 4px 8px rgba(0, 0, 0, 0.1)"
-      // Padding
-      paddingX="16px"
-      paddingY="12px"
-      gap="12px"
-      // Icon colors
-      iconColor="#64748b"
-      actionIconColor="#3b82f6"
-      // Container styles
-      containerBackgroundColor="#ffffff"
-      containerBorderColor="#e2e8f0"
-      containerBorderWidth="1px"
-      containerBorderRadius="8px"
-      containerPadding="16px"
-      containerGap="8px"
-      // Item styles
-      itemPadding="16px"
-      itemBorderWidth="1px"
-      itemBorderColor="#e2e8f0"
-      itemBorderRadius="8px"
-      itemBackgroundColor="#ffffff"
-      itemHoverBackgroundColor="#f1f5f9"
-      itemSelectedBackgroundColor="#dbeafe"
-      itemSelectedTextColor="#1e40af"
-      itemGap="12px"
-      // Title styles
-      titleFontSize="16px"
-      titleFontWeight="600"
-      titleColor="#0f172a"
-      titleLineHeight="1.5"
-      // Description styles
-      descriptionFontSize="14px"
-      descriptionColor="#64748b"
-      descriptionLineHeight="1.4"
-      descriptionMarginTop="4px"
-      // Avatar styles
-      avatarSize="40px"
-      avatarBorderRadius="50%"
-      avatarBorderWidth="2px"
-      avatarBorderColor="#e2e8f0"
-      // Badge styles
-      badgeFontSize="12px"
-      badgePadding="4px 8px"
-      badgeBorderRadius="12px"
-      badgeBackgroundColor="#f1f5f9"
-      badgeTextColor="#64748b"
-      // Label styles
-      labelFontSize="18px"
-      labelFontWeight="600"
-      labelColor="#0f172a"
-      labelMarginBottom="8px"
-      // Helper text styles
-      helperTextFontSize="14px"
-      helperTextColor="#64748b"
-      helperTextMarginTop="6px"
+      className="bg-gray-50 rounded-lg p-4"
+      style={{
+        border: '2px solid #3b82f6',
+        borderRadius: '12px',
+      }}
     />
   ),
 }
@@ -1573,12 +609,7 @@ export const StyleVariations: Story = {
           items={sampleItems}
           variant="card"
           label="Card Style List"
-          containerBackgroundColor="#ffffff"
-          containerBorderRadius="12px"
-          containerPadding="16px"
-          itemBorderRadius="8px"
-          itemHoverBackgroundColor="#f8fafc"
-          boxShadow="0 4px 6px -1px rgba(0, 0, 0, 0.1)"
+          className="bg-white rounded-lg shadow-lg"
         />
       </div>
 
@@ -1588,12 +619,7 @@ export const StyleVariations: Story = {
           items={sampleItems}
           variant="minimal"
           label="Minimal Style List"
-          containerBackgroundColor="transparent"
-          containerPadding="0"
-          itemPadding="12px"
-          itemHoverBackgroundColor="#f9fafb"
-          titleColor="#111827"
-          descriptionColor="#6b7280"
+          className="bg-transparent"
         />
       </div>
 
@@ -1603,111 +629,9 @@ export const StyleVariations: Story = {
           items={sampleItems}
           variant="elevated"
           label="Elevated Style List"
-          containerBackgroundColor="#ffffff"
-          containerBorderRadius="16px"
-          containerPadding="20px"
-          itemBorderRadius="12px"
-          itemHoverBackgroundColor="#f8fafc"
-          boxShadow="0 10px 15px -3px rgba(0, 0, 0, 0.1)"
-          hoverBoxShadow="0 20px 25px -5px rgba(0, 0, 0, 0.1)"
+          className="bg-white rounded-xl shadow-xl"
         />
       </div>
-    </div>
-  ),
-}
-
-export const DarkMode: Story = {
-  render: () => (
-    <div className="space-y-6 p-6 bg-gray-900 rounded-lg">
-      <ListWithState
-        items={sampleItems}
-        darkMode
-        label="Dark Mode List"
-        helperText="This list uses dark mode styling"
-        selectable
-        multiple
-      />
-
-      <ListWithState
-        items={techItems}
-        variant="glass"
-        darkMode
-        label="Dark Glass Variant"
-        helperText="Glass effect in dark mode"
-        selectable
-      />
-
-      <ListWithState
-        items={statusItems}
-        variant="gradient"
-        darkMode
-        label="Dark Gradient Variant"
-        helperText="Gradient effect in dark mode"
-        selectable
-      />
-    </div>
-  ),
-}
-
-export const EnhancedSelection: Story = {
-  render: () => (
-    <div className="space-y-6">
-      <ListWithState
-        items={sampleItems}
-        selectable
-        multiple
-        maxSelection={3}
-        label="Enhanced Multiple Selection"
-        helperText="Select up to 3 items with custom indicators"
-        selectionIndicatorSize="24px"
-        selectionIndicatorBorderRadius="6px"
-        selectionIndicatorBorderWidth="3px"
-        selectionIndicatorBorderColor="#3b82f6"
-        selectionIndicatorBackgroundColor="#3b82f6"
-        selectionIndicatorTextColor="#ffffff"
-      />
-
-      <ListWithState
-        items={techItems}
-        selectable
-        label="Single Selection with Custom Indicator"
-        helperText="Custom selection indicator styling"
-        selectionIndicatorSize="18px"
-        selectionIndicatorBorderRadius="50%"
-        selectionIndicatorBorderWidth="2px"
-        selectionIndicatorBorderColor="#10b981"
-        selectionIndicatorBackgroundColor="#10b981"
-        selectionIndicatorTextColor="#ffffff"
-      />
-    </div>
-  ),
-}
-
-export const AnimatedList: Story = {
-  render: () => (
-    <div className="space-y-6">
-      <ListWithState
-        items={sampleItems}
-        label="Animated List"
-        helperText="Items have hover animations"
-        animationDuration="0.3s"
-        animationTimingFunction="ease-in-out"
-        hoverScale="1.02"
-        hoverTranslateY="-2px"
-        boxShadow="0 2px 4px rgba(0, 0, 0, 0.1)"
-        hoverBoxShadow="0 8px 16px rgba(0, 0, 0, 0.15)"
-      />
-
-      <ListWithState
-        items={techItems}
-        variant="card"
-        label="Rotating Icons"
-        helperText="Icons rotate on hover"
-        iconColor="#3b82f6"
-        hoverRotate="5deg"
-        animationDuration="0.2s"
-        animationTimingFunction="ease-out"
-      />
     </div>
   ),
 }
