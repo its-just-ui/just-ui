@@ -2,9 +2,33 @@ import type { Meta, StoryObj } from '@storybook/react'
 import React, { useState } from 'react'
 import { Alert, AlertTitle, AlertDescription, AlertIcon, AlertDismissButton } from './Alert'
 
+// Wrapper component for controlled state management
+const AlertWithState = ({
+  children,
+  dismissible = false,
+  onDismiss,
+  defaultOpen = true,
+  ...props
+}: any) => {
+  const [isOpen, setIsOpen] = useState(defaultOpen)
+
+  const handleDismiss = () => {
+    setIsOpen(false)
+    onDismiss?.()
+  }
+
+  if (!isOpen) return null
+
+  return (
+    <Alert {...props} dismissible={dismissible} onDismiss={handleDismiss}>
+      {children}
+    </Alert>
+  )
+}
+
 /**
  * Alert is a notification component that displays important information to users with extensive customization options.
- * 
+ *
  * ## Features
  * - **Multiple Variants**: 4 visual styles from subtle backgrounds to solid fills
  * - **Size Options**: 3 size variants (sm, md, lg) for different contexts
@@ -16,35 +40,35 @@ import { Alert, AlertTitle, AlertDescription, AlertIcon, AlertDismissButton } fr
  * - **Smooth Transitions**: Customizable fade/slide animations with timing control
  * - **Accessibility First**: Full ARIA support, keyboard navigation, and screen reader compatibility
  * - **Custom Rendering**: Override default rendering with custom render functions
- * 
+ *
  * ## Usage
- * 
+ *
  * ### Basic Usage:
  * ```tsx
  * <Alert status="success" title="Success!" description="Operation completed successfully." />
  * ```
- * 
+ *
  * ### With Custom Icon:
  * ```tsx
- * <Alert 
- *   status="warning" 
+ * <Alert
+ *   status="warning"
  *   icon={<WarningIcon />}
- *   title="Warning" 
- *   description="Please review this information." 
+ *   title="Warning"
+ *   description="Please review this information."
  * />
  * ```
- * 
+ *
  * ### Dismissible Alert:
  * ```tsx
- * <Alert 
- *   status="error" 
- *   dismissible 
+ * <Alert
+ *   status="error"
+ *   dismissible
  *   onDismiss={() => console.log('Alert dismissed')}
- *   title="Error" 
- *   description="Something went wrong." 
+ *   title="Error"
+ *   description="Something went wrong."
  * />
  * ```
- * 
+ *
  * ### Compound Component Usage:
  * ```tsx
  * <Alert>
@@ -54,7 +78,7 @@ import { Alert, AlertTitle, AlertDescription, AlertIcon, AlertDismissButton } fr
  *   <AlertDismissButton />
  * </Alert>
  * ```
- * 
+ *
  * ### Custom Styling:
  * ```tsx
  * <Alert
@@ -68,31 +92,6 @@ import { Alert, AlertTitle, AlertDescription, AlertIcon, AlertDismissButton } fr
  * </Alert>
  * ```
  */
-
-// Wrapper component for controlled state management
-const AlertWithState = ({ 
-  children, 
-  dismissible = false, 
-  onDismiss,
-  defaultOpen = true,
-  ...props 
-}: any) => {
-  const [isOpen, setIsOpen] = useState(defaultOpen)
-  
-  const handleDismiss = () => {
-    setIsOpen(false)
-    onDismiss?.()
-  }
-  
-  if (!isOpen) return null
-  
-  return (
-    <Alert {...props} dismissible={dismissible} onDismiss={handleDismiss}>
-      {children}
-    </Alert>
-  )
-}
-
 const meta = {
   title: 'Components/Alert',
   component: Alert,
@@ -357,21 +356,21 @@ export const ShowingDefaults: Story = {
         <Alert>Basic alert content</Alert>
         <p className="text-xs text-gray-500 mt-2">All default styles applied</p>
       </div>
-      
+
       <div>
         <h3 className="text-sm font-medium text-gray-700 mb-3">With Title and Description</h3>
         <Alert title="Information" description="This alert has both title and description." />
       </div>
-      
+
       <div>
         <h3 className="text-sm font-medium text-gray-700 mb-3">With Icon</h3>
         <Alert icon="ℹ️" title="With Icon" description="This alert includes a custom icon." />
       </div>
-      
+
       <div>
         <h3 className="text-sm font-medium text-gray-700 mb-3">With Helper Text</h3>
-        <Alert 
-          title="Alert with Helper" 
+        <Alert
+          title="Alert with Helper"
           description="This alert has additional helper text below."
           helperText="Additional context or instructions can go here."
         />
@@ -386,22 +385,42 @@ export const Variants: Story = {
     <div className="space-y-6">
       <div>
         <h3 className="text-sm font-medium text-gray-700 mb-3">Default</h3>
-        <Alert variant="default" status="info" title="Default Variant" description="Subtle background with border styling." />
+        <Alert
+          variant="default"
+          status="info"
+          title="Default Variant"
+          description="Subtle background with border styling."
+        />
       </div>
-      
+
       <div>
         <h3 className="text-sm font-medium text-gray-700 mb-3">Filled</h3>
-        <Alert variant="filled" status="success" title="Filled Variant" description="Solid background with high contrast text." />
+        <Alert
+          variant="filled"
+          status="success"
+          title="Filled Variant"
+          description="Solid background with high contrast text."
+        />
       </div>
-      
+
       <div>
         <h3 className="text-sm font-medium text-gray-700 mb-3">Outlined</h3>
-        <Alert variant="outlined" status="warning" title="Outlined Variant" description="Transparent background with colored border." />
+        <Alert
+          variant="outlined"
+          status="warning"
+          title="Outlined Variant"
+          description="Transparent background with colored border."
+        />
       </div>
-      
+
       <div>
         <h3 className="text-sm font-medium text-gray-700 mb-3">Ghost</h3>
-        <Alert variant="ghost" status="error" title="Ghost Variant" description="Minimal styling with subtle background." />
+        <Alert
+          variant="ghost"
+          status="error"
+          title="Ghost Variant"
+          description="Minimal styling with subtle background."
+        />
       </div>
     </div>
   ),
@@ -413,17 +432,32 @@ export const Sizes: Story = {
     <div className="space-y-6">
       <div>
         <h3 className="text-sm font-medium text-gray-700 mb-3">Small</h3>
-        <Alert size="sm" status="info" title="Small Alert" description="Compact size for minimal space usage." />
+        <Alert
+          size="sm"
+          status="info"
+          title="Small Alert"
+          description="Compact size for minimal space usage."
+        />
       </div>
-      
+
       <div>
         <h3 className="text-sm font-medium text-gray-700 mb-3">Medium (Default)</h3>
-        <Alert size="md" status="success" title="Medium Alert" description="Standard size for most use cases." />
+        <Alert
+          size="md"
+          status="success"
+          title="Medium Alert"
+          description="Standard size for most use cases."
+        />
       </div>
-      
+
       <div>
         <h3 className="text-sm font-medium text-gray-700 mb-3">Large</h3>
-        <Alert size="lg" status="warning" title="Large Alert" description="Larger size for important notifications or detailed content." />
+        <Alert
+          size="lg"
+          status="warning"
+          title="Large Alert"
+          description="Larger size for important notifications or detailed content."
+        />
       </div>
     </div>
   ),
@@ -437,25 +471,33 @@ export const StatusStates: Story = {
         <h3 className="text-sm font-medium text-gray-700 mb-3">Default Status</h3>
         <Alert status="default" title="Default Status" description="Standard neutral coloring." />
       </div>
-      
+
       <div>
         <h3 className="text-sm font-medium text-gray-700 mb-3">Success Status</h3>
         <Alert status="success" title="Success!" description="Operation completed successfully." />
       </div>
-      
+
       <div>
         <h3 className="text-sm font-medium text-gray-700 mb-3">Warning Status</h3>
-        <Alert status="warning" title="Warning" description="Please review this information carefully." />
+        <Alert
+          status="warning"
+          title="Warning"
+          description="Please review this information carefully."
+        />
       </div>
-      
+
       <div>
         <h3 className="text-sm font-medium text-gray-700 mb-3">Error Status</h3>
         <Alert status="error" title="Error" description="Something went wrong. Please try again." />
       </div>
-      
+
       <div>
         <h3 className="text-sm font-medium text-gray-700 mb-3">Info Status</h3>
-        <Alert status="info" title="Information" description="Here's some helpful information for you." />
+        <Alert
+          status="info"
+          title="Information"
+          description="Here's some helpful information for you."
+        />
       </div>
     </div>
   ),
@@ -469,17 +511,21 @@ export const States: Story = {
         <h3 className="text-sm font-medium text-gray-700 mb-3">Normal State</h3>
         <Alert title="Normal Alert" description="Standard interactive alert." />
       </div>
-      
+
       <div>
         <h3 className="text-sm font-medium text-gray-700 mb-3">Disabled State</h3>
-        <Alert disabled title="Disabled Alert" description="This alert is disabled and non-interactive." />
+        <Alert
+          disabled
+          title="Disabled Alert"
+          description="This alert is disabled and non-interactive."
+        />
       </div>
-      
+
       <div>
         <h3 className="text-sm font-medium text-gray-700 mb-3">Loading State</h3>
         <Alert loading title="Loading Alert" description="This alert is in a loading state." />
       </div>
-      
+
       <div>
         <h3 className="text-sm font-medium text-gray-700 mb-3">Required State</h3>
         <Alert required title="Required Alert" description="This alert is marked as required." />
@@ -494,26 +540,30 @@ export const DismissibleAlerts: Story = {
     <div className="space-y-6">
       <div>
         <h3 className="text-sm font-medium text-gray-700 mb-3">Basic Dismissible</h3>
-        <AlertWithState dismissible title="Dismissible Alert" description="Click the × button to dismiss this alert." />
+        <AlertWithState
+          dismissible
+          title="Dismissible Alert"
+          description="Click the × button to dismiss this alert."
+        />
       </div>
-      
+
       <div>
         <h3 className="text-sm font-medium text-gray-700 mb-3">With Custom Dismiss Handler</h3>
-        <AlertWithState 
-          dismissible 
+        <AlertWithState
+          dismissible
           status="warning"
-          title="Custom Dismiss" 
+          title="Custom Dismiss"
           description="This alert logs when dismissed."
           onDismiss={() => console.log('Alert was dismissed!')}
         />
       </div>
-      
+
       <div>
         <h3 className="text-sm font-medium text-gray-700 mb-3">Keyboard Dismissible</h3>
-        <AlertWithState 
-          dismissible 
+        <AlertWithState
+          dismissible
           status="info"
-          title="Keyboard Support" 
+          title="Keyboard Support"
           description="Focus this alert and press Escape to dismiss it."
         />
         <p className="text-xs text-gray-500 mt-2">Tab to focus, then press Escape</p>
@@ -529,19 +579,39 @@ export const WithIcons: Story = {
       <div>
         <h3 className="text-sm font-medium text-gray-700 mb-3">Emoji Icons</h3>
         <div className="space-y-3">
-          <Alert icon="✅" status="success" title="Success" description="Operation completed successfully." />
-          <Alert icon="⚠️" status="warning" title="Warning" description="Please review this information." />
+          <Alert
+            icon="✅"
+            status="success"
+            title="Success"
+            description="Operation completed successfully."
+          />
+          <Alert
+            icon="⚠️"
+            status="warning"
+            title="Warning"
+            description="Please review this information."
+          />
           <Alert icon="❌" status="error" title="Error" description="Something went wrong." />
-          <Alert icon="ℹ️" status="info" title="Information" description="Here's some helpful information." />
+          <Alert
+            icon="ℹ️"
+            status="info"
+            title="Information"
+            description="Here's some helpful information."
+          />
         </div>
       </div>
-      
+
       <div>
         <h3 className="text-sm font-medium text-gray-700 mb-3">SVG Icons</h3>
-        <Alert 
+        <Alert
           icon={
             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+              />
             </svg>
           }
           status="info"
@@ -549,10 +619,10 @@ export const WithIcons: Story = {
           description="This alert uses a custom SVG icon."
         />
       </div>
-      
+
       <div>
         <h3 className="text-sm font-medium text-gray-700 mb-3">Complex Icon</h3>
-        <Alert 
+        <Alert
           icon={
             <div className="w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center">
               <span className="text-white text-xs font-bold">!</span>
@@ -574,48 +644,48 @@ export const CustomStyling: Story = {
         <h3 className="text-sm font-medium text-gray-700 mb-3">Custom Colors</h3>
         <Alert
           customStyles={{
-            backgroundColor: "#fef3c7",
-            borderColor: "#f59e0b",
-            textColor: "#92400e"
+            backgroundColor: '#fef3c7',
+            borderColor: '#f59e0b',
+            textColor: '#92400e',
           }}
           title="Custom Colors"
           description="This alert uses custom color styling."
         />
       </div>
-      
+
       <div>
         <h3 className="text-sm font-medium text-gray-700 mb-3">Rounded Corners</h3>
         <Alert
           customStyles={{
-            borderRadius: "16px",
-            backgroundColor: "#dbeafe",
-            borderColor: "#3b82f6"
+            borderRadius: '16px',
+            backgroundColor: '#dbeafe',
+            borderColor: '#3b82f6',
           }}
           title="Rounded Alert"
           description="This alert has custom border radius."
         />
       </div>
-      
+
       <div>
         <h3 className="text-sm font-medium text-gray-700 mb-3">With Shadow</h3>
         <Alert
           customStyles={{
-            boxShadow: "0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)",
-            backgroundColor: "#ffffff",
-            borderColor: "#e5e7eb"
+            boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
+            backgroundColor: '#ffffff',
+            borderColor: '#e5e7eb',
           }}
           title="Shadow Alert"
           description="This alert has a custom box shadow."
         />
       </div>
-      
+
       <div>
         <h3 className="text-sm font-medium text-gray-700 mb-3">Custom Padding</h3>
         <Alert
           customStyles={{
-            padding: "24px",
-            backgroundColor: "#f0fdf4",
-            borderColor: "#16a34a"
+            padding: '24px',
+            backgroundColor: '#f0fdf4',
+            borderColor: '#16a34a',
           }}
           title="Spacious Alert"
           description="This alert has custom padding for more breathing room."
@@ -634,10 +704,12 @@ export const CompoundComponents: Story = {
         <Alert>
           <AlertIcon>🔔</AlertIcon>
           <AlertTitle>Compound Alert</AlertTitle>
-          <AlertDescription>This alert is built using compound components for maximum flexibility.</AlertDescription>
+          <AlertDescription>
+            This alert is built using compound components for maximum flexibility.
+          </AlertDescription>
         </Alert>
       </div>
-      
+
       <div>
         <h3 className="text-sm font-medium text-gray-700 mb-3">With Dismiss Button</h3>
         <AlertWithState>
@@ -647,7 +719,7 @@ export const CompoundComponents: Story = {
           <AlertDismissButton />
         </AlertWithState>
       </div>
-      
+
       <div>
         <h3 className="text-sm font-medium text-gray-700 mb-3">Mixed Content</h3>
         <Alert status="success">
@@ -675,8 +747,8 @@ export const RealWorldExamples: Story = {
       <div>
         <h3 className="text-lg font-medium mb-4">Form Validation Alerts</h3>
         <div className="space-y-4">
-          <Alert 
-            status="error" 
+          <Alert
+            status="error"
             title="Form Validation Failed"
             description="Please correct the following errors before submitting:"
           >
@@ -686,28 +758,28 @@ export const RealWorldExamples: Story = {
               <li>Terms and conditions must be accepted</li>
             </ul>
           </Alert>
-          
-          <Alert 
-            status="success" 
+
+          <Alert
+            status="success"
             dismissible
             title="Form Submitted Successfully"
             description="Your information has been saved and you will receive a confirmation email shortly."
           />
         </div>
       </div>
-      
+
       <div>
         <h3 className="text-lg font-medium mb-4">System Status Alerts</h3>
         <div className="space-y-4">
-          <Alert 
-            status="warning" 
+          <Alert
+            status="warning"
             icon="🚧"
             title="Scheduled Maintenance"
             description="The system will be undergoing maintenance on Sunday, March 15th from 2:00 AM to 6:00 AM EST."
           />
-          
-          <Alert 
-            status="info" 
+
+          <Alert
+            status="info"
             icon="📢"
             title="New Feature Available"
             description="We've added dark mode support! You can enable it in your account settings."
@@ -720,12 +792,12 @@ export const RealWorldExamples: Story = {
           </Alert>
         </div>
       </div>
-      
+
       <div>
         <h3 className="text-lg font-medium mb-4">E-commerce Alerts</h3>
         <div className="space-y-4">
-          <Alert 
-            status="success" 
+          <Alert
+            status="success"
             dismissible
             title="Item Added to Cart"
             description="1x Wireless Headphones has been added to your cart."
@@ -739,9 +811,9 @@ export const RealWorldExamples: Story = {
               </button>
             </div>
           </Alert>
-          
-          <Alert 
-            status="warning" 
+
+          <Alert
+            status="warning"
             title="Limited Stock"
             description="Only 3 items left in stock! Order soon to avoid disappointment."
           />
@@ -756,12 +828,12 @@ export const AccessibilityFeatures: Story = {
   render: () => (
     <div className="space-y-6">
       <h3 className="text-lg font-medium mb-4">Accessibility Features Demo</h3>
-      
+
       <div className="space-y-4">
         <p className="text-sm text-gray-600">
           All alerts have proper ARIA attributes and are announced by screen readers.
         </p>
-        
+
         <Alert
           aria-label="Important security update notification"
           status="warning"
@@ -769,7 +841,7 @@ export const AccessibilityFeatures: Story = {
           description="A security update is available for your account. Please update your password."
           helperText="This update is recommended for all users."
         />
-        
+
         <Alert
           dismissible
           status="error"
@@ -778,14 +850,14 @@ export const AccessibilityFeatures: Story = {
           aria-describedby="error-details"
           helperText="If this error persists, please contact support at support@example.com"
         />
-        
+
         <Alert
           status="info"
           title="Keyboard Navigation"
           description="This alert can be focused and dismissed with the Escape key when dismissible."
           dismissible
         />
-        
+
         <div className="p-4 bg-gray-50 rounded">
           <p className="text-sm text-gray-600 mb-2">
             <strong>Accessibility features:</strong>

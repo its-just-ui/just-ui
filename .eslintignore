@@ -1,0 +1,18 @@
+# Dependencies
+node_modules
+
+# Production
+dist
+build
+
+# Storybook
+storybook-static
+.storybook
+
+# Config files
+vite.config.ts
+tailwind.config.js
+postcss.config.js
+
+# Coverage
+coverage
