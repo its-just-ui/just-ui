@@ -557,13 +557,13 @@ export const FormIntegration: Story = {
 }
 
 // Compound Component Usage
-const CompoundComponentDemo: React.FC<typeof Stepper> = (args) => {
+const CompoundComponentDemo: React.FC<any> = (args) => {
   const [currentStep, setCurrentStep] = useState(0)
-  const steps = args.steps || sampleSteps
+  const steps = (args as any).steps || sampleSteps
 
   return (
     <div className="max-w-4xl mx-auto">
-      <Stepper currentStep={currentStep} onStepChange={setCurrentStep} {...args}>
+      <Stepper currentStep={currentStep} onStepChange={setCurrentStep} steps={steps} {...args}>
         <StepList>
           {steps.map((step, index) => (
             <Step key={step.id} step={step} index={index} />

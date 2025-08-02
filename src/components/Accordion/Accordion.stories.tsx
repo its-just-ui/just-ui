@@ -488,6 +488,7 @@ export const Default: Story = {
   args: {
     type: 'single',
     collapsible: true,
+    children: 'Default accordion content',
   },
 }
 
@@ -532,6 +533,9 @@ export const ShowingDefaults: Story = {
       </div>
     </div>
   ),
+  args: {
+    children: 'Accordion showing default behaviors',
+  },
 }
 
 export const Variants: Story = {
@@ -598,6 +602,9 @@ export const Variants: Story = {
       </div>
     </div>
   ),
+  args: {
+    children: 'Accordion showing different variants',
+  },
 }
 
 export const Sizes: Story = {
@@ -640,6 +647,9 @@ export const Sizes: Story = {
       </div>
     </div>
   ),
+  args: {
+    children: 'Accordion showing different sizes',
+  },
 }
 
 export const StatusStates: Story = {
@@ -694,6 +704,9 @@ export const StatusStates: Story = {
       </div>
     </div>
   ),
+  args: {
+    children: 'Accordion showing different status states',
+  },
 }
 
 export const Transitions: Story = {
@@ -760,6 +773,9 @@ export const Transitions: Story = {
       </div>
     </div>
   ),
+  args: {
+    children: 'Accordion showing different transitions',
+  },
 }
 
 export const IconPositions: Story = {
@@ -813,6 +829,9 @@ export const IconPositions: Story = {
       </div>
     </div>
   ),
+  args: {
+    children: 'Accordion showing different icon positions',
+  },
 }
 
 export const DisabledState: Story = {
@@ -849,6 +868,9 @@ export const DisabledState: Story = {
       </div>
     </div>
   ),
+  args: {
+    children: 'Accordion showing disabled states',
+  },
 }
 
 export const LoadingAndEmpty: Story = {
@@ -857,18 +879,21 @@ export const LoadingAndEmpty: Story = {
       <div>
         <h3 className="text-sm font-medium text-gray-700 mb-2">Loading State</h3>
         <Accordion loading loadingMessage="Fetching accordion items...">
-          {/* Children won't be rendered when loading */}
+          <div>Loading content placeholder</div>
         </Accordion>
       </div>
 
       <div>
         <h3 className="text-sm font-medium text-gray-700 mb-2">Empty State</h3>
         <Accordion emptyMessage="No FAQ items available at the moment">
-          {/* No children provided */}
+          <div>Empty content placeholder</div>
         </Accordion>
       </div>
     </div>
   ),
+  args: {
+    children: 'Accordion showing loading and empty states',
+  },
 }
 
 export const CustomStyling: Story = {
@@ -928,6 +953,9 @@ export const CustomStyling: Story = {
       ))}
     </AccordionWithState>
   ),
+  args: {
+    children: 'Accordion with custom styling',
+  },
 }
 
 export const StyleVariations: Story = {
@@ -1089,14 +1117,28 @@ export const StyleVariations: Story = {
       </div>
     </div>
   ),
+  args: {
+    children: 'Accordion showing various style variations',
+  },
 }
 
 const MultipleSelectionComponent = () => {
   const [values, setValues] = useState<string[]>(['item-1', 'item-3'])
 
+  const handleValueChange = (value: string | string[]) => {
+    if (Array.isArray(value)) {
+      setValues(value)
+    }
+  }
+
   return (
     <div className="space-y-4">
-      <Accordion type="multiple" value={values} onValueChange={setValues} variant="separated">
+      <Accordion
+        type="multiple"
+        value={values}
+        onValueChange={handleValueChange}
+        variant="separated"
+      >
         {defaultItems.map((item) => (
           <AccordionItem key={item.value} value={item.value}>
             <AccordionTrigger>{item.trigger}</AccordionTrigger>
@@ -1136,16 +1178,20 @@ const MultipleSelectionComponent = () => {
 
 export const MultipleSelection: Story = {
   render: () => <MultipleSelectionComponent />,
+  args: {
+    children: 'Multiple selection accordion example',
+  },
 }
 
 const ControlledExampleComponent = () => {
   const [value, setValue] = useState<string>('item-2')
   const [history, setHistory] = useState<string[]>(['item-2'])
 
-  const handleChange = (newValue: string) => {
-    setValue(newValue)
-    if (newValue) {
-      setHistory([...history, newValue])
+  const handleChange = (newValue: string | string[]) => {
+    const stringValue = Array.isArray(newValue) ? newValue[0] || '' : newValue
+    setValue(stringValue)
+    if (stringValue) {
+      setHistory([...history, stringValue])
     }
   }
 
@@ -1207,6 +1253,9 @@ const ControlledExampleComponent = () => {
 
 export const ControlledExample: Story = {
   render: () => <ControlledExampleComponent />,
+  args: {
+    children: 'Controlled accordion example',
+  },
 }
 
 export const RealWorldExample: Story = {
@@ -1242,6 +1291,9 @@ export const RealWorldExample: Story = {
       </AccordionWithState>
     </div>
   ),
+  args: {
+    children: 'Real-world FAQ accordion example',
+  },
 }
 
 export const NestedAccordions: Story = {
@@ -1297,6 +1349,9 @@ export const NestedAccordions: Story = {
       </AccordionItem>
     </AccordionWithState>
   ),
+  args: {
+    children: 'Nested accordion example',
+  },
 }
 
 export const WithComplexContent: Story = {
@@ -1364,4 +1419,7 @@ export const WithComplexContent: Story = {
       </AccordionItem>
     </AccordionWithState>
   ),
+  args: {
+    children: 'Accordion with complex content elements',
+  },
 }

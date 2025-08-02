@@ -390,23 +390,6 @@ const meta = {
         type: { summary: 'string' },
       },
     },
-    letterSpacing: {
-      control: 'text',
-      description: 'Letter spacing',
-      table: {
-        category: 'Typography',
-        type: { summary: 'string' },
-      },
-    },
-    lineHeight: {
-      control: 'text',
-      description: 'Line height',
-      table: {
-        category: 'Typography',
-        type: { summary: 'string' },
-      },
-    },
-
     // Hover & Focus Effects
     hoverBackgroundColor: {
       control: 'color',
@@ -643,15 +626,6 @@ const meta = {
         type: { summary: 'boolean' },
       },
     },
-    'aria-live': {
-      control: 'select',
-      options: ['off', 'polite', 'assertive'],
-      description: 'ARIA live region behavior',
-      table: {
-        category: 'Accessibility',
-        type: { summary: 'string' },
-      },
-    },
   },
 } satisfies Meta<typeof Badge>
 
@@ -693,7 +667,9 @@ export const ShowingDefaults: Story = {
       </div>
     </div>
   ),
-  args: {},
+  args: {
+    children: 'Badge',
+  },
 }
 
 export const Variants: Story = {
@@ -751,7 +727,9 @@ export const Variants: Story = {
       </div>
     </div>
   ),
-  args: {},
+  args: {
+    children: 'Badge',
+  },
 }
 
 export const Sizes: Story = {
@@ -791,7 +769,9 @@ export const Sizes: Story = {
       </div>
     </div>
   ),
-  args: {},
+  args: {
+    children: 'Badge',
+  },
 }
 
 export const StatusStates: Story = {
@@ -833,7 +813,9 @@ export const StatusStates: Story = {
       </div>
     </div>
   ),
-  args: {},
+  args: {
+    children: 'Badge',
+  },
 }
 
 export const InteractiveStates: Story = {
@@ -864,13 +846,15 @@ export const InteractiveStates: Story = {
 
       <div>
         <h3 className="text-sm font-medium text-gray-700 mb-3">Required State</h3>
-        <Badge required aria-required="true">
+        <Badge required aria-required={true}>
           Required Badge
         </Badge>
       </div>
     </div>
   ),
-  args: {},
+  args: {
+    children: 'Badge',
+  },
 }
 
 export const WithIcons: Story = {
@@ -915,7 +899,9 @@ export const WithIcons: Story = {
       </div>
     </div>
   ),
-  args: {},
+  args: {
+    children: 'Badge',
+  },
 }
 
 export const WithCloseButton: Story = {
@@ -947,7 +933,9 @@ export const WithCloseButton: Story = {
       </div>
     </div>
   ),
-  args: {},
+  args: {
+    children: 'Badge',
+  },
 }
 
 export const Animations: Story = {
@@ -996,7 +984,9 @@ export const Animations: Story = {
       </div>
     </div>
   ),
-  args: {},
+  args: {
+    children: 'Badge',
+  },
 }
 
 export const CompoundComponents: Story = {
@@ -1038,7 +1028,9 @@ export const CompoundComponents: Story = {
       </div>
     </div>
   ),
-  args: {},
+  args: {
+    children: 'Badge',
+  },
 }
 
 export const CustomStyling: Story = {
@@ -1062,7 +1054,7 @@ export const CustomStyling: Story = {
       <div>
         <h3 className="text-sm font-medium text-gray-700 mb-3">Typography Customization</h3>
         <div className="flex flex-wrap gap-3">
-          <Badge fontSize="18px" fontWeight="bold" letterSpacing="0.1em">
+          <Badge fontSize="18px" fontWeight="bold">
             Large Bold
           </Badge>
           <Badge fontSize="12px" fontFamily="monospace">
@@ -1105,7 +1097,9 @@ export const CustomStyling: Story = {
       </div>
     </div>
   ),
-  args: {},
+  args: {
+    children: 'Badge',
+  },
 }
 
 export const RealWorldTagManagement: Story = {
@@ -1168,7 +1162,9 @@ export const RealWorldTagManagement: Story = {
 
     return <TagManagementExample />
   },
-  args: {},
+  args: {
+    children: 'Badge',
+  },
 }
 
 export const RealWorldNotifications: Story = {
@@ -1247,7 +1243,9 @@ export const RealWorldNotifications: Story = {
 
     return <NotificationSystemExample />
   },
-  args: {},
+  args: {
+    children: 'Badge',
+  },
 }
 
 export const RealWorldStatusDashboard: Story = {
@@ -1309,7 +1307,9 @@ export const RealWorldStatusDashboard: Story = {
 
     return <StatusDashboardExample />
   },
-  args: {},
+  args: {
+    children: 'Badge',
+  },
 }
 
 export const AccessibilityFeatures: Story = {
@@ -1387,5 +1387,7 @@ export const AccessibilityFeatures: Story = {
       </div>
     </div>
   ),
-  args: {},
+  args: {
+    children: 'Badge',
+  },
 }
