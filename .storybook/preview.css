@@ -1,0 +1,87 @@
+/* Storybook Preview Styles */
+
+/* Force white background globally and remove ALL background patterns */
+*,
+*::before,
+*::after {
+  background-image: none !important;
+}
+
+/* Root elements white background */
+html,
+body,
+#root,
+#storybook-root,
+#storybook-preview-wrapper {
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  background-image: none !important;
+  background-size: initial !important;
+  background-position: initial !important;
+  background-repeat: initial !important;
+}
+
+/* Ensure white background and remove any grid patterns */
+.sb-show-main,
+.sb-main-padded,
+.sb-main-fullscreen,
+.sb-main-centered,
+#storybook-root,
+#storybook-preview-wrapper,
+#storybook-preview-iframe,
+body {
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  background-image: none !important;
+}
+
+/* Remove any potential grid overlay */
+.sb-show-main::before,
+.sb-show-main::after,
+.sb-main-padded::before,
+.sb-main-padded::after,
+body::before,
+body::after {
+  display: none !important;
+  background-image: none !important;
+  content: none !important;
+}
+
+/* Ensure story canvas has white background */
+.docs-story,
+.sb-unstyled,
+.sb-canvas,
+.sb-preview-wrapper,
+.sb-addon-panel,
+.os-host {
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  background-image: none !important;
+}
+
+/* Override any addon backgrounds */
+[id^='story--'],
+[id*='story--'],
+.innerZoomElementWrapper > * {
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  background-image: none !important;
+}
+
+/* Target Docs page specifically */
+#storybook-docs,
+.sbdocs,
+.sbdocs-wrapper,
+.sbdocs-content {
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  background-image: none !important;
+}
+
+/* Remove grid from any container that might have inline styles */
+[style*='background-image'],
+[style*='grid'],
+[style*='repeating-linear-gradient'] {
+  background-image: none !important;
+  background: #ffffff !important;
+}
