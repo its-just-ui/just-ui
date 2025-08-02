@@ -659,7 +659,7 @@ const ChipItem = React.forwardRef<HTMLDivElement, ChipItemProps>(
             ...(hoverBoxShadow &&
               ({
                 ':hover': { boxShadow: hoverBoxShadow },
-              } as any)),
+              } as React.CSSProperties)),
           }}
           onClick={handleClick}
           {...props}
@@ -678,7 +678,7 @@ const ChipItem = React.forwardRef<HTMLDivElement, ChipItemProps>(
           ...(hoverBoxShadow &&
             ({
               ':hover': { boxShadow: hoverBoxShadow },
-            } as any)),
+            } as React.CSSProperties)),
         }}
         onClick={handleClick}
         {...props}
@@ -792,7 +792,8 @@ const ChipInput = React.forwardRef<HTMLInputElement, ChipInputProps>(
     if (fontFamily) customInputStyles.fontFamily = fontFamily
     if (textColor) customInputStyles.color = textColor
     if (placeholderColor) {
-      ;(customInputStyles as any)['--placeholder-color'] = placeholderColor
+      ;(customInputStyles as React.CSSProperties & Record<string, string>)['--placeholder-color'] =
+        placeholderColor
     }
 
     return (

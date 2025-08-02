@@ -272,7 +272,7 @@ const longPath: BreadcrumbItem[] = [
 ]
 
 // Wrapper component for controlled stories
-const BreadcrumbWithState = (props: any) => {
+const BreadcrumbWithState = (props: React.ComponentProps<typeof Breadcrumb>) => {
   const [value, setValue] = useState<number | null>(null)
 
   return (

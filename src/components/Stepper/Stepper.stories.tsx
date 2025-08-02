@@ -5,29 +5,29 @@ import type { StepperStep } from './Stepper'
 
 /**
  * # Stepper Component
- * 
+ *
  * A comprehensive stepper component for guiding users through multi-step processes.
- * 
+ *
  * ## Features
  * - **Compound Component Architecture**: Use `Stepper.Step`, `Stepper.StepList`, `Stepper.Content`, and `Stepper.Navigation`
  * - **Multiple Variants**: Horizontal, vertical, and compact layouts
  * - **Controlled Component**: Full control over step state and navigation
  * - **Accessibility**: ARIA attributes and keyboard navigation
  * - **Customization**: Extensive styling and behavior options
- * 
+ *
  * ## Basic Usage
  * ```tsx
  * import { Stepper } from '@/components'
- * 
+ *
  * const steps = [
  *   { id: '1', title: 'Step 1', description: 'First step' },
  *   { id: '2', title: 'Step 2', description: 'Second step' },
  *   { id: '3', title: 'Step 3', description: 'Final step' },
  * ]
- * 
+ *
  * function MyStepper() {
  *   const [currentStep, setCurrentStep] = useState(0)
- * 
+ *
  *   return (
  *     <Stepper steps={steps} currentStep={currentStep} onStepChange={setCurrentStep}>
  *       <Stepper.StepList />
@@ -46,7 +46,8 @@ const meta = {
     layout: 'padded',
     docs: {
       description: {
-        component: 'A comprehensive stepper component for multi-step processes with compound component architecture.',
+        component:
+          'A comprehensive stepper component for multi-step processes with compound component architecture.',
       },
     },
   },
@@ -203,9 +204,15 @@ const sampleSteps: StepperStep[] = [
         <div className="bg-gray-50 p-4 rounded-lg">
           <h4 className="font-medium text-gray-900 mb-2">Summary</h4>
           <div className="text-sm text-gray-600 space-y-1">
-            <p><strong>Name:</strong> John Doe</p>
-            <p><strong>Email:</strong> john@example.com</p>
-            <p><strong>Address:</strong> 123 Main St, City, State</p>
+            <p>
+              <strong>Name:</strong> John Doe
+            </p>
+            <p>
+              <strong>Email:</strong> john@example.com
+            </p>
+            <p>
+              <strong>Address:</strong> 123 Main St, City, State
+            </p>
           </div>
         </div>
         <div className="flex items-center">
@@ -299,13 +306,9 @@ const StepperWithState: React.FC<{
 
 // Basic Usage
 export const Basic: Story = {
-  render: (args) => (
-    <StepperWithState
-      steps={sampleSteps}
-      {...args}
-    />
-  ),
+  render: (args) => <StepperWithState {...args} />,
   args: {
+    steps: sampleSteps,
     variant: 'horizontal',
     size: 'md',
     showStepNumbers: true,
@@ -316,13 +319,9 @@ export const Basic: Story = {
 
 // Horizontal Variant
 export const Horizontal: Story = {
-  render: (args) => (
-    <StepperWithState
-      steps={sampleSteps}
-      {...args}
-    />
-  ),
+  render: (args) => <StepperWithState {...args} />,
   args: {
+    steps: sampleSteps,
     variant: 'horizontal',
     size: 'md',
   },
@@ -330,13 +329,9 @@ export const Horizontal: Story = {
 
 // Vertical Variant
 export const Vertical: Story = {
-  render: (args) => (
-    <StepperWithState
-      steps={sampleSteps}
-      {...args}
-    />
-  ),
+  render: (args) => <StepperWithState {...args} />,
   args: {
+    steps: sampleSteps,
     variant: 'vertical',
     size: 'md',
   },
@@ -344,13 +339,9 @@ export const Vertical: Story = {
 
 // Compact Variant
 export const Compact: Story = {
-  render: (args) => (
-    <StepperWithState
-      steps={sampleSteps}
-      {...args}
-    />
-  ),
+  render: (args) => <StepperWithState {...args} />,
   args: {
+    steps: sampleSteps,
     variant: 'compact',
     size: 'md',
   },
@@ -358,75 +349,51 @@ export const Compact: Story = {
 
 // Different Sizes
 export const Small: Story = {
-  render: (args) => (
-    <StepperWithState
-      steps={sampleSteps}
-      {...args}
-    />
-  ),
+  render: (args) => <StepperWithState {...args} />,
   args: {
+    steps: sampleSteps,
     size: 'sm',
   },
 }
 
 export const Large: Story = {
-  render: (args) => (
-    <StepperWithState
-      steps={sampleSteps}
-      {...args}
-    />
-  ),
+  render: (args) => <StepperWithState {...args} />,
   args: {
+    steps: sampleSteps,
     size: 'lg',
   },
 }
 
 // States
 export const Loading: Story = {
-  render: (args) => (
-    <StepperWithState
-      steps={sampleSteps}
-      {...args}
-    />
-  ),
+  render: (args) => <StepperWithState {...args} />,
   args: {
+    steps: sampleSteps,
     loading: true,
     loadingMessage: 'Processing your information...',
   },
 }
 
 export const Disabled: Story = {
-  render: (args) => (
-    <StepperWithState
-      steps={sampleSteps}
-      {...args}
-    />
-  ),
+  render: (args) => <StepperWithState {...args} />,
   args: {
+    steps: sampleSteps,
     disabled: true,
   },
 }
 
 export const WithError: Story = {
-  render: (args) => (
-    <StepperWithState
-      steps={sampleSteps}
-      {...args}
-    />
-  ),
+  render: (args) => <StepperWithState {...args} />,
   args: {
+    steps: sampleSteps,
     errorMessage: 'Please complete all required fields before proceeding.',
   },
 }
 
 export const WithLabel: Story = {
-  render: (args) => (
-    <StepperWithState
-      steps={sampleSteps}
-      {...args}
-    />
-  ),
+  render: (args) => <StepperWithState {...args} />,
   args: {
+    steps: sampleSteps,
     label: 'Registration Process',
     helperText: 'Complete all steps to finish your registration',
     required: true,
@@ -456,13 +423,9 @@ const stepsWithIcons: StepperStep[] = [
 ]
 
 export const WithIcons: Story = {
-  render: (args) => (
-    <StepperWithState
-      steps={stepsWithIcons}
-      {...args}
-    />
-  ),
+  render: (args) => <StepperWithState {...args} />,
   args: {
+    steps: stepsWithIcons,
     showStepNumbers: false,
   },
 }
@@ -490,13 +453,9 @@ const stepsWithError: StepperStep[] = [
 ]
 
 export const WithErrorStates: Story = {
-  render: (args) => (
-    <StepperWithState
-      steps={stepsWithError}
-      {...args}
-    />
-  ),
+  render: (args) => <StepperWithState {...args} />,
   args: {
+    steps: stepsWithError,
     currentStep: 1,
   },
 }
@@ -588,13 +547,9 @@ const formSteps: StepperStep[] = [
 ]
 
 export const FormIntegration: Story = {
-  render: (args) => (
-    <StepperWithState
-      steps={formSteps}
-      {...args}
-    />
-  ),
+  render: (args) => <StepperWithState {...args} />,
   args: {
+    steps: formSteps,
     label: 'User Registration',
     helperText: 'Please complete all required fields',
     required: true,
@@ -602,30 +557,29 @@ export const FormIntegration: Story = {
 }
 
 // Compound Component Usage
-export const CompoundComponent: Story = {
-  render: (args) => {
-    const [currentStep, setCurrentStep] = useState(0)
+const CompoundComponentDemo: React.FC<any> = (args) => {
+  const [currentStep, setCurrentStep] = useState(0)
+  const steps = (args as any).steps || sampleSteps
 
-    return (
-      <div className="max-w-4xl mx-auto">
-        <Stepper
-          steps={sampleSteps}
-          currentStep={currentStep}
-          onStepChange={setCurrentStep}
-          {...args}
-        >
-          <StepList>
-            {sampleSteps.map((step, index) => (
-              <Step key={step.id} step={step} index={index} />
-            ))}
-          </StepList>
-          <Content />
-          <Navigation />
-        </Stepper>
-      </div>
-    )
-  },
+  return (
+    <div className="max-w-4xl mx-auto">
+      <Stepper currentStep={currentStep} onStepChange={setCurrentStep} steps={steps} {...args}>
+        <StepList>
+          {steps.map((step, index) => (
+            <Step key={step.id} step={step} index={index} />
+          ))}
+        </StepList>
+        <Content />
+        <Navigation />
+      </Stepper>
+    </div>
+  )
+}
+
+export const CompoundComponent: Story = {
+  render: (args) => <CompoundComponentDemo {...args} />,
   args: {
+    steps: sampleSteps,
     variant: 'horizontal',
   },
-} 
+}

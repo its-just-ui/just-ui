@@ -17,10 +17,12 @@ const DialogWithState = ({
   onOpenChange,
   triggerText = 'Open Dialog',
   ...props
-}: React.ComponentProps<typeof Dialog> & {
+}: Omit<React.ComponentProps<typeof Dialog>, 'open' | 'onOpenChange'> & {
   children?: React.ReactNode
   defaultOpen?: boolean
   triggerText?: string
+  open?: boolean
+  onOpenChange?: (open: boolean) => void
 }) => {
   const [open, setOpen] = useState(defaultOpen)
 
@@ -528,6 +530,9 @@ export const Default: Story = {
         </p>
       </div>
     ),
+    // Required props for the underlying Dialog component
+    open: false,
+    onOpenChange: () => {},
   },
 }
 
@@ -584,7 +589,10 @@ export const ShowingDefaults: Story = {
       </div>
     </div>
   ),
-  args: {},
+  args: {
+    open: false,
+    onOpenChange: () => {},
+  },
 }
 
 export const Variants: Story = {
@@ -640,7 +648,10 @@ export const Variants: Story = {
       </div>
     </div>
   ),
-  args: {},
+  args: {
+    open: false,
+    onOpenChange: () => {},
+  },
 }
 
 export const Sizes: Story = {
@@ -695,7 +706,10 @@ export const Sizes: Story = {
       </div>
     </div>
   ),
-  args: {},
+  args: {
+    open: false,
+    onOpenChange: () => {},
+  },
 }
 
 export const Positions: Story = {
@@ -762,7 +776,10 @@ export const Positions: Story = {
       </div>
     </div>
   ),
-  args: {},
+  args: {
+    open: false,
+    onOpenChange: () => {},
+  },
 }
 
 export const StatusStates: Story = {
@@ -814,7 +831,10 @@ export const StatusStates: Story = {
       </div>
     </div>
   ),
-  args: {},
+  args: {
+    open: false,
+    onOpenChange: () => {},
+  },
 }
 
 export const States: Story = {
@@ -860,7 +880,10 @@ export const States: Story = {
       </div>
     </div>
   ),
-  args: {},
+  args: {
+    open: false,
+    onOpenChange: () => {},
+  },
 }
 
 export const BehaviorOptions: Story = {
@@ -919,7 +942,10 @@ export const BehaviorOptions: Story = {
       </div>
     </div>
   ),
-  args: {},
+  args: {
+    open: false,
+    onOpenChange: () => {},
+  },
 }
 
 export const Transitions: Story = {
@@ -981,7 +1007,10 @@ export const Transitions: Story = {
       </div>
     </div>
   ),
-  args: {},
+  args: {
+    open: false,
+    onOpenChange: () => {},
+  },
 }
 
 export const CustomStyling: Story = {
@@ -1073,7 +1102,10 @@ export const CustomStyling: Story = {
       </div>
     </div>
   ),
-  args: {},
+  args: {
+    open: false,
+    onOpenChange: () => {},
+  },
 }
 
 export const CustomColors: Story = {
@@ -1167,7 +1199,10 @@ export const CustomColors: Story = {
       </div>
     </div>
   ),
-  args: {},
+  args: {
+    open: false,
+    onOpenChange: () => {},
+  },
 }
 
 export const CompoundComponents: Story = {
@@ -1234,7 +1269,10 @@ export const CompoundComponents: Story = {
       </div>
     </div>
   ),
-  args: {},
+  args: {
+    open: false,
+    onOpenChange: () => {},
+  },
 }
 
 export const FormDialog: Story = {
@@ -1329,7 +1367,10 @@ export const FormDialog: Story = {
 
     return <FormDialogExample />
   },
-  args: {},
+  args: {
+    open: false,
+    onOpenChange: () => {},
+  },
 }
 
 export const ConfirmationDialog: Story = {
@@ -1441,7 +1482,10 @@ export const ConfirmationDialog: Story = {
 
     return <ConfirmDialogExample />
   },
-  args: {},
+  args: {
+    open: false,
+    onOpenChange: () => {},
+  },
 }
 
 export const ImageGalleryDialog: Story = {
@@ -1516,7 +1560,10 @@ export const ImageGalleryDialog: Story = {
 
     return <ImageGalleryExample />
   },
-  args: {},
+  args: {
+    open: false,
+    onOpenChange: () => {},
+  },
 }
 
 export const NotificationDialog: Story = {
@@ -1619,7 +1666,10 @@ export const NotificationDialog: Story = {
 
     return <NotificationExample />
   },
-  args: {},
+  args: {
+    open: false,
+    onOpenChange: () => {},
+  },
 }
 
 export const AccessibilityFeatures: Story = {
@@ -1717,5 +1767,8 @@ export const AccessibilityFeatures: Story = {
       </div>
     </div>
   ),
-  args: {},
+  args: {
+    open: false,
+    onOpenChange: () => {},
+  },
 }
