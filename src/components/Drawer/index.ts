@@ -9,6 +9,7 @@ export {
   DrawerItem,
   useDrawer,
   type DrawerProps,
+  type DrawerItem as DrawerItemType,
   type DrawerContainerProps,
   type DrawerOverlayProps,
   type DrawerHeaderProps,
