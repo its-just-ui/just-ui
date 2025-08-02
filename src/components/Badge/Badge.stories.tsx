@@ -2,9 +2,27 @@ import React, { useState } from 'react'
 import type { Meta, StoryObj } from '@storybook/react'
 import { Badge } from './Badge'
 
+// Wrapper component for controlled state
+const BadgeWithState = ({ children, closeButton = false, onClose, ...props }: any) => {
+  const [isVisible, setIsVisible] = useState(true)
+
+  const handleClose = () => {
+    setIsVisible(false)
+    onClose?.()
+  }
+
+  if (!isVisible) return null
+
+  return (
+    <Badge {...props} closeButton={closeButton} onClose={handleClose}>
+      {children}
+    </Badge>
+  )
+}
+
 /**
  * Badge is a versatile component for displaying status, labels, notifications, and interactive elements with extensive customization options.
- * 
+ *
  * ## Features
  * - **Multiple Variants**: 8 visual styles from subtle to eye-catching designs (default, filled, outlined, ghost, solid, gradient, glass, neon)
  * - **Flexible Sizing**: 6 size options from extra small to extra extra large (xs, sm, md, lg, xl, 2xl)
@@ -16,28 +34,28 @@ import { Badge } from './Badge'
  * - **Smooth Animations**: Multiple animation effects (pulse, bounce, shake, glow) with customizable timing
  * - **Accessibility First**: Full ARIA support, keyboard navigation, and screen reader compatibility
  * - **Form Integration**: Works seamlessly in forms with controlled/uncontrolled modes
- * 
+ *
  * ## Usage
- * 
+ *
  * ### Basic Usage:
  * ```tsx
  * <Badge>Default Badge</Badge>
  * <Badge variant="filled" size="lg" status="success">Success Badge</Badge>
  * ```
- * 
+ *
  * ### Interactive Badges:
  * ```tsx
- * <Badge 
+ * <Badge
  *   interactive
- *   icon="⭐" 
- *   closeButton 
+ *   icon="⭐"
+ *   closeButton
  *   onClose={() => console.log('closed')}
  *   onClick={() => console.log('clicked')}
  * >
  *   Interactive Badge
  * </Badge>
  * ```
- * 
+ *
  * ### Compound Component Usage:
  * ```tsx
  * <Badge>
@@ -47,14 +65,14 @@ import { Badge } from './Badge'
  *   <Badge.HelperText>Helper text</Badge.HelperText>
  * </Badge>
  * ```
- * 
+ *
  * ### Animated Badges:
  * ```tsx
  * <Badge animated animation="pulse" status="error">
  *   Live Status
  * </Badge>
  * ```
- * 
+ *
  * ### Custom Styling:
  * ```tsx
  * <Badge
@@ -68,13 +86,13 @@ import { Badge } from './Badge'
  *   Custom Styled Badge
  * </Badge>
  * ```
- * 
+ *
  * ### Form Integration:
  * ```tsx
  * const [tags, setTags] = useState(['React', 'TypeScript'])
- * 
+ *
  * {tags.map(tag => (
- *   <Badge 
+ *   <Badge
  *     key={tag}
  *     closeButton
  *     onClose={() => removeTag(tag)}
@@ -84,34 +102,6 @@ import { Badge } from './Badge'
  * ))}
  * ```
  */
-
-// Wrapper component for controlled state
-const BadgeWithState = ({ 
-  children, 
-  closeButton = false, 
-  onClose,
-  ...props 
-}: any) => {
-  const [isVisible, setIsVisible] = useState(true)
-  
-  const handleClose = () => {
-    setIsVisible(false)
-    onClose?.()
-  }
-  
-  if (!isVisible) return null
-  
-  return (
-    <Badge 
-      {...props} 
-      closeButton={closeButton}
-      onClose={handleClose}
-    >
-      {children}
-    </Badge>
-  )
-}
-
 const meta = {
   title: 'Components/Badge',
   component: Badge,
@@ -679,12 +669,12 @@ export const ShowingDefaults: Story = {
         <Badge>Basic Badge</Badge>
         <p className="text-xs text-gray-500 mt-2">All default styles applied</p>
       </div>
-      
+
       <div>
         <h3 className="text-sm font-medium text-gray-700 mb-3">With Label</h3>
         <Badge label="Status">Badge with Label</Badge>
       </div>
-      
+
       <div>
         <h3 className="text-sm font-medium text-gray-700 mb-3">Interactive Badge</h3>
         <Badge interactive onClick={() => console.log('clicked')}>
@@ -692,14 +682,10 @@ export const ShowingDefaults: Story = {
         </Badge>
         <p className="text-xs text-gray-500 mt-2">Hover and click to see effects</p>
       </div>
-      
+
       <div>
         <h3 className="text-sm font-medium text-gray-700 mb-3">With Helper Text</h3>
-        <Badge 
-          helperText="Additional context information"
-        >
-          Badge with Helper
-        </Badge>
+        <Badge helperText="Additional context information">Badge with Helper</Badge>
       </div>
     </div>
   ),
@@ -719,27 +705,43 @@ export const Variants: Story = {
         <Badge variant="glass">Glass</Badge>
         <Badge variant="neon">Neon</Badge>
       </div>
-      
+
       <div className="space-y-4">
         <h3 className="text-sm font-medium text-gray-700">With Different Status</h3>
-        
+
         <div>
           <h4 className="text-xs font-medium text-gray-600 mb-2">Success Status</h4>
           <div className="flex flex-wrap gap-2">
-            <Badge variant="default" status="success">Default Success</Badge>
-            <Badge variant="filled" status="success">Filled Success</Badge>
-            <Badge variant="outlined" status="success">Outlined Success</Badge>
-            <Badge variant="ghost" status="success">Ghost Success</Badge>
+            <Badge variant="default" status="success">
+              Default Success
+            </Badge>
+            <Badge variant="filled" status="success">
+              Filled Success
+            </Badge>
+            <Badge variant="outlined" status="success">
+              Outlined Success
+            </Badge>
+            <Badge variant="ghost" status="success">
+              Ghost Success
+            </Badge>
           </div>
         </div>
-        
+
         <div>
           <h4 className="text-xs font-medium text-gray-600 mb-2">Error Status</h4>
           <div className="flex flex-wrap gap-2">
-            <Badge variant="default" status="error">Default Error</Badge>
-            <Badge variant="filled" status="error">Filled Error</Badge>
-            <Badge variant="outlined" status="error">Outlined Error</Badge>
-            <Badge variant="ghost" status="error">Ghost Error</Badge>
+            <Badge variant="default" status="error">
+              Default Error
+            </Badge>
+            <Badge variant="filled" status="error">
+              Filled Error
+            </Badge>
+            <Badge variant="outlined" status="error">
+              Outlined Error
+            </Badge>
+            <Badge variant="ghost" status="error">
+              Ghost Error
+            </Badge>
           </div>
         </div>
       </div>
@@ -759,16 +761,28 @@ export const Sizes: Story = {
         <Badge size="xl">Extra Large</Badge>
         <Badge size="2xl">2X Large</Badge>
       </div>
-      
+
       <div className="space-y-4">
         <h3 className="text-sm font-medium text-gray-700">Same Content, Different Sizes</h3>
         <div className="space-y-3">
-          <Badge size="xs" status="info">Notification</Badge>
-          <Badge size="sm" status="info">Notification</Badge>
-          <Badge size="md" status="info">Notification</Badge>
-          <Badge size="lg" status="info">Notification</Badge>
-          <Badge size="xl" status="info">Notification</Badge>
-          <Badge size="2xl" status="info">Notification</Badge>
+          <Badge size="xs" status="info">
+            Notification
+          </Badge>
+          <Badge size="sm" status="info">
+            Notification
+          </Badge>
+          <Badge size="md" status="info">
+            Notification
+          </Badge>
+          <Badge size="lg" status="info">
+            Notification
+          </Badge>
+          <Badge size="xl" status="info">
+            Notification
+          </Badge>
+          <Badge size="2xl" status="info">
+            Notification
+          </Badge>
         </div>
       </div>
     </div>
@@ -788,17 +802,29 @@ export const StatusStates: Story = {
         <Badge status="primary">Primary</Badge>
         <Badge status="secondary">Secondary</Badge>
       </div>
-      
+
       <div className="space-y-4">
         <h3 className="text-sm font-medium text-gray-700">Status with Context</h3>
-        
+
         <div className="space-y-3">
-          <Badge status="success" icon="✅">Completed</Badge>
-          <Badge status="warning" icon="⚠️">Pending Review</Badge>
-          <Badge status="error" icon="❌">Failed</Badge>
-          <Badge status="info" icon="ℹ️">Information</Badge>
-          <Badge status="primary" icon="⭐">Featured</Badge>
-          <Badge status="secondary" icon="📄">Draft</Badge>
+          <Badge status="success" icon="✅">
+            Completed
+          </Badge>
+          <Badge status="warning" icon="⚠️">
+            Pending Review
+          </Badge>
+          <Badge status="error" icon="❌">
+            Failed
+          </Badge>
+          <Badge status="info" icon="ℹ️">
+            Information
+          </Badge>
+          <Badge status="primary" icon="⭐">
+            Featured
+          </Badge>
+          <Badge status="secondary" icon="📄">
+            Draft
+          </Badge>
         </div>
       </div>
     </div>
@@ -813,7 +839,7 @@ export const InteractiveStates: Story = {
         <h3 className="text-sm font-medium text-gray-700 mb-3">Normal State</h3>
         <Badge>Normal Badge</Badge>
       </div>
-      
+
       <div>
         <h3 className="text-sm font-medium text-gray-700 mb-3">Interactive State</h3>
         <Badge interactive onClick={() => console.log('clicked')}>
@@ -821,20 +847,22 @@ export const InteractiveStates: Story = {
         </Badge>
         <p className="text-xs text-gray-500 mt-1">Hover and click to see effects</p>
       </div>
-      
+
       <div>
         <h3 className="text-sm font-medium text-gray-700 mb-3">Disabled State</h3>
         <Badge disabled>Disabled Badge</Badge>
       </div>
-      
+
       <div>
         <h3 className="text-sm font-medium text-gray-700 mb-3">Loading State</h3>
         <Badge loading>Loading Badge</Badge>
       </div>
-      
+
       <div>
         <h3 className="text-sm font-medium text-gray-700 mb-3">Required State</h3>
-        <Badge required aria-required="true">Required Badge</Badge>
+        <Badge required aria-required="true">
+          Required Badge
+        </Badge>
       </div>
     </div>
   ),
@@ -853,7 +881,7 @@ export const WithIcons: Story = {
           <Badge icon="📊">Analytics</Badge>
         </div>
       </div>
-      
+
       <div>
         <h3 className="text-sm font-medium text-gray-700 mb-3">Animated Icons</h3>
         <div className="flex flex-wrap gap-3">
@@ -868,22 +896,14 @@ export const WithIcons: Story = {
           </Badge>
         </div>
       </div>
-      
+
       <div>
         <h3 className="text-sm font-medium text-gray-700 mb-3">Interactive Icons</h3>
         <div className="flex flex-wrap gap-3">
-          <Badge 
-            icon="❤️" 
-            interactive 
-            onIconClick={() => console.log('Icon clicked!')}
-          >
+          <Badge icon="❤️" interactive onIconClick={() => console.log('Icon clicked!')}>
             Like
           </Badge>
-          <Badge 
-            icon="📋" 
-            interactive 
-            onIconClick={() => console.log('Copy clicked!')}
-          >
+          <Badge icon="📋" interactive onIconClick={() => console.log('Copy clicked!')}>
             Copy
           </Badge>
         </div>
@@ -901,26 +921,22 @@ export const WithCloseButton: Story = {
         <h3 className="text-sm font-medium text-gray-700 mb-3">Basic Closeable</h3>
         <div className="flex flex-wrap gap-3">
           <BadgeWithState closeButton>Closeable Tag</BadgeWithState>
-          <BadgeWithState closeButton status="success">Success Tag</BadgeWithState>
-          <BadgeWithState closeButton status="warning">Warning Tag</BadgeWithState>
+          <BadgeWithState closeButton status="success">
+            Success Tag
+          </BadgeWithState>
+          <BadgeWithState closeButton status="warning">
+            Warning Tag
+          </BadgeWithState>
         </div>
       </div>
-      
+
       <div>
         <h3 className="text-sm font-medium text-gray-700 mb-3">With Icon and Close Button</h3>
         <div className="flex flex-wrap gap-3">
-          <BadgeWithState 
-            icon="🏷️" 
-            closeButton 
-            onClose={() => console.log('Tag removed!')}
-          >
+          <BadgeWithState icon="🏷️" closeButton onClose={() => console.log('Tag removed!')}>
             Removable Tag
           </BadgeWithState>
-          <BadgeWithState 
-            icon="📂" 
-            closeButton 
-            status="info"
-          >
+          <BadgeWithState icon="📂" closeButton status="info">
             Category
           </BadgeWithState>
         </div>
@@ -936,13 +952,21 @@ export const Animations: Story = {
       <div>
         <h3 className="text-sm font-medium text-gray-700 mb-3">Animation Types</h3>
         <div className="flex flex-wrap gap-4">
-          <Badge animated animation="pulse" status="info">Pulse</Badge>
-          <Badge animated animation="bounce" status="success">Bounce</Badge>
-          <Badge animated animation="shake" status="warning">Shake</Badge>
-          <Badge animated animation="glow" status="primary">Glow</Badge>
+          <Badge animated animation="pulse" status="info">
+            Pulse
+          </Badge>
+          <Badge animated animation="bounce" status="success">
+            Bounce
+          </Badge>
+          <Badge animated animation="shake" status="warning">
+            Shake
+          </Badge>
+          <Badge animated animation="glow" status="primary">
+            Glow
+          </Badge>
         </div>
       </div>
-      
+
       <div>
         <h3 className="text-sm font-medium text-gray-700 mb-3">Custom Duration</h3>
         <div className="flex flex-wrap gap-4">
@@ -954,24 +978,14 @@ export const Animations: Story = {
           </Badge>
         </div>
       </div>
-      
+
       <div>
         <h3 className="text-sm font-medium text-gray-700 mb-3">Limited Iterations</h3>
         <div className="flex flex-wrap gap-4">
-          <Badge 
-            animated 
-            animation="bounce" 
-            animationIterationCount={3}
-            status="success"
-          >
+          <Badge animated animation="bounce" animationIterationCount={3} status="success">
             3 Bounces
           </Badge>
-          <Badge 
-            animated 
-            animation="shake" 
-            animationIterationCount={1}
-            status="warning"
-          >
+          <Badge animated animation="shake" animationIterationCount={1} status="warning">
             Shake Once
           </Badge>
         </div>
@@ -991,7 +1005,7 @@ export const CompoundComponents: Story = {
           <Badge.Label>Notification</Badge.Label>
         </Badge>
       </div>
-      
+
       <div>
         <h3 className="text-sm font-medium text-gray-700 mb-3">With Helper Text</h3>
         <Badge>
@@ -1000,7 +1014,7 @@ export const CompoundComponents: Story = {
           <Badge.HelperText>Real-time data</Badge.HelperText>
         </Badge>
       </div>
-      
+
       <div>
         <h3 className="text-sm font-medium text-gray-700 mb-3">Complex Compound</h3>
         <BadgeWithState>
@@ -1010,7 +1024,7 @@ export const CompoundComponents: Story = {
           <Badge.HelperText>Available with Pro plan</Badge.HelperText>
         </BadgeWithState>
       </div>
-      
+
       <div>
         <h3 className="text-sm font-medium text-gray-700 mb-3">Animated Compound</h3>
         <Badge animated animation="pulse" status="success">
@@ -1029,49 +1043,30 @@ export const CustomStyling: Story = {
       <div>
         <h3 className="text-sm font-medium text-gray-700 mb-3">Custom Colors</h3>
         <div className="flex flex-wrap gap-3">
-          <Badge
-            backgroundColor="#fbbf24"
-            textColor="#92400e"
-            borderColor="#f59e0b"
-          >
+          <Badge backgroundColor="#fbbf24" textColor="#92400e" borderColor="#f59e0b">
             Custom Yellow
           </Badge>
-          <Badge
-            backgroundColor="#a78bfa"
-            textColor="white"
-            borderColor="#8b5cf6"
-          >
+          <Badge backgroundColor="#a78bfa" textColor="white" borderColor="#8b5cf6">
             Custom Purple
           </Badge>
-          <Badge
-            backgroundColor="#34d399"
-            textColor="#065f46"
-            borderColor="#10b981"
-          >
+          <Badge backgroundColor="#34d399" textColor="#065f46" borderColor="#10b981">
             Custom Green
           </Badge>
         </div>
       </div>
-      
+
       <div>
         <h3 className="text-sm font-medium text-gray-700 mb-3">Typography Customization</h3>
         <div className="flex flex-wrap gap-3">
-          <Badge
-            fontSize="18px"
-            fontWeight="bold"
-            letterSpacing="0.1em"
-          >
+          <Badge fontSize="18px" fontWeight="bold" letterSpacing="0.1em">
             Large Bold
           </Badge>
-          <Badge
-            fontSize="12px"
-            fontFamily="monospace"
-          >
+          <Badge fontSize="12px" fontFamily="monospace">
             Monospace
           </Badge>
         </div>
       </div>
-      
+
       <div>
         <h3 className="text-sm font-medium text-gray-700 mb-3">Advanced Effects</h3>
         <div className="flex flex-wrap gap-3">
@@ -1114,22 +1109,22 @@ export const RealWorldTagManagement: Story = {
     const TagManagementExample = () => {
       const [tags, setTags] = useState(['React', 'TypeScript', 'Tailwind', 'Storybook'])
       const [newTag, setNewTag] = useState('')
-      
+
       const addTag = () => {
         if (newTag.trim() && !tags.includes(newTag.trim())) {
           setTags([...tags, newTag.trim()])
           setNewTag('')
         }
       }
-      
+
       const removeTag = (tagToRemove: string) => {
-        setTags(tags.filter(tag => tag !== tagToRemove))
+        setTags(tags.filter((tag) => tag !== tagToRemove))
       }
-      
+
       return (
         <div className="space-y-4">
           <h3 className="text-lg font-medium">Project Tags</h3>
-          
+
           <div className="flex flex-wrap gap-2">
             {tags.map((tag, index) => (
               <Badge
@@ -1144,7 +1139,7 @@ export const RealWorldTagManagement: Story = {
               </Badge>
             ))}
           </div>
-          
+
           <div className="flex gap-2">
             <input
               type="text"
@@ -1161,14 +1156,12 @@ export const RealWorldTagManagement: Story = {
               Add Tag
             </button>
           </div>
-          
-          <div className="text-sm text-gray-600">
-            Total tags: {tags.length}
-          </div>
+
+          <div className="text-sm text-gray-600">Total tags: {tags.length}</div>
         </div>
       )
     }
-    
+
     return <TagManagementExample />
   },
   args: {},
@@ -1183,7 +1176,7 @@ export const RealWorldNotifications: Story = {
         { id: 3, type: 'info', message: 'New feature available', time: '1 hour ago' },
         { id: 4, type: 'error', message: 'Sync failed', time: '2 hours ago' },
       ])
-      
+
       const addNotification = () => {
         const types = ['success', 'warning', 'info', 'error']
         const messages = [
@@ -1192,21 +1185,21 @@ export const RealWorldNotifications: Story = {
           'Backup completed',
           'Connection restored',
         ]
-        
+
         const newNotification = {
           id: Date.now(),
           type: types[Math.floor(Math.random() * types.length)],
           message: messages[Math.floor(Math.random() * messages.length)],
-          time: 'Just now'
+          time: 'Just now',
         }
-        
+
         setNotifications([newNotification, ...notifications])
       }
-      
+
       const removeNotification = (id: number) => {
-        setNotifications(notifications.filter(n => n.id !== id))
+        setNotifications(notifications.filter((n) => n.id !== id))
       }
-      
+
       return (
         <div className="space-y-4 max-w-md">
           <div className="flex items-center justify-between">
@@ -1218,7 +1211,7 @@ export const RealWorldNotifications: Story = {
               Add Notification
             </button>
           </div>
-          
+
           <div className="space-y-3">
             {notifications.map((notification) => (
               <div key={notification.id} className="p-3 bg-gray-50 rounded-lg">
@@ -1240,16 +1233,14 @@ export const RealWorldNotifications: Story = {
               </div>
             ))}
           </div>
-          
+
           {notifications.length === 0 && (
-            <div className="text-center py-8 text-gray-500">
-              No notifications
-            </div>
+            <div className="text-center py-8 text-gray-500">No notifications</div>
           )}
         </div>
       )
     }
-    
+
     return <NotificationSystemExample />
   },
   args: {},
@@ -1266,11 +1257,11 @@ export const RealWorldStatusDashboard: Story = {
         { name: 'Email Service', status: 'error', uptime: '85.1%' },
         { name: 'Analytics', status: 'info', uptime: 'Maintenance' },
       ]
-      
+
       return (
         <div className="space-y-4">
           <h3 className="text-lg font-medium">System Status Dashboard</h3>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {services.map((service) => (
               <div key={service.name} className="p-4 border rounded-lg">
@@ -1284,30 +1275,34 @@ export const RealWorldStatusDashboard: Story = {
                     animated={service.status === 'error'}
                     animation={service.status === 'error' ? 'pulse' : undefined}
                   >
-                    {service.status === 'success' ? 'Operational' :
-                     service.status === 'warning' ? 'Degraded' :
-                     service.status === 'error' ? 'Down' : 'Maintenance'}
+                    {service.status === 'success'
+                      ? 'Operational'
+                      : service.status === 'warning'
+                        ? 'Degraded'
+                        : service.status === 'error'
+                          ? 'Down'
+                          : 'Maintenance'}
                   </Badge>
                 </div>
               </div>
             ))}
           </div>
-          
+
           <div className="flex justify-center gap-4 pt-4">
             <Badge variant="ghost" status="success">
-              {services.filter(s => s.status === 'success').length} Operational
+              {services.filter((s) => s.status === 'success').length} Operational
             </Badge>
             <Badge variant="ghost" status="warning">
-              {services.filter(s => s.status === 'warning').length} Degraded
+              {services.filter((s) => s.status === 'warning').length} Degraded
             </Badge>
             <Badge variant="ghost" status="error">
-              {services.filter(s => s.status === 'error').length} Down
+              {services.filter((s) => s.status === 'error').length} Down
             </Badge>
           </div>
         </div>
       )
     }
-    
+
     return <StatusDashboardExample />
   },
   args: {},
@@ -1317,32 +1312,25 @@ export const AccessibilityFeatures: Story = {
   render: () => (
     <div className="space-y-6">
       <h3 className="text-lg font-medium mb-4">Accessibility Features Demo</h3>
-      
+
       <div className="space-y-4">
         <p className="text-sm text-gray-600">
-          All badges support keyboard navigation and screen readers. Interactive badges can be activated with Enter or Space.
+          All badges support keyboard navigation and screen readers. Interactive badges can be
+          activated with Enter or Space.
         </p>
-        
+
         <div>
           <h4 className="text-sm font-medium text-gray-700 mb-2">ARIA Labels</h4>
           <div className="flex flex-wrap gap-3">
-            <Badge
-              aria-label="High priority notification badge"
-              status="error"
-              interactive
-            >
+            <Badge aria-label="High priority notification badge" status="error" interactive>
               High Priority
             </Badge>
-            <Badge
-              aria-label="User status: currently online"
-              status="success"
-              icon="🟢"
-            >
+            <Badge aria-label="User status: currently online" status="success" icon="🟢">
               Online
             </Badge>
           </div>
         </div>
-        
+
         <div>
           <h4 className="text-sm font-medium text-gray-700 mb-2">Keyboard Navigation</h4>
           <div className="flex flex-wrap gap-3">
@@ -1358,16 +1346,13 @@ export const AccessibilityFeatures: Story = {
             >
               Press Enter/Space
             </Badge>
-            <BadgeWithState
-              closeButton
-              aria-label="Dismissible notification badge"
-            >
+            <BadgeWithState closeButton aria-label="Dismissible notification badge">
               Tab + Enter to close
             </BadgeWithState>
           </div>
           <p className="text-xs text-gray-500 mt-1">Try tabbing to these badges</p>
         </div>
-        
+
         <div>
           <h4 className="text-sm font-medium text-gray-700 mb-2">Live Regions</h4>
           <Badge
@@ -1381,7 +1366,7 @@ export const AccessibilityFeatures: Story = {
           </Badge>
           <p className="text-xs text-gray-500 mt-1">Screen readers will announce changes</p>
         </div>
-        
+
         <div className="p-4 bg-gray-50 rounded">
           <p className="text-sm text-gray-600 mb-2">
             <strong>Accessibility features:</strong>
