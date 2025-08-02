@@ -178,7 +178,6 @@ const meta = {
       },
     },
 
-    // Content Props
     children: {
       control: 'text',
       description: 'Main content of the badge',
