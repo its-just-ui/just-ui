@@ -3,26 +3,39 @@ import React, { useState } from 'react'
 import { Alert, AlertTitle, AlertDescription, AlertIcon, AlertDismissButton } from './Alert'
 
 /**
- * # Alert Component
+ * Alert is a notification component that displays important information to users with extensive customization options.
  * 
- * A comprehensive alert component with multiple variants, sizes, and customization options.
+ * ## Features
+ * - **Multiple Variants**: 4 visual styles from subtle backgrounds to solid fills
+ * - **Size Options**: 3 size variants (sm, md, lg) for different contexts
+ * - **Status States**: Built-in semantic colors for success, warning, error, and info states
+ * - **Dismissible Alerts**: Optional close button with keyboard support (Escape key)
+ * - **Loading & Disabled States**: Handle async operations and disabled states gracefully
+ * - **Compound Components**: Use AlertTitle, AlertDescription, AlertIcon, and AlertDismissButton for full control
+ * - **Extensive Styling**: Over 40 style props for complete visual customization
+ * - **Smooth Transitions**: Customizable fade/slide animations with timing control
+ * - **Accessibility First**: Full ARIA support, keyboard navigation, and screen reader compatibility
+ * - **Custom Rendering**: Override default rendering with custom render functions
  * 
  * ## Usage
+ * 
+ * ### Basic Usage:
  * ```tsx
- * import { Alert, AlertTitle, AlertDescription } from '@/components/Alert'
- * 
- * // Basic usage
  * <Alert status="success" title="Success!" description="Operation completed successfully." />
+ * ```
  * 
- * // With custom icon
+ * ### With Custom Icon:
+ * ```tsx
  * <Alert 
  *   status="warning" 
  *   icon={<WarningIcon />}
  *   title="Warning" 
  *   description="Please review this information." 
  * />
+ * ```
  * 
- * // Dismissible alert
+ * ### Dismissible Alert:
+ * ```tsx
  * <Alert 
  *   status="error" 
  *   dismissible 
@@ -32,23 +45,36 @@ import { Alert, AlertTitle, AlertDescription, AlertIcon, AlertDismissButton } fr
  * />
  * ```
  * 
- * ## Features
- * - **Multiple variants**: default, filled, outlined, ghost
- * - **Size options**: sm, md, lg
- * - **Status types**: default, success, warning, error, info
- * - **Dismissible alerts** with keyboard support (Escape key)
- * - **Loading states** with customizable messages
- * - **Disabled states** for form integration
- * - **Custom styling** with granular control
- * - **Accessibility** with proper ARIA attributes
- * - **Compound component** structure for flexible usage
+ * ### Compound Component Usage:
+ * ```tsx
+ * <Alert>
+ *   <AlertIcon>⚠️</AlertIcon>
+ *   <AlertTitle>Custom Alert</AlertTitle>
+ *   <AlertDescription>This alert uses compound components.</AlertDescription>
+ *   <AlertDismissButton />
+ * </Alert>
+ * ```
+ * 
+ * ### Custom Styling:
+ * ```tsx
+ * <Alert
+ *   backgroundColor="#fef3c7"
+ *   borderColor="#f59e0b"
+ *   textColor="#92400e"
+ *   borderRadius="12px"
+ *   padding="16px"
+ * >
+ *   Custom styled alert content
+ * </Alert>
+ * ```
  */
 
 // Wrapper component for controlled state management
 const AlertWithState = ({ 
   children, 
-  defaultOpen = true,
+  dismissible = false, 
   onDismiss,
+  defaultOpen = true,
   ...props 
 }: any) => {
   const [isOpen, setIsOpen] = useState(defaultOpen)
@@ -61,7 +87,7 @@ const AlertWithState = ({
   if (!isOpen) return null
   
   return (
-    <Alert {...props} onDismiss={handleDismiss}>
+    <Alert {...props} dismissible={dismissible} onDismiss={handleDismiss}>
       {children}
     </Alert>
   )
@@ -72,445 +98,708 @@ const meta = {
   component: Alert,
   parameters: {
     layout: 'padded',
-    docs: {
-      description: {
-        component: 'A comprehensive alert component with multiple variants, sizes, and customization options.',
-      },
-    },
   },
   tags: ['autodocs'],
   argTypes: {
-    // Variant and styling
+    // Core Props
     variant: {
       control: 'select',
       options: ['default', 'filled', 'outlined', 'ghost'],
-      description: 'The visual variant of the alert',
-      defaultValue: 'default',
+      description: 'Visual style variant of the alert',
+      table: {
+        category: 'Core Props',
+        type: { summary: 'string' },
+        defaultValue: { summary: 'default' },
+      },
     },
     size: {
       control: 'select',
       options: ['sm', 'md', 'lg'],
-      description: 'The size of the alert',
-      defaultValue: 'md',
+      description: 'Size of the alert component',
+      table: {
+        category: 'Core Props',
+        type: { summary: 'string' },
+        defaultValue: { summary: 'md' },
+      },
     },
     status: {
       control: 'select',
       options: ['default', 'success', 'warning', 'error', 'info'],
-      description: 'The status/type of the alert',
-      defaultValue: 'default',
+      description: 'Status state for semantic coloring',
+      table: {
+        category: 'Core Props',
+        type: { summary: 'string' },
+        defaultValue: { summary: 'default' },
+      },
     },
-    
-    // Functional props
     disabled: {
       control: 'boolean',
-      description: 'Whether the alert is disabled',
-      defaultValue: false,
+      description: 'Disable the alert interactions',
+      table: {
+        category: 'Core Props',
+        type: { summary: 'boolean' },
+        defaultValue: { summary: 'false' },
+      },
     },
     loading: {
       control: 'boolean',
-      description: 'Whether the alert is in a loading state',
-      defaultValue: false,
+      description: 'Show loading state',
+      table: {
+        category: 'Core Props',
+        type: { summary: 'boolean' },
+        defaultValue: { summary: 'false' },
+      },
     },
     dismissible: {
       control: 'boolean',
-      description: 'Whether the alert can be dismissed',
-      defaultValue: false,
+      description: 'Show dismiss button and enable dismissal',
+      table: {
+        category: 'Core Props',
+        type: { summary: 'boolean' },
+        defaultValue: { summary: 'false' },
+      },
     },
     required: {
       control: 'boolean',
-      description: 'Whether the alert is required (for form integration)',
-      defaultValue: false,
+      description: 'Mark as required (affects ARIA attributes)',
+      table: {
+        category: 'Core Props',
+        type: { summary: 'boolean' },
+        defaultValue: { summary: 'false' },
+      },
     },
-    
-    // Content
+
+    // Content Props
     title: {
       control: 'text',
-      description: 'The title of the alert',
+      description: 'Title content for the alert',
+      table: {
+        category: 'Content',
+        type: { summary: 'React.ReactNode' },
+      },
     },
     description: {
       control: 'text',
-      description: 'The description text of the alert',
+      description: 'Description content for the alert',
+      table: {
+        category: 'Content',
+        type: { summary: 'React.ReactNode' },
+      },
+    },
+    icon: {
+      control: false,
+      description: 'Custom icon element',
+      table: {
+        category: 'Content',
+        type: { summary: 'React.ReactNode' },
+      },
+    },
+    children: {
+      control: false,
+      description: 'Additional content or compound components',
+      table: {
+        category: 'Content',
+        type: { summary: 'React.ReactNode' },
+      },
     },
     label: {
       control: 'text',
       description: 'Accessibility label for the alert',
+      table: {
+        category: 'Content',
+        type: { summary: 'string' },
+      },
     },
     helperText: {
       control: 'text',
       description: 'Helper text displayed below the alert',
+      table: {
+        category: 'Content',
+        type: { summary: 'string' },
+      },
     },
-    
-    // Animation
+
+    // Custom Styles
+    customStyles: {
+      control: 'object',
+      description: 'Custom styling options for the alert',
+      table: {
+        category: 'Custom Styles',
+        type: { summary: 'AlertCustomStyles' },
+      },
+    },
+
+    // Animation & Transitions
     transitionDuration: {
-      control: { type: 'number', min: 0, max: 1000, step: 50 },
+      control: 'number',
       description: 'Duration of transitions in milliseconds',
-      defaultValue: 200,
+      table: {
+        category: 'Animation',
+        type: { summary: 'number' },
+        defaultValue: { summary: 200 },
+      },
     },
-    
-    // Event handlers (disabled in controls)
-    onChange: { control: false },
-    onDismiss: { control: false },
-    onFocus: { control: false },
-    onBlur: { control: false },
-    onKeyDown: { control: false },
-    
-    // Custom render functions (disabled in controls)
-    renderTitle: { control: false },
-    renderDescription: { control: false },
-    renderIcon: { control: false },
-    renderDismissButton: { control: false },
-    
-    // Custom styles (disabled in controls)
-    customStyles: { control: false },
-    
-    // State props (disabled in controls)
-    value: { control: false },
-    defaultOpen: { control: false },
-    
-    // Content props (disabled in controls)
-    icon: { control: false },
-    children: { control: false },
+    _transitionType: {
+      control: 'select',
+      options: ['fade', 'slide', 'scale', 'none'],
+      description: 'Type of transition animation',
+      table: {
+        category: 'Animation',
+        type: { summary: 'string' },
+        defaultValue: { summary: 'fade' },
+      },
+    },
+
+    // Event Handlers
+    onDismiss: {
+      control: false,
+      description: 'Callback when alert is dismissed',
+      table: {
+        category: 'Event Handlers',
+        type: { summary: '() => void' },
+      },
+    },
+    onFocus: {
+      control: false,
+      description: 'Focus event handler',
+      table: {
+        category: 'Event Handlers',
+        type: { summary: '(event: React.FocusEvent) => void' },
+      },
+    },
+    onBlur: {
+      control: false,
+      description: 'Blur event handler',
+      table: {
+        category: 'Event Handlers',
+        type: { summary: '(event: React.FocusEvent) => void' },
+      },
+    },
+    onKeyDown: {
+      control: false,
+      description: 'Key down event handler',
+      table: {
+        category: 'Event Handlers',
+        type: { summary: '(event: React.KeyboardEvent) => void' },
+      },
+    },
+
+    // Custom Render Functions
+    renderTitle: {
+      control: false,
+      description: 'Custom render function for title',
+      table: {
+        category: 'Custom Render',
+        type: { summary: '(props: AlertTitleProps) => React.ReactNode' },
+      },
+    },
+    renderDescription: {
+      control: false,
+      description: 'Custom render function for description',
+      table: {
+        category: 'Custom Render',
+        type: { summary: '(props: AlertDescriptionProps) => React.ReactNode' },
+      },
+    },
+    renderIcon: {
+      control: false,
+      description: 'Custom render function for icon',
+      table: {
+        category: 'Custom Render',
+        type: { summary: '(props: AlertIconProps) => React.ReactNode' },
+      },
+    },
+    renderDismissButton: {
+      control: false,
+      description: 'Custom render function for dismiss button',
+      table: {
+        category: 'Custom Render',
+        type: { summary: '(props: AlertDismissButtonProps) => React.ReactNode' },
+      },
+    },
+
+    // Accessibility
+    'aria-label': {
+      control: 'text',
+      description: 'ARIA label for accessibility',
+      table: {
+        category: 'Accessibility',
+        type: { summary: 'string' },
+      },
+    },
+    'aria-describedby': {
+      control: 'text',
+      description: 'ARIA described by reference',
+      table: {
+        category: 'Accessibility',
+        type: { summary: 'string' },
+      },
+    },
   },
 } satisfies Meta<typeof Alert>
 
 export default meta
 type Story = StoryObj<typeof meta>
 
-// Basic Usage Stories
 export const Default: Story = {
+  render: (args) => <AlertWithState {...args} />,
   args: {
     title: 'Default Alert',
-    description: 'This is a default alert with some descriptive text.',
-    status: 'default',
-    variant: 'default',
-    size: 'md',
+    description: 'This is a default alert with no specific status.',
   },
 }
 
-export const Success: Story = {
-  args: {
-    title: 'Success!',
-    description: 'Your operation completed successfully.',
-    status: 'success',
-    variant: 'default',
-    size: 'md',
-  },
+export const ShowingDefaults: Story = {
+  render: () => (
+    <div className="space-y-6">
+      <div>
+        <h3 className="text-sm font-medium text-gray-700 mb-3">Default Alert (no props)</h3>
+        <Alert>Basic alert content</Alert>
+        <p className="text-xs text-gray-500 mt-2">All default styles applied</p>
+      </div>
+      
+      <div>
+        <h3 className="text-sm font-medium text-gray-700 mb-3">With Title and Description</h3>
+        <Alert title="Information" description="This alert has both title and description." />
+      </div>
+      
+      <div>
+        <h3 className="text-sm font-medium text-gray-700 mb-3">With Icon</h3>
+        <Alert icon="ℹ️" title="With Icon" description="This alert includes a custom icon." />
+      </div>
+      
+      <div>
+        <h3 className="text-sm font-medium text-gray-700 mb-3">With Helper Text</h3>
+        <Alert 
+          title="Alert with Helper" 
+          description="This alert has additional helper text below."
+          helperText="Additional context or instructions can go here."
+        />
+      </div>
+    </div>
+  ),
+  args: {},
 }
 
-export const Warning: Story = {
-  args: {
-    title: 'Warning',
-    description: 'Please review this important information.',
-    status: 'warning',
-    variant: 'default',
-    size: 'md',
-  },
-}
-
-export const Error: Story = {
-  args: {
-    title: 'Error',
-    description: 'Something went wrong. Please try again.',
-    status: 'error',
-    variant: 'default',
-    size: 'md',
-  },
-}
-
-export const Info: Story = {
-  args: {
-    title: 'Information',
-    description: 'Here is some useful information for you.',
-    status: 'info',
-    variant: 'default',
-    size: 'md',
-  },
-}
-
-// Variant Showcase
 export const Variants: Story = {
   render: () => (
-    <div className="space-y-4">
-      <Alert variant="default" status="success" title="Default Variant" description="This is the default variant." />
-      <Alert variant="filled" status="success" title="Filled Variant" description="This is the filled variant." />
-      <Alert variant="outlined" status="success" title="Outlined Variant" description="This is the outlined variant." />
-      <Alert variant="ghost" status="success" title="Ghost Variant" description="This is the ghost variant." />
+    <div className="space-y-6">
+      <div>
+        <h3 className="text-sm font-medium text-gray-700 mb-3">Default</h3>
+        <Alert variant="default" status="info" title="Default Variant" description="Subtle background with border styling." />
+      </div>
+      
+      <div>
+        <h3 className="text-sm font-medium text-gray-700 mb-3">Filled</h3>
+        <Alert variant="filled" status="success" title="Filled Variant" description="Solid background with high contrast text." />
+      </div>
+      
+      <div>
+        <h3 className="text-sm font-medium text-gray-700 mb-3">Outlined</h3>
+        <Alert variant="outlined" status="warning" title="Outlined Variant" description="Transparent background with colored border." />
+      </div>
+      
+      <div>
+        <h3 className="text-sm font-medium text-gray-700 mb-3">Ghost</h3>
+        <Alert variant="ghost" status="error" title="Ghost Variant" description="Minimal styling with subtle background." />
+      </div>
     </div>
   ),
+  args: {},
 }
 
-// Size Showcase
 export const Sizes: Story = {
   render: () => (
-    <div className="space-y-4">
-      <Alert size="sm" status="info" title="Small Alert" description="This is a small alert." />
-      <Alert size="md" status="info" title="Medium Alert" description="This is a medium alert." />
-      <Alert size="lg" status="info" title="Large Alert" description="This is a large alert." />
-    </div>
-  ),
-}
-
-// Status Showcase
-export const Statuses: Story = {
-  render: () => (
-    <div className="space-y-4">
-      <Alert status="default" title="Default Status" description="This is a default status alert." />
-      <Alert status="success" title="Success Status" description="This is a success status alert." />
-      <Alert status="warning" title="Warning Status" description="This is a warning status alert." />
-      <Alert status="error" title="Error Status" description="This is an error status alert." />
-      <Alert status="info" title="Info Status" description="This is an info status alert." />
-    </div>
-  ),
-}
-
-// Interactive Examples
-export const DismissibleAlert: Story = {
-  render: () => (
-    <AlertWithState
-      status="warning"
-      dismissible
-      title="Dismissible Alert"
-      description="This alert can be dismissed by clicking the X button or pressing Escape."
-      onDismiss={() => console.log('Alert dismissed')}
-    />
-  ),
-}
-
-export const LoadingAlert: Story = {
-  args: {
-    title: 'Loading Alert',
-    description: 'This alert is in a loading state.',
-    loading: true,
-    status: 'info',
-  },
-}
-
-export const DisabledAlert: Story = {
-  args: {
-    title: 'Disabled Alert',
-    description: 'This alert is disabled and cannot be interacted with.',
-    disabled: true,
-    status: 'default',
-  },
-}
-
-// Custom Icon Examples
-export const WithCustomIcon: Story = {
-  render: () => (
-    <div className="space-y-4">
-      <Alert
-        status="success"
-        icon={
-          <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-            <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-          </svg>
-        }
-        title="Success with Icon"
-        description="This alert has a custom success icon."
-      />
-      
-      <Alert
-        status="warning"
-        icon={
-          <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-            <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
-          </svg>
-        }
-        title="Warning with Icon"
-        description="This alert has a custom warning icon."
-      />
-    </div>
-  ),
-}
-
-// Form Integration Example
-const FormIntegrationComponent = () => {
-  const [alerts, setAlerts] = useState<Array<{ id: number; type: string; message: string }>>([])
-  
-  const addAlert = (type: string, message: string) => {
-    const newAlert = { id: Date.now(), type, message }
-    setAlerts(prev => [...prev, newAlert])
-  }
-  
-  const removeAlert = (id: number) => {
-    setAlerts(prev => prev.filter(alert => alert.id !== id))
-  }
-  
-  return (
-    <div className="space-y-4">
-      <div className="flex gap-2">
-        <button
-          onClick={() => addAlert('success', 'Form submitted successfully!')}
-          className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700"
-        >
-          Add Success
-        </button>
-        <button
-          onClick={() => addAlert('error', 'Please fix the errors in the form.')}
-          className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
-        >
-          Add Error
-        </button>
-        <button
-          onClick={() => addAlert('warning', 'Some fields are missing.')}
-          className="px-4 py-2 bg-yellow-600 text-white rounded hover:bg-yellow-700"
-        >
-          Add Warning
-        </button>
+    <div className="space-y-6">
+      <div>
+        <h3 className="text-sm font-medium text-gray-700 mb-3">Small</h3>
+        <Alert size="sm" status="info" title="Small Alert" description="Compact size for minimal space usage." />
       </div>
       
-      <div className="space-y-2">
-        {alerts.map(alert => (
-          <AlertWithState
-            key={alert.id}
-            status={alert.type as any}
-            dismissible
-            title={alert.type.charAt(0).toUpperCase() + alert.type.slice(1)}
-            description={alert.message}
-            onDismiss={() => removeAlert(alert.id)}
-          />
-        ))}
+      <div>
+        <h3 className="text-sm font-medium text-gray-700 mb-3">Medium (Default)</h3>
+        <Alert size="md" status="success" title="Medium Alert" description="Standard size for most use cases." />
+      </div>
+      
+      <div>
+        <h3 className="text-sm font-medium text-gray-700 mb-3">Large</h3>
+        <Alert size="lg" status="warning" title="Large Alert" description="Larger size for important notifications or detailed content." />
       </div>
     </div>
-  )
+  ),
+  args: {},
 }
 
-export const FormIntegration: Story = {
-  render: () => <FormIntegrationComponent />,
+export const StatusStates: Story = {
+  render: () => (
+    <div className="space-y-6">
+      <div>
+        <h3 className="text-sm font-medium text-gray-700 mb-3">Default Status</h3>
+        <Alert status="default" title="Default Status" description="Standard neutral coloring." />
+      </div>
+      
+      <div>
+        <h3 className="text-sm font-medium text-gray-700 mb-3">Success Status</h3>
+        <Alert status="success" title="Success!" description="Operation completed successfully." />
+      </div>
+      
+      <div>
+        <h3 className="text-sm font-medium text-gray-700 mb-3">Warning Status</h3>
+        <Alert status="warning" title="Warning" description="Please review this information carefully." />
+      </div>
+      
+      <div>
+        <h3 className="text-sm font-medium text-gray-700 mb-3">Error Status</h3>
+        <Alert status="error" title="Error" description="Something went wrong. Please try again." />
+      </div>
+      
+      <div>
+        <h3 className="text-sm font-medium text-gray-700 mb-3">Info Status</h3>
+        <Alert status="info" title="Information" description="Here's some helpful information for you." />
+      </div>
+    </div>
+  ),
+  args: {},
 }
 
-// Custom Styling Examples
+export const States: Story = {
+  render: () => (
+    <div className="space-y-6">
+      <div>
+        <h3 className="text-sm font-medium text-gray-700 mb-3">Normal State</h3>
+        <Alert title="Normal Alert" description="Standard interactive alert." />
+      </div>
+      
+      <div>
+        <h3 className="text-sm font-medium text-gray-700 mb-3">Disabled State</h3>
+        <Alert disabled title="Disabled Alert" description="This alert is disabled and non-interactive." />
+      </div>
+      
+      <div>
+        <h3 className="text-sm font-medium text-gray-700 mb-3">Loading State</h3>
+        <Alert loading title="Loading Alert" description="This alert is in a loading state." />
+      </div>
+      
+      <div>
+        <h3 className="text-sm font-medium text-gray-700 mb-3">Required State</h3>
+        <Alert required title="Required Alert" description="This alert is marked as required." />
+      </div>
+    </div>
+  ),
+  args: {},
+}
+
+export const DismissibleAlerts: Story = {
+  render: () => (
+    <div className="space-y-6">
+      <div>
+        <h3 className="text-sm font-medium text-gray-700 mb-3">Basic Dismissible</h3>
+        <AlertWithState dismissible title="Dismissible Alert" description="Click the × button to dismiss this alert." />
+      </div>
+      
+      <div>
+        <h3 className="text-sm font-medium text-gray-700 mb-3">With Custom Dismiss Handler</h3>
+        <AlertWithState 
+          dismissible 
+          status="warning"
+          title="Custom Dismiss" 
+          description="This alert logs when dismissed."
+          onDismiss={() => console.log('Alert was dismissed!')}
+        />
+      </div>
+      
+      <div>
+        <h3 className="text-sm font-medium text-gray-700 mb-3">Keyboard Dismissible</h3>
+        <AlertWithState 
+          dismissible 
+          status="info"
+          title="Keyboard Support" 
+          description="Focus this alert and press Escape to dismiss it."
+        />
+        <p className="text-xs text-gray-500 mt-2">Tab to focus, then press Escape</p>
+      </div>
+    </div>
+  ),
+  args: {},
+}
+
+export const WithIcons: Story = {
+  render: () => (
+    <div className="space-y-6">
+      <div>
+        <h3 className="text-sm font-medium text-gray-700 mb-3">Emoji Icons</h3>
+        <div className="space-y-3">
+          <Alert icon="✅" status="success" title="Success" description="Operation completed successfully." />
+          <Alert icon="⚠️" status="warning" title="Warning" description="Please review this information." />
+          <Alert icon="❌" status="error" title="Error" description="Something went wrong." />
+          <Alert icon="ℹ️" status="info" title="Information" description="Here's some helpful information." />
+        </div>
+      </div>
+      
+      <div>
+        <h3 className="text-sm font-medium text-gray-700 mb-3">SVG Icons</h3>
+        <Alert 
+          icon={
+            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          }
+          status="info"
+          title="Custom SVG Icon"
+          description="This alert uses a custom SVG icon."
+        />
+      </div>
+      
+      <div>
+        <h3 className="text-sm font-medium text-gray-700 mb-3">Complex Icon</h3>
+        <Alert 
+          icon={
+            <div className="w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center">
+              <span className="text-white text-xs font-bold">!</span>
+            </div>
+          }
+          title="Complex Icon"
+          description="This alert uses a more complex icon element."
+        />
+      </div>
+    </div>
+  ),
+  args: {},
+}
+
 export const CustomStyling: Story = {
   render: () => (
-    <div className="space-y-4">
-      <Alert
-        status="success"
-        title="Custom Styled Alert"
-        description="This alert has custom styling applied."
-        customStyles={{
-          backgroundColor: '#f0f9ff',
-          borderColor: '#0ea5e9',
-          textColor: '#0c4a6e',
-          borderRadius: '12px',
-          boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
-          padding: '16px',
-        }}
-      />
-      
-      <Alert
-        status="warning"
-        title="Gradient Background"
-        description="This alert has a gradient background."
-        customStyles={{
-          background: 'linear-gradient(135deg, #fef3c7 0%, #fde68a 100%)',
-          borderColor: '#f59e0b',
-          textColor: '#92400e',
-          borderRadius: '8px',
-        }}
-      />
-    </div>
-  ),
-}
-
-// Advanced Usage Examples
-export const CompoundComponentUsage: Story = {
-  render: () => (
-    <div className="space-y-4">
-      <Alert status="info" size="lg">
-        <AlertIcon>
-          <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
-            <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
-          </svg>
-        </AlertIcon>
-        <AlertTitle>Compound Component</AlertTitle>
-        <AlertDescription>
-          This alert uses the compound component pattern with separate AlertIcon, AlertTitle, and AlertDescription components.
-        </AlertDescription>
-        <AlertDismissButton />
-      </Alert>
-    </div>
-  ),
-}
-
-export const CustomRenderFunctions: Story = {
-  render: () => (
-    <Alert
-      status="success"
-      title="Custom Rendered Alert"
-      description="This alert uses custom render functions."
-      renderTitle={(props) => (
-        <h3 className="text-xl font-bold text-green-800" {...props}>
-          {props.children}
-        </h3>
-      )}
-      renderDescription={(props) => (
-        <p className="text-green-700 italic" {...props}>
-          {props.children}
-        </p>
-      )}
-      renderDismissButton={(props) => (
-        <button
-          {...props}
-          className="bg-green-600 text-white px-3 py-1 rounded hover:bg-green-700"
-        >
-          Close
-        </button>
-      )}
-    />
-  ),
-}
-
-// Accessibility Examples
-export const AccessibilityExample: Story = {
-  render: () => (
-    <div className="space-y-4">
-      <Alert
-        status="error"
-        label="Critical error alert"
-        helperText="This alert provides additional context for screen readers."
-        title="Accessibility Alert"
-        description="This alert includes proper ARIA attributes and helper text for better accessibility."
-      />
-      
-      <Alert
-        status="warning"
-        dismissible
-        label="Dismissible warning alert"
-        title="Keyboard Accessible"
-        description="This alert can be dismissed using the Escape key or by clicking the dismiss button."
-      />
-    </div>
-  ),
-}
-
-// Real-world Usage Examples
-const NotificationSystemComponent = () => {
-  const [notifications, setNotifications] = useState([
-    { id: 1, type: 'success', title: 'Profile Updated', message: 'Your profile has been successfully updated.' },
-    { id: 2, type: 'warning', title: 'Storage Warning', message: 'You are running low on storage space.' },
-    { id: 3, type: 'error', title: 'Connection Lost', message: 'Your connection has been interrupted.' },
-  ])
-  
-  const removeNotification = (id: number) => {
-    setNotifications(prev => prev.filter(n => n.id !== id))
-  }
-  
-  return (
-    <div className="fixed top-4 right-4 space-y-2 w-96">
-      {notifications.map(notification => (
-        <AlertWithState
-          key={notification.id}
-          status={notification.type as any}
-          dismissible
-          title={notification.title}
-          description={notification.message}
-          onDismiss={() => removeNotification(notification.id)}
+    <div className="space-y-8">
+      <div>
+        <h3 className="text-sm font-medium text-gray-700 mb-3">Custom Colors</h3>
+        <Alert
+          customStyles={{
+            backgroundColor: "#fef3c7",
+            borderColor: "#f59e0b",
+            textColor: "#92400e"
+          }}
+          title="Custom Colors"
+          description="This alert uses custom color styling."
         />
-      ))}
+      </div>
+      
+      <div>
+        <h3 className="text-sm font-medium text-gray-700 mb-3">Rounded Corners</h3>
+        <Alert
+          customStyles={{
+            borderRadius: "16px",
+            backgroundColor: "#dbeafe",
+            borderColor: "#3b82f6"
+          }}
+          title="Rounded Alert"
+          description="This alert has custom border radius."
+        />
+      </div>
+      
+      <div>
+        <h3 className="text-sm font-medium text-gray-700 mb-3">With Shadow</h3>
+        <Alert
+          customStyles={{
+            boxShadow: "0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)",
+            backgroundColor: "#ffffff",
+            borderColor: "#e5e7eb"
+          }}
+          title="Shadow Alert"
+          description="This alert has a custom box shadow."
+        />
+      </div>
+      
+      <div>
+        <h3 className="text-sm font-medium text-gray-700 mb-3">Custom Padding</h3>
+        <Alert
+          customStyles={{
+            padding: "24px",
+            backgroundColor: "#f0fdf4",
+            borderColor: "#16a34a"
+          }}
+          title="Spacious Alert"
+          description="This alert has custom padding for more breathing room."
+        />
+      </div>
     </div>
-  )
+  ),
+  args: {},
 }
 
-export const NotificationSystem: Story = {
-  render: () => <NotificationSystemComponent />,
+export const CompoundComponents: Story = {
+  render: () => (
+    <div className="space-y-6">
+      <div>
+        <h3 className="text-sm font-medium text-gray-700 mb-3">Basic Compound Usage</h3>
+        <Alert>
+          <AlertIcon>🔔</AlertIcon>
+          <AlertTitle>Compound Alert</AlertTitle>
+          <AlertDescription>This alert is built using compound components for maximum flexibility.</AlertDescription>
+        </Alert>
+      </div>
+      
+      <div>
+        <h3 className="text-sm font-medium text-gray-700 mb-3">With Dismiss Button</h3>
+        <AlertWithState>
+          <AlertIcon>⚠️</AlertIcon>
+          <AlertTitle>Warning Alert</AlertTitle>
+          <AlertDescription>This is a dismissible compound alert.</AlertDescription>
+          <AlertDismissButton />
+        </AlertWithState>
+      </div>
+      
+      <div>
+        <h3 className="text-sm font-medium text-gray-700 mb-3">Mixed Content</h3>
+        <Alert status="success">
+          <AlertIcon>✅</AlertIcon>
+          <AlertTitle>Success!</AlertTitle>
+          <AlertDescription>Your changes have been saved successfully.</AlertDescription>
+          <div className="mt-3 flex gap-2">
+            <button className="px-3 py-1 text-sm bg-green-600 text-white rounded hover:bg-green-700">
+              View Changes
+            </button>
+            <button className="px-3 py-1 text-sm border border-green-600 text-green-600 rounded hover:bg-green-50">
+              Undo
+            </button>
+          </div>
+        </Alert>
+      </div>
+    </div>
+  ),
+  args: {},
+}
+
+export const RealWorldExamples: Story = {
+  render: () => (
+    <div className="space-y-8">
+      <div>
+        <h3 className="text-lg font-medium mb-4">Form Validation Alerts</h3>
+        <div className="space-y-4">
+          <Alert 
+            status="error" 
+            title="Form Validation Failed"
+            description="Please correct the following errors before submitting:"
+          >
+            <ul className="mt-2 text-sm list-disc list-inside space-y-1">
+              <li>Email address is required</li>
+              <li>Password must be at least 8 characters</li>
+              <li>Terms and conditions must be accepted</li>
+            </ul>
+          </Alert>
+          
+          <Alert 
+            status="success" 
+            dismissible
+            title="Form Submitted Successfully"
+            description="Your information has been saved and you will receive a confirmation email shortly."
+          />
+        </div>
+      </div>
+      
+      <div>
+        <h3 className="text-lg font-medium mb-4">System Status Alerts</h3>
+        <div className="space-y-4">
+          <Alert 
+            status="warning" 
+            icon="🚧"
+            title="Scheduled Maintenance"
+            description="The system will be undergoing maintenance on Sunday, March 15th from 2:00 AM to 6:00 AM EST."
+          />
+          
+          <Alert 
+            status="info" 
+            icon="📢"
+            title="New Feature Available"
+            description="We've added dark mode support! You can enable it in your account settings."
+          >
+            <div className="mt-3">
+              <button className="px-4 py-2 text-sm bg-blue-600 text-white rounded hover:bg-blue-700">
+                Try Dark Mode
+              </button>
+            </div>
+          </Alert>
+        </div>
+      </div>
+      
+      <div>
+        <h3 className="text-lg font-medium mb-4">E-commerce Alerts</h3>
+        <div className="space-y-4">
+          <Alert 
+            status="success" 
+            dismissible
+            title="Item Added to Cart"
+            description="1x Wireless Headphones has been added to your cart."
+          >
+            <div className="mt-3 flex gap-2">
+              <button className="px-3 py-1 text-sm bg-green-600 text-white rounded hover:bg-green-700">
+                View Cart
+              </button>
+              <button className="px-3 py-1 text-sm border border-green-600 text-green-600 rounded hover:bg-green-50">
+                Continue Shopping
+              </button>
+            </div>
+          </Alert>
+          
+          <Alert 
+            status="warning" 
+            title="Limited Stock"
+            description="Only 3 items left in stock! Order soon to avoid disappointment."
+          />
+        </div>
+      </div>
+    </div>
+  ),
+  args: {},
+}
+
+export const AccessibilityFeatures: Story = {
+  render: () => (
+    <div className="space-y-6">
+      <h3 className="text-lg font-medium mb-4">Accessibility Features Demo</h3>
+      
+      <div className="space-y-4">
+        <p className="text-sm text-gray-600">
+          All alerts have proper ARIA attributes and are announced by screen readers.
+        </p>
+        
+        <Alert
+          aria-label="Important security update notification"
+          status="warning"
+          title="Security Update Available"
+          description="A security update is available for your account. Please update your password."
+          helperText="This update is recommended for all users."
+        />
+        
+        <Alert
+          dismissible
+          status="error"
+          title="Error with detailed description"
+          description="An error occurred while processing your request."
+          aria-describedby="error-details"
+          helperText="If this error persists, please contact support at support@example.com"
+        />
+        
+        <Alert
+          status="info"
+          title="Keyboard Navigation"
+          description="This alert can be focused and dismissed with the Escape key when dismissible."
+          dismissible
+        />
+        
+        <div className="p-4 bg-gray-50 rounded">
+          <p className="text-sm text-gray-600 mb-2">
+            <strong>Accessibility features:</strong>
+          </p>
+          <ul className="text-sm text-gray-600 space-y-1">
+            <li>• All alerts have role=&quot;alert&quot; for screen reader announcement</li>
+            <li>• Dismissible alerts are keyboard accessible (Tab + Escape)</li>
+            <li>• Proper ARIA labels and descriptions</li>
+            <li>• Color is not the only indicator of status</li>
+            <li>• Sufficient color contrast ratios</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  ),
+  args: {},
 }

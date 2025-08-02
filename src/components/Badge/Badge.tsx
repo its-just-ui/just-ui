@@ -15,9 +15,9 @@ export interface BadgeContextValue {
   onIconClick?: () => void
 }
 
-export type BadgeVariant = 'default' | 'filled' | 'outlined' | 'ghost' | 'solid'
-export type BadgeSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl'
-export type BadgeStatus = 'default' | 'success' | 'warning' | 'error' | 'info'
+export type BadgeVariant = 'default' | 'filled' | 'outlined' | 'ghost' | 'solid' | 'gradient' | 'glass' | 'neon'
+export type BadgeSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl'
+export type BadgeStatus = 'default' | 'success' | 'warning' | 'error' | 'info' | 'primary' | 'secondary'
 
 export interface BadgeBaseProps {
   // Core props
@@ -27,6 +27,9 @@ export interface BadgeBaseProps {
   disabled?: boolean
   loading?: boolean
   required?: boolean
+  interactive?: boolean
+  animated?: boolean
+  animation?: 'pulse' | 'bounce' | 'shake' | 'glow'
   
   // Content props
   label?: string
@@ -63,6 +66,14 @@ export interface BadgeBaseProps {
   hoverBackgroundColor?: string
   hoverTextColor?: string
   
+  // Transform and hover effects
+  scale?: string
+  hoverScale?: string
+  opacity?: string
+  hoverOpacity?: string
+  transform?: string
+  hoverTransform?: string
+  
   // Focus styles
   focusRingColor?: string
   focusRingWidth?: string | number
@@ -73,6 +84,7 @@ export interface BadgeBaseProps {
   // Shadows
   boxShadow?: string
   focusBoxShadow?: string
+  hoverBoxShadow?: string
   
   // Spacing
   padding?: string | number
@@ -86,6 +98,11 @@ export interface BadgeBaseProps {
   transitionDuration?: string
   transitionProperty?: string
   transitionTimingFunction?: string
+  
+  // Animation props
+  animationDuration?: number
+  animationDelay?: number
+  animationIterationCount?: string | number
   
   // Accessibility
   'aria-label'?: string
@@ -343,6 +360,9 @@ const Badge = forwardRef<HTMLDivElement, BadgeProps>(
       outlined: 'bg-transparent border border-blue-500 text-blue-600',
       ghost: 'bg-transparent text-blue-600 hover:bg-blue-50',
       solid: 'bg-blue-600 text-white',
+      gradient: 'bg-gradient-to-r from-purple-500 to-pink-500 text-white',
+      glass: 'bg-white/20 backdrop-blur-sm border border-white/30 text-gray-800',
+      neon: 'bg-cyan-400 text-cyan-900 shadow-lg shadow-cyan-400/50',
     }
     
     // Size styles
@@ -352,6 +372,7 @@ const Badge = forwardRef<HTMLDivElement, BadgeProps>(
       md: 'px-2.5 py-1 text-sm',
       lg: 'px-3 py-1.5 text-sm',
       xl: 'px-4 py-2 text-base',
+      '2xl': 'px-5 py-2.5 text-lg',
     }
     
     // Status styles
@@ -361,6 +382,8 @@ const Badge = forwardRef<HTMLDivElement, BadgeProps>(
       warning: 'bg-yellow-100 text-yellow-800 border-yellow-200',
       error: 'bg-red-100 text-red-800 border-red-200',
       info: 'bg-blue-100 text-blue-800 border-blue-200',
+      primary: 'bg-indigo-100 text-indigo-800 border-indigo-200',
+      secondary: 'bg-gray-100 text-gray-600 border-gray-200',
     }
     
     // Disabled styles
