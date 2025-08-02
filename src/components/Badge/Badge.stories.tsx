@@ -3,7 +3,12 @@ import type { Meta, StoryObj } from '@storybook/react'
 import { Badge } from './Badge'
 
 // Wrapper component for controlled state
-const BadgeWithState = ({ children, closeButton = false, onClose, ...props }: any) => {
+const BadgeWithState = ({
+  children,
+  closeButton = false,
+  onClose,
+  ...props
+}: React.ComponentProps<typeof Badge> & { closeButton?: boolean; onClose?: () => void }) => {
   const [isVisible, setIsVisible] = useState(true)
 
   const handleClose = () => {

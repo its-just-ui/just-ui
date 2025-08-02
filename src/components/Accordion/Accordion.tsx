@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useCallback } from 'react'
+import React, { createContext, useContext, useState, useCallback, useMemo } from 'react'
 import { cn } from '@/utils'
 
 export interface AccordionProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -172,101 +172,104 @@ export const useAccordion = () => {
 }
 
 const Accordion = React.forwardRef<HTMLDivElement, AccordionProps>(
-  ({ 
-    className, 
-    type = 'single',
-    defaultValue,
-    value: controlledValue,
-    onValueChange,
-    disabled = false,
-    collapsible = true,
-    variant = 'default',
-    size = 'md',
-    status = 'default',
-    transition = 'collapse',
-    transitionDuration = 300,
-    expandIcon,
-    expandIconPosition = 'end',
-    loading = false,
-    loadingMessage = 'Loading...',
-    emptyMessage = 'No items to display',
-    // Style props with defaults
-    backgroundColor,
-    borderWidth,
-    borderColor,
-    borderStyle,
-    borderRadius,
-    padding,
-    paddingX,
-    paddingY,
-    gap,
-    boxShadow,
-    fontSize,
-    fontWeight,
-    fontFamily,
-    textColor,
-    // Item styles
-    itemBackgroundColor,
-    itemHoverBackgroundColor,
-    itemActiveBackgroundColor,
-    itemBorderWidth,
-    itemBorderColor,
-    itemBorderStyle,
-    itemBorderRadius,
-    itemPadding,
-    itemPaddingX,
-    itemPaddingY,
-    itemBoxShadow,
-    itemGap,
-    // Trigger styles
-    triggerBackgroundColor,
-    triggerHoverBackgroundColor,
-    triggerActiveBackgroundColor,
-    triggerTextColor,
-    triggerHoverTextColor,
-    triggerActiveTextColor,
-    triggerFontSize,
-    triggerFontWeight,
-    triggerPadding,
-    triggerPaddingX,
-    triggerPaddingY,
-    triggerBorderRadius,
-    // Content styles
-    contentBackgroundColor,
-    contentTextColor,
-    contentFontSize,
-    contentPadding,
-    contentPaddingX,
-    contentPaddingY,
-    contentBorderWidth,
-    contentBorderColor,
-    contentBorderStyle,
-    // Focus styles
-    focusRingColor,
-    focusRingWidth,
-    focusRingOffset,
-    focusRingOffsetColor,
-    focusBorderColor,
-    focusBackgroundColor,
-    focusBoxShadow,
-    // Icon styles
-    iconSize,
-    iconColor,
-    iconHoverColor,
-    iconActiveColor,
-    iconRotation,
-    // Divider styles
-    dividerColor,
-    dividerWidth,
-    dividerStyle,
-    // Status colors
-    successColor,
-    warningColor,
-    errorColor,
-    children,
-    style,
-    ...props 
-  }, ref) => {
+  (
+    {
+      className,
+      type = 'single',
+      defaultValue,
+      value: controlledValue,
+      onValueChange,
+      disabled = false,
+      collapsible = true,
+      variant = 'default',
+      size = 'md',
+      status = 'default',
+      transition = 'collapse',
+      transitionDuration = 300,
+      expandIcon,
+      expandIconPosition = 'end',
+      loading = false,
+      loadingMessage = 'Loading...',
+      emptyMessage = 'No items to display',
+      // Style props with defaults
+      backgroundColor,
+      borderWidth,
+      borderColor,
+      borderStyle,
+      borderRadius,
+      padding,
+      paddingX,
+      paddingY,
+      gap,
+      boxShadow,
+      fontSize,
+      fontWeight,
+      fontFamily,
+      textColor,
+      // Item styles
+      itemBackgroundColor,
+      itemHoverBackgroundColor,
+      itemActiveBackgroundColor,
+      itemBorderWidth,
+      itemBorderColor,
+      itemBorderStyle,
+      itemBorderRadius,
+      itemPadding,
+      itemPaddingX,
+      itemPaddingY,
+      itemBoxShadow,
+      itemGap,
+      // Trigger styles
+      triggerBackgroundColor,
+      triggerHoverBackgroundColor,
+      triggerActiveBackgroundColor,
+      triggerTextColor,
+      triggerHoverTextColor,
+      triggerActiveTextColor,
+      triggerFontSize,
+      triggerFontWeight,
+      triggerPadding,
+      triggerPaddingX,
+      triggerPaddingY,
+      triggerBorderRadius,
+      // Content styles
+      contentBackgroundColor,
+      contentTextColor,
+      contentFontSize,
+      contentPadding,
+      contentPaddingX,
+      contentPaddingY,
+      contentBorderWidth,
+      contentBorderColor,
+      contentBorderStyle,
+      // Focus styles
+      focusRingColor,
+      focusRingWidth,
+      focusRingOffset,
+      focusRingOffsetColor,
+      focusBorderColor,
+      focusBackgroundColor,
+      focusBoxShadow,
+      // Icon styles
+      iconSize,
+      iconColor,
+      iconHoverColor,
+      iconActiveColor,
+      iconRotation,
+      // Divider styles
+      dividerColor,
+      dividerWidth,
+      dividerStyle,
+      // Status colors
+      successColor,
+      warningColor,
+      errorColor,
+      children,
+      style,
+      ...props
+    },
+    ref
+  ) => {
     const [uncontrolledValue, setUncontrolledValue] = useState<string[]>(() => {
       if (defaultValue) {
         return Array.isArray(defaultValue) ? defaultValue : [defaultValue]
@@ -274,35 +277,44 @@ const Accordion = React.forwardRef<HTMLDivElement, AccordionProps>(
       return []
     })
 
-    const value = controlledValue !== undefined
-      ? (Array.isArray(controlledValue) ? controlledValue : [controlledValue])
-      : uncontrolledValue
+    const value = useMemo(
+      () =>
+        controlledValue !== undefined
+          ? Array.isArray(controlledValue)
+            ? controlledValue
+            : [controlledValue]
+          : uncontrolledValue,
+      [controlledValue, uncontrolledValue]
+    )
 
-    const onItemToggle = useCallback((itemValue: string) => {
-      let newValue: string[]
+    const onItemToggle = useCallback(
+      (itemValue: string) => {
+        let newValue: string[]
 
-      if (type === 'single') {
-        if (value.includes(itemValue) && collapsible) {
-          newValue = []
+        if (type === 'single') {
+          if (value.includes(itemValue) && collapsible) {
+            newValue = []
+          } else {
+            newValue = [itemValue]
+          }
         } else {
-          newValue = [itemValue]
+          if (value.includes(itemValue)) {
+            newValue = value.filter((v) => v !== itemValue)
+          } else {
+            newValue = [...value, itemValue]
+          }
         }
-      } else {
-        if (value.includes(itemValue)) {
-          newValue = value.filter(v => v !== itemValue)
-        } else {
-          newValue = [...value, itemValue]
+
+        if (controlledValue === undefined) {
+          setUncontrolledValue(newValue)
         }
-      }
 
-      if (controlledValue === undefined) {
-        setUncontrolledValue(newValue)
-      }
-
-      if (onValueChange) {
-        onValueChange(type === 'single' ? newValue[0] || '' : newValue)
-      }
-    }, [value, type, collapsible, controlledValue, onValueChange])
+        if (onValueChange) {
+          onValueChange(type === 'single' ? newValue[0] || '' : newValue)
+        }
+      },
+      [value, type, collapsible, controlledValue, onValueChange]
+    )
 
     // Default styles based on variant and status
     const getDefaultStyles = () => {
@@ -317,23 +329,34 @@ const Accordion = React.forwardRef<HTMLDivElement, AccordionProps>(
 
       return {
         backgroundColor: backgroundColor || (variant === 'filled' ? '#f3f4f6' : 'transparent'),
-        borderWidth: borderWidth || (variant === 'bordered' || variant === 'outlined' ? '1px' : '0'),
+        borderWidth:
+          borderWidth || (variant === 'bordered' || variant === 'outlined' ? '1px' : '0'),
         borderColor: borderColor || currentStatus.border,
         borderStyle: borderStyle || 'solid',
         borderRadius: borderRadius || (variant === 'separated' ? '0' : '0.5rem'),
-        padding: padding || (paddingX || paddingY ? undefined : variant === 'filled' || variant === 'bordered' ? '0.5rem' : '0'),
+        padding:
+          padding ||
+          (paddingX || paddingY
+            ? undefined
+            : variant === 'filled' || variant === 'bordered'
+              ? '0.5rem'
+              : '0'),
         gap: gap || (variant === 'separated' ? '0.5rem' : '0'),
         fontSize: fontSize || (size === 'sm' ? '0.875rem' : size === 'lg' ? '1.125rem' : '1rem'),
         fontWeight: fontWeight || '400',
         textColor: textColor || currentStatus.text,
-        boxShadow: boxShadow || (variant === 'bordered' || variant === 'outlined' ? '0 1px 2px 0 rgba(0, 0, 0, 0.05)' : 'none'),
+        boxShadow:
+          boxShadow ||
+          (variant === 'bordered' || variant === 'outlined'
+            ? '0 1px 2px 0 rgba(0, 0, 0, 0.05)'
+            : 'none'),
       }
     }
 
     const defaultStyles = getDefaultStyles()
 
     const baseStyles = 'w-full'
-    
+
     const variants = {
       default: '',
       bordered: 'border overflow-hidden',
@@ -443,13 +466,9 @@ const Accordion = React.forwardRef<HTMLDivElement, AccordionProps>(
           {...props}
         >
           {loading ? (
-            <div className="text-center py-8 text-gray-500">
-              {loadingMessage}
-            </div>
+            <div className="text-center py-8 text-gray-500">{loadingMessage}</div>
           ) : React.Children.count(children) === 0 ? (
-            <div className="text-center py-8 text-gray-500">
-              {emptyMessage}
-            </div>
+            <div className="text-center py-8 text-gray-500">{emptyMessage}</div>
           ) : (
             children
           )}
@@ -469,10 +488,10 @@ export interface AccordionItemProps extends React.HTMLAttributes<HTMLDivElement>
 
 const AccordionItem = React.forwardRef<HTMLDivElement, AccordionItemProps>(
   ({ className, value, disabled, children, style, ...props }, ref) => {
-    const { 
-      variant, 
+    const {
+      variant,
       size,
-      status,
+      status: _status,
       itemBackgroundColor,
       itemBorderWidth,
       itemBorderColor,
@@ -487,14 +506,11 @@ const AccordionItem = React.forwardRef<HTMLDivElement, AccordionItemProps>(
       dividerWidth,
       dividerStyle,
     } = useAccordion()
-    
+
     const baseStyles = 'group'
-    
+
     const variants = {
-      default: cn(
-        'border-b last:border-b-0',
-        dividerColor && `border-b-[${dividerColor}]`
-      ),
+      default: cn('border-b last:border-b-0', dividerColor && `border-b-[${dividerColor}]`),
       bordered: 'border-b last:border-b-0',
       filled: 'bg-white rounded-md mb-2 last:mb-0 shadow-sm',
       separated: 'bg-white border rounded-lg shadow-sm',
@@ -509,14 +525,21 @@ const AccordionItem = React.forwardRef<HTMLDivElement, AccordionItemProps>(
 
     const getDefaultItemStyles = () => {
       return {
-        backgroundColor: itemBackgroundColor || (variant === 'filled' || variant === 'separated' ? '#ffffff' : 'transparent'),
+        backgroundColor:
+          itemBackgroundColor ||
+          (variant === 'filled' || variant === 'separated' ? '#ffffff' : 'transparent'),
         borderWidth: itemBorderWidth || (variant === 'separated' ? '1px' : '0'),
         borderColor: itemBorderColor || '#e5e7eb',
         borderStyle: itemBorderStyle || 'solid',
-        borderRadius: itemBorderRadius || (variant === 'filled' || variant === 'separated' ? '0.375rem' : '0'),
+        borderRadius:
+          itemBorderRadius || (variant === 'filled' || variant === 'separated' ? '0.375rem' : '0'),
         padding: itemPadding || (itemPaddingX || itemPaddingY ? undefined : '0'),
         gap: itemGap || '0',
-        boxShadow: itemBoxShadow || (variant === 'filled' || variant === 'separated' ? '0 1px 2px 0 rgba(0, 0, 0, 0.05)' : 'none'),
+        boxShadow:
+          itemBoxShadow ||
+          (variant === 'filled' || variant === 'separated'
+            ? '0 1px 2px 0 rgba(0, 0, 0, 0.05)'
+            : 'none'),
       }
     }
 
@@ -535,9 +558,11 @@ const AccordionItem = React.forwardRef<HTMLDivElement, AccordionItemProps>(
       paddingBottom: itemPaddingY,
       gap: defaultItemStyles.gap,
       boxShadow: defaultItemStyles.boxShadow,
-      borderBottomWidth: dividerWidth || (variant === 'default' || variant === 'bordered' || variant === 'outlined' ? '1px' : '0'),
+      borderBottomWidth:
+        dividerWidth ||
+        (variant === 'default' || variant === 'bordered' || variant === 'outlined' ? '1px' : '0'),
       borderBottomColor: dividerColor || '#e5e7eb',
-      borderBottomStyle: dividerStyle || 'solid',
+      borderBottomStyle: (dividerStyle || 'solid') as React.CSSProperties['borderBottomStyle'],
       ...style,
     }
 
@@ -569,12 +594,12 @@ export interface AccordionTriggerProps extends React.ButtonHTMLAttributes<HTMLBu
 
 const AccordionTrigger = React.forwardRef<HTMLButtonElement, AccordionTriggerProps>(
   ({ className, children, disabled, style, ...props }, ref) => {
-    const { 
-      value, 
-      onItemToggle, 
-      disabled: accordionDisabled, 
-      size, 
-      expandIcon, 
+    const {
+      value,
+      onItemToggle,
+      disabled: accordionDisabled,
+      size,
+      expandIcon,
       expandIconPosition,
       triggerBackgroundColor,
       triggerHoverBackgroundColor,
@@ -602,7 +627,7 @@ const AccordionTrigger = React.forwardRef<HTMLButtonElement, AccordionTriggerPro
       iconRotation,
     } = useAccordion()
     const item = useContext(AccordionItemContext)
-    
+
     if (!item) {
       throw new Error('AccordionTrigger must be used within an AccordionItem')
     }
@@ -611,8 +636,9 @@ const AccordionTrigger = React.forwardRef<HTMLButtonElement, AccordionTriggerPro
     const isDisabled = disabled || accordionDisabled || item.disabled
     const [isHovered, setIsHovered] = useState(false)
 
-    const baseStyles = 'flex w-full items-center justify-between text-left transition-all focus:outline-none focus-visible:ring'
-    
+    const baseStyles =
+      'flex w-full items-center justify-between text-left transition-all focus:outline-none focus-visible:ring'
+
     const sizes = {
       sm: 'text-sm',
       md: 'text-base',
@@ -621,19 +647,28 @@ const AccordionTrigger = React.forwardRef<HTMLButtonElement, AccordionTriggerPro
 
     const getDefaultTriggerStyles = () => {
       return {
-        backgroundColor: isOpen 
-          ? (triggerActiveBackgroundColor || 'transparent')
-          : isHovered 
-            ? (triggerHoverBackgroundColor || '#f9fafb')
-            : (triggerBackgroundColor || 'transparent'),
-        color: isOpen
-          ? (triggerActiveTextColor || '#1f2937')
+        backgroundColor: isOpen
+          ? triggerActiveBackgroundColor || 'transparent'
           : isHovered
-            ? (triggerHoverTextColor || '#111827')
-            : (triggerTextColor || '#374151'),
-        fontSize: triggerFontSize || (size === 'sm' ? '0.875rem' : size === 'lg' ? '1.125rem' : '1rem'),
+            ? triggerHoverBackgroundColor || '#f9fafb'
+            : triggerBackgroundColor || 'transparent',
+        color: isOpen
+          ? triggerActiveTextColor || '#1f2937'
+          : isHovered
+            ? triggerHoverTextColor || '#111827'
+            : triggerTextColor || '#374151',
+        fontSize:
+          triggerFontSize || (size === 'sm' ? '0.875rem' : size === 'lg' ? '1.125rem' : '1rem'),
         fontWeight: triggerFontWeight || '500',
-        padding: triggerPadding || (triggerPaddingX || triggerPaddingY ? undefined : size === 'sm' ? '0.75rem' : size === 'lg' ? '1.25rem' : '1rem'),
+        padding:
+          triggerPadding ||
+          (triggerPaddingX || triggerPaddingY
+            ? undefined
+            : size === 'sm'
+              ? '0.75rem'
+              : size === 'lg'
+                ? '1.25rem'
+                : '1rem'),
         borderRadius: triggerBorderRadius || '0',
         '--tw-ring-color': focusRingColor || '#3b82f6',
         '--tw-ring-width': focusRingWidth || '2px',
@@ -645,36 +680,25 @@ const AccordionTrigger = React.forwardRef<HTMLButtonElement, AccordionTriggerPro
     const defaultTriggerStyles = getDefaultTriggerStyles()
 
     const customStyles: React.CSSProperties = {
-      backgroundColor: defaultTriggerStyles.backgroundColor,
-      color: defaultTriggerStyles.color,
-      fontSize: defaultTriggerStyles.fontSize,
-      fontWeight: defaultTriggerStyles.fontWeight,
-      padding: defaultTriggerStyles.padding,
-      paddingLeft: triggerPaddingX,
-      paddingRight: triggerPaddingX,
-      paddingTop: triggerPaddingY,
-      paddingBottom: triggerPaddingY,
-      borderRadius: defaultTriggerStyles.borderRadius,
-      borderColor: focusBorderColor,
-      boxShadow: focusBoxShadow,
       ...defaultTriggerStyles,
+      ...(triggerPaddingX && { paddingLeft: triggerPaddingX, paddingRight: triggerPaddingX }),
+      ...(triggerPaddingY && { paddingTop: triggerPaddingY, paddingBottom: triggerPaddingY }),
+      ...(focusBorderColor && { borderColor: focusBorderColor }),
+      ...(focusBoxShadow && { boxShadow: focusBoxShadow }),
       ...style,
     } as React.CSSProperties
 
     const defaultIcon = (
       <svg
-        className={cn(
-          'shrink-0 transition-transform',
-          isOpen && `rotate-${iconRotation || '180'}`
-        )}
+        className={cn('shrink-0 transition-transform', isOpen && `rotate-${iconRotation || '180'}`)}
         style={{
           width: iconSize || '1rem',
           height: iconSize || '1rem',
-          color: isOpen 
-            ? (iconActiveColor || 'currentColor')
+          color: isOpen
+            ? iconActiveColor || 'currentColor'
             : isHovered
-              ? (iconHoverColor || 'currentColor')
-              : (iconColor || 'currentColor'),
+              ? iconHoverColor || 'currentColor'
+              : iconColor || 'currentColor',
         }}
         fill="none"
         viewBox="0 0 24 24"
@@ -726,10 +750,10 @@ export interface AccordionContentProps extends React.HTMLAttributes<HTMLDivEleme
 
 const AccordionContent = React.forwardRef<HTMLDivElement, AccordionContentProps>(
   ({ className, children, forceMount = false, style, ...props }, ref) => {
-    const { 
-      value, 
-      size, 
-      transition, 
+    const {
+      value,
+      size,
+      transition,
       transitionDuration,
       contentBackgroundColor,
       contentTextColor,
@@ -742,7 +766,7 @@ const AccordionContent = React.forwardRef<HTMLDivElement, AccordionContentProps>
       contentBorderStyle,
     } = useAccordion()
     const item = useContext(AccordionItemContext)
-    
+
     if (!item) {
       throw new Error('AccordionContent must be used within an AccordionItem')
     }
@@ -754,7 +778,7 @@ const AccordionContent = React.forwardRef<HTMLDivElement, AccordionContentProps>
     }
 
     const baseStyles = 'overflow-hidden'
-    
+
     const sizes = {
       sm: 'text-sm',
       md: 'text-base',
@@ -794,8 +818,17 @@ const AccordionContent = React.forwardRef<HTMLDivElement, AccordionContentProps>
       return {
         backgroundColor: contentBackgroundColor || 'transparent',
         color: contentTextColor || '#4b5563',
-        fontSize: contentFontSize || (size === 'sm' ? '0.875rem' : size === 'lg' ? '1rem' : '0.875rem'),
-        padding: contentPadding || (contentPaddingX || contentPaddingY ? undefined : size === 'sm' ? '0.75rem' : size === 'lg' ? '1.25rem' : '1rem'),
+        fontSize:
+          contentFontSize || (size === 'sm' ? '0.875rem' : size === 'lg' ? '1rem' : '0.875rem'),
+        padding:
+          contentPadding ||
+          (contentPaddingX || contentPaddingY
+            ? undefined
+            : size === 'sm'
+              ? '0.75rem'
+              : size === 'lg'
+                ? '1.25rem'
+                : '1rem'),
         borderWidth: contentBorderWidth || '0',
         borderColor: contentBorderColor || '#e5e7eb',
         borderStyle: contentBorderStyle || 'solid',
@@ -822,18 +855,11 @@ const AccordionContent = React.forwardRef<HTMLDivElement, AccordionContentProps>
     return (
       <div
         ref={ref}
-        className={cn(
-          baseStyles,
-          transitions[transition || 'collapse'],
-          className
-        )}
+        className={cn(baseStyles, transitions[transition || 'collapse'], className)}
         hidden={!forceMount && !isOpen}
         {...props}
       >
-        <div 
-          className={cn(sizes[size || 'md'])}
-          style={customStyles}
-        >
+        <div className={cn(sizes[size || 'md'])} style={customStyles}>
           {children}
         </div>
       </div>

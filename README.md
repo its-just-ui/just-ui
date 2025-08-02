@@ -22,17 +22,20 @@ A modern, customizable UI component library built with React, TypeScript, and Ta
 ### Installation
 
 1. Clone this repository:
+
 ```bash
 git clone https://github.com/yourusername/ui-library-template.git
 cd ui-library-template
 ```
 
 2. Install dependencies:
+
 ```bash
 npm install
 ```
 
 3. Start the development environment:
+
 ```bash
 npm run storybook
 ```
@@ -92,11 +95,13 @@ npm run build:watch
 ### Creating New Components
 
 1. Create a new folder in `src/components/`:
+
 ```bash
 mkdir src/components/MyComponent
 ```
 
 2. Create the component file:
+
 ```tsx
 // src/components/MyComponent/MyComponent.tsx
 import React from 'react'
@@ -132,18 +137,21 @@ export { MyComponent }
 ```
 
 3. Create an index file:
+
 ```tsx
 // src/components/MyComponent/index.ts
 export * from './MyComponent'
 ```
 
 4. Add to the main components index:
+
 ```tsx
 // src/components/index.ts
 export * from './MyComponent'
 ```
 
 5. Create a Storybook story:
+
 ```tsx
 // src/components/MyComponent/MyComponent.stories.tsx
 import type { Meta, StoryObj } from '@storybook/react'
@@ -173,17 +181,20 @@ export const Default: Story = {
 ### In Your Project
 
 1. Install the library:
+
 ```bash
 npm install your-ui-library
 ```
 
 2. Import the CSS:
+
 ```tsx
 // In your app's entry point
 import 'your-ui-library/styles.css'
 ```
 
 3. Use components:
+
 ```tsx
 import { Button, Card, CardHeader, CardTitle, CardContent } from 'your-ui-library'
 
@@ -260,11 +271,7 @@ export default {
 ### Input
 
 ```tsx
-<Input 
-  type="email" 
-  placeholder="Enter your email" 
-  error={false}
-/>
+<Input type="email" placeholder="Enter your email" error={false} />
 ```
 
 ### Badge
@@ -284,9 +291,7 @@ export default {
 ```tsx
 <Alert variant="success">
   <AlertTitle>Success!</AlertTitle>
-  <AlertDescription>
-    Your action was completed successfully.
-  </AlertDescription>
+  <AlertDescription>Your action was completed successfully.</AlertDescription>
 </Alert>
 ```
 
@@ -300,17 +305,20 @@ export default {
    - repository URLs
 
 2. Build the library:
+
 ```bash
 npm run build
 ```
 
 This creates:
+
 - `dist/index.js` - ES module build
 - `dist/index.cjs` - CommonJS build
 - `dist/index.d.ts` - TypeScript declarations
 - `dist/styles.css` - Compiled CSS
 
 3. Test locally using npm link:
+
 ```bash
 npm link
 # In your test project
@@ -318,6 +326,7 @@ npm link your-ui-library
 ```
 
 4. Publish to npm:
+
 ```bash
 npm publish
 ```
@@ -337,6 +346,7 @@ MIT License - feel free to use this template for your own projects!
 ## Acknowledgments
 
 Built with:
+
 - [React](https://reactjs.org/)
 - [TypeScript](https://www.typescriptlang.org/)
 - [Tailwind CSS](https://tailwindcss.com/)

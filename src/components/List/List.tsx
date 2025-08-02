@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useCallback, useMemo } from 'react'
 import { cn } from '@/utils'
 
-export interface ListItem {
+export interface ListItemData {
   id: string
   title: string
   description?: string
@@ -10,11 +10,11 @@ export interface ListItem {
   avatar?: React.ReactNode
   badge?: React.ReactNode
   action?: React.ReactNode
-  [key: string]: any
+  [key: string]: unknown
 }
 
 export interface ListProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'onChange'> {
-  items?: ListItem[]
+  items?: ListItemData[]
   value?: string | string[] | null
   onChange?: (value: string | string[] | null) => void
   variant?: 'default' | 'bordered' | 'card' | 'minimal' | 'elevated' | 'glass' | 'gradient'
@@ -30,11 +30,11 @@ export interface ListProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'o
   required?: boolean
   emptyMessage?: string
   loadingMessage?: string
-  onItemClick?: (item: ListItem) => void
-  onItemSelect?: (item: ListItem) => void
-  renderItem?: (item: ListItem, isSelected: boolean) => React.ReactNode
+  onItemClick?: (item: ListItemData) => void
+  onItemSelect?: (item: ListItemData) => void
+  renderItem?: (item: ListItemData, isSelected: boolean) => React.ReactNode
   children?: React.ReactNode
-  
+
   // Dark mode
   darkMode?: boolean
   darkBackgroundColor?: string
@@ -49,62 +49,62 @@ export interface ListProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'o
   darkBoxShadow?: string
   darkFocusBoxShadow?: string
   darkHoverBoxShadow?: string
-  
+
   // Border styles
   borderWidth?: string
   borderColor?: string
   borderStyle?: string
   borderRadius?: string
-  
+
   // Typography
   fontSize?: string
   fontWeight?: string
   fontFamily?: string
   textColor?: string
-  
+
   // Colors
   backgroundColor?: string
   selectedBackgroundColor?: string
   hoverBackgroundColor?: string
   disabledBackgroundColor?: string
-  
+
   // Focus styles
   focusRingColor?: string
   focusRingWidth?: string
   focusRingOffset?: string
   focusBorderColor?: string
   focusBackgroundColor?: string
-  
+
   // Shadows
   boxShadow?: string
   focusBoxShadow?: string
   hoverBoxShadow?: string
-  
+
   // Spacing
   padding?: string
   paddingX?: string
   paddingY?: string
   gap?: string
-  
+
   // Icon customization
   iconColor?: string
   actionIconColor?: string
   loadingIconColor?: string
-  
+
   // Label styles
   labelFontSize?: string
   labelFontWeight?: string
   labelColor?: string
   labelMarginBottom?: string
-  
+
   // Helper text styles
   helperTextFontSize?: string
   helperTextColor?: string
   helperTextMarginTop?: string
-  
+
   // Required asterisk styles
   requiredColor?: string
-  
+
   // Container styles
   containerBackgroundColor?: string
   containerBorderColor?: string
@@ -112,7 +112,7 @@ export interface ListProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'o
   containerBorderRadius?: string
   containerPadding?: string
   containerGap?: string
-  
+
   // Item styles
   itemPadding?: string
   itemBorderWidth?: string
@@ -124,32 +124,32 @@ export interface ListProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'o
   itemSelectedTextColor?: string
   itemDisabledOpacity?: string
   itemGap?: string
-  
+
   // Title styles
   titleFontSize?: string
   titleFontWeight?: string
   titleColor?: string
   titleLineHeight?: string
-  
+
   // Description styles
   descriptionFontSize?: string
   descriptionColor?: string
   descriptionLineHeight?: string
   descriptionMarginTop?: string
-  
+
   // Avatar styles
   avatarSize?: string
   avatarBorderRadius?: string
   avatarBorderWidth?: string
   avatarBorderColor?: string
-  
+
   // Badge styles
   badgeFontSize?: string
   badgePadding?: string
   badgeBorderRadius?: string
   badgeBackgroundColor?: string
   badgeTextColor?: string
-  
+
   // Selection styles
   selectionIndicatorColor?: string
   selectionIndicatorSize?: string
@@ -158,7 +158,7 @@ export interface ListProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'o
   selectionIndicatorBorderColor?: string
   selectionIndicatorBackgroundColor?: string
   selectionIndicatorTextColor?: string
-  
+
   // Animation
   animationDuration?: string
   animationTimingFunction?: string
@@ -167,7 +167,7 @@ export interface ListProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'o
   hoverRotate?: string
   hoverTranslateX?: string
   hoverTranslateY?: string
-  
+
   // Custom CSS
   customCSS?: string
   customContainerCSS?: string
@@ -175,7 +175,7 @@ export interface ListProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'o
 }
 
 interface ListContextValue {
-  items: ListItem[]
+  items: ListItemData[]
   value: string | string[] | null
   onChange: (value: string | string[] | null) => void
   variant?: 'default' | 'bordered' | 'card' | 'minimal' | 'elevated' | 'glass' | 'gradient'
@@ -186,12 +186,12 @@ interface ListContextValue {
   selectable?: boolean
   multiple?: boolean
   maxSelection?: number
-  onItemClick?: (item: ListItem) => void
-  onItemSelect?: (item: ListItem) => void
-  renderItem?: (item: ListItem, isSelected: boolean) => React.ReactNode
+  onItemClick?: (item: ListItemData) => void
+  onItemSelect?: (item: ListItemData) => void
+  renderItem?: (item: ListItemData, isSelected: boolean) => React.ReactNode
   emptyMessage?: string
   loadingMessage?: string
-  
+
   // Dark mode
   darkMode?: boolean
   darkBackgroundColor?: string
@@ -206,7 +206,7 @@ interface ListContextValue {
   darkBoxShadow?: string
   darkFocusBoxShadow?: string
   darkHoverBoxShadow?: string
-  
+
   // Style props
   borderWidth?: string
   borderColor?: string
@@ -298,156 +298,165 @@ export const useList = () => {
 }
 
 const List = React.forwardRef<HTMLDivElement, ListProps>(
-  ({
-    className,
-    items = [],
-    value,
-    onChange,
-    variant = 'default',
-    size = 'md',
-    status = 'default',
-    disabled = false,
-    loading = false,
-    selectable = false,
-    multiple = false,
-    maxSelection,
-    label,
-    helperText,
-    required = false,
-    emptyMessage = 'No items found',
-    loadingMessage = 'Loading...',
-    onItemClick,
-    onItemSelect,
-    renderItem,
-    children: _children,
-    // Dark mode
-    darkMode = false,
-    darkBackgroundColor,
-    darkTextColor,
-    darkBorderColor,
-    darkHoverBackgroundColor,
-    darkSelectedBackgroundColor,
-    darkDisabledBackgroundColor,
-    darkFocusRingColor,
-    darkFocusBorderColor,
-    darkFocusBackgroundColor,
-    darkBoxShadow,
-    darkFocusBoxShadow,
-    darkHoverBoxShadow,
-    // Style props
-    borderWidth,
-    borderColor,
-    borderStyle,
-    borderRadius,
-    fontSize,
-    fontWeight,
-    fontFamily,
-    textColor,
-    backgroundColor,
-    selectedBackgroundColor,
-    hoverBackgroundColor,
-    disabledBackgroundColor,
-    focusRingColor,
-    focusRingWidth,
-    focusRingOffset,
-    focusBorderColor,
-    focusBackgroundColor,
-    boxShadow,
-    focusBoxShadow,
-    hoverBoxShadow,
-    padding,
-    paddingX,
-    paddingY,
-    gap,
-    iconColor,
-    actionIconColor,
-    loadingIconColor,
-    labelFontSize,
-    labelFontWeight,
-    labelColor,
-    labelMarginBottom,
-    helperTextFontSize,
-    helperTextColor,
-    helperTextMarginTop,
-    requiredColor,
-    containerBackgroundColor,
-    containerBorderColor,
-    containerBorderWidth,
-    containerBorderRadius,
-    containerPadding,
-    containerGap,
-    itemPadding,
-    itemBorderWidth,
-    itemBorderColor,
-    itemBorderRadius,
-    itemBackgroundColor,
-    itemHoverBackgroundColor,
-    itemSelectedBackgroundColor,
-    itemSelectedTextColor,
-    itemDisabledOpacity,
-    itemGap,
-    titleFontSize,
-    titleFontWeight,
-    titleColor,
-    titleLineHeight,
-    descriptionFontSize,
-    descriptionColor,
-    descriptionLineHeight,
-    descriptionMarginTop,
-    avatarSize,
-    avatarBorderRadius,
-    avatarBorderWidth,
-    avatarBorderColor,
-    badgeFontSize,
-    badgePadding,
-    badgeBorderRadius,
-    badgeBackgroundColor,
-    badgeTextColor,
-    selectionIndicatorColor,
-    selectionIndicatorSize,
-    selectionIndicatorBorderRadius,
-    selectionIndicatorBorderWidth,
-    selectionIndicatorBorderColor,
-    selectionIndicatorBackgroundColor,
-    selectionIndicatorTextColor,
-    animationDuration,
-    animationTimingFunction,
-    animationDelay,
-    hoverScale,
-    hoverRotate,
-    hoverTranslateX,
-    hoverTranslateY,
-    customCSS,
-    customContainerCSS,
-    customItemCSS,
-    ...props
-  }, ref) => {
-    const handleChange = useCallback((newValue: string | string[] | null) => {
-      if (onChange) {
-        onChange(newValue)
-      }
-    }, [onChange])
-
-    const handleItemSelect = useCallback((item: ListItem) => {
-      if (onItemSelect) {
-        onItemSelect(item)
-      }
-      
-      if (selectable) {
-        if (multiple && Array.isArray(value)) {
-          const isSelected = value.includes(item.id)
-          if (isSelected) {
-            const newValue = value.filter(v => v !== item.id)
-            handleChange(newValue.length > 0 ? newValue : null)
-          } else {
-            if (maxSelection && value.length >= maxSelection) return
-            handleChange([...value, item.id])
-          }
-        } else {
-          handleChange(item.id)
+  (
+    {
+      className,
+      items = [],
+      value,
+      onChange,
+      variant = 'default',
+      size = 'md',
+      status = 'default',
+      disabled = false,
+      loading = false,
+      selectable = false,
+      multiple = false,
+      maxSelection,
+      label,
+      helperText,
+      required = false,
+      emptyMessage = 'No items found',
+      loadingMessage = 'Loading...',
+      onItemClick,
+      onItemSelect,
+      renderItem,
+      children: _children,
+      // Dark mode
+      darkMode = false,
+      darkBackgroundColor,
+      darkTextColor,
+      darkBorderColor,
+      darkHoverBackgroundColor,
+      darkSelectedBackgroundColor,
+      darkDisabledBackgroundColor,
+      darkFocusRingColor,
+      darkFocusBorderColor,
+      darkFocusBackgroundColor,
+      darkBoxShadow,
+      darkFocusBoxShadow,
+      darkHoverBoxShadow,
+      // Style props
+      borderWidth,
+      borderColor,
+      borderStyle,
+      borderRadius,
+      fontSize,
+      fontWeight,
+      fontFamily,
+      textColor,
+      backgroundColor,
+      selectedBackgroundColor,
+      hoverBackgroundColor,
+      disabledBackgroundColor,
+      focusRingColor,
+      focusRingWidth,
+      focusRingOffset,
+      focusBorderColor,
+      focusBackgroundColor,
+      boxShadow,
+      focusBoxShadow,
+      hoverBoxShadow,
+      padding,
+      paddingX,
+      paddingY,
+      gap,
+      iconColor,
+      actionIconColor,
+      loadingIconColor,
+      labelFontSize,
+      labelFontWeight,
+      labelColor,
+      labelMarginBottom,
+      helperTextFontSize,
+      helperTextColor,
+      helperTextMarginTop,
+      requiredColor,
+      containerBackgroundColor,
+      containerBorderColor,
+      containerBorderWidth,
+      containerBorderRadius,
+      containerPadding,
+      containerGap,
+      itemPadding,
+      itemBorderWidth,
+      itemBorderColor,
+      itemBorderRadius,
+      itemBackgroundColor,
+      itemHoverBackgroundColor,
+      itemSelectedBackgroundColor,
+      itemSelectedTextColor,
+      itemDisabledOpacity,
+      itemGap,
+      titleFontSize,
+      titleFontWeight,
+      titleColor,
+      titleLineHeight,
+      descriptionFontSize,
+      descriptionColor,
+      descriptionLineHeight,
+      descriptionMarginTop,
+      avatarSize,
+      avatarBorderRadius,
+      avatarBorderWidth,
+      avatarBorderColor,
+      badgeFontSize,
+      badgePadding,
+      badgeBorderRadius,
+      badgeBackgroundColor,
+      badgeTextColor,
+      selectionIndicatorColor,
+      selectionIndicatorSize,
+      selectionIndicatorBorderRadius,
+      selectionIndicatorBorderWidth,
+      selectionIndicatorBorderColor,
+      selectionIndicatorBackgroundColor,
+      selectionIndicatorTextColor,
+      animationDuration,
+      animationTimingFunction,
+      animationDelay,
+      hoverScale,
+      hoverRotate,
+      hoverTranslateX,
+      hoverTranslateY,
+      customCSS,
+      customContainerCSS,
+      customItemCSS,
+      ...props
+    },
+    ref
+  ) => {
+    const handleChange = useCallback(
+      (newValue: string | string[] | null) => {
+        if (onChange) {
+          onChange(newValue)
         }
-      }
-    }, [value, multiple, maxSelection, selectable, onItemSelect, handleChange])
+      },
+      [onChange]
+    )
+
+    const handleItemSelect = useCallback(
+      (item: ListItemData) => {
+        if (onItemSelect) {
+          onItemSelect(item)
+        }
+
+        if (selectable) {
+          if (multiple && Array.isArray(value)) {
+            const isSelected = value.includes(item.id)
+            if (isSelected) {
+              const newValue = value.filter((v) => v !== item.id)
+              handleChange(newValue.length > 0 ? newValue : null)
+            } else {
+              if (maxSelection && value.length >= maxSelection) return
+              handleChange([...value, item.id])
+            }
+          } else {
+            handleChange(item.id)
+          }
+        }
+      },
+      [value, multiple, maxSelection, selectable, onItemSelect, handleChange]
+    )
 
     const baseStyles = 'relative'
 
@@ -568,12 +577,12 @@ const List = React.forwardRef<HTMLDivElement, ListProps>(
           ref={ref}
           className={cn(baseStyles, className)}
           style={{
-            ...(customCSS && { '--custom-css': customCSS } as any),
+            ...(customCSS && ({ '--custom-css': customCSS } as any)),
           }}
           {...props}
         >
           {label && (
-            <label 
+            <label
               className={cn(
                 'block mb-2 font-medium',
                 size === 'sm' && 'text-sm',
@@ -592,10 +601,7 @@ const List = React.forwardRef<HTMLDivElement, ListProps>(
             >
               {label}
               {required && (
-                <span 
-                  className="text-red-500 ml-1"
-                  style={{ color: requiredColor }}
-                >
+                <span className="text-red-500 ml-1" style={{ color: requiredColor }}>
                   *
                 </span>
               )}
@@ -603,7 +609,7 @@ const List = React.forwardRef<HTMLDivElement, ListProps>(
           )}
           {_children || <ListContainer />}
           {helperText && (
-            <p 
+            <p
               className={cn(
                 'mt-2',
                 size === 'sm' && 'text-xs',
@@ -662,7 +668,7 @@ const ListContainer = React.forwardRef<HTMLDivElement, ListContainerProps>(
 
     // Build custom container styles
     const customContainerStyles: React.CSSProperties = {}
-    
+
     if (darkMode) {
       customContainerStyles.backgroundColor = darkMode ? '#1f2937' : containerBackgroundColor
       customContainerStyles.borderColor = darkMode ? '#374151' : containerBorderColor
@@ -670,7 +676,7 @@ const ListContainer = React.forwardRef<HTMLDivElement, ListContainerProps>(
       if (containerBackgroundColor) customContainerStyles.backgroundColor = containerBackgroundColor
       if (containerBorderColor) customContainerStyles.borderColor = containerBorderColor
     }
-    
+
     if (containerBorderWidth) customContainerStyles.borderWidth = containerBorderWidth
     if (containerBorderRadius) customContainerStyles.borderRadius = containerBorderRadius
     if (containerPadding) customContainerStyles.padding = containerPadding
@@ -683,7 +689,7 @@ const ListContainer = React.forwardRef<HTMLDivElement, ListContainerProps>(
           className={cn(baseStyles, 'justify-center items-center py-8', className)}
           style={{
             ...customContainerStyles,
-            ...(customContainerCSS && { '--custom-container-css': customContainerCSS } as any),
+            ...(customContainerCSS && ({ '--custom-container-css': customContainerCSS } as any)),
           }}
           {...props}
         >
@@ -699,7 +705,7 @@ const ListContainer = React.forwardRef<HTMLDivElement, ListContainerProps>(
           className={cn(baseStyles, 'justify-center items-center py-8', className)}
           style={{
             ...customContainerStyles,
-            ...(customContainerCSS && { '--custom-container-css': customContainerCSS } as any),
+            ...(customContainerCSS && ({ '--custom-container-css': customContainerCSS } as any)),
           }}
           {...props}
         >
@@ -709,23 +715,23 @@ const ListContainer = React.forwardRef<HTMLDivElement, ListContainerProps>(
     }
 
     return (
-              <div
-          ref={ref}
-          className={cn(baseStyles, className)}
-          style={{
-            ...customContainerStyles,
-            ...(customContainerCSS && { '--custom-container-css': customContainerCSS } as any),
-          }}
-          {...props}
-        >
-          {_children || (
-            <>
-              {items.map((item) => (
-                <ListItem key={item.id} item={item} />
-              ))}
-            </>
-          )}
-        </div>
+      <div
+        ref={ref}
+        className={cn(baseStyles, className)}
+        style={{
+          ...customContainerStyles,
+          ...(customContainerCSS && ({ '--custom-container-css': customContainerCSS } as any)),
+        }}
+        {...props}
+      >
+        {_children || (
+          <>
+            {items.map((item) => (
+              <ListItem key={item.id} item={item} />
+            ))}
+          </>
+        )}
+      </div>
     )
   }
 )
@@ -733,7 +739,7 @@ const ListContainer = React.forwardRef<HTMLDivElement, ListContainerProps>(
 ListContainer.displayName = 'ListContainer'
 
 export interface ListItemProps extends React.HTMLAttributes<HTMLDivElement> {
-  item: ListItem
+  item: ListItemData
 }
 
 const ListItem = React.forwardRef<HTMLDivElement, ListItemProps>(
@@ -763,11 +769,11 @@ const ListItem = React.forwardRef<HTMLDivElement, ListItemProps>(
       selectedBackgroundColor,
       hoverBackgroundColor: _hoverBackgroundColor,
       disabledBackgroundColor,
-      focusRingColor,
-      focusRingWidth,
-      focusRingOffset,
-      focusBorderColor,
-      focusBackgroundColor,
+      focusRingColor: _focusRingColor,
+      focusRingWidth: _focusRingWidth,
+      focusRingOffset: _focusRingOffset,
+      focusBorderColor: _focusBorderColor,
+      focusBackgroundColor: _focusBackgroundColor,
       boxShadow,
       focusBoxShadow,
       hoverBoxShadow,
@@ -814,10 +820,10 @@ const ListItem = React.forwardRef<HTMLDivElement, ListItemProps>(
       animationDuration,
       animationTimingFunction,
       animationDelay,
-      hoverScale,
-      hoverRotate,
-      hoverTranslateX,
-      hoverTranslateY,
+      hoverScale: _hoverScale,
+      hoverRotate: _hoverRotate,
+      hoverTranslateX: _hoverTranslateX,
+      hoverTranslateY: _hoverTranslateY,
       customItemCSS,
     } = useList()
 
@@ -893,7 +899,7 @@ const ListItem = React.forwardRef<HTMLDivElement, ListItemProps>(
 
     // Build custom styles
     const customStyles: React.CSSProperties = {}
-    
+
     // Dark mode overrides
     if (darkMode) {
       customStyles.backgroundColor = darkMode ? '#1f2937' : backgroundColor
@@ -905,28 +911,32 @@ const ListItem = React.forwardRef<HTMLDivElement, ListItemProps>(
       if (borderColor) customStyles.borderColor = borderColor
       if (borderStyle) customStyles.borderStyle = borderStyle
       if (borderRadius) customStyles.borderRadius = borderRadius
-      
+
       // Text styles
       if (fontSize) customStyles.fontSize = fontSize
       if (fontWeight) customStyles.fontWeight = fontWeight
       if (fontFamily) customStyles.fontFamily = fontFamily
       if (textColor) customStyles.color = textColor
-      
+
       // Background
       if (backgroundColor) customStyles.backgroundColor = backgroundColor
     }
-    
+
     if (isSelected && selectedBackgroundColor) {
-      customStyles.backgroundColor = darkMode ? darkMode ? '#1e40af' : selectedBackgroundColor : selectedBackgroundColor
+      customStyles.backgroundColor = darkMode
+        ? darkMode
+          ? '#1e40af'
+          : selectedBackgroundColor
+        : selectedBackgroundColor
     }
     if (disabled && disabledBackgroundColor) {
       customStyles.backgroundColor = darkMode ? '#374151' : disabledBackgroundColor
     }
-    
+
     // Shadow
     if (boxShadow) customStyles.boxShadow = boxShadow
     if (isSelected && focusBoxShadow) customStyles.boxShadow = focusBoxShadow
-    
+
     // Padding
     if (padding) customStyles.padding = padding
     if (paddingX) {
@@ -937,7 +947,7 @@ const ListItem = React.forwardRef<HTMLDivElement, ListItemProps>(
       customStyles.paddingTop = paddingY
       customStyles.paddingBottom = paddingY
     }
-    
+
     // Gap
     if (gap) customStyles.gap = gap
 
@@ -954,38 +964,34 @@ const ListItem = React.forwardRef<HTMLDivElement, ListItemProps>(
     if (animationTimingFunction) customStyles.transitionTimingFunction = animationTimingFunction
     if (animationDelay) customStyles.transitionDelay = animationDelay
 
-    // Focus styles
-    const focusStyles = {
-      ...(focusBorderColor && { borderColor: focusBorderColor }),
-      ...(focusBackgroundColor && { backgroundColor: focusBackgroundColor }),
-      ...(focusBoxShadow && { boxShadow: focusBoxShadow }),
-      ...(focusRingColor && focusRingWidth && {
-        boxShadow: `0 0 0 ${focusRingWidth} ${focusRingColor}${focusRingOffset ? `, 0 0 0 calc(${focusRingWidth} + ${focusRingOffset}) transparent` : ''}`,
-      }),
-    }
+    // Focus styles (commented out as not currently used)
+    // const focusStyles = {
+    //   ...(focusBorderColor && { borderColor: focusBorderColor }),
+    //   ...(focusBackgroundColor && { backgroundColor: focusBackgroundColor }),
+    //   ...(focusBoxShadow && { boxShadow: focusBoxShadow }),
+    //   ...(focusRingColor && focusRingWidth && {
+    //     boxShadow: `0 0 0 ${focusRingWidth} ${focusRingColor}${focusRingOffset ? `, 0 0 0 calc(${focusRingWidth} + ${focusRingOffset}) transparent` : ''}`,
+    //   }),
+    // }
 
-    // Hover transform styles
-    const hoverStyles = {
-      ...(hoverScale && { transform: `scale(${hoverScale})` }),
-      ...(hoverRotate && { transform: `rotate(${hoverRotate})` }),
-      ...(hoverTranslateX && hoverTranslateY && { transform: `translate(${hoverTranslateX}, ${hoverTranslateY})` }),
-    }
+    // Hover transform styles (commented out as not currently used)
+    // const hoverStyles = {
+    //   ...(hoverScale && { transform: `scale(${hoverScale})` }),
+    //   ...(hoverRotate && { transform: `rotate(${hoverRotate})` }),
+    //   ...(hoverTranslateX && hoverTranslateY && { transform: `translate(${hoverTranslateX}, ${hoverTranslateY})` }),
+    // }
 
     if (renderItem) {
       return (
         <div
           ref={ref}
-          className={cn(
-            baseStyles,
-            variants[variant || 'default'],
-            sizes[size || 'md'],
-            className
-          )}
+          className={cn(baseStyles, variants[variant || 'default'], sizes[size || 'md'], className)}
           style={{
             ...customStyles,
-            ...(hoverBoxShadow && {
-              ':hover': { boxShadow: hoverBoxShadow },
-            } as any),
+            ...(hoverBoxShadow &&
+              ({
+                ':hover': { boxShadow: hoverBoxShadow },
+              } as any)),
             ...(customItemCSS && { css: customItemCSS }),
           }}
           onClick={handleClick}
@@ -999,24 +1005,20 @@ const ListItem = React.forwardRef<HTMLDivElement, ListItemProps>(
     return (
       <div
         ref={ref}
-        className={cn(
-          baseStyles,
-          variants[variant || 'default'],
-          sizes[size || 'md'],
-          className
-        )}
+        className={cn(baseStyles, variants[variant || 'default'], sizes[size || 'md'], className)}
         style={{
           ...customStyles,
-          ...(hoverBoxShadow && {
-            ':hover': { boxShadow: hoverBoxShadow },
-          } as any),
+          ...(hoverBoxShadow &&
+            ({
+              ':hover': { boxShadow: hoverBoxShadow },
+            } as any)),
           ...(customItemCSS && { css: customItemCSS }),
         }}
         onClick={handleClick}
         {...props}
       >
         {selectable && (
-          <div 
+          <div
             className="flex-shrink-0"
             style={{
               width: selectionIndicatorSize || '20px',
@@ -1024,8 +1026,8 @@ const ListItem = React.forwardRef<HTMLDivElement, ListItemProps>(
               borderRadius: selectionIndicatorBorderRadius || '4px',
               borderWidth: selectionIndicatorBorderWidth || '2px',
               borderColor: selectionIndicatorBorderColor || (darkMode ? '#6b7280' : '#d1d5db'),
-              backgroundColor: isSelected 
-                ? (selectionIndicatorBackgroundColor || (darkMode ? '#3b82f6' : '#3b82f6'))
+              backgroundColor: isSelected
+                ? selectionIndicatorBackgroundColor || (darkMode ? '#3b82f6' : '#3b82f6')
                 : 'transparent',
               color: selectionIndicatorTextColor || '#ffffff',
               display: 'flex',
@@ -1033,22 +1035,21 @@ const ListItem = React.forwardRef<HTMLDivElement, ListItemProps>(
               justifyContent: 'center',
             }}
           >
-            {isSelected && (
-              multiple ? (
+            {isSelected &&
+              (multiple ? (
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                  <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
                 </svg>
               ) : (
                 <svg width="8" height="8" viewBox="0 0 24 24" fill="currentColor">
-                  <circle cx="12" cy="12" r="6"/>
+                  <circle cx="12" cy="12" r="6" />
                 </svg>
-              )
-            )}
+              ))}
           </div>
         )}
-        
+
         {item.avatar && (
-          <div 
+          <div
             className="flex-shrink-0"
             style={{
               width: avatarSize || '40px',
@@ -1061,34 +1062,34 @@ const ListItem = React.forwardRef<HTMLDivElement, ListItemProps>(
             {item.avatar}
           </div>
         )}
-        
+
         {item.icon && (
-          <span 
+          <span
             className="flex-shrink-0"
             style={{ color: iconColor || (darkMode ? '#9ca3af' : '#6b7280') }}
           >
             {item.icon}
           </span>
         )}
-        
+
         <div className="flex-1 min-w-0">
-          <div 
+          <div
             className="font-medium"
             style={{
               fontSize: titleFontSize,
               fontWeight: titleFontWeight,
-              color: darkMode ? '#f9fafb' : (titleColor || '#111827'),
+              color: darkMode ? '#f9fafb' : titleColor || '#111827',
               lineHeight: titleLineHeight,
             }}
           >
             {item.title}
           </div>
           {item.description && (
-            <div 
+            <div
               className="text-gray-500 mt-1"
               style={{
                 fontSize: descriptionFontSize,
-                color: darkMode ? '#9ca3af' : (descriptionColor || '#6b7280'),
+                color: darkMode ? '#9ca3af' : descriptionColor || '#6b7280',
                 lineHeight: descriptionLineHeight,
                 marginTop: descriptionMarginTop,
               }}
@@ -1097,9 +1098,9 @@ const ListItem = React.forwardRef<HTMLDivElement, ListItemProps>(
             </div>
           )}
         </div>
-        
+
         {item.badge && (
-          <div 
+          <div
             className="flex-shrink-0"
             style={{
               fontSize: badgeFontSize,
@@ -1112,9 +1113,9 @@ const ListItem = React.forwardRef<HTMLDivElement, ListItemProps>(
             {item.badge}
           </div>
         )}
-        
+
         {item.action && (
-          <div 
+          <div
             className="flex-shrink-0"
             style={{ color: actionIconColor || (darkMode ? '#9ca3af' : '#6b7280') }}
           >
@@ -1148,11 +1149,7 @@ const ListHeader = React.forwardRef<HTMLDivElement, ListHeaderProps>(
     }
 
     return (
-      <div
-        ref={ref}
-        className={cn(baseStyles, sizes[size || 'md'], className)}
-        {...props}
-      >
+      <div ref={ref} className={cn(baseStyles, sizes[size || 'md'], className)} {...props}>
         {children}
       </div>
     )
@@ -1181,11 +1178,7 @@ const ListFooter = React.forwardRef<HTMLDivElement, ListFooterProps>(
     }
 
     return (
-      <div
-        ref={ref}
-        className={cn(baseStyles, sizes[size || 'md'], className)}
-        {...props}
-      >
+      <div ref={ref} className={cn(baseStyles, sizes[size || 'md'], className)} {...props}>
         {children}
       </div>
     )
@@ -1194,4 +1187,4 @@ const ListFooter = React.forwardRef<HTMLDivElement, ListFooterProps>(
 
 ListFooter.displayName = 'ListFooter'
 
-export { List, ListContainer, ListItem, ListHeader, ListFooter } 
+export { List, ListContainer, ListItem, ListHeader, ListFooter }

@@ -4,17 +4,17 @@ import { Autocomplete, AutocompleteOption } from './Autocomplete'
 
 /**
  * Autocomplete is a controlled component that provides a searchable dropdown selection.
- * 
+ *
  * ## Usage
- * 
+ *
  * The Autocomplete component requires two main props:
  * - `value`: The currently selected value(s)
  * - `onChange`: A callback function to update the value
- * 
+ *
  * ### Basic Example:
  * ```tsx
  * const [value, setValue] = useState<AutocompleteOption | null>(null)
- * 
+ *
  * <Autocomplete
  *   options={options}
  *   value={value}
@@ -22,11 +22,11 @@ import { Autocomplete, AutocompleteOption } from './Autocomplete'
  *   placeholder="Select an option"
  * />
  * ```
- * 
+ *
  * ### Multiple Selection:
  * ```tsx
  * const [values, setValues] = useState<AutocompleteOption[]>([])
- * 
+ *
  * <Autocomplete
  *   options={options}
  *   value={values}
@@ -35,7 +35,7 @@ import { Autocomplete, AutocompleteOption } from './Autocomplete'
  *   placeholder="Select multiple options"
  * />
  * ```
- * 
+ *
  * ### Option Structure:
  * ```tsx
  * interface AutocompleteOption {
@@ -58,7 +58,8 @@ const meta = {
   argTypes: {
     value: {
       control: false,
-      description: 'The selected value(s). Can be AutocompleteOption, AutocompleteOption[], or null',
+      description:
+        'The selected value(s). Can be AutocompleteOption, AutocompleteOption[], or null',
       table: {
         type: { summary: 'AutocompleteOption | AutocompleteOption[] | null' },
       },
@@ -307,29 +308,45 @@ const userOptions: AutocompleteOption[] = [
     value: 'john',
     label: 'John Doe',
     description: 'john.doe@example.com',
-    icon: <div className="w-8 h-8 rounded-full bg-blue-500 text-white flex items-center justify-center">JD</div>,
+    icon: (
+      <div className="w-8 h-8 rounded-full bg-blue-500 text-white flex items-center justify-center">
+        JD
+      </div>
+    ),
   },
   {
     value: 'jane',
     label: 'Jane Smith',
     description: 'jane.smith@example.com',
-    icon: <div className="w-8 h-8 rounded-full bg-pink-500 text-white flex items-center justify-center">JS</div>,
+    icon: (
+      <div className="w-8 h-8 rounded-full bg-pink-500 text-white flex items-center justify-center">
+        JS
+      </div>
+    ),
   },
   {
     value: 'bob',
     label: 'Bob Johnson',
     description: 'bob.johnson@example.com',
-    icon: <div className="w-8 h-8 rounded-full bg-green-500 text-white flex items-center justify-center">BJ</div>,
+    icon: (
+      <div className="w-8 h-8 rounded-full bg-green-500 text-white flex items-center justify-center">
+        BJ
+      </div>
+    ),
   },
   {
     value: 'alice',
     label: 'Alice Williams',
     description: 'alice.williams@example.com',
-    icon: <div className="w-8 h-8 rounded-full bg-purple-500 text-white flex items-center justify-center">AW</div>,
+    icon: (
+      <div className="w-8 h-8 rounded-full bg-purple-500 text-white flex items-center justify-center">
+        AW
+      </div>
+    ),
   },
 ]
 
-const groupedOptions: AutocompleteOption[] = [
+const _groupedOptions: AutocompleteOption[] = [
   { value: 'apple', label: 'Apple', group: 'Fruits' },
   { value: 'banana', label: 'Banana', group: 'Fruits' },
   { value: 'orange', label: 'Orange', group: 'Fruits' },
@@ -343,18 +360,12 @@ const groupedOptions: AutocompleteOption[] = [
 ]
 
 // Wrapper component to handle state for stories
-const AutocompleteWithState = (props: any) => {
+const AutocompleteWithState = (props: React.ComponentProps<typeof Autocomplete>) => {
   const [value, setValue] = useState<AutocompleteOption | AutocompleteOption[] | null>(
     props.multiple ? [] : null
   )
-  
-  return (
-    <Autocomplete
-      {...props}
-      value={value}
-      onChange={setValue}
-    />
-  )
+
+  return <Autocomplete {...props} value={value} onChange={setValue} />
 }
 
 export const Default: Story = {
@@ -544,20 +555,25 @@ export const Loading: Story = {
   },
 }
 
+const DisabledComponent = () => {
+  const [value] = useState<AutocompleteOption>(basicOptions[0])
+  return (
+    <Autocomplete
+      options={basicOptions}
+      disabled
+      placeholder="Disabled autocomplete"
+      label="Disabled Field"
+      value={value}
+      onChange={() => {}}
+    />
+  )
+}
+
 export const Disabled: Story = {
-  render: () => {
-    const [value] = useState<AutocompleteOption>(basicOptions[0])
-    return (
-      <Autocomplete
-        options={basicOptions}
-        disabled
-        placeholder="Disabled autocomplete"
-        label="Disabled Field"
-        value={value}
-        onChange={() => {}}
-      />
-    )
+  args: {
+    options: basicOptions,
   },
+  render: () => <DisabledComponent />,
 }
 
 export const DisabledOptions: Story = {
@@ -575,33 +591,37 @@ export const DisabledOptions: Story = {
   },
 }
 
+const CreatableComponent = () => {
+  const [options, setOptions] = useState(basicOptions)
+  const [value, setValue] = useState<AutocompleteOption | null>(null)
+
+  return (
+    <Autocomplete
+      options={options}
+      value={value}
+      onChange={(value) => setValue(value as AutocompleteOption | null)}
+      creatable
+      searchable
+      onCreate={(inputValue) => {
+        const newOption = {
+          value: inputValue.toLowerCase().replace(/\s+/g, '-'),
+          label: inputValue,
+        }
+        setOptions([...options, newOption])
+        setValue(newOption)
+      }}
+      placeholder="Type to create new..."
+      label="Creatable Options"
+      helperText="Type and press enter to create new options"
+    />
+  )
+}
+
 export const Creatable: Story = {
-  args: { options: basicOptions },
-  render: () => {
-    const [options, setOptions] = useState(basicOptions)
-    const [value, setValue] = useState<AutocompleteOption | null>(null)
-    
-    return (
-      <Autocomplete
-        options={options}
-        value={value}
-        onChange={setValue}
-        creatable
-        searchable
-        onCreate={(inputValue) => {
-          const newOption = {
-            value: inputValue.toLowerCase().replace(/\s+/g, '-'),
-            label: inputValue,
-          }
-          setOptions([...options, newOption])
-          setValue(newOption)
-        }}
-        placeholder="Type to create new..."
-        label="Creatable Options"
-        helperText="Type and press enter to create new options"
-      />
-    )
+  args: {
+    options: basicOptions,
   },
+  render: () => <CreatableComponent />,
 }
 
 export const CustomRendering: Story = {
@@ -648,87 +668,82 @@ export const TopPlacement: Story = {
   ],
 }
 
+const ControlledComponent = () => {
+  const [value, setValue] = useState<AutocompleteOption | null>(null)
+
+  return (
+    <div className="space-y-4">
+      <div className="flex gap-2">
+        <button className="px-3 py-1 bg-gray-200 rounded" onClick={() => setValue(basicOptions[0])}>
+          Select React
+        </button>
+        <button className="px-3 py-1 bg-gray-200 rounded" onClick={() => setValue(basicOptions[1])}>
+          Select Vue
+        </button>
+        <button className="px-3 py-1 bg-gray-200 rounded" onClick={() => setValue(null)}>
+          Clear
+        </button>
+      </div>
+      <Autocomplete
+        options={basicOptions}
+        value={value}
+        onChange={(value) => setValue(value as AutocompleteOption | null)}
+        placeholder="Controlled autocomplete"
+        label="Controlled Value"
+      />
+      {value && (
+        <p className="text-sm text-gray-600">
+          Selected: {value.label} ({value.value})
+        </p>
+      )}
+    </div>
+  )
+}
+
 export const Controlled: Story = {
   args: { options: basicOptions },
-  render: () => {
-    const [value, setValue] = useState<AutocompleteOption | null>(null)
-    
-    return (
-      <div className="space-y-4">
-        <div className="flex gap-2">
-          <button
-            className="px-3 py-1 bg-gray-200 rounded"
-            onClick={() => setValue(basicOptions[0])}
-          >
-            Select React
-          </button>
-          <button
-            className="px-3 py-1 bg-gray-200 rounded"
-            onClick={() => setValue(basicOptions[1])}
-          >
-            Select Vue
-          </button>
-          <button
-            className="px-3 py-1 bg-gray-200 rounded"
-            onClick={() => setValue(null)}
-          >
-            Clear
-          </button>
-        </div>
-        <Autocomplete
-          options={basicOptions}
-          value={value}
-          onChange={(value) => setValue(value as AutocompleteOption | null)}
-          placeholder="Controlled autocomplete"
-          label="Controlled Value"
-        />
-        {value && (
-          <p className="text-sm text-gray-600">
-            Selected: {value.label} ({value.value})
-          </p>
-        )}
-      </div>
-    )
-  },
+  render: () => <ControlledComponent />,
+}
+
+const AsyncSearchComponent = () => {
+  const [options, setOptions] = useState<AutocompleteOption[]>([])
+  const [loading, setLoading] = useState(false)
+  const [value, setValue] = useState<AutocompleteOption | null>(null)
+
+  const handleInputChange = (value: string) => {
+    if (!value) {
+      setOptions([])
+      return
+    }
+
+    setLoading(true)
+    setTimeout(() => {
+      const filtered = basicOptions.filter((opt) =>
+        opt.label.toLowerCase().includes(value.toLowerCase())
+      )
+      setOptions(filtered)
+      setLoading(false)
+    }, 1000)
+  }
+
+  return (
+    <Autocomplete
+      options={options}
+      value={value}
+      onChange={(value) => setValue(value as AutocompleteOption | null)}
+      loading={loading}
+      searchable
+      onInputChange={handleInputChange}
+      placeholder="Type to search..."
+      label="Async Search"
+      helperText="Results are loaded asynchronously"
+    />
+  )
 }
 
 export const AsyncSearch: Story = {
   args: { options: [] },
-  render: () => {
-    const [options, setOptions] = useState<AutocompleteOption[]>([])
-    const [loading, setLoading] = useState(false)
-    const [value, setValue] = useState<AutocompleteOption | null>(null)
-    
-    const handleInputChange = (value: string) => {
-      if (!value) {
-        setOptions([])
-        return
-      }
-      
-      setLoading(true)
-      setTimeout(() => {
-        const filtered = basicOptions.filter(opt =>
-          opt.label.toLowerCase().includes(value.toLowerCase())
-        )
-        setOptions(filtered)
-        setLoading(false)
-      }, 1000)
-    }
-    
-    return (
-      <Autocomplete
-        options={options}
-        value={value}
-        onChange={setValue}
-        loading={loading}
-        searchable
-        onInputChange={handleInputChange}
-        placeholder="Type to search..."
-        label="Async Search"
-        helperText="Results are loaded asynchronously"
-      />
-    )
-  },
+  render: () => <AsyncSearchComponent />,
 }
 
 export const CustomIcons: Story = {
@@ -825,6 +840,9 @@ export const CustomStyled: Story = {
 }
 
 export const StyleVariations: Story = {
+  args: {
+    options: basicOptions,
+  },
   render: () => (
     <div className="space-y-8">
       <div>
@@ -868,7 +886,7 @@ export const StyleVariations: Story = {
           dropdownBorderWidth="0"
           dropdownBorderRadius="0"
           dropdownBoxShadow="0 1px 3px 0 rgba(0, 0, 0, 0.1)"
-          itemPadding='10px 12px'
+          itemPadding="10px 12px"
           itemHoverBackgroundColor="#f9fafb"
           itemSelectedBackgroundColor="#f3f4f6"
           itemSelectedTextColor="#111827"
@@ -922,7 +940,7 @@ export const StyleVariations: Story = {
           focusRingOffset="2px"
           dropdownBorderRadius="16px"
           dropdownBoxShadow="0 20px 25px -5px rgba(0, 0, 0, 0.1)"
-          itemPadding='8px 24px'
+          itemPadding="8px 24px"
           itemHoverBackgroundColor="#faf5ff"
           itemSelectedBackgroundColor="#ede9fe"
           itemSelectedTextColor="#7c3aed"
@@ -946,7 +964,7 @@ export const StyleVariations: Story = {
           dropdownBackgroundColor="#ffffff"
           dropdownBorderRadius="4px"
           dropdownBoxShadow="0 5px 5px -3px rgba(0,0,0,0.2), 0 8px 10px 1px rgba(0,0,0,0.14), 0 3px 14px 2px rgba(0,0,0,0.12)"
-          itemPadding='16px'
+          itemPadding="16px"
           itemHoverBackgroundColor="rgba(0, 0, 0, 0.04)"
           itemSelectedBackgroundColor="rgba(25, 118, 210, 0.08)"
           itemSelectedTextColor="#1976d2"
@@ -960,67 +978,76 @@ export const StyleVariations: Story = {
 }
 
 // Example showing how to use in a form
+const FormExampleComponent = () => {
+  const [formData, setFormData] = useState({
+    framework: null as AutocompleteOption | null,
+    country: null as AutocompleteOption | null,
+    skills: [] as AutocompleteOption[],
+  })
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+    console.log('Form submitted:', formData)
+    alert(`Form submitted!\n${JSON.stringify(formData, null, 2)}`)
+  }
+
+  return (
+    <form onSubmit={handleSubmit} className="space-y-6">
+      <Autocomplete
+        options={basicOptions}
+        value={formData.framework}
+        onChange={(value) =>
+          setFormData({ ...formData, framework: value as AutocompleteOption | null })
+        }
+        label="Preferred Framework"
+        placeholder="Select a framework"
+        required
+        helperText="Choose your primary framework"
+      />
+
+      <Autocomplete
+        options={countryOptions}
+        value={formData.country}
+        onChange={(value) =>
+          setFormData({ ...formData, country: value as AutocompleteOption | null })
+        }
+        label="Country"
+        placeholder="Select your country"
+        required
+      />
+
+      <Autocomplete
+        options={basicOptions}
+        value={formData.skills}
+        onChange={(value) => setFormData({ ...formData, skills: value as AutocompleteOption[] })}
+        multiple
+        label="Skills"
+        placeholder="Select your skills"
+        helperText="Select all that apply"
+      />
+
+      <div className="flex gap-4">
+        <button
+          type="submit"
+          className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+        >
+          Submit
+        </button>
+        <button
+          type="button"
+          onClick={() => setFormData({ framework: null, country: null, skills: [] })}
+          className="px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300"
+        >
+          Reset
+        </button>
+      </div>
+    </form>
+  )
+}
+
 export const FormExample: Story = {
-  render: () => {
-    const [formData, setFormData] = useState({
-      framework: null as AutocompleteOption | null,
-      country: null as AutocompleteOption | null,
-      skills: [] as AutocompleteOption[],
-    })
-
-    const handleSubmit = (e: React.FormEvent) => {
-      e.preventDefault()
-      console.log('Form submitted:', formData)
-      alert(`Form submitted!\n${JSON.stringify(formData, null, 2)}`)
-    }
-
-    return (
-      <form onSubmit={handleSubmit} className="space-y-6">
-        <Autocomplete
-          options={basicOptions}
-          value={formData.framework}
-          onChange={(value) => setFormData({ ...formData, framework: value as AutocompleteOption | null })}
-          label="Preferred Framework"
-          placeholder="Select a framework"
-          required
-          helperText="Choose your primary framework"
-        />
-
-        <Autocomplete
-          options={countryOptions}
-          value={formData.country}
-          onChange={(value) => setFormData({ ...formData, country: value as AutocompleteOption | null })}
-          label="Country"
-          placeholder="Select your country"
-          required
-        />
-
-        <Autocomplete
-          options={basicOptions}
-          value={formData.skills}
-          onChange={(value) => setFormData({ ...formData, skills: value as AutocompleteOption[] })}
-          multiple
-          label="Skills"
-          placeholder="Select your skills"
-          helperText="Select all that apply"
-        />
-
-        <div className="flex gap-4">
-          <button
-            type="submit"
-            className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
-          >
-            Submit
-          </button>
-          <button
-            type="button"
-            onClick={() => setFormData({ framework: null, country: null, skills: [] })}
-            className="px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300"
-          >
-            Reset
-          </button>
-        </div>
-      </form>
-    )
+  args: {
+    options: basicOptions,
   },
+  render: () => <FormExampleComponent />,
 }

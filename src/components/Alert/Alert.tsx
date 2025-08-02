@@ -1,4 +1,4 @@
-import React, { createContext, useContext, forwardRef, useMemo } from 'react'
+import React, { createContext, useContext, forwardRef, useMemo, useCallback } from 'react'
 import { cn } from '@/utils'
 
 // Context for sharing state between Alert components
@@ -34,33 +34,33 @@ export interface AlertCustomStyles {
   borderColor?: string
   borderStyle?: string
   borderRadius?: string
-  
+
   // Typography
   fontSize?: string
   fontWeight?: string
   fontFamily?: string
   textColor?: string
-  
+
   // Colors
   backgroundColor?: string
   background?: string
-  
+
   // Focus styles
   focusRingColor?: string
   focusRingWidth?: string
   focusRingOffset?: string
   focusBorderColor?: string
   focusBackgroundColor?: string
-  
+
   // Shadows
   boxShadow?: string
   focusBoxShadow?: string
-  
+
   // Spacing
   padding?: string
   paddingX?: string
   paddingY?: string
-  
+
   // Sub-component styles
   titleStyles?: React.CSSProperties
   descriptionStyles?: React.CSSProperties
@@ -68,48 +68,49 @@ export interface AlertCustomStyles {
   dismissButtonStyles?: React.CSSProperties
 }
 
-export interface AlertProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'onChange' | 'title'> {
+export interface AlertProps
+  extends Omit<React.HTMLAttributes<HTMLDivElement>, 'onChange' | 'title'> {
   // State props
   value?: boolean
   onChange?: (value: boolean) => void
   defaultOpen?: boolean
-  
+
   // Variant and styling
   variant?: AlertVariant
   size?: AlertSize
   status?: AlertStatus
-  
+
   // Functional props
   disabled?: boolean
   loading?: boolean
   dismissible?: boolean
   required?: boolean
-  
+
   // Content
   title?: React.ReactNode
   description?: React.ReactNode
   icon?: React.ReactNode
   children?: React.ReactNode
-  
+
   // Labels and accessibility
   label?: string
   helperText?: string
   'aria-label'?: string
   'aria-describedby'?: string
-  
+
   // Custom styles
   customStyles?: AlertCustomStyles
-  
+
   // Event handlers
   onDismiss?: () => void
   onFocus?: (event: React.FocusEvent<HTMLDivElement>) => void
   onBlur?: (event: React.FocusEvent<HTMLDivElement>) => void
   onKeyDown?: (event: React.KeyboardEvent<HTMLDivElement>) => void
-  
+
   // Animation
   transitionDuration?: number
   _transitionType?: 'fade' | 'slide' | 'scale' | 'none'
-  
+
   // Custom render functions
   renderTitle?: (props: AlertTitleProps) => React.ReactNode
   renderDescription?: (props: AlertDescriptionProps) => React.ReactNode
@@ -140,42 +141,45 @@ export interface AlertDismissButtonProps extends React.ButtonHTMLAttributes<HTML
 
 // Main Alert component
 const Alert = forwardRef<HTMLDivElement, AlertProps>(
-  ({
-    className,
-    variant = 'default',
-    size = 'md',
-    status = 'default',
-    disabled = false,
-    loading = false,
-    dismissible = false,
-    required = false,
-    title,
-    description,
-    icon,
-    children,
-    label,
-    helperText,
-    customStyles = {},
-    onDismiss,
-    onFocus,
-    onBlur,
-    onKeyDown,
-    transitionDuration = 200,
-    _transitionType = 'fade',
-    renderTitle,
-    renderDescription,
-    renderIcon,
-    renderDismissButton,
-    ...props
-  }, ref) => {
+  (
+    {
+      className,
+      variant = 'default',
+      size = 'md',
+      status = 'default',
+      disabled = false,
+      loading = false,
+      dismissible = false,
+      required = false,
+      title,
+      description,
+      icon,
+      children,
+      label,
+      helperText,
+      customStyles = {},
+      onDismiss,
+      onFocus,
+      onBlur,
+      onKeyDown,
+      transitionDuration = 200,
+      _transitionType = 'fade',
+      renderTitle,
+      renderDescription,
+      renderIcon,
+      renderDismissButton,
+      ...props
+    },
+    ref
+  ) => {
     // State management for controlled/uncontrolled
     const [isOpen, setIsOpen] = React.useState(true)
-    
-    const handleDismiss = () => {
+
+    const handleDismiss = useCallback(() => {
       if (disabled || loading) return
       setIsOpen(false)
       onDismiss?.()
-    }
+    }, [disabled, loading, onDismiss])
 
     const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
       if (event.key === 'Escape' && dismissible) {
@@ -185,16 +189,19 @@ const Alert = forwardRef<HTMLDivElement, AlertProps>(
     }
 
     // Context value
-    const contextValue = useMemo(() => ({
-      variant,
-      size,
-      status,
-      disabled,
-      loading,
-      dismissible,
-      onDismiss: handleDismiss,
-      customStyles,
-    }), [variant, size, status, disabled, loading, dismissible, customStyles])
+    const contextValue = useMemo(
+      () => ({
+        variant,
+        size,
+        status,
+        disabled,
+        loading,
+        dismissible,
+        onDismiss: handleDismiss,
+        customStyles,
+      }),
+      [variant, size, status, disabled, loading, dismissible, customStyles, handleDismiss]
+    )
 
     // Base styles with customization
     const baseStyles = cn(
@@ -209,29 +216,36 @@ const Alert = forwardRef<HTMLDivElement, AlertProps>(
       {
         // Default variant
         'bg-white border-gray-200 text-gray-900': variant === 'default' && status === 'default',
-        'bg-green-50 border-green-200 text-green-900': variant === 'default' && status === 'success',
-        'bg-yellow-50 border-yellow-200 text-yellow-900': variant === 'default' && status === 'warning',
+        'bg-green-50 border-green-200 text-green-900':
+          variant === 'default' && status === 'success',
+        'bg-yellow-50 border-yellow-200 text-yellow-900':
+          variant === 'default' && status === 'warning',
         'bg-red-50 border-red-200 text-red-900': variant === 'default' && status === 'error',
         'bg-blue-50 border-blue-200 text-blue-900': variant === 'default' && status === 'info',
-        
+
         // Filled variant
         'bg-gray-900 border-gray-900 text-white': variant === 'filled' && status === 'default',
         'bg-green-600 border-green-600 text-white': variant === 'filled' && status === 'success',
         'bg-yellow-600 border-yellow-600 text-white': variant === 'filled' && status === 'warning',
         'bg-red-600 border-red-600 text-white': variant === 'filled' && status === 'error',
         'bg-blue-600 border-blue-600 text-white': variant === 'filled' && status === 'info',
-        
+
         // Outlined variant
-        'bg-transparent border-gray-300 text-gray-900': variant === 'outlined' && status === 'default',
-        'bg-transparent border-green-500 text-green-700': variant === 'outlined' && status === 'success',
-        'bg-transparent border-yellow-500 text-yellow-700': variant === 'outlined' && status === 'warning',
+        'bg-transparent border-gray-300 text-gray-900':
+          variant === 'outlined' && status === 'default',
+        'bg-transparent border-green-500 text-green-700':
+          variant === 'outlined' && status === 'success',
+        'bg-transparent border-yellow-500 text-yellow-700':
+          variant === 'outlined' && status === 'warning',
         'bg-transparent border-red-500 text-red-700': variant === 'outlined' && status === 'error',
         'bg-transparent border-blue-500 text-blue-700': variant === 'outlined' && status === 'info',
-        
+
         // Ghost variant
         'bg-gray-100 border-transparent text-gray-900': variant === 'ghost' && status === 'default',
-        'bg-green-100 border-transparent text-green-900': variant === 'ghost' && status === 'success',
-        'bg-yellow-100 border-transparent text-yellow-900': variant === 'ghost' && status === 'warning',
+        'bg-green-100 border-transparent text-green-900':
+          variant === 'ghost' && status === 'success',
+        'bg-yellow-100 border-transparent text-yellow-900':
+          variant === 'ghost' && status === 'warning',
         'bg-red-100 border-transparent text-red-900': variant === 'ghost' && status === 'error',
         'bg-blue-100 border-transparent text-blue-900': variant === 'ghost' && status === 'info',
       },
@@ -287,38 +301,45 @@ const Alert = forwardRef<HTMLDivElement, AlertProps>(
           {...(props as React.HTMLAttributes<HTMLDivElement>)}
         >
           <div className="flex items-start gap-3">
-            {icon && (
-              renderIcon ? 
-                renderIcon({ children: icon, customStyles: customStyles.iconStyles }) :
+            {icon &&
+              (renderIcon ? (
+                renderIcon({ children: icon, customStyles: customStyles.iconStyles })
+              ) : (
                 <AlertIcon>{icon}</AlertIcon>
-            )}
-            
+              ))}
+
             <div className="flex-1 min-w-0">
-              {title && (
-                renderTitle ? 
-                  renderTitle({ children: title, customStyles: customStyles.titleStyles }) :
+              {title &&
+                (renderTitle ? (
+                  renderTitle({ children: title, customStyles: customStyles.titleStyles })
+                ) : (
                   <AlertTitle>{title}</AlertTitle>
-              )}
-              
-              {description && (
-                renderDescription ? 
-                  renderDescription({ children: description, customStyles: customStyles.descriptionStyles }) :
+                ))}
+
+              {description &&
+                (renderDescription ? (
+                  renderDescription({
+                    children: description,
+                    customStyles: customStyles.descriptionStyles,
+                  })
+                ) : (
                   <AlertDescription>{description}</AlertDescription>
-              )}
-              
+                ))}
+
               {children}
             </div>
-            
-            {dismissible && (
-              renderDismissButton ? 
-                renderDismissButton({ 
-                  onDismiss: handleDismiss, 
-                  customStyles: customStyles.dismissButtonStyles 
-                }) :
+
+            {dismissible &&
+              (renderDismissButton ? (
+                renderDismissButton({
+                  onDismiss: handleDismiss,
+                  customStyles: customStyles.dismissButtonStyles,
+                })
+              ) : (
                 <AlertDismissButton onDismiss={handleDismiss} />
-            )}
+              ))}
           </div>
-          
+
           {helperText && (
             <div id="alert-helper" className="mt-2 text-sm text-gray-600">
               {helperText}
@@ -336,7 +357,7 @@ Alert.displayName = 'Alert'
 const AlertTitle = forwardRef<HTMLHeadingElement, AlertTitleProps>(
   ({ className, children, customStyles, ...props }, ref) => {
     const { size } = useAlertContext()
-    
+
     const titleStyles = cn(
       'font-medium leading-none tracking-tight',
       {
@@ -348,12 +369,7 @@ const AlertTitle = forwardRef<HTMLHeadingElement, AlertTitleProps>(
     )
 
     return (
-      <h5
-        ref={ref}
-        className={titleStyles}
-        style={customStyles}
-        {...props}
-      >
+      <h5 ref={ref} className={titleStyles} style={customStyles} {...props}>
         {children}
       </h5>
     )
@@ -366,7 +382,7 @@ AlertTitle.displayName = 'AlertTitle'
 const AlertDescription = forwardRef<HTMLParagraphElement, AlertDescriptionProps>(
   ({ className, children, customStyles, ...props }, ref) => {
     const { size } = useAlertContext()
-    
+
     const descriptionStyles = cn(
       'leading-relaxed',
       {
@@ -378,12 +394,7 @@ const AlertDescription = forwardRef<HTMLParagraphElement, AlertDescriptionProps>
     )
 
     return (
-      <p
-        ref={ref}
-        className={descriptionStyles}
-        style={customStyles}
-        {...props}
-      >
+      <p ref={ref} className={descriptionStyles} style={customStyles} {...props}>
         {children}
       </p>
     )
@@ -396,7 +407,7 @@ AlertDescription.displayName = 'AlertDescription'
 const AlertIcon = forwardRef<HTMLDivElement, AlertIconProps>(
   ({ className, children, customStyles, ...props }, ref) => {
     const { size } = useAlertContext()
-    
+
     const iconStyles = cn(
       'flex-shrink-0',
       {
@@ -408,12 +419,7 @@ const AlertIcon = forwardRef<HTMLDivElement, AlertIconProps>(
     )
 
     return (
-      <div
-        ref={ref}
-        className={iconStyles}
-        style={customStyles}
-        {...props}
-      >
+      <div ref={ref} className={iconStyles} style={customStyles} {...props}>
         {children}
       </div>
     )
@@ -426,7 +432,7 @@ AlertIcon.displayName = 'AlertIcon'
 const AlertDismissButton = forwardRef<HTMLButtonElement, AlertDismissButtonProps>(
   ({ className, children, customStyles, onDismiss, ...props }, ref) => {
     const { size, disabled, loading } = useAlertContext()
-    
+
     const buttonStyles = cn(
       'flex-shrink-0 rounded-md p-1 transition-colors hover:bg-black/10 focus:outline-none focus:ring-2 focus:ring-offset-2',
       {
@@ -450,12 +456,7 @@ const AlertDismissButton = forwardRef<HTMLButtonElement, AlertDismissButtonProps
         {...props}
       >
         {children || (
-          <svg
-            className="w-full h-full"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
+          <svg className="w-full h-full" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path
               strokeLinecap="round"
               strokeLinejoin="round"
