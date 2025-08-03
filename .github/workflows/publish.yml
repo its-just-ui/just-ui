@@ -16,7 +16,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.GH_PAT }}
           fetch-depth: 0
 
       - name: Setup Node.js
@@ -48,7 +48,7 @@ jobs:
             if [ ! -z "$PR_NUMBER" ]; then
               # Check PR labels using GitHub API
               LABELS=$(curl -s \
-                -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+                -H "Authorization: token ${{ secrets.GH_PAT }}" \
                 -H "Accept: application/vnd.github.v3+json" \
                 "https://api.github.com/repos/${{ github.repository }}/pulls/${PR_NUMBER}" \
                 | jq -r '.labels[].name' | tr '\n' ' ')
