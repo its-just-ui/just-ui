@@ -1,7 +1,7 @@
 name: PR Labels
 
 on:
-  pull_request:
+  pull_request_target:
     types: [opened, edited, synchronize]
 
 permissions:
@@ -16,6 +16,7 @@ jobs:
       - name: Label PR based on title
         uses: actions/github-script@v7
         with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const title = context.payload.pull_request.title.toLowerCase();
             const labels = [];
@@ -38,10 +39,51 @@ jobs:
             if (title.startsWith('chore')) labels.push('maintenance');
             
             if (labels.length > 0) {
-              await github.rest.issues.addLabels({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                issue_number: context.payload.pull_request.number,
-                labels: labels
-              });
+              try {
+                // First, get all existing labels in the repo
+                const { data: repoLabels } = await github.rest.issues.listLabelsForRepo({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  per_page: 100
+                });
+                
+                const existingLabelNames = repoLabels.map(label => label.name);
+                
+                // Create any missing labels
+                for (const label of labels) {
+                  if (!existingLabelNames.includes(label)) {
+                    console.log(`Creating label: ${label}`);
+                    const colors = {
+                      'major': 'e11d48',
+                      'minor': 'fbca04',
+                      'patch': '0e8a16',
+                      'enhancement': '84b6eb',
+                      'bug': 'd73a4a',
+                      'documentation': '0075ca',
+                      'maintenance': 'd876e3'
+                    };
+                    
+                    await github.rest.issues.createLabel({
+                      owner: context.repo.owner,
+                      repo: context.repo.repo,
+                      name: label,
+                      color: colors[label] || 'ededed',
+                      description: `Auto-generated label for ${label}`
+                    });
+                  }
+                }
+                
+                // Now add the labels to the PR
+                await github.rest.issues.addLabels({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: context.payload.pull_request.number,
+                  labels: labels
+                });
+                
+                console.log(`Added labels: ${labels.join(', ')}`);
+              } catch (error) {
+                console.error('Error managing labels:', error);
+                // Don't fail the workflow if labeling fails
+              }
             }

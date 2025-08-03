@@ -25,4 +25,6 @@ dist-ssr
 
 # Storybook
 storybook-static
-node_modules
+
+# Strategy documents
+docs/NPM_PROMOTION_STRATEGY.md
