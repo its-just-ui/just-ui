@@ -15,7 +15,8 @@ import type {
   RenderIndicatorFunction,
 } from './types'
 
-export interface AnchorProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'onChange'> {
+export interface AnchorProps
+  extends Omit<React.HTMLAttributes<HTMLDivElement>, 'onChange' | 'onClick'> {
   children?: React.ReactNode
 
   // Controlled/uncontrolled behavior
@@ -67,7 +68,7 @@ export interface AnchorProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 
   dotColor?: string
   focusRingColor?: string
   _focusRingWidth?: string
-  _focusOutline?: string
+  focusOutline?: string
   boxShadow?: string
   gap?: string
   padding?: string
@@ -78,7 +79,7 @@ export interface AnchorProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 
   // Underline customization
   underlineWidth?: string
   underlineHeight?: string
-  _underlineOffset?: string
+  underlineOffset?: string
 
   // Accessibility
   'aria-label'?: string
@@ -170,7 +171,6 @@ const Anchor = React.forwardRef<HTMLDivElement, AnchorProps>(
 
     // Determine if controlled or uncontrolled
     const isControlled = activeId !== undefined
-    const _currentActiveId = isControlled ? activeId : internalActiveId
 
     // Scroll spy hook
     const scrollSpyActiveId = useScrollSpy(targetIds, {
@@ -287,8 +287,8 @@ const Anchor = React.forwardRef<HTMLDivElement, AnchorProps>(
         lineColor,
         dotColor,
         focusRingColor,
-        focusRingWidth,
-        focusOutline,
+        _focusRingWidth,
+        _focusOutline: focusOutline,
         boxShadow,
         gap,
         padding,
@@ -299,7 +299,7 @@ const Anchor = React.forwardRef<HTMLDivElement, AnchorProps>(
         // Underline customization
         underlineWidth,
         underlineHeight,
-        underlineOffset,
+        _underlineOffset: underlineOffset,
       }),
       [
         finalActiveId,
@@ -337,7 +337,7 @@ const Anchor = React.forwardRef<HTMLDivElement, AnchorProps>(
         lineColor,
         dotColor,
         focusRingColor,
-        focusRingWidth,
+        _focusRingWidth,
         focusOutline,
         boxShadow,
         gap,
@@ -492,11 +492,11 @@ const AnchorLink = React.forwardRef<HTMLAnchorElement, AnchorLinkProps>(
       activeColor,
       visitedColor,
       focusRingColor,
-      _focusRingWidth,
-      _focusOutline,
+      // _focusRingWidth,
+      // _focusOutline,
       underlineWidth,
       underlineHeight,
-      _underlineOffset,
+      // _underlineOffset,
       onClick: contextOnClick,
     } = useAnchor()
 
@@ -646,7 +646,7 @@ const AnchorLink = React.forwardRef<HTMLAnchorElement, AnchorLinkProps>(
     )
 
     if (focusRingColor) {
-      customStyles['--tw-ring-color'] = focusRingColor
+      Object.assign(customStyles, { '--tw-ring-color': focusRingColor } as React.CSSProperties)
     }
 
     return (

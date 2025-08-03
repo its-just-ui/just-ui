@@ -83,8 +83,8 @@ export interface AnchorContextValue {
   lineColor?: string
   dotColor?: string
   focusRingColor?: string
-  focusRingWidth?: string
-  focusOutline?: string
+  _focusRingWidth?: string
+  _focusOutline?: string
   boxShadow?: string
   gap?: string
   padding?: string
@@ -95,7 +95,7 @@ export interface AnchorContextValue {
   // Underline customization
   underlineWidth?: string
   underlineHeight?: string
-  underlineOffset?: string
+  _underlineOffset?: string
 }
 
 export interface RenderLinkFunction {
