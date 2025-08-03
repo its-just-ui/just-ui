@@ -1,7 +1,7 @@
 {
-  "name": "ui-library-template",
-  "version": "0.1.0",
-  "description": "A modern UI component library built with React, TypeScript, and Tailwind CSS",
+  "name": "its-just-ui",
+  "version": "0.1.1",
+  "description": "A modern, accessible, and customizable React UI component library built with TypeScript and Tailwind CSS. Create beautiful, consistent user interfaces with ease.",
   "type": "module",
   "main": "./dist/index.js",
   "module": "./dist/index.js",
@@ -81,18 +81,24 @@
     "components",
     "tailwind",
     "typescript",
-    "design-system"
+    "design-system",
+    "accessibility",
+    "customizable",
+    "responsive",
+    "dark-mode",
+    "tree-shakeable",
+    "storybook"
   ],
-  "author": "",
+  "author": "xanxit",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/yourusername/ui-library-template"
+    "url": "git+https://github.com/xanxit/just-ui.git"
   },
   "bugs": {
-    "url": "https://github.com/yourusername/ui-library-template/issues"
+    "url": "https://github.com/xanxit/just-ui/issues"
   },
-  "homepage": "https://github.com/yourusername/ui-library-template#readme",
+  "homepage": "https://github.com/xanxit/just-ui#readme",
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [
       "eslint",

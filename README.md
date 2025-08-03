@@ -1,14 +1,14 @@
-# just-ui
+# its-just-ui
 
 A modern, accessible, and customizable React UI component library built with TypeScript and Tailwind CSS. Create beautiful, consistent user interfaces with ease.
 
-[![npm version](https://img.shields.io/npm/v/just-ui.svg?style=flat)](https://www.npmjs.com/package/just-ui)
+[![npm version](https://img.shields.io/npm/v/its-just-ui.svg?style=flat)](https://www.npmjs.com/package/its-just-ui)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![TypeScript](https://img.shields.io/badge/TypeScript-Ready-blue.svg)](https://www.typescriptlang.org/)
 
 ## Features
 
-- 🎨 **24+ Production-Ready Components** - Comprehensive set of UI components
+- 🎨 **26+ Production-Ready Components** - Comprehensive set of UI components
 - 🔧 **Full TypeScript Support** - Complete type safety and IntelliSense
 - 📱 **Responsive Design** - Mobile-first approach with adaptive layouts
 - ♿ **Accessibility First** - WAI-ARIA compliant with keyboard navigation
@@ -21,19 +21,19 @@ A modern, accessible, and customizable React UI component library built with Typ
 ## Installation
 
 ```bash
-npm install just-ui
+npm install its-just-ui
 ```
 
 or
 
 ```bash
-yarn add just-ui
+yarn add its-just-ui
 ```
 
 or
 
 ```bash
-pnpm add just-ui
+pnpm add its-just-ui
 ```
 
 ## Quick Start
@@ -42,18 +42,18 @@ pnpm add just-ui
 
 ```tsx
 // main.tsx or App.tsx
-import 'just-ui/dist/styles.css'
+import 'its-just-ui/dist/styles.css'
 ```
 
 2. Start using components:
 
 ```tsx
-import { Button, Card, Input, Checkbox } from 'just-ui'
+import { Button, Card, Input, Checkbox } from 'its-just-ui'
 
 function App() {
   return (
     <Card>
-      <h2>Welcome to just-ui</h2>
+      <h2>Welcome to its-just-ui</h2>
       <Input placeholder="Enter your name" />
       <Checkbox label="I agree to the terms" />
       <Button variant="primary">Get Started</Button>
@@ -64,12 +64,29 @@ function App() {
 
 ## Components
 
+**26+ Production-Ready Components** with full TypeScript support, accessibility features, and extensive customization options.
+
+### Component Categories:
+
+**🎯 Core Components:** Button, Card, Input, Progress, Checkbox, Slider  
+**📊 Data Display:** Table, List, Badge, Chip, Avatar  
+**🧭 Navigation:** Breadcrumb, Pagination, ToggleButtons  
+**📝 Form Components:** Select, RadioGroup, Switch, Rating, Autocomplete  
+**💬 Feedback:** Alert, Skeleton, Tooltip, Dialog, Drawer  
+**📋 Layout:** Accordion, Stepper
+
+### 🆕 Latest Additions
+
+**Progress Component:** Advanced progress tracking with circular variants, multi-segment support, thresholds, and compound architecture.  
+**Slider Component:** Flexible range inputs with marks, labels, and extensive customization options.  
+**Enhanced Checkbox:** Tri-state support, groups, and comprehensive styling options.
+
 ### Accordion
 
 A collapsible content component for organizing information with support for single/multiple open items.
 
 ```tsx
-import { Accordion } from 'just-ui'
+import { Accordion } from 'its-just-ui'
 ;<Accordion type="single" collapsible>
   <Accordion.Item value="item-1">
     <Accordion.Trigger>Is it accessible?</Accordion.Trigger>
@@ -91,7 +108,7 @@ import { Accordion } from 'just-ui'
 Display important messages and notifications with multiple variants and dismissible options.
 
 ```tsx
-import { Alert } from 'just-ui'
+import { Alert } from 'its-just-ui'
 ;<Alert variant="success" dismissible>
   <Alert.Title>Success!</Alert.Title>
   <Alert.Description>Your changes have been saved successfully.</Alert.Description>
@@ -105,7 +122,7 @@ import { Alert } from 'just-ui'
 A powerful text input with search suggestions, async loading, and multi-select support.
 
 ```tsx
-import { Autocomplete } from 'just-ui'
+import { Autocomplete } from 'its-just-ui'
 
 const options = [
   { label: 'Apple', value: 'apple' },
@@ -128,7 +145,7 @@ const options = [
 Display user profile pictures with fallbacks and status indicators.
 
 ```tsx
-import { Avatar } from 'just-ui'
+import { Avatar } from 'its-just-ui'
 ;<Avatar src="/user.jpg" alt="John Doe" size="lg" status="online" fallback="JD" />
 ```
 
@@ -140,7 +157,7 @@ import { Avatar } from 'just-ui'
 Small status indicators and labels with extensive customization options.
 
 ```tsx
-import { Badge } from 'just-ui'
+import { Badge } from 'its-just-ui'
 
 <Badge variant="success" size="md">Active</Badge>
 <Badge variant="warning" size="sm" closable>Pending</Badge>
@@ -155,7 +172,7 @@ import { Badge } from 'just-ui'
 Navigation hierarchy indicator with customizable separators.
 
 ```tsx
-import { Breadcrumb } from 'just-ui'
+import { Breadcrumb } from 'its-just-ui'
 ;<Breadcrumb>
   <Breadcrumb.Item>
     <Breadcrumb.Link href="/">Home</Breadcrumb.Link>
@@ -178,7 +195,7 @@ import { Breadcrumb } from 'just-ui'
 Interactive button component with multiple variants and states.
 
 ```tsx
-import { Button } from 'just-ui'
+import { Button } from 'its-just-ui'
 
 <Button variant="primary" size="md">Primary Button</Button>
 <Button variant="secondary" size="sm" icon={<Icon />}>With Icon</Button>
@@ -195,7 +212,7 @@ import { Button } from 'just-ui'
 Flexible container component for grouping content with various layouts.
 
 ```tsx
-import { Card } from 'just-ui'
+import { Card } from 'its-just-ui'
 ;<Card variant="elevated" selectable>
   <Card.Header>
     <Card.Title>Card Title</Card.Title>
@@ -212,12 +229,12 @@ import { Card } from 'just-ui'
 
 **Features:** Selection states, expandable content, badges, custom styling
 
-### Checkbox ⭐ _New_
+### Checkbox
 
 A comprehensive checkbox component with tri-state support, groups, and extensive customization.
 
 ```tsx
-import { Checkbox } from 'just-ui'
+import { Checkbox } from 'its-just-ui'
 
 // Basic checkbox
 <Checkbox label="Accept terms and conditions" />
@@ -278,7 +295,7 @@ const [checked, setChecked] = useState(false)
 Compact elements for displaying tags, filters, or selections.
 
 ```tsx
-import { Chip } from 'just-ui'
+import { Chip } from 'its-just-ui'
 
 <Chip variant="default">Default Chip</Chip>
 <Chip variant="primary" closable onClose={() => console.log('closed')}>
@@ -296,7 +313,7 @@ import { Chip } from 'just-ui'
 Modal dialog component for important interactions and confirmations.
 
 ```tsx
-import { Dialog } from 'just-ui'
+import { Dialog } from 'its-just-ui'
 ;<Dialog>
   <Dialog.Trigger asChild>
     <Button>Open Dialog</Button>
@@ -321,7 +338,7 @@ import { Dialog } from 'just-ui'
 Side panel overlay for navigation, filters, or additional content.
 
 ```tsx
-import { Drawer } from 'just-ui'
+import { Drawer } from 'its-just-ui'
 ;<Drawer>
   <Drawer.Trigger asChild>
     <Button>Open Drawer</Button>
@@ -343,7 +360,7 @@ import { Drawer } from 'just-ui'
 Versatile text input field with labels, validation, and various states.
 
 ```tsx
-import { Input } from 'just-ui'
+import { Input } from 'its-just-ui'
 
 <Input placeholder="Enter your email" type="email" />
 <Input
@@ -366,7 +383,7 @@ import { Input } from 'just-ui'
 Display items in a structured, selectable list format.
 
 ```tsx
-import { List } from 'just-ui'
+import { List } from 'its-just-ui'
 ;<List selectable>
   <List.Item>
     <List.ItemIcon>
@@ -390,7 +407,7 @@ import { List } from 'just-ui'
 Navigation for paginated content with various display options.
 
 ```tsx
-import { Pagination } from 'just-ui'
+import { Pagination } from 'its-just-ui'
 ;<Pagination
   currentPage={currentPage}
   totalPages={totalPages}
@@ -408,7 +425,7 @@ import { Pagination } from 'just-ui'
 Group of radio buttons for single selection with flexible layouts.
 
 ```tsx
-import { RadioGroup } from 'just-ui'
+import { RadioGroup } from 'its-just-ui'
 ;<RadioGroup defaultValue="option1" orientation="vertical">
   <RadioGroup.Item value="option1" label="Option 1" />
   <RadioGroup.Item value="option2" label="Option 2" />
@@ -423,7 +440,7 @@ import { RadioGroup } from 'just-ui'
 Star rating component for user feedback and reviews.
 
 ```tsx
-import { Rating } from 'just-ui'
+import { Rating } from 'its-just-ui'
 ;<Rating value={rating} onChange={setRating} precision={0.5} size="lg" readOnly={false} />
 ```
 
@@ -434,7 +451,7 @@ import { Rating } from 'just-ui'
 Advanced dropdown selection with search, multi-select, and grouping.
 
 ```tsx
-import { Select } from 'just-ui'
+import { Select } from 'its-just-ui'
 
 const options = [
   { value: 'react', label: 'React' },
@@ -466,7 +483,7 @@ const options = [
 Loading placeholders that match your content structure.
 
 ```tsx
-import { Skeleton } from 'just-ui'
+import { Skeleton } from 'its-just-ui'
 ;<div className="space-y-4">
   <Skeleton variant="rectangular" width="100%" height="200px" />
   <Skeleton variant="text" lines={3} />
@@ -481,7 +498,7 @@ import { Skeleton } from 'just-ui'
 Step-by-step progress indicator for workflows and forms.
 
 ```tsx
-import { Stepper } from 'just-ui'
+import { Stepper } from 'its-just-ui'
 
 const steps = [
   { label: 'Account Details', description: 'Enter your information' },
@@ -504,7 +521,7 @@ const steps = [
 Toggle switch for on/off states with smooth animations.
 
 ```tsx
-import { Switch } from 'just-ui'
+import { Switch } from 'its-just-ui'
 ;<Switch
   checked={isEnabled}
   onCheckedChange={setIsEnabled}
@@ -521,7 +538,7 @@ import { Switch } from 'just-ui'
 Comprehensive data table with sorting, filtering, pagination, and more.
 
 ```tsx
-import { Table } from 'just-ui'
+import { Table } from 'its-just-ui'
 
 const columns = [
   { id: 'name', header: 'Name', accessorKey: 'name', sortable: true },
@@ -563,7 +580,7 @@ const columns = [
 Group of toggle buttons for multi-selection scenarios.
 
 ```tsx
-import { ToggleButtons } from 'just-ui'
+import { ToggleButtons } from 'its-just-ui'
 ;<ToggleButtons>
   <ToggleButtons.Item value="bold" aria-label="Bold">
     <BoldIcon />
@@ -690,12 +707,115 @@ const options = [
 **Sizes:** `sm`, `md`, `lg`  
 **Status:** `default`, `success`, `warning`, `error`
 
+### Progress ⭐ _New_
+
+A versatile progress component for displaying task completion, loading states, and multi-step workflows.
+
+```tsx
+import { Progress } from 'its-just-ui'
+
+// Basic progress
+<Progress value={65} />
+
+// Indeterminate loading
+<Progress isIndeterminate />
+
+// Circular progress
+<Progress value={75} variant="circular" size="lg" />
+
+// Multi-segment progress
+<Progress
+  segments={[
+    { id: 'task1', value: 30, color: '#10b981', label: 'Task 1' },
+    { id: 'task2', value: 25, color: '#3b82f6', label: 'Task 2' },
+    { id: 'task3', value: 20, color: '#f59e0b', label: 'Task 3' }
+  ]}
+/>
+
+// With thresholds
+<Progress
+  value={85}
+  thresholds={[
+    { value: 25, color: '#10b981', label: 'Good start' },
+    { value: 50, color: '#3b82f6', label: 'Halfway there' },
+    { value: 75, color: '#f59e0b', label: 'Almost done' },
+    { value: 90, color: '#ef4444', label: 'Critical level' }
+  ]}
+/>
+
+// Compound components
+<Progress value={75}>
+  <Progress.Track />
+  <Progress.Bar />
+  <Progress.Label>Upload Progress</Progress.Label>
+  <Progress.ValueDescription>75% Complete</Progress.ValueDescription>
+</Progress>
+```
+
+**Variants:** `linear`, `circular`, `dashed`, `striped`, `segmented`, `pill`, `bordered`, `minimal`, `bar-with-label`, `overlay-style`, `inverse`  
+**Features:** Determinate/indeterminate, buffer support, multi-segment, thresholds, compound architecture, simulation mode, extensive styling
+
+### Slider ⭐ _New_
+
+A flexible range input component with single/multiple handles and extensive customization.
+
+```tsx
+import { Slider } from 'its-just-ui'
+
+// Basic slider
+<Slider
+  value={[50]}
+  onValueChange={([value]) => console.log(value)}
+  min={0}
+  max={100}
+  step={1}
+/>
+
+// Range slider
+<Slider
+  value={[25, 75]}
+  onValueChange={([min, max]) => console.log(min, max)}
+  min={0}
+  max={100}
+  step={5}
+/>
+
+// With marks and labels
+<Slider
+  value={[50]}
+  min={0}
+  max={100}
+  step={25}
+  marks={[
+    { value: 0, label: '0%' },
+    { value: 25, label: '25%' },
+    { value: 50, label: '50%' },
+    { value: 75, label: '75%' },
+    { value: 100, label: '100%' }
+  ]}
+/>
+
+// Custom styling
+<Slider
+  value={[30]}
+  min={0}
+  max={100}
+  trackColor="#e5e7eb"
+  thumbColor="#3b82f6"
+  activeTrackColor="#dbeafe"
+  height="8px"
+  thumbSize="20px"
+/>
+```
+
+**Features:** Single/range values, marks, labels, custom styling, keyboard navigation, touch support, vertical orientation
+
 ### Tooltip
 
 Contextual information on hover or focus with smart positioning.
 
 ```tsx
-import { Tooltip } from 'just-ui'
+import { Tooltip } from 'its-just-ui'
 
 <Tooltip content="This is a helpful tooltip" placement="top">
   <Button>Hover me</Button>
@@ -812,7 +932,7 @@ Most components accept style props for fine-grained control:
 Full TypeScript support with comprehensive type definitions:
 
 ```tsx
-import type { ButtonProps, CheckboxProps, TableColumn, SelectOption } from 'just-ui'
+import type { ButtonProps, CheckboxProps, TableColumn, SelectOption } from 'its-just-ui'
 
 // Custom button component
 const MyButton: React.FC<ButtonProps> = (props) => {
@@ -864,11 +984,13 @@ Tree-shakeable design means you only bundle what you use:
 
 ```tsx
 // Import only what you need
-import { Button, Checkbox } from 'just-ui'
+import { Button, Checkbox, Progress, Slider } from 'its-just-ui'
 
 // Or import from specific modules
-import { Button } from 'just-ui/Button'
-import { Checkbox } from 'just-ui/Checkbox'
+import { Button } from 'its-just-ui/Button'
+import { Checkbox } from 'its-just-ui/Checkbox'
+import { Progress } from 'its-just-ui/Progress'
+import { Slider } from 'its-just-ui/Slider'
 ```
 
 ## Contributing
@@ -879,7 +1001,7 @@ We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) f
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/just-ui.git
+git clone https://github.com/xanxit/just-ui.git
 cd just-ui
 
 # Install dependencies
@@ -900,7 +1022,7 @@ npm run format
 
 ## License
 
-MIT © just-ui
+MIT © its-just-ui
 
 ## Acknowledgments
 
