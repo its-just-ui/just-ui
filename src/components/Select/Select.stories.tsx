@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import type { Meta, StoryObj } from '@storybook/react'
-import { SelectCompound as Select, type SelectOption } from './Select'
+import { SelectCompound as Select } from './Select'
+import type { SelectOption } from './types'
 
 /**
  * Select is a dropdown component that allows users to choose from a list of options.
