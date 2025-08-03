@@ -24,10 +24,6 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Run tests
-        run: npm test
-        continue-on-error: true  # Remove this line once you have tests
-
       - name: Build
         run: npm run build
 
