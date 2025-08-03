@@ -99,7 +99,7 @@ npm run lint:fix && npm run format
 3. **Clean Git History** - Conventional commits make history readable
 4. **Automated** - No need to remember to run checks
 5. **Fast** - Only checks changed files
-6. **Team Collaboration** - Everyone follows the same standards
+6. **Team Collaboration** - Everyone follows the same standards.
 
 ## Example Workflow
 
