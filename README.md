@@ -1,8 +1,8 @@
-# its-just-ui
+# its-just-ui - Modern React Component Library
 
-A modern, accessible, and customizable React UI component library built with TypeScript and Tailwind CSS. Create beautiful, consistent user interfaces with ease.
+A comprehensive, accessible, and customizable React UI component library built with TypeScript and Tailwind CSS. Create beautiful, consistent user interfaces with 28+ production-ready components.
 
-🚀 **Build faster** with 27+ production-ready React components  
+🚀 **Build faster** with production-ready React components  
 ⚡ **Lightweight** and tree-shakeable with zero runtime dependencies  
 🎨 **Fully customizable** with Tailwind CSS and CSS variables  
 ♿ **Accessible by default** following WAI-ARIA best practices  
@@ -12,217 +12,395 @@ A modern, accessible, and customizable React UI component library built with Typ
 [![npm version](https://img.shields.io/npm/v/its-just-ui.svg?style=flat)](https://www.npmjs.com/package/its-just-ui)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![TypeScript](https://img.shields.io/badge/TypeScript-Ready-blue.svg)](https://www.typescriptlang.org/)
+[![Bundle Size](https://img.shields.io/bundlephobia/minzip/its-just-ui)](https://bundlephobia.com/package/its-just-ui)
+[![npm downloads](https://img.shields.io/npm/dm/its-just-ui.svg?style=flat)](https://www.npmjs.com/package/its-just-ui)
+
+## Table of Contents
+
+- [Features](#features)
+- [Quick Start](#quick-start)
+- [Installation](#installation)
+- [Component Library](#component-library)
+  - [Core Components](#core-components)
+  - [Navigation Components](#navigation-components)
+  - [Form Components](#form-components)
+  - [Data Display Components](#data-display-components)
+  - [Feedback Components](#feedback-components)
+  - [Layout Components](#layout-components)
+- [Theming & Customization](#theming--customization)
+- [TypeScript Support](#typescript-support)
+- [Accessibility](#accessibility)
+- [Browser Support](#browser-support)
+- [Contributing](#contributing)
+- [License](#license)
 
 ## Features
 
-- 🎨 **27+ Production-Ready Components** - Comprehensive set of UI components
-- 🔧 **Full TypeScript Support** - Complete type safety and IntelliSense
-- 📱 **Responsive Design** - Mobile-first approach with adaptive layouts
-- ♿ **Accessibility First** - WAI-ARIA compliant with keyboard navigation
-- 🎯 **Tree-shakeable** - Import only what you need for optimal bundle size
-- 🌗 **Dark Mode Ready** - Built-in theming with CSS variables
-- ⚡ **Zero Dependencies** - Lightweight with minimal external dependencies
-- 🎛️ **Highly Customizable** - Extensive styling props and theme support
-- 📚 **Storybook Documentation** - Interactive component explorer
+### Why Choose its-just-ui?
 
-## Installation
-
-```bash
-npm install its-just-ui
-```
-
-or
-
-```bash
-yarn add its-just-ui
-```
-
-or
-
-```bash
-pnpm add its-just-ui
-```
+- 🎨 **28 Production-Ready Components** - Comprehensive UI component library for React applications
+- 🔧 **Full TypeScript Support** - Built with TypeScript for complete type safety and excellent developer experience
+- 📱 **Responsive Design** - Mobile-first approach with adaptive layouts that work on all devices
+- ♿ **Accessibility First** - WAI-ARIA compliant components with full keyboard navigation support
+- 🎯 **Tree-shakeable** - Import only what you need for optimal bundle size and performance
+- 🌗 **Dark Mode Ready** - Built-in theming system with CSS variables for easy customization
+- ⚡ **Zero Dependencies** - Lightweight library with no external runtime dependencies
+- 🎛️ **Highly Customizable** - Extensive styling props and theme support for complete control
+- 📚 **Storybook Documentation** - Interactive component explorer with live examples
+- 🔄 **Form Integration Ready** - Works seamlessly with popular form libraries
+- 🎭 **Animation Support** - Smooth transitions and animations built-in
+- 🧩 **Compound Components** - Flexible component architecture for complex use cases
 
 ## Quick Start
 
-1. Import the CSS in your app's entry point:
+Get up and running with its-just-ui in minutes:
+
+### Installation
+
+```bash
+# Using npm
+npm install its-just-ui
+
+# Using yarn
+yarn add its-just-ui
+
+# Using pnpm
+pnpm add its-just-ui
+```
+
+### Basic Setup
+
+1. **Import the required CSS** in your app's entry point:
 
 ```tsx
 // main.tsx or App.tsx
 import 'its-just-ui/dist/styles.css'
 ```
 
-**Note:** The CSS import is **required** for proper styling. Without importing the CSS file, the components will not be styled correctly.
+> **Important:** The CSS import is required for proper styling. Without it, components will not be styled correctly.
 
-2. Start using components:
+2. **Start using components** in your React application:
 
 ```tsx
-import { Button, Card, Input, Checkbox } from 'its-just-ui'
+import { Button, Card, Input, Checkbox, Progress } from 'its-just-ui'
 
 function App() {
   return (
-    <Card>
-      <h2>Welcome to its-just-ui</h2>
-      <Input placeholder="Enter your name" />
-      <Checkbox label="I agree to the terms" />
-      <Button variant="primary">Get Started</Button>
+    <Card className="p-6 max-w-md mx-auto">
+      <h2 className="text-2xl font-bold mb-4">Welcome to its-just-ui</h2>
+      <Input placeholder="Enter your name" label="Name" className="mb-4" />
+      <Checkbox label="I agree to the terms and conditions" className="mb-4" />
+      <Progress value={75} className="mb-4" />
+      <Button variant="primary" className="w-full">
+        Get Started
+      </Button>
     </Card>
   )
 }
 ```
 
-## Components
+## Component Library
 
-**28+ Production-Ready Components** with full TypeScript support, accessibility features, and extensive customization options.
+Our comprehensive component library is organized into logical categories for easy discovery and use.
 
-### Component Categories:
+### Component Statistics
 
-**🎯 Core Components:** Button, Card, Input, Progress, Checkbox, Slider  
-**📊 Data Display:** Table, List, Badge, Chip, Avatar  
-**🧭 Navigation:** Anchor, Breadcrumb, Pagination, ToggleButtons  
-**📝 Form Components:** Select, RadioGroup, Switch, Rating, Autocomplete  
-**💬 Feedback:** Alert, Skeleton, Tooltip, Dialog, Drawer  
-**📋 Layout:** Accordion, Stepper, Splitter
+- **Total Components:** 28
+- **Core Components:** 6
+- **Navigation Components:** 4
+- **Form Components:** 7
+- **Data Display Components:** 5
+- **Feedback Components:** 3
+- **Layout Components:** 3
 
-### 🆕 Latest Additions
+### Core Components
 
-**Progress Component:** Advanced progress tracking with circular variants, multi-segment support, thresholds, and compound architecture.  
-**Slider Component:** Flexible range inputs with marks, labels, and extensive customization options.  
-**Enhanced Checkbox:** Tri-state support, groups, and comprehensive styling options.  
-**Splitter Component:** Flexible resizable layouts with drag handles, keyboard navigation, and persistence support.
+Essential building blocks for any React application.
 
-### Accordion
+#### Button
 
-A collapsible content component for organizing information with support for single/multiple open items.
+Interactive button component with multiple variants, sizes, and states.
 
 ```tsx
-import { Accordion } from 'its-just-ui'
-;<Accordion type="single" collapsible>
-  <Accordion.Item value="item-1">
-    <Accordion.Trigger>Is it accessible?</Accordion.Trigger>
-    <Accordion.Content>Yes. It adheres to the WAI-ARIA design pattern.</Accordion.Content>
-  </Accordion.Item>
-  <Accordion.Item value="item-2">
-    <Accordion.Trigger>Is it styled?</Accordion.Trigger>
-    <Accordion.Content>
-      Yes. It's styled with Tailwind CSS and fully customizable.
-    </Accordion.Content>
-  </Accordion.Item>
-</Accordion>
+import { Button } from 'its-just-ui'
+
+// Variants
+<Button variant="primary">Primary Button</Button>
+<Button variant="secondary">Secondary Button</Button>
+<Button variant="outline">Outline Button</Button>
+<Button variant="ghost">Ghost Button</Button>
+<Button variant="destructive">Destructive Button</Button>
+<Button variant="link">Link Button</Button>
+
+// Sizes
+<Button size="sm">Small</Button>
+<Button size="md">Medium</Button>
+<Button size="lg">Large</Button>
+
+// States
+<Button loading>Loading...</Button>
+<Button disabled>Disabled</Button>
+<Button fullWidth>Full Width</Button>
+
+// With Icons
+<Button icon={<SearchIcon />}>Search</Button>
+<Button rightIcon={<ArrowRightIcon />}>Next</Button>
 ```
 
-**Props:** `type` ('single' | 'multiple'), `collapsible`, `defaultValue`, `disabled`
+**Props:**
 
-### Anchor
+- `variant`: 'primary' | 'secondary' | 'outline' | 'ghost' | 'destructive' | 'link'
+- `size`: 'sm' | 'md' | 'lg'
+- `loading`: boolean
+- `disabled`: boolean
+- `fullWidth`: boolean
+- `icon`: ReactNode
+- `rightIcon`: ReactNode
 
-A navigation component that provides smooth scrolling between sections with scroll spy functionality and multiple visual variants.
+#### Card
+
+Flexible container component for grouping related content.
+
+```tsx
+import { Card } from 'its-just-ui'
+
+;<Card variant="elevated" selectable>
+  <Card.Header>
+    <Card.Title>Card Title</Card.Title>
+    <Card.Description>Card description goes here</Card.Description>
+  </Card.Header>
+  <Card.Body>
+    <p>Main content of the card</p>
+  </Card.Body>
+  <Card.Footer>
+    <Button size="sm">Action</Button>
+  </Card.Footer>
+</Card>
+```
+
+**Features:**
+
+- Compound component architecture
+- Selection states
+- Expandable content
+- Badge support
+- Custom styling
+- Hover effects
+
+#### Input
+
+Versatile text input field with comprehensive features.
+
+```tsx
+import { Input } from 'its-just-ui'
+
+// Basic input
+<Input placeholder="Enter text" />
+
+// With label and helper text
+<Input
+  label="Email"
+  type="email"
+  placeholder="you@example.com"
+  helperText="We'll never share your email"
+/>
+
+// With validation
+<Input
+  label="Password"
+  type="password"
+  required
+  error
+  errorMessage="Password must be at least 8 characters"
+/>
+
+// With icons
+<Input
+  placeholder="Search..."
+  leftIcon={<SearchIcon />}
+  rightIcon={<ClearIcon />}
+/>
+```
+
+**Features:**
+
+- Multiple input types
+- Validation states
+- Helper text
+- Error messages
+- Icons
+- Controlled/uncontrolled
+- Accessibility support
+
+#### Checkbox
+
+Advanced checkbox component with tri-state support and group management.
+
+```tsx
+import { Checkbox } from 'its-just-ui'
+
+// Basic checkbox
+<Checkbox label="Accept terms" />
+
+// Tri-state checkbox
+<Checkbox
+  indeterminate={true}
+  label="Select all"
+/>
+
+// Checkbox group
+<Checkbox.Group label="Select options">
+  <Checkbox.SelectAll />
+  <Checkbox.Item value="option1" label="Option 1" />
+  <Checkbox.Item value="option2" label="Option 2" />
+  <Checkbox.Item value="option3" label="Option 3" />
+</Checkbox.Group>
+
+// Custom styling
+<Checkbox
+  variant="filled"
+  size="lg"
+  checkedBackgroundColor="#10b981"
+  label="Custom styled"
+/>
+```
+
+**Key Features:**
+
+- 7 visual variants
+- Tri-state logic
+- Group management
+- Select all functionality
+- Status indicators
+- Loading states
+- 40+ style props
+
+#### Progress
+
+Versatile progress indicator with multiple variants and features.
+
+```tsx
+import { Progress } from 'its-just-ui'
+
+// Basic progress
+<Progress value={65} />
+
+// Circular progress
+<Progress variant="circular" value={75} size="lg" />
+
+// Multi-segment progress
+<Progress
+  segments={[
+    { id: '1', value: 30, color: '#10b981' },
+    { id: '2', value: 25, color: '#3b82f6' },
+    { id: '3', value: 20, color: '#f59e0b' }
+  ]}
+/>
+
+// Indeterminate
+<Progress isIndeterminate />
+
+// With compound components
+<Progress value={75}>
+  <Progress.Track />
+  <Progress.Bar />
+  <Progress.Label>Upload Progress</Progress.Label>
+  <Progress.ValueDescription>75% Complete</Progress.ValueDescription>
+</Progress>
+```
+
+**Variants:** linear, circular, dashed, striped, segmented, pill, bordered, minimal
+
+#### Slider
+
+Flexible range input with marks and labels.
+
+```tsx
+import { Slider } from 'its-just-ui'
+
+// Basic slider
+<Slider
+  value={[50]}
+  onValueChange={setValue}
+  min={0}
+  max={100}
+/>
+
+// Range slider
+<Slider
+  value={[25, 75]}
+  onValueChange={setRange}
+/>
+
+// With marks
+<Slider
+  value={[50]}
+  marks={[
+    { value: 0, label: '0%' },
+    { value: 50, label: '50%' },
+    { value: 100, label: '100%' }
+  ]}
+/>
+```
+
+**Features:**
+
+- Single/range values
+- Custom marks
+- Labels
+- Keyboard navigation
+- Touch support
+- Vertical orientation
+
+### Navigation Components
+
+Components for building intuitive navigation experiences.
+
+#### Anchor
+
+Advanced navigation component with scroll spy and smooth scrolling.
 
 ```tsx
 import { Anchor } from 'its-just-ui'
 
-// Basic usage with scroll spy
-<Anchor targetIds={['section1', 'section2', 'section3']}>
-  <Anchor.Link href="#section1">Introduction</Anchor.Link>
-  <Anchor.Link href="#section2">Getting Started</Anchor.Link>
-  <Anchor.Link href="#section3">Configuration</Anchor.Link>
+// Basic navigation
+<Anchor targetIds={['intro', 'features', 'pricing']}>
+  <Anchor.Link href="#intro">Introduction</Anchor.Link>
+  <Anchor.Link href="#features">Features</Anchor.Link>
+  <Anchor.Link href="#pricing">Pricing</Anchor.Link>
 </Anchor>
 
 // With groups and indicator
-<Anchor variant="side-border" targetIds={['intro', 'features', 'api']}>
+<Anchor variant="side-border" scrollSpy hashSync>
   <Anchor.Indicator />
-  <Anchor.Group title="Documentation">
+  <Anchor.Group title="Getting Started">
     <Anchor.Link href="#intro">Introduction</Anchor.Link>
-    <Anchor.Link href="#features">Features</Anchor.Link>
+    <Anchor.Link href="#install">Installation</Anchor.Link>
   </Anchor.Group>
-  <Anchor.Group title="Reference">
-    <Anchor.Link href="#api">API Reference</Anchor.Link>
+  <Anchor.Group title="Components">
+    <Anchor.Link href="#button">Button</Anchor.Link>
+    <Anchor.Link href="#input">Input</Anchor.Link>
   </Anchor.Group>
 </Anchor>
 ```
 
 **Key Features:**
 
-- 🎯 **7 Visual Variants** - underline, side-border, filled, minimal, dot, icon-based, nested
-- 📍 **Auto Scroll Spy** - Automatically highlights active section while scrolling
-- 🎢 **Smooth Scrolling** - Customizable easing functions and animation duration
-- 🔗 **Hash Sync** - Optional URL hash synchronization for shareable links
-- 📊 **Active Indicator** - Visual indicator showing current section
-- 📁 **Nested Groups** - Support for collapsible navigation groups
-- ⚙️ **Controlled/Uncontrolled** - Flexible state management options
-- 🎨 **Full Customization** - 30+ styling props for complete visual control
+- 7 visual variants
+- Auto scroll spy
+- Smooth scrolling
+- Hash synchronization
+- Active indicators
+- Nested groups
+- Keyboard navigation
 
-**Props:** `variant`, `size`, `activeId`, `onChange`, `targetIds`, `scrollSpy`, `hashSync`, `offset`, `scrollBehavior`, `easing`, `duration`
+#### Breadcrumb
 
-### Alert
-
-Display important messages and notifications with multiple variants and dismissible options.
-
-```tsx
-import { Alert } from 'its-just-ui'
-;<Alert variant="success" dismissible>
-  <Alert.Title>Success!</Alert.Title>
-  <Alert.Description>Your changes have been saved successfully.</Alert.Description>
-</Alert>
-```
-
-**Variants:** `default`, `success`, `warning`, `error`, `info`
-
-### Autocomplete
-
-A powerful text input with search suggestions, async loading, and multi-select support.
-
-```tsx
-import { Autocomplete } from 'its-just-ui'
-
-const options = [
-  { label: 'Apple', value: 'apple' },
-  { label: 'Banana', value: 'banana' },
-  { label: 'Orange', value: 'orange' }
-]
-
-<Autocomplete
-  options={options}
-  placeholder="Search fruits..."
-  searchable
-  onSelect={(item) => console.log(item)}
-/>
-```
-
-**Features:** Search filtering, async loading, multi-select, custom rendering, keyboard navigation
-
-### Avatar
-
-Display user profile pictures with fallbacks and status indicators.
-
-```tsx
-import { Avatar } from 'its-just-ui'
-;<Avatar src="/user.jpg" alt="John Doe" size="lg" status="online" fallback="JD" />
-```
-
-**Sizes:** `sm`, `md`, `lg`, `xl`  
-**Status:** `online`, `offline`, `away`, `busy`
-
-### Badge
-
-Small status indicators and labels with extensive customization options.
-
-```tsx
-import { Badge } from 'its-just-ui'
-
-<Badge variant="success" size="md">Active</Badge>
-<Badge variant="warning" size="sm" closable>Pending</Badge>
-<Badge variant="error" rounded>Failed</Badge>
-```
-
-**Variants:** `default`, `primary`, `secondary`, `success`, `warning`, `error`, `info`  
-**Sizes:** `sm`, `md`, `lg`
-
-### Breadcrumb
-
-Navigation hierarchy indicator with customizable separators.
+Navigation hierarchy indicator.
 
 ```tsx
 import { Breadcrumb } from 'its-just-ui'
+
 ;<Breadcrumb>
   <Breadcrumb.Item>
     <Breadcrumb.Link href="/">Home</Breadcrumb.Link>
@@ -238,397 +416,151 @@ import { Breadcrumb } from 'its-just-ui'
 </Breadcrumb>
 ```
 
-**Features:** Custom separators, overflow handling, current page highlighting
+#### Pagination
 
-### Button
-
-Interactive button component with multiple variants and states.
-
-```tsx
-import { Button } from 'its-just-ui'
-
-<Button variant="primary" size="md">Primary Button</Button>
-<Button variant="secondary" size="sm" icon={<Icon />}>With Icon</Button>
-<Button variant="outline" disabled>Disabled</Button>
-<Button variant="ghost" loading>Loading...</Button>
-```
-
-**Variants:** `primary`, `secondary`, `outline`, `ghost`, `destructive`, `link`  
-**Sizes:** `sm`, `md`, `lg`  
-**Features:** Loading states, icons, full width option
-
-### Card
-
-Flexible container component for grouping content with various layouts.
-
-```tsx
-import { Card } from 'its-just-ui'
-;<Card variant="elevated" selectable>
-  <Card.Header>
-    <Card.Title>Card Title</Card.Title>
-    <Card.Description>Card description goes here</Card.Description>
-  </Card.Header>
-  <Card.Body>
-    <p>Main content of the card</p>
-  </Card.Body>
-  <Card.Footer>
-    <Button>Action</Button>
-  </Card.Footer>
-</Card>
-```
-
-**Features:** Selection states, expandable content, badges, custom styling
-
-### Checkbox
-
-A comprehensive checkbox component with tri-state support, groups, and extensive customization.
-
-```tsx
-import { Checkbox } from 'its-just-ui'
-
-// Basic checkbox
-<Checkbox label="Accept terms and conditions" />
-
-// Controlled checkbox
-const [checked, setChecked] = useState(false)
-<Checkbox
-  checked={checked}
-  onChange={setChecked}
-  label="Subscribe to newsletter"
-/>
-
-// Tri-state checkbox
-<Checkbox
-  indeterminate={true}
-  label="Select all items"
-/>
-
-// Checkbox group with select all
-<Checkbox.Group label="Select features" value={selectedFeatures} onChange={setSelectedFeatures}>
-  <Checkbox.SelectAll />
-  <Checkbox.Item value="feature1" label="Feature 1" />
-  <Checkbox.Item value="feature2" label="Feature 2" />
-  <Checkbox.Item value="feature3" label="Feature 3" />
-</Checkbox.Group>
-```
-
-**Key Features:**
-
-- **7 Visual Variants:** `default`, `filled`, `outlined`, `ghost`, `toggle`, `switch`, `card`
-- **3 Sizes:** `sm`, `md`, `lg` with consistent spacing
-- **Tri-state Logic:** Unchecked, checked, and indeterminate states
-- **Group Management:** Built-in group component with select-all functionality
-- **Status States:** `success`, `warning`, `error`, `info` with visual feedback
-- **Loading State:** Built-in spinner for async operations
-- **Extensive Styling:** 40+ style props for complete customization
-- **Form Ready:** Validation, error handling, helper text
-- **Accessibility:** Full ARIA support, keyboard navigation
-
-**Advanced Styling:**
-
-```tsx
-<Checkbox
-  label="Custom styled checkbox"
-  variant="filled"
-  size="lg"
-  checkedBackgroundColor="#10b981"
-  borderRadius="8px"
-  focusRingColor="#10b981"
-  labelTextSize="18px"
-  labelTextColor="#059669"
-  helperText="With extensive customization options"
-/>
-```
-
-### Chip
-
-Compact elements for displaying tags, filters, or selections.
-
-```tsx
-import { Chip } from 'its-just-ui'
-
-<Chip variant="default">Default Chip</Chip>
-<Chip variant="primary" closable onClose={() => console.log('closed')}>
-  Removable
-</Chip>
-<Chip variant="success" icon={<CheckIcon />}>
-  With Icon
-</Chip>
-```
-
-**Variants:** `default`, `primary`, `secondary`, `success`, `warning`, `error`
-
-### Dialog
-
-Modal dialog component for important interactions and confirmations.
-
-```tsx
-import { Dialog } from 'its-just-ui'
-;<Dialog>
-  <Dialog.Trigger asChild>
-    <Button>Open Dialog</Button>
-  </Dialog.Trigger>
-  <Dialog.Content>
-    <Dialog.Header>
-      <Dialog.Title>Are you sure?</Dialog.Title>
-      <Dialog.Description>This action cannot be undone.</Dialog.Description>
-    </Dialog.Header>
-    <div className="flex gap-2 justify-end">
-      <Button variant="outline">Cancel</Button>
-      <Button variant="primary">Confirm</Button>
-    </div>
-  </Dialog.Content>
-</Dialog>
-```
-
-**Features:** Focus management, escape key handling, backdrop close, custom sizes
-
-### Drawer
-
-Side panel overlay for navigation, filters, or additional content.
-
-```tsx
-import { Drawer } from 'its-just-ui'
-;<Drawer>
-  <Drawer.Trigger asChild>
-    <Button>Open Drawer</Button>
-  </Drawer.Trigger>
-  <Drawer.Content position="right" size="md">
-    <Drawer.Header>
-      <Drawer.Title>Drawer Title</Drawer.Title>
-    </Drawer.Header>
-    <div className="p-4">Drawer content goes here</div>
-  </Drawer.Content>
-</Drawer>
-```
-
-**Positions:** `left`, `right`, `top`, `bottom`  
-**Sizes:** `sm`, `md`, `lg`, `xl`, `full`
-
-### Input
-
-Versatile text input field with labels, validation, and various states.
-
-```tsx
-import { Input } from 'its-just-ui'
-
-<Input placeholder="Enter your email" type="email" />
-<Input
-  label="Password"
-  type="password"
-  required
-  helperText="Must be at least 8 characters"
-/>
-<Input
-  label="Username"
-  error
-  errorMessage="Username is required"
-/>
-```
-
-**Features:** Multiple input types, validation states, helper text, icons
-
-### List
-
-Display items in a structured, selectable list format.
-
-```tsx
-import { List } from 'its-just-ui'
-;<List selectable>
-  <List.Item>
-    <List.ItemIcon>
-      <UserIcon />
-    </List.ItemIcon>
-    <List.ItemText primary="John Doe" secondary="john@example.com" />
-  </List.Item>
-  <List.Item>
-    <List.ItemIcon>
-      <EmailIcon />
-    </List.ItemIcon>
-    <List.ItemText primary="jane@example.com" />
-  </List.Item>
-</List>
-```
-
-**Features:** Selection modes, icons, secondary text, dividers
-
-### Pagination
-
-Navigation for paginated content with various display options.
+Navigate through pages of content.
 
 ```tsx
 import { Pagination } from 'its-just-ui'
+
 ;<Pagination
   currentPage={currentPage}
-  totalPages={totalPages}
+  totalPages={100}
   onPageChange={setCurrentPage}
   showPageNumbers
   showPageSizeSelector
-  showTotalCount
+  pageSizeOptions={[10, 20, 50, 100]}
 />
 ```
 
-**Features:** Page size selection, jump to page, total count display
+#### ToggleButtons
 
-### RadioGroup
-
-Group of radio buttons for single selection with flexible layouts.
+Group of toggle buttons for multi-selection.
 
 ```tsx
-import { RadioGroup } from 'its-just-ui'
-;<RadioGroup defaultValue="option1" orientation="vertical">
-  <RadioGroup.Item value="option1" label="Option 1" />
-  <RadioGroup.Item value="option2" label="Option 2" />
-  <RadioGroup.Item value="option3" label="Option 3" disabled />
-</RadioGroup>
+import { ToggleButtons } from 'its-just-ui'
+
+;<ToggleButtons value={['bold']} onValueChange={setFormats}>
+  <ToggleButtons.Item value="bold">B</ToggleButtons.Item>
+  <ToggleButtons.Item value="italic">I</ToggleButtons.Item>
+  <ToggleButtons.Item value="underline">U</ToggleButtons.Item>
+</ToggleButtons>
 ```
 
-**Orientations:** `horizontal`, `vertical`
+### Form Components
 
-### Rating
+Comprehensive form controls for user input.
 
-Star rating component for user feedback and reviews.
+#### Select
 
-```tsx
-import { Rating } from 'its-just-ui'
-;<Rating value={rating} onChange={setRating} precision={0.5} size="lg" readOnly={false} />
-```
-
-**Features:** Half-star precision, custom icons, read-only mode
-
-### Select
-
-Advanced dropdown selection with search, multi-select, and grouping.
+Advanced dropdown with search and multi-select.
 
 ```tsx
 import { Select } from 'its-just-ui'
 
-const options = [
-  { value: 'react', label: 'React' },
-  { value: 'vue', label: 'Vue' },
-  { value: 'angular', label: 'Angular' }
-]
-
+// Basic select
 <Select
   options={options}
-  placeholder="Select a framework"
-  searchable
-  clearable
-  onChange={(value) => console.log(value)}
+  placeholder="Select option"
+  onChange={setSelected}
 />
 
-// Multi-select
+// Multi-select with search
 <Select
   options={options}
   multiple
   searchable
-  placeholder="Select frameworks"
+  clearable
+  placeholder="Select multiple"
+/>
+
+// Grouped options
+<Select
+  options={groupedOptions}
+  grouped
+  renderGroup={(group) => <div className="font-bold">{group.label}</div>}
 />
 ```
 
-**Features:** Multi-select, search, grouping, async loading, custom rendering
+#### Autocomplete
 
-### Skeleton
-
-Loading placeholders that match your content structure.
+Text input with suggestions and async loading.
 
 ```tsx
-import { Skeleton } from 'its-just-ui'
-;<div className="space-y-4">
-  <Skeleton variant="rectangular" width="100%" height="200px" />
-  <Skeleton variant="text" lines={3} />
-  <Skeleton variant="circular" width="40px" height="40px" />
-</div>
+import { Autocomplete } from 'its-just-ui'
+
+;<Autocomplete
+  options={options}
+  searchable
+  async
+  onSearch={handleSearch}
+  onSelect={handleSelect}
+  placeholder="Search..."
+/>
 ```
 
-**Variants:** `text`, `rectangular`, `circular`
+#### RadioGroup
 
-### Stepper
-
-Step-by-step progress indicator for workflows and forms.
+Single selection from multiple options.
 
 ```tsx
-import { Stepper } from 'its-just-ui'
+import { RadioGroup } from 'its-just-ui'
 
-const steps = [
-  { label: 'Account Details', description: 'Enter your information' },
-  { label: 'Verification', description: 'Verify your email' },
-  { label: 'Complete', description: 'Finish setup' }
-]
-
-<Stepper activeStep={1} orientation="horizontal">
-  {steps.map((step, index) => (
-    <Stepper.Step key={index} {...step} />
-  ))}
-</Stepper>
+;<RadioGroup value={value} onChange={setValue}>
+  <RadioGroup.Item value="1" label="Option 1" />
+  <RadioGroup.Item value="2" label="Option 2" />
+  <RadioGroup.Item value="3" label="Option 3" />
+</RadioGroup>
 ```
 
-**Orientations:** `horizontal`, `vertical`  
-**Features:** Custom icons, error states, clickable steps
+#### Switch
 
-### Splitter
-
-Flexible splitter component for resizable layouts with drag handles.
-
-```tsx
-import { Splitter } from 'its-just-ui'
-;<Splitter direction="horizontal" initialSizes={[30, 70]}>
-  <Splitter.Pane index={0}>
-    <div className="h-full bg-blue-50 p-4">
-      <h3>Left Panel</h3>
-      <p>This panel can be resized by dragging the handle.</p>
-    </div>
-  </Splitter.Pane>
-  <Splitter.Handle index={0} />
-  <Splitter.Pane index={1}>
-    <div className="h-full bg-green-50 p-4">
-      <h3>Right Panel</h3>
-      <p>Drag the handle to resize this panel.</p>
-    </div>
-  </Splitter.Pane>
-</Splitter>
-```
-
-**Directions:** `horizontal`, `vertical`  
-**Features:** Drag handles, keyboard navigation, persistence, animations, controlled/uncontrolled
-
-### Switch
-
-Toggle switch for on/off states with smooth animations.
+Toggle switch for boolean states.
 
 ```tsx
 import { Switch } from 'its-just-ui'
-;<Switch
-  checked={isEnabled}
-  onCheckedChange={setIsEnabled}
-  label="Enable notifications"
-  size="lg"
+
+;<Switch checked={enabled} onCheckedChange={setEnabled} label="Enable notifications" size="lg" />
+```
+
+#### Rating
+
+Star rating input component.
+
+```tsx
+import { Rating } from 'its-just-ui'
+
+;<Rating value={rating} onChange={setRating} precision={0.5} size="lg" showValue />
+```
+
+#### Cascade
+
+Hierarchical selection component.
+
+```tsx
+import { Cascade } from 'its-just-ui'
+
+;<Cascade
+  options={locationOptions}
+  placeholder="Select location"
+  onChange={setLocation}
+  searchable
+  showPath
 />
 ```
 
-**Sizes:** `sm`, `md`, `lg`  
-**Features:** Custom labels, disabled states, controlled/uncontrolled
+### Data Display Components
 
-### Table
+Components for presenting data effectively.
 
-Comprehensive data table with sorting, filtering, pagination, and more.
+#### Table
+
+Feature-rich data table component.
 
 ```tsx
 import { Table } from 'its-just-ui'
 
-const columns = [
-  { id: 'name', header: 'Name', accessorKey: 'name', sortable: true },
-  { id: 'email', header: 'Email', accessorKey: 'email', filterable: true },
-  { id: 'role', header: 'Role', accessorKey: 'role' },
-  {
-    id: 'status',
-    header: 'Status',
-    accessorKey: 'status',
-    cell: ({ value }) => <Badge variant={value === 'active' ? 'success' : 'error'}>{value}</Badge>
-  }
-]
-
-<Table
+;<Table
   data={users}
   columns={columns}
   variant="striped"
@@ -636,349 +568,219 @@ const columns = [
   enableSorting
   enableFiltering
   enablePagination
-  pagination={{ pageSize: 10 }}
 />
 ```
 
-**Key Features:**
+**Features:**
 
-- **Sorting:** Single and multi-column sorting
-- **Filtering:** Column-level and global search
-- **Selection:** Single and multiple row selection
-- **Pagination:** Client and server-side pagination
-- **Expansion:** Expandable rows with custom content
-- **Editing:** Inline cell editing
-- **Virtualization:** Handle large datasets efficiently
-- **Accessibility:** Full ARIA compliance with keyboard navigation
+- Sorting
+- Filtering
+- Pagination
+- Selection
+- Expandable rows
+- Cell editing
+- Virtualization
 
-### ToggleButtons
+#### List
 
-Group of toggle buttons for multi-selection scenarios.
+Structured list display.
 
 ```tsx
-import { ToggleButtons } from 'its-just-ui'
-;<ToggleButtons>
-  <ToggleButtons.Item value="bold" aria-label="Bold">
-    <BoldIcon />
-  </ToggleButtons.Item>
-  <ToggleButtons.Item value="italic" aria-label="Italic">
-    <ItalicIcon />
-  </ToggleButtons.Item>
-  <ToggleButtons.Item value="underline" aria-label="Underline">
-    <UnderlineIcon />
-  </ToggleButtons.Item>
-</ToggleButtons>
+import { List } from 'its-just-ui'
+
+;<List selectable>
+  <List.Item>
+    <List.ItemIcon>
+      <UserIcon />
+    </List.ItemIcon>
+    <List.ItemText primary="John Doe" secondary="john@example.com" />
+  </List.Item>
+</List>
 ```
 
-### Popover
+#### Badge
 
-A floating element that displays rich content in a portal, positioned relative to a trigger element.
+Status indicators and labels.
 
 ```tsx
-import { Popover } from 'its-just-ui'
+import { Badge } from 'its-just-ui'
 
-// Basic usage
-<Popover>
-  <Popover.Trigger>
-    <button>Open Popover</button>
-  </Popover.Trigger>
-  <Popover.Content>
-    <Popover.Arrow />
-    <Popover.Title>Popover Title</Popover.Title>
-    <Popover.Description>
-      This is the popover content that appears when triggered.
-    </Popover.Description>
-  </Popover.Content>
-</Popover>
-
-// Hover trigger
-<Popover trigger="hover">
-  <Popover.Trigger>Hover me</Popover.Trigger>
-  <Popover.Content>
-    <Popover.Description>
-      This appears on hover like a tooltip
-    </Popover.Description>
-  </Popover.Content>
-</Popover>
-
-// Controlled usage
-const [open, setOpen] = useState(false)
-<Popover open={open} onOpenChange={setOpen}>
-  <Popover.Trigger>Controlled</Popover.Trigger>
-  <Popover.Content>
-    <Popover.Title>Controlled Popover</Popover.Title>
-    <Popover.Close className="ml-auto">
-      <CloseIcon />
-    </Popover.Close>
-  </Popover.Content>
-</Popover>
+<Badge variant="success">Active</Badge>
+<Badge variant="warning" closable>Pending</Badge>
+<Badge variant="error" rounded>Failed</Badge>
 ```
 
-**Key Features:**
+#### Avatar
 
-- **Compound Components:** Flexible structure with Trigger, Content, Arrow, Title, Description, and Close
-- **Multiple Triggers:** Click, hover, or manual control
-- **Smart Positioning:** 12 placement options (top, bottom, left, right with start/end variants)
-- **Portal Rendering:** Content rendered to document.body for proper z-index layering
-- **Focus Management:** Keyboard navigation, focus trapping, and return focus
-- **Accessibility:** Full ARIA support and screen reader compatibility
-- **Close Behaviors:** Multiple dismissal methods (outside click, escape key, blur)
-- **Rich Animations:** 5 animation types (fade, scale, slide, pop) with customizable timing
-- **Extensive Styling:** 50+ style props for visual customization
-
-**Triggers:** `click`, `hover`, `manual`  
-**Positions:** `top`, `bottom`, `left`, `right` with `-start` and `-end` variants, plus `auto`  
-**Variants:** `default`, `bordered`, `shadowed`, `filled`, `translucent`, `minimal`  
-**Sizes:** `sm`, `md`, `lg`  
-**Tones:** `light`, `dark`, `info`, `success`, `warning`, `danger`
-
-### Cascade
-
-Hierarchical dropdown/select component for nested options, ideal for location pickers, category trees, and more.
+User profile pictures with fallbacks.
 
 ```tsx
-import { Cascade } from 'just-ui'
+import { Avatar } from 'its-just-ui'
 
-const options = [
-  {
-    label: 'Asia',
-    value: 'asia',
-    children: [
-      {
-        label: 'India',
-        value: 'india',
-        children: [
-          { label: 'Delhi', value: 'delhi' },
-          { label: 'Mumbai', value: 'mumbai' }
-        ]
-      },
-      {
-        label: 'Japan',
-        value: 'japan',
-        children: [
-          { label: 'Tokyo', value: 'tokyo' },
-          { label: 'Osaka', value: 'osaka' }
-        ]
-      }
-    ]
-  },
-  {
-    label: 'Europe',
-    value: 'europe',
-    children: [
-      {
-        label: 'Germany',
-        value: 'germany',
-        children: [
-          { label: 'Berlin', value: 'berlin' },
-          { label: 'Munich', value: 'munich' }
-        ]
-      }
-    ]
-  }
-]
-
-// Basic usage
-<Cascade
-  options={options}
-  placeholder="Select location"
-  onChange={(value) => console.log(value)}
-  searchable
-  clearable
-/>
-
-// Advanced usage with multiple selection
-<Cascade
-  options={options}
-  multiple
-  placeholder="Select multiple locations"
-  onChange={(values) => console.log(values)}
-  searchable
-  clearable
-  showPath
-  maxLevels={3}
-  variant="filled"
-  size="lg"
-/>
-
-// With custom rendering
-<Cascade
-  options={options}
-  renderOption={(option, isSelected, level) => (
-    <div className="flex items-center gap-2">
-      <span>{option.label}</span>
-      {option.icon && <span>{option.icon}</span>}
-      {isSelected && <CheckIcon />}
-    </div>
-  )}
-  renderValue={(value) => (
-    <span className="font-medium">{value?.label}</span>
-  )}
-/>
+;<Avatar src="/user.jpg" alt="John Doe" size="lg" status="online" fallback="JD" />
 ```
 
-**Key Features:**
+#### Chip
 
-- **Multi-level Selection:** Navigate through nested options with unlimited depth
-- **Search & Filter:** Search across all levels with real-time filtering
-- **Multiple Selection:** Support for single and multiple value selection
-- **Custom Rendering:** Customize option and value display with render functions
-- **Keyboard Navigation:** Full keyboard support with arrow keys and shortcuts
-- **Accessibility:** ARIA compliant with screen reader support
-- **Loading States:** Built-in loading indicators for async data
-- **Path Display:** Show selected path with customizable separators
-- **Form Integration:** Works seamlessly with form libraries
-- **Validation:** Error states and helper text support
-
-**Props:**
-
-**Core:** `options`, `placeholder`, `onChange`, `defaultValue`, `value`  
-**Selection:** `multiple`, `maxLevels`, `showPath`  
-**Interaction:** `searchable`, `clearable`, `disabled`, `loading`  
-**Styling:** `variant`, `size`, `status`, `placement`  
-**Customization:** `renderOption`, `renderValue`, `renderEmpty`, `renderPath`  
-**Animation:** `transition`, `transitionDuration`  
-**Icons:** `dropdownIcon`, `clearIcon`, `loadingIcon`  
-**Messages:** `emptyMessage`, `loadingMessage`, `helperText`, `errorMessage`
-
-**Variants:** `default`, `filled`, `outlined`, `ghost`, `underlined`  
-**Sizes:** `sm`, `md`, `lg`  
-**Status:** `default`, `success`, `warning`, `error`
-
-### Progress ⭐ _New_
-
-A versatile progress component for displaying task completion, loading states, and multi-step workflows.
+Compact elements for tags and filters.
 
 ```tsx
-import { Progress } from 'its-just-ui'
+import { Chip } from 'its-just-ui'
 
-// Basic progress
-<Progress value={65} />
-
-// Indeterminate loading
-<Progress isIndeterminate />
-
-// Circular progress
-<Progress value={75} variant="circular" size="lg" />
-
-// Multi-segment progress
-<Progress
-  segments={[
-    { id: 'task1', value: 30, color: '#10b981', label: 'Task 1' },
-    { id: 'task2', value: 25, color: '#3b82f6', label: 'Task 2' },
-    { id: 'task3', value: 20, color: '#f59e0b', label: 'Task 3' }
-  ]}
-/>
-
-// With thresholds
-<Progress
-  value={85}
-  thresholds={[
-    { value: 25, color: '#10b981', label: 'Good start' },
-    { value: 50, color: '#3b82f6', label: 'Halfway there' },
-    { value: 75, color: '#f59e0b', label: 'Almost done' },
-    { value: 90, color: '#ef4444', label: 'Critical level' }
-  ]}
-/>
-
-// Compound components
-<Progress value={75}>
-  <Progress.Track />
-  <Progress.Bar />
-  <Progress.Label>Upload Progress</Progress.Label>
-  <Progress.ValueDescription>75% Complete</Progress.ValueDescription>
-</Progress>
+;<Chip variant="primary" closable onClose={handleClose}>
+  React
+</Chip>
 ```
 
-**Variants:** `linear`, `circular`, `dashed`, `striped`, `segmented`, `pill`, `bordered`, `minimal`, `bar-with-label`, `overlay-style`, `inverse`  
-**Features:** Determinate/indeterminate, buffer support, multi-segment, thresholds, compound architecture, simulation mode, extensive styling
+### Feedback Components
 
-### Slider ⭐ _New_
+Components for user feedback and notifications.
 
-A flexible range input component with single/multiple handles and extensive customization.
+#### Alert
+
+Important messages and notifications.
 
 ```tsx
-import { Slider } from 'its-just-ui'
+import { Alert } from 'its-just-ui'
 
-// Basic slider
-<Slider
-  value={[50]}
-  onValueChange={([value]) => console.log(value)}
-  min={0}
-  max={100}
-  step={1}
-/>
-
-// Range slider
-<Slider
-  value={[25, 75]}
-  onValueChange={([min, max]) => console.log(min, max)}
-  min={0}
-  max={100}
-  step={5}
-/>
-
-// With marks and labels
-<Slider
-  value={[50]}
-  min={0}
-  max={100}
-  step={25}
-  marks={[
-    { value: 0, label: '0%' },
-    { value: 25, label: '25%' },
-    { value: 50, label: '50%' },
-    { value: 75, label: '75%' },
-    { value: 100, label: '100%' }
-  ]}
-/>
-
-// Custom styling
-<Slider
-  value={[30]}
-  min={0}
-  max={100}
-  trackColor="#e5e7eb"
-  thumbColor="#3b82f6"
-  activeTrackColor="#dbeafe"
-  height="8px"
-  thumbSize="20px"
-/>
+;<Alert variant="success" dismissible>
+  <Alert.Title>Success!</Alert.Title>
+  <Alert.Description>Your changes have been saved.</Alert.Description>
+</Alert>
 ```
 
-**Features:** Single/range values, marks, labels, custom styling, keyboard navigation, touch support, vertical orientation
+#### Skeleton
 
-### Tooltip
+Loading placeholders.
 
-Contextual information on hover or focus with smart positioning.
+```tsx
+import { Skeleton } from 'its-just-ui'
+
+<Skeleton variant="text" lines={3} />
+<Skeleton variant="rectangular" width="100%" height="200px" />
+<Skeleton variant="circular" width="40px" height="40px" />
+```
+
+#### Tooltip
+
+Contextual information on hover.
 
 ```tsx
 import { Tooltip } from 'its-just-ui'
 
-<Tooltip content="This is a helpful tooltip" placement="top">
+;<Tooltip content="Helpful information" placement="top">
   <Button>Hover me</Button>
-</Tooltip>
-
-// Advanced usage
-<Tooltip
-  content="Custom tooltip content"
-  placement="bottom-start"
-  variant="dark"
-  delayOpen={500}
-  offsetX={10}
-  offsetY={5}
->
-  <span>Hover for info</span>
 </Tooltip>
 ```
 
-**Features:** 12 placement options, auto-positioning, custom delays, variants
+### Layout Components
+
+Components for page structure and layout.
+
+#### Accordion
+
+Collapsible content panels.
+
+```tsx
+import { Accordion } from 'its-just-ui'
+
+;<Accordion type="single" collapsible>
+  <Accordion.Item value="1">
+    <Accordion.Trigger>Question 1</Accordion.Trigger>
+    <Accordion.Content>Answer 1</Accordion.Content>
+  </Accordion.Item>
+</Accordion>
+```
+
+#### Dialog
+
+Modal dialogs for important interactions.
+
+```tsx
+import { Dialog } from 'its-just-ui'
+
+;<Dialog>
+  <Dialog.Trigger asChild>
+    <Button>Open Dialog</Button>
+  </Dialog.Trigger>
+  <Dialog.Content>
+    <Dialog.Header>
+      <Dialog.Title>Confirm Action</Dialog.Title>
+      <Dialog.Description>Are you sure you want to continue?</Dialog.Description>
+    </Dialog.Header>
+  </Dialog.Content>
+</Dialog>
+```
+
+#### Drawer
+
+Side panel overlays.
+
+```tsx
+import { Drawer } from 'its-just-ui'
+
+;<Drawer>
+  <Drawer.Trigger asChild>
+    <Button>Open Drawer</Button>
+  </Drawer.Trigger>
+  <Drawer.Content position="right" size="md">
+    <Drawer.Header>
+      <Drawer.Title>Settings</Drawer.Title>
+    </Drawer.Header>
+  </Drawer.Content>
+</Drawer>
+```
+
+#### Stepper
+
+Step-by-step process indicator.
+
+```tsx
+import { Stepper } from 'its-just-ui'
+
+;<Stepper activeStep={1} orientation="horizontal">
+  <Stepper.Step label="Account" description="Create account" />
+  <Stepper.Step label="Profile" description="Setup profile" />
+  <Stepper.Step label="Complete" description="Finish setup" />
+</Stepper>
+```
+
+#### Splitter
+
+Resizable split layouts.
+
+```tsx
+import { Splitter } from 'its-just-ui'
+
+;<Splitter direction="horizontal" initialSizes={[30, 70]}>
+  <Splitter.Pane index={0}>Left Panel</Splitter.Pane>
+  <Splitter.Handle index={0} />
+  <Splitter.Pane index={1}>Right Panel</Splitter.Pane>
+</Splitter>
+```
+
+#### Popover
+
+Floating content overlay.
+
+```tsx
+import { Popover } from 'its-just-ui'
+
+;<Popover trigger="hover">
+  <Popover.Trigger>Hover for info</Popover.Trigger>
+  <Popover.Content>
+    <Popover.Arrow />
+    <Popover.Title>Information</Popover.Title>
+    <Popover.Description>Additional details appear here.</Popover.Description>
+  </Popover.Content>
+</Popover>
+```
 
 ## Theming & Customization
 
 ### CSS Variables
 
-Customize the design system with CSS variables:
+Customize the entire design system using CSS variables:
 
 ```css
 :root {
@@ -988,8 +790,21 @@ Customize the design system with CSS variables:
   --just-ui-success: 34 197 94;
   --just-ui-warning: 251 146 60;
   --just-ui-error: 239 68 68;
+  --just-ui-info: 59 130 246;
 
-  /* Spacing Scale */
+  /* Gray Scale */
+  --just-ui-gray-50: 249 250 251;
+  --just-ui-gray-100: 243 244 246;
+  --just-ui-gray-200: 229 231 235;
+  --just-ui-gray-300: 209 213 219;
+  --just-ui-gray-400: 156 163 175;
+  --just-ui-gray-500: 107 114 128;
+  --just-ui-gray-600: 75 85 99;
+  --just-ui-gray-700: 55 65 81;
+  --just-ui-gray-800: 31 41 55;
+  --just-ui-gray-900: 17 24 39;
+
+  /* Spacing */
   --just-ui-spacing-unit: 0.25rem;
   --just-ui-spacing-xs: calc(var(--just-ui-spacing-unit) * 1);
   --just-ui-spacing-sm: calc(var(--just-ui-spacing-unit) * 2);
@@ -1002,176 +817,257 @@ Customize the design system with CSS variables:
   --just-ui-radius-md: 0.375rem;
   --just-ui-radius-lg: 0.5rem;
   --just-ui-radius-xl: 0.75rem;
+  --just-ui-radius-full: 9999px;
 
   /* Shadows */
   --just-ui-shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
   --just-ui-shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
   --just-ui-shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+  --just-ui-shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1);
 
   /* Typography */
+  --just-ui-font-sans: system-ui, -apple-system, sans-serif;
+  --just-ui-font-mono: ui-monospace, monospace;
   --just-ui-font-size-xs: 0.75rem;
   --just-ui-font-size-sm: 0.875rem;
   --just-ui-font-size-md: 1rem;
   --just-ui-font-size-lg: 1.125rem;
   --just-ui-font-size-xl: 1.25rem;
+
+  /* Animation */
+  --just-ui-transition-fast: 150ms;
+  --just-ui-transition-normal: 300ms;
+  --just-ui-transition-slow: 500ms;
 }
 ```
 
-### Dark Mode Support
+### Dark Mode
 
-Built-in dark mode with system preference detection:
+Built-in dark mode support with automatic detection:
 
 ```css
-/* Auto dark mode */
+/* Automatic dark mode */
 @media (prefers-color-scheme: dark) {
   :root {
-    --just-ui-background: 18 18 18;
-    --just-ui-foreground: 250 250 250;
-    --just-ui-muted: 39 39 42;
-    --just-ui-border: 63 63 70;
+    --just-ui-background: 17 24 39;
+    --just-ui-foreground: 249 250 251;
+    --just-ui-muted: 31 41 55;
+    --just-ui-border: 55 65 81;
   }
 }
 
-/* Manual dark mode */
+/* Manual dark mode toggle */
 .dark {
-  --just-ui-background: 18 18 18;
-  --just-ui-foreground: 250 250 250;
-  --just-ui-muted: 39 39 42;
-  --just-ui-border: 63 63 70;
+  --just-ui-background: 17 24 39;
+  --just-ui-foreground: 249 250 251;
 }
 ```
 
-### Component-level Customization
+### Component-level Styling
 
-Most components accept style props for fine-grained control:
+Fine-grained control with style props:
 
 ```tsx
 <Button
-  variant="primary"
   backgroundColor="#10b981"
   hoverBackgroundColor="#059669"
   borderRadius="12px"
   padding="12px 24px"
+  fontSize="18px"
 >
-  Custom Button
+  Custom Styled Button
 </Button>
-
-<Checkbox
-  variant="filled"
-  checkedBackgroundColor="#8b5cf6"
-  focusRingColor="#8b5cf6"
-  labelTextColor="#6b21a8"
-  borderRadius="6px"
-/>
 ```
 
 ## TypeScript Support
 
-Full TypeScript support with comprehensive type definitions:
+Full TypeScript support with comprehensive type definitions.
+
+### Type Exports
 
 ```tsx
-import type { ButtonProps, CheckboxProps, TableColumn, SelectOption } from 'its-just-ui'
+import type {
+  ButtonProps,
+  CheckboxProps,
+  InputProps,
+  SelectOption,
+  TableColumn,
+  AnchorProps,
+  PopoverProps,
+  ProgressSegment,
+  SliderMark,
+} from 'its-just-ui'
+```
 
-// Custom button component
-const MyButton: React.FC<ButtonProps> = (props) => {
-  return <Button {...props} />
-}
+### Generic Components
 
+```tsx
 // Typed table columns
 const columns: TableColumn<User>[] = [
   {
     id: 'name',
     header: 'Name',
     accessorKey: 'name',
-    cell: ({ row }) => (
-      <span>
-        {row.firstName} {row.lastName}
-      </span>
-    ),
+    cell: ({ row }) => `${row.firstName} ${row.lastName}`,
   },
 ]
 
 // Typed select options
-const options: SelectOption[] = [
-  { value: '1', label: 'Option 1' },
-  { value: '2', label: 'Option 2' },
+const options: SelectOption<number>[] = [
+  { value: 1, label: 'Option 1' },
+  { value: 2, label: 'Option 2' },
 ]
+```
+
+### Custom Component Props
+
+```tsx
+interface CustomButtonProps extends ButtonProps {
+  customProp?: string
+}
+
+const CustomButton: React.FC<CustomButtonProps> = ({ customProp, ...props }) => {
+  return <Button {...props} />
+}
 ```
 
 ## Accessibility
 
-All components are built with accessibility in mind:
+Built with accessibility as a core principle:
 
-- ✅ **ARIA Compliance:** Proper ARIA attributes and roles
-- ✅ **Keyboard Navigation:** Full keyboard support
-- ✅ **Screen Readers:** Compatible with assistive technologies
-- ✅ **Focus Management:** Logical focus flow and indicators
-- ✅ **Color Contrast:** WCAG AA compliant color combinations
-- ✅ **Semantic HTML:** Uses appropriate semantic elements
+### ARIA Support
+
+- ✅ Proper ARIA attributes and roles
+- ✅ Semantic HTML elements
+- ✅ Screen reader announcements
+- ✅ Live regions for dynamic content
+
+### Keyboard Navigation
+
+- ✅ Tab navigation
+- ✅ Arrow key navigation
+- ✅ Enter/Space activation
+- ✅ Escape key handling
+- ✅ Focus trapping for modals
+
+### Visual Accessibility
+
+- ✅ WCAG AA color contrast
+- ✅ Focus indicators
+- ✅ High contrast mode support
+- ✅ Reduced motion support
+
+### Testing
+
+- ✅ Tested with NVDA
+- ✅ Tested with JAWS
+- ✅ Tested with VoiceOver
+- ✅ Keyboard-only testing
 
 ## Browser Support
 
-- ✅ Chrome (last 2 versions)
-- ✅ Firefox (last 2 versions)
-- ✅ Safari (last 2 versions)
-- ✅ Edge (last 2 versions)
+Modern browser support with graceful degradation:
 
-## Bundle Size
+| Browser        | Version         |
+| -------------- | --------------- |
+| Chrome         | Last 2 versions |
+| Firefox        | Last 2 versions |
+| Safari         | Last 2 versions |
+| Edge           | Last 2 versions |
+| iOS Safari     | 12.0+           |
+| Chrome Android | Last 2 versions |
 
-Tree-shakeable design means you only bundle what you use:
+## Performance
+
+### Bundle Size
+
+Tree-shakeable design for optimal bundle size:
 
 ```tsx
 // Import only what you need
-import { Button, Checkbox, Progress, Slider } from 'its-just-ui'
+import { Button, Input } from 'its-just-ui'
 
-// Or import from specific modules
-import { Button } from 'its-just-ui/Button'
-import { Checkbox } from 'its-just-ui/Checkbox'
-import { Progress } from 'its-just-ui/Progress'
-import { Slider } from 'its-just-ui/Slider'
+// Or import from specific entry points
+import Button from 'its-just-ui/Button'
+import Input from 'its-just-ui/Input'
+```
+
+### Lazy Loading
+
+Components support lazy loading:
+
+```tsx
+const Dialog = lazy(() => import('its-just-ui/Dialog'))
+const Table = lazy(() => import('its-just-ui/Table'))
 ```
 
 ## Contributing
 
-We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) for details.
+We welcome contributions! See our [Contributing Guide](CONTRIBUTING.md).
 
 ### Development Setup
 
 ```bash
 # Clone the repository
-git clone https://github.com/xanxit/just-ui.git
-cd just-ui
+git clone https://github.com/its-just-ui/its-just-ui.git
+cd its-just-ui
 
 # Install dependencies
 npm install
 
-# Start Storybook development server
+# Start development server
 npm run storybook
 
-# Build the library
+# Run tests
+npm test
+
+# Build library
 npm run build
 
-# Run linting
+# Lint code
 npm run lint
 
 # Format code
 npm run format
 ```
 
+### Commit Convention
+
+We use conventional commits:
+
+- `feat:` New features
+- `fix:` Bug fixes
+- `docs:` Documentation changes
+- `style:` Code style changes
+- `refactor:` Code refactoring
+- `test:` Test changes
+- `chore:` Build/tooling changes
+
 ## License
 
 MIT © its-just-ui
 
+## Support
+
+- 📧 Email: support@its-just-ui.com
+- 💬 Discord: [Join our community](https://discord.gg/its-just-ui)
+- 🐛 Issues: [GitHub Issues](https://github.com/its-just-ui/its-just-ui/issues)
+- 📚 Docs: [Documentation](https://its-just-ui.com/docs)
+
 ## Acknowledgments
 
-Built with love using:
+Built with ❤️ using:
 
 - [React](https://reactjs.org/) - UI framework
 - [TypeScript](https://www.typescriptlang.org/) - Type safety
-- [Tailwind CSS](https://tailwindcss.com/) - Styling framework
+- [Tailwind CSS](https://tailwindcss.com/) - Styling
 - [Vite](https://vitejs.dev/) - Build tool
-- [Storybook](https://storybook.js.org/) - Component documentation
+- [Storybook](https://storybook.js.org/) - Component development
 
 ---
 
-**Made with ❤️ for the React community**
+<div align="center">
+  <strong>Made with ❤️ for the React community</strong>
+  <br />
+  <sub>Building better UIs, one component at a time</sub>
+</div>
