@@ -38,7 +38,7 @@ A comprehensive, accessible, and customizable React UI component library built w
 
 ### Why Choose its-just-ui?
 
-- 🎨 **28 Production-Ready Components** - Comprehensive UI component library for React applications
+- 🎨 **29 Production-Ready Components** - Comprehensive UI component library for React applications
 - 🔧 **Full TypeScript Support** - Built with TypeScript for complete type safety and excellent developer experience
 - 📱 **Responsive Design** - Mobile-first approach with adaptive layouts that work on all devices
 - ♿ **Accessibility First** - WAI-ARIA compliant components with full keyboard navigation support
@@ -105,10 +105,10 @@ Our comprehensive component library is organized into logical categories for eas
 
 ### Component Statistics
 
-- **Total Components:** 28
+- **Total Components:** 29
 - **Core Components:** 6
 - **Navigation Components:** 4
-- **Form Components:** 7
+- **Form Components:** 8
 - **Data Display Components:** 5
 - **Feedback Components:** 3
 - **Layout Components:** 3
@@ -163,7 +163,6 @@ Flexible container component for grouping related content.
 
 ```tsx
 import { Card } from 'its-just-ui'
-
 ;<Card variant="elevated" selectable>
   <Card.Header>
     <Card.Title>Card Title</Card.Title>
@@ -400,7 +399,6 @@ Navigation hierarchy indicator.
 
 ```tsx
 import { Breadcrumb } from 'its-just-ui'
-
 ;<Breadcrumb>
   <Breadcrumb.Item>
     <Breadcrumb.Link href="/">Home</Breadcrumb.Link>
@@ -422,7 +420,6 @@ Navigate through pages of content.
 
 ```tsx
 import { Pagination } from 'its-just-ui'
-
 ;<Pagination
   currentPage={currentPage}
   totalPages={100}
@@ -439,7 +436,6 @@ Group of toggle buttons for multi-selection.
 
 ```tsx
 import { ToggleButtons } from 'its-just-ui'
-
 ;<ToggleButtons value={['bold']} onValueChange={setFormats}>
   <ToggleButtons.Item value="bold">B</ToggleButtons.Item>
   <ToggleButtons.Item value="italic">I</ToggleButtons.Item>
@@ -488,7 +484,6 @@ Text input with suggestions and async loading.
 
 ```tsx
 import { Autocomplete } from 'its-just-ui'
-
 ;<Autocomplete
   options={options}
   searchable
@@ -505,7 +500,6 @@ Single selection from multiple options.
 
 ```tsx
 import { RadioGroup } from 'its-just-ui'
-
 ;<RadioGroup value={value} onChange={setValue}>
   <RadioGroup.Item value="1" label="Option 1" />
   <RadioGroup.Item value="2" label="Option 2" />
@@ -519,7 +513,6 @@ Toggle switch for boolean states.
 
 ```tsx
 import { Switch } from 'its-just-ui'
-
 ;<Switch checked={enabled} onCheckedChange={setEnabled} label="Enable notifications" size="lg" />
 ```
 
@@ -529,7 +522,6 @@ Star rating input component.
 
 ```tsx
 import { Rating } from 'its-just-ui'
-
 ;<Rating value={rating} onChange={setRating} precision={0.5} size="lg" showValue />
 ```
 
@@ -539,7 +531,6 @@ Hierarchical selection component.
 
 ```tsx
 import { Cascade } from 'its-just-ui'
-
 ;<Cascade
   options={locationOptions}
   placeholder="Select location"
@@ -548,6 +539,67 @@ import { Cascade } from 'its-just-ui'
   showPath
 />
 ```
+
+#### ColorPicker
+
+Comprehensive color selection component with multiple formats and variants.
+
+```tsx
+import { ColorPicker } from 'its-just-ui'
+
+// Basic color picker
+<ColorPicker
+  value={color}
+  onChange={(value, colorData) => {
+    setColor(value)
+    console.log('Color data:', colorData)
+  }}
+/>
+
+// Different variants
+<ColorPicker value={color} onChange={setColor} variant="inline" />
+<ColorPicker value={color} onChange={setColor} variant="popover" />
+<ColorPicker value={color} onChange={setColor} variant="minimal" />
+
+// Without alpha channel
+<ColorPicker
+  value={color}
+  onChange={setColor}
+  allowAlpha={false}
+  defaultFormat="rgb"
+/>
+
+// Custom preset colors
+<ColorPicker
+  value={color}
+  onChange={setColor}
+  presetColors={[
+    { value: '#FF6B6B', label: 'Coral' },
+    { value: '#4ECDC4', label: 'Turquoise' },
+    { value: '#45B7D1', label: 'Sky Blue' },
+  ]}
+/>
+
+// Custom styling
+<ColorPicker
+  value={color}
+  onChange={setColor}
+  swatchShape="circle"
+  borderRadius="12px"
+  popoverBackgroundColor="#f3f4f6"
+/>
+```
+
+**Features:**
+
+- Multiple color formats (hex, rgb, rgba, hsl, hsla)
+- Controlled component design
+- Various UI variants (default, inline, popover, minimal)
+- Customizable sliders, inputs, and preset swatches
+- Alpha channel support
+- Keyboard navigation
+- Custom rendering options
+- Extensive styling props
 
 ### Data Display Components
 
@@ -559,7 +611,6 @@ Feature-rich data table component.
 
 ```tsx
 import { Table } from 'its-just-ui'
-
 ;<Table
   data={users}
   columns={columns}
@@ -587,7 +638,6 @@ Structured list display.
 
 ```tsx
 import { List } from 'its-just-ui'
-
 ;<List selectable>
   <List.Item>
     <List.ItemIcon>
@@ -616,7 +666,6 @@ User profile pictures with fallbacks.
 
 ```tsx
 import { Avatar } from 'its-just-ui'
-
 ;<Avatar src="/user.jpg" alt="John Doe" size="lg" status="online" fallback="JD" />
 ```
 
@@ -626,7 +675,6 @@ Compact elements for tags and filters.
 
 ```tsx
 import { Chip } from 'its-just-ui'
-
 ;<Chip variant="primary" closable onClose={handleClose}>
   React
 </Chip>
@@ -642,7 +690,6 @@ Important messages and notifications.
 
 ```tsx
 import { Alert } from 'its-just-ui'
-
 ;<Alert variant="success" dismissible>
   <Alert.Title>Success!</Alert.Title>
   <Alert.Description>Your changes have been saved.</Alert.Description>
@@ -667,7 +714,6 @@ Contextual information on hover.
 
 ```tsx
 import { Tooltip } from 'its-just-ui'
-
 ;<Tooltip content="Helpful information" placement="top">
   <Button>Hover me</Button>
 </Tooltip>
@@ -683,7 +729,6 @@ Collapsible content panels.
 
 ```tsx
 import { Accordion } from 'its-just-ui'
-
 ;<Accordion type="single" collapsible>
   <Accordion.Item value="1">
     <Accordion.Trigger>Question 1</Accordion.Trigger>
@@ -698,7 +743,6 @@ Modal dialogs for important interactions.
 
 ```tsx
 import { Dialog } from 'its-just-ui'
-
 ;<Dialog>
   <Dialog.Trigger asChild>
     <Button>Open Dialog</Button>
@@ -718,7 +762,6 @@ Side panel overlays.
 
 ```tsx
 import { Drawer } from 'its-just-ui'
-
 ;<Drawer>
   <Drawer.Trigger asChild>
     <Button>Open Drawer</Button>
@@ -737,7 +780,6 @@ Step-by-step process indicator.
 
 ```tsx
 import { Stepper } from 'its-just-ui'
-
 ;<Stepper activeStep={1} orientation="horizontal">
   <Stepper.Step label="Account" description="Create account" />
   <Stepper.Step label="Profile" description="Setup profile" />
@@ -751,7 +793,6 @@ Resizable split layouts.
 
 ```tsx
 import { Splitter } from 'its-just-ui'
-
 ;<Splitter direction="horizontal" initialSizes={[30, 70]}>
   <Splitter.Pane index={0}>Left Panel</Splitter.Pane>
   <Splitter.Handle index={0} />
@@ -765,7 +806,6 @@ Floating content overlay.
 
 ```tsx
 import { Popover } from 'its-just-ui'
-
 ;<Popover trigger="hover">
   <Popover.Trigger>Hover for info</Popover.Trigger>
   <Popover.Content>
