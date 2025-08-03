@@ -30,7 +30,7 @@ jobs:
         run: npm ci
 
       - name: Run linter (errors only)
-        run: eslint . --ext ts,tsx --report-unused-disable-directives
+        run: npx eslint . --ext ts,tsx --report-unused-disable-directives
 
       - name: Check formatting
         run: npm run format:check
