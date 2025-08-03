@@ -2,6 +2,16 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Progress component animations */
+@keyframes progress-indeterminate {
+  0% {
+    left: -40%;
+  }
+  100% {
+    left: 100%;
+  }
+}
+
 /* Custom placeholder color support for Autocomplete component */
 input[style*='--placeholder-color']::placeholder {
   color: var(--placeholder-color) !important;
