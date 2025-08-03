@@ -10,7 +10,6 @@ export default defineConfig({
       insertTypesEntry: true,
       include: ['src/**/*.ts', 'src/**/*.tsx'],
       exclude: ['src/**/*.stories.tsx', 'src/**/*.test.tsx'],
-      skipDiagnostics: true,
     }),
   ],
   build: {

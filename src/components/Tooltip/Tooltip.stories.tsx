@@ -4,18 +4,23 @@ import { Tooltip } from './Tooltip'
 
 /**
  * Tooltip is a component that displays additional information when users hover over, focus on, or click an element.
+ * It uses React Portal for exact positioning and rendering outside the DOM hierarchy.
  *
  * ## Features
+ * - **React Portal**: Renders outside parent DOM hierarchy for perfect positioning
  * - **Multiple Triggers**: Hover, click, focus, and manual trigger modes
  * - **Flexible Positioning**: 12 placement options with auto-placement support
+ * - **Fine Position Control**: offsetX/offsetY for precise adjustments, nudge props for easy directional shifts
  * - **Multiple Variants**: 5 pre-defined visual styles
  * - **3 Sizes**: Small, medium, and large options
  * - **Status States**: Built-in support for success, warning, and error states
  * - **Smooth Animations**: Multiple transition effects with customizable duration
  * - **Extensive Styling**: Over 50 style props for complete customization
- * - **Accessibility**: Full keyboard and screen reader support
+ * - **Accessibility**: Full keyboard and screen reader support with ARIA attributes
  * - **Auto-placement**: Smart positioning to keep tooltip in viewport
  * - **Delay Controls**: Configurable open/close delays
+ * - **Loading States**: Built-in loading indicator support
+ * - **Compound Components**: TooltipTrigger and TooltipContent for advanced layouts
  *
  * ## Usage
  *
@@ -26,27 +31,57 @@ import { Tooltip } from './Tooltip'
  * </Tooltip>
  * ```
  *
+ * ### Controlled Component:
+ * ```tsx
+ * const [isOpen, setIsOpen] = useState(false)
+ * 
+ * <Tooltip 
+ *   isOpen={isOpen} 
+ *   onOpenChange={setIsOpen}
+ *   content="Controlled tooltip"
+ * >
+ *   <button>Controlled</button>
+ * </Tooltip>
+ * ```
+ *
  * ### With Title and Description:
  * ```tsx
  * <Tooltip
  *   title="Important Information"
  *   description="This tooltip contains detailed information about the element."
  * >
- *   <button className="px-3 py-1.5 bg-green-600 text-white rounded text-sm">Hover for details</button>
- * </Tooltip>
- * ```
- *
- * ### Click Trigger:
- * ```tsx
- * <Tooltip trigger="click" content="Click to show/hide">
- *   <button className="px-3 py-1.5 bg-purple-600 text-white rounded text-sm">Click me</button>
+ *   <button>Hover for details</button>
  * </Tooltip>
  * ```
  *
  * ### Custom Placement:
  * ```tsx
  * <Tooltip placement="bottom" content="Tooltip below">
- *   <button className="px-3 py-1.5 bg-blue-600 text-white rounded text-sm">Bottom tooltip</button>
+ *   <button>Bottom tooltip</button>
+ * </Tooltip>
+ * ```
+ *
+ * ### Fine-tuning Position:
+ * ```tsx
+ * <Tooltip 
+ *   content="Precisely positioned"
+ *   offsetX={20}      // Move 20px right
+ *   offsetY={-10}     // Move 10px up
+ *   nudgeRight={5}    // Additional 5px right
+ * >
+ *   <button>Fine-tuned position</button>
+ * </Tooltip>
+ * ```
+ *
+ * ### Compound Components:
+ * ```tsx
+ * <Tooltip>
+ *   <TooltipTrigger>
+ *     <button>Custom trigger</button>
+ *   </TooltipTrigger>
+ *   <TooltipContent>
+ *     Custom content with full control
+ *   </TooltipContent>
  * </Tooltip>
  * ```
  */
@@ -55,6 +90,11 @@ const meta = {
   component: Tooltip,
   parameters: {
     layout: 'padded',
+    docs: {
+      description: {
+        component: 'A versatile tooltip component with React Portal support and extensive customization options.',
+      },
+    },
   },
   tags: ['autodocs'],
   argTypes: {
@@ -172,7 +212,61 @@ const meta = {
       description: 'Distance between tooltip and trigger',
       table: {
         type: { summary: 'number' },
-        defaultValue: { summary: 8 },
+        defaultValue: { summary: '8' },
+      },
+    },
+    offsetX: {
+      control: 'number',
+      description: 'Horizontal offset adjustment (positive = right, negative = left)',
+      table: {
+        category: 'Position Fine-tuning',
+        type: { summary: 'number' },
+        defaultValue: { summary: '0' },
+      },
+    },
+    offsetY: {
+      control: 'number',
+      description: 'Vertical offset adjustment (positive = down, negative = up)',
+      table: {
+        category: 'Position Fine-tuning',
+        type: { summary: 'number' },
+        defaultValue: { summary: '0' },
+      },
+    },
+    nudgeLeft: {
+      control: 'number',
+      description: 'Move tooltip left by this amount',
+      table: {
+        category: 'Position Fine-tuning',
+        type: { summary: 'number' },
+        defaultValue: { summary: '0' },
+      },
+    },
+    nudgeRight: {
+      control: 'number',
+      description: 'Move tooltip right by this amount',
+      table: {
+        category: 'Position Fine-tuning',
+        type: { summary: 'number' },
+        defaultValue: { summary: '0' },
+      },
+    },
+    nudgeTop: {
+      control: 'number',
+      description: 'Move tooltip up by this amount',
+      table: {
+        category: 'Position Fine-tuning',
+        type: { summary: 'number' },
+        defaultValue: { summary: '0' },
+      },
+    },
+    nudgeBottom: {
+      control: 'number',
+      description: 'Move tooltip down by this amount',
+      table: {
+        category: 'Position Fine-tuning',
+        type: { summary: 'number' },
+        defaultValue: { summary: '0' },
       },
     },
     delayOpen: {
@@ -180,7 +274,7 @@ const meta = {
       description: 'Delay before tooltip opens (ms)',
       table: {
         type: { summary: 'number' },
-        defaultValue: { summary: 0 },
+        defaultValue: { summary: '0' },
       },
     },
     delayClose: {
@@ -188,7 +282,7 @@ const meta = {
       description: 'Delay before tooltip closes (ms)',
       table: {
         type: { summary: 'number' },
-        defaultValue: { summary: 0 },
+        defaultValue: { summary: '0' },
       },
     },
     showArrow: {
@@ -204,7 +298,7 @@ const meta = {
       description: 'Size of the arrow',
       table: {
         type: { summary: 'number' },
-        defaultValue: { summary: 6 },
+        defaultValue: { summary: '6' },
       },
     },
     transition: {
@@ -221,7 +315,7 @@ const meta = {
       description: 'Duration of transition in milliseconds',
       table: {
         type: { summary: 'number' },
-        defaultValue: { summary: 200 },
+        defaultValue: { summary: '200' },
       },
     },
     autoPlacement: {
@@ -230,6 +324,38 @@ const meta = {
       table: {
         type: { summary: 'boolean' },
         defaultValue: { summary: 'true' },
+      },
+    },
+    loading: {
+      control: 'boolean',
+      description: 'Show loading state',
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: 'false' },
+      },
+    },
+    loadingMessage: {
+      control: 'text',
+      description: 'Loading message text',
+      table: {
+        type: { summary: 'string' },
+        defaultValue: { summary: 'Loading...' },
+      },
+    },
+    emptyMessage: {
+      control: 'text',
+      description: 'Message when no content',
+      table: {
+        type: { summary: 'string' },
+        defaultValue: { summary: 'No content' },
+      },
+    },
+    required: {
+      control: 'boolean',
+      description: 'Mark as required field',
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: 'false' },
       },
     },
     // Content styles
@@ -362,8 +488,8 @@ export const ShowingDefaults: Story = {
   render: () => (
     <div className="space-y-6">
       <div>
-        <h3 className="text-sm font-medium text-gray-700 mb-3">Basic Tooltip</h3>
-        <Tooltip content="Simple tooltip">
+        <h3 className="text-sm font-medium text-gray-700 mb-3">Default Tooltip</h3>
+        <Tooltip content="Simple tooltip with all defaults">
           <button className="px-3 py-1.5 bg-gray-600 text-white rounded text-sm hover:bg-gray-700">
             Hover me
           </button>
@@ -395,7 +521,16 @@ export const ShowingDefaults: Story = {
         <h3 className="text-sm font-medium text-gray-700 mb-3">Focus Trigger</h3>
         <Tooltip trigger="focus" content="Focus to show">
           <button className="px-3 py-1.5 bg-orange-600 text-white rounded text-sm hover:bg-orange-700">
-            Focus me
+            Focus me (Tab)
+          </button>
+        </Tooltip>
+      </div>
+
+      <div>
+        <h3 className="text-sm font-medium text-gray-700 mb-3">Default Open</h3>
+        <Tooltip defaultIsOpen content="Starts open by default">
+          <button className="px-3 py-1.5 bg-indigo-600 text-white rounded text-sm hover:bg-indigo-700">
+            Already showing
           </button>
         </Tooltip>
       </div>
@@ -408,7 +543,7 @@ export const Variants: Story = {
     <div className="space-y-6">
       <div>
         <h3 className="text-sm font-medium text-gray-700 mb-3">Default</h3>
-        <Tooltip variant="default" content="Default variant">
+        <Tooltip variant="default" content="Default variant with shadow">
           <button className="px-3 py-1.5 bg-blue-600 text-white rounded text-sm hover:bg-blue-700">
             Default
           </button>
@@ -417,7 +552,7 @@ export const Variants: Story = {
 
       <div>
         <h3 className="text-sm font-medium text-gray-700 mb-3">Filled</h3>
-        <Tooltip variant="filled" content="Filled variant">
+        <Tooltip variant="filled" content="Filled variant with solid background">
           <button className="px-3 py-1.5 bg-blue-600 text-white rounded text-sm hover:bg-blue-700">
             Filled
           </button>
@@ -426,7 +561,7 @@ export const Variants: Story = {
 
       <div>
         <h3 className="text-sm font-medium text-gray-700 mb-3">Outlined</h3>
-        <Tooltip variant="outlined" content="Outlined variant">
+        <Tooltip variant="outlined" content="Outlined variant with border">
           <button className="px-3 py-1.5 bg-blue-600 text-white rounded text-sm hover:bg-blue-700">
             Outlined
           </button>
@@ -435,7 +570,7 @@ export const Variants: Story = {
 
       <div>
         <h3 className="text-sm font-medium text-gray-700 mb-3">Flat</h3>
-        <Tooltip variant="flat" content="Flat variant">
+        <Tooltip variant="flat" content="Flat variant with no shadow">
           <button className="px-3 py-1.5 bg-blue-600 text-white rounded text-sm hover:bg-blue-700">
             Flat
           </button>
@@ -444,7 +579,7 @@ export const Variants: Story = {
 
       <div>
         <h3 className="text-sm font-medium text-gray-700 mb-3">Elevated</h3>
-        <Tooltip variant="elevated" content="Elevated variant">
+        <Tooltip variant="elevated" content="Elevated variant with large shadow">
           <button className="px-3 py-1.5 bg-blue-600 text-white rounded text-sm hover:bg-blue-700">
             Elevated
           </button>
@@ -468,11 +603,168 @@ export const Sizes: Story = {
             Medium
           </button>
         </Tooltip>
-        <Tooltip size="lg" content="Large tooltip">
+        <Tooltip size="lg" content="Large tooltip with more content space">
           <button className="px-4 py-2 bg-blue-600 text-white rounded text-base hover:bg-blue-700">
             Large
           </button>
         </Tooltip>
+      </div>
+
+      <div className="space-y-4">
+        <h3 className="text-sm font-medium text-gray-700">Size comparison with same content</h3>
+        <div className="flex items-center gap-4">
+          <Tooltip size="sm" content="This is the same content in different sizes">
+            <span className="text-sm">Small</span>
+          </Tooltip>
+          <Tooltip size="md" content="This is the same content in different sizes">
+            <span className="text-sm">Medium</span>
+          </Tooltip>
+          <Tooltip size="lg" content="This is the same content in different sizes">
+            <span className="text-sm">Large</span>
+          </Tooltip>
+        </div>
+      </div>
+    </div>
+  ),
+}
+
+export const PositionAdjustments: Story = {
+  render: () => (
+    <div className="space-y-8">
+      <div>
+        <h3 className="text-sm font-medium text-gray-700 mb-3">Fine-tuning with offsetX and offsetY</h3>
+        <div className="flex items-center gap-6">
+          <Tooltip content="Normal position" placement="top">
+            <button className="px-3 py-1.5 bg-gray-600 text-white rounded text-sm">
+              Default
+            </button>
+          </Tooltip>
+          
+          <Tooltip content="Shifted right (+20px)" placement="top" offsetX={20}>
+            <button className="px-3 py-1.5 bg-blue-600 text-white rounded text-sm">
+              offsetX: 20
+            </button>
+          </Tooltip>
+          
+          <Tooltip content="Shifted left (-20px)" placement="top" offsetX={-20}>
+            <button className="px-3 py-1.5 bg-blue-600 text-white rounded text-sm">
+              offsetX: -20
+            </button>
+          </Tooltip>
+          
+          <Tooltip content="Shifted down (+15px)" placement="right" offsetY={15}>
+            <button className="px-3 py-1.5 bg-green-600 text-white rounded text-sm">
+              offsetY: 15
+            </button>
+          </Tooltip>
+          
+          <Tooltip content="Shifted up (-15px)" placement="right" offsetY={-15}>
+            <button className="px-3 py-1.5 bg-green-600 text-white rounded text-sm">
+              offsetY: -15
+            </button>
+          </Tooltip>
+        </div>
+      </div>
+
+      <div>
+        <h3 className="text-sm font-medium text-gray-700 mb-3">Easy nudging in any direction</h3>
+        <div className="grid grid-cols-3 gap-4 max-w-md">
+          <div />
+          <Tooltip content="Nudged up 10px" nudgeTop={10}>
+            <button className="px-3 py-1.5 bg-purple-600 text-white rounded text-sm w-full">
+              ↑ nudgeTop: 10
+            </button>
+          </Tooltip>
+          <div />
+          
+          <Tooltip content="Nudged left 15px" placement="right" nudgeLeft={15}>
+            <button className="px-3 py-1.5 bg-purple-600 text-white rounded text-sm w-full">
+              ← nudgeLeft: 15
+            </button>
+          </Tooltip>
+          
+          <Tooltip content="No nudge">
+            <button className="px-3 py-1.5 bg-gray-600 text-white rounded text-sm w-full">
+              Center
+            </button>
+          </Tooltip>
+          
+          <Tooltip content="Nudged right 15px" placement="left" nudgeRight={15}>
+            <button className="px-3 py-1.5 bg-purple-600 text-white rounded text-sm w-full">
+              nudgeRight: 15 →
+            </button>
+          </Tooltip>
+          
+          <div />
+          <Tooltip content="Nudged down 10px" nudgeBottom={10}>
+            <button className="px-3 py-1.5 bg-purple-600 text-white rounded text-sm w-full">
+              nudgeBottom: 10 ↓
+            </button>
+          </Tooltip>
+          <div />
+        </div>
+      </div>
+
+      <div>
+        <h3 className="text-sm font-medium text-gray-700 mb-3">Combining adjustments</h3>
+        <div className="flex items-center gap-6">
+          <Tooltip 
+            content="Multiple adjustments" 
+            placement="top"
+            offset={20}
+            offsetX={10}
+            nudgeRight={5}
+          >
+            <button className="px-3 py-1.5 bg-indigo-600 text-white rounded text-sm">
+              offset + offsetX + nudge
+            </button>
+          </Tooltip>
+          
+          <Tooltip 
+            content="Diagonal positioning" 
+            placement="bottom"
+            nudgeRight={20}
+            nudgeBottom={20}
+          >
+            <button className="px-3 py-1.5 bg-pink-600 text-white rounded text-sm">
+              Diagonal nudge
+            </button>
+          </Tooltip>
+          
+          <Tooltip 
+            content="Custom corner position" 
+            placement="top-end"
+            offsetX={-10}
+            nudgeTop={5}
+          >
+            <button className="px-3 py-1.5 bg-orange-600 text-white rounded text-sm">
+              Fine-tuned corner
+            </button>
+          </Tooltip>
+        </div>
+      </div>
+
+      <div>
+        <h3 className="text-sm font-medium text-gray-700 mb-3">Practical example: Avoiding overlaps</h3>
+        <div className="relative p-8 bg-gray-50 rounded-lg">
+          <div className="absolute top-2 right-2 flex gap-1">
+            <Tooltip content="Settings" placement="bottom" nudgeLeft={8}>
+              <button className="p-1 text-gray-600 hover:bg-gray-200 rounded">⚙️</button>
+            </Tooltip>
+            <Tooltip content="Notifications" placement="bottom">
+              <button className="p-1 text-gray-600 hover:bg-gray-200 rounded">🔔</button>
+            </Tooltip>
+            <Tooltip content="Profile" placement="bottom" nudgeRight={8}>
+              <button className="p-1 text-gray-600 hover:bg-gray-200 rounded">👤</button>
+            </Tooltip>
+          </div>
+          
+          <div className="text-center">
+            <p className="text-sm text-gray-600">
+              The tooltips above use nudge to avoid overlapping when shown simultaneously
+            </p>
+          </div>
+        </div>
       </div>
     </div>
   ),
@@ -532,6 +824,33 @@ export const Placements: Story = {
           </button>
         </Tooltip>
       </div>
+
+      <div className="grid grid-cols-2 gap-4 max-w-md mx-auto">
+        <div className="space-y-2">
+          <Tooltip placement="left-start" content="Left start">
+            <button className="px-2 py-1 bg-indigo-600 text-white rounded text-xs hover:bg-indigo-700">
+              Left Start
+            </button>
+          </Tooltip>
+          <Tooltip placement="left-end" content="Left end">
+            <button className="px-2 py-1 bg-indigo-600 text-white rounded text-xs hover:bg-indigo-700">
+              Left End
+            </button>
+          </Tooltip>
+        </div>
+        <div className="space-y-2">
+          <Tooltip placement="right-start" content="Right start">
+            <button className="px-2 py-1 bg-indigo-600 text-white rounded text-xs hover:bg-indigo-700">
+              Right Start
+            </button>
+          </Tooltip>
+          <Tooltip placement="right-end" content="Right end">
+            <button className="px-2 py-1 bg-indigo-600 text-white rounded text-xs hover:bg-indigo-700">
+              Right End
+            </button>
+          </Tooltip>
+        </div>
+      </div>
     </div>
   ),
 }
@@ -574,6 +893,33 @@ export const StatusStates: Story = {
           </button>
         </Tooltip>
       </div>
+
+      <div>
+        <h3 className="text-sm font-medium text-gray-700 mb-3">With Titles and Status</h3>
+        <div className="flex gap-4">
+          <Tooltip
+            status="success"
+            title="Success"
+            description="Operation completed successfully"
+          >
+            <div className="w-3 h-3 bg-green-500 rounded-full cursor-help"></div>
+          </Tooltip>
+          <Tooltip
+            status="warning"
+            title="Warning"
+            description="Please review this setting"
+          >
+            <div className="w-3 h-3 bg-yellow-500 rounded-full cursor-help"></div>
+          </Tooltip>
+          <Tooltip
+            status="error"
+            title="Error"
+            description="Something went wrong"
+          >
+            <div className="w-3 h-3 bg-red-500 rounded-full cursor-help"></div>
+          </Tooltip>
+        </div>
+      </div>
     </div>
   ),
 }
@@ -601,7 +947,7 @@ export const Triggers: Story = {
 
       <div>
         <h3 className="text-sm font-medium text-gray-700 mb-3">Focus Trigger</h3>
-        <Tooltip trigger="focus" content="Focus to show">
+        <Tooltip trigger="focus" content="Focus to show (try Tab key)">
           <button className="px-3 py-1.5 bg-purple-600 text-white rounded text-sm hover:bg-purple-700">
             Focus me
           </button>
@@ -669,10 +1015,10 @@ export const Transitions: Story = {
       </div>
 
       <div>
-        <h3 className="text-sm font-medium text-gray-700 mb-3">Slow Transition</h3>
-        <Tooltip transition="fade" transitionDuration={600} content="600ms duration">
+        <h3 className="text-sm font-medium text-gray-700 mb-3">Custom Duration</h3>
+        <Tooltip transition="scale" transitionDuration={600} content="600ms duration">
           <button className="px-3 py-1.5 bg-red-600 text-white rounded text-sm hover:bg-red-700">
-            Slow fade
+            Slow scale
           </button>
         </Tooltip>
       </div>
@@ -684,7 +1030,7 @@ export const Delays: Story = {
   render: () => (
     <div className="space-y-6">
       <div>
-        <h3 className="text-sm font-medium text-gray-700 mb-3">No Delay</h3>
+        <h3 className="text-sm font-medium text-gray-700 mb-3">No Delay (Default)</h3>
         <Tooltip delayOpen={0} delayClose={0} content="Instant show/hide">
           <button className="px-3 py-1.5 bg-blue-600 text-white rounded text-sm hover:bg-blue-700">
             No delay
@@ -722,6 +1068,58 @@ export const Delays: Story = {
   ),
 }
 
+export const States: Story = {
+  render: () => (
+    <div className="space-y-6">
+      <div>
+        <h3 className="text-sm font-medium text-gray-700 mb-3">Disabled</h3>
+        <Tooltip disabled content="This won't show">
+          <button 
+            disabled 
+            className="px-3 py-1.5 bg-gray-400 text-gray-200 rounded text-sm cursor-not-allowed"
+          >
+            Disabled tooltip
+          </button>
+        </Tooltip>
+      </div>
+
+      <div>
+        <h3 className="text-sm font-medium text-gray-700 mb-3">Loading State</h3>
+        <Tooltip loading loadingMessage="Fetching data...">
+          <button className="px-3 py-1.5 bg-blue-600 text-white rounded text-sm hover:bg-blue-700">
+            Loading tooltip
+          </button>
+        </Tooltip>
+      </div>
+
+      <div>
+        <h3 className="text-sm font-medium text-gray-700 mb-3">Empty State</h3>
+        <Tooltip emptyMessage="No data available">
+          <button className="px-3 py-1.5 bg-gray-600 text-white rounded text-sm hover:bg-gray-700">
+            Empty tooltip
+          </button>
+        </Tooltip>
+      </div>
+
+      <div>
+        <h3 className="text-sm font-medium text-gray-700 mb-3">Required Field</h3>
+        <Tooltip 
+          required 
+          title="Email Address" 
+          description="Please enter a valid email"
+          helperText="This field is required"
+        >
+          <input 
+            type="email" 
+            placeholder="Enter email"
+            className="px-3 py-2 border rounded text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+        </Tooltip>
+      </div>
+    </div>
+  ),
+}
+
 export const CustomStyling: Story = {
   render: () => (
     <div className="space-y-8">
@@ -731,7 +1129,7 @@ export const CustomStyling: Story = {
           contentBackgroundColor="#8b5cf6"
           titleColor="#ffffff"
           descriptionColor="#e9d5ff"
-          content="Purple theme tooltip"
+          arrowColor="#8b5cf6"
           title="Custom Styling"
           description="This tooltip uses custom colors"
         >
@@ -742,12 +1140,13 @@ export const CustomStyling: Story = {
       </div>
 
       <div>
-        <h3 className="text-sm font-medium text-gray-700 mb-3">Custom Border</h3>
+        <h3 className="text-sm font-medium text-gray-700 mb-3">Custom Border & Radius</h3>
         <Tooltip
           contentBorderWidth="2px"
           contentBorderColor="#f59e0b"
           contentBorderRadius="12px"
-          content="Custom border tooltip"
+          contentPadding="0.75rem 1rem"
+          content="Custom border and rounded corners"
         >
           <button className="px-3 py-1.5 bg-yellow-600 text-white rounded text-sm hover:bg-yellow-700">
             Custom border
@@ -757,7 +1156,11 @@ export const CustomStyling: Story = {
 
       <div>
         <h3 className="text-sm font-medium text-gray-700 mb-3">Large Arrow</h3>
-        <Tooltip arrowSize={12} arrowColor="#ef4444" content="Large red arrow">
+        <Tooltip 
+          arrowSize={12} 
+          arrowColor="#ef4444" 
+          content="Large red arrow pointing to element"
+        >
           <button className="px-3 py-1.5 bg-red-600 text-white rounded text-sm hover:bg-red-700">
             Large arrow
           </button>
@@ -774,16 +1177,43 @@ export const CustomStyling: Story = {
       </div>
 
       <div>
-        <h3 className="text-sm font-medium text-gray-700 mb-3">Custom Width</h3>
+        <h3 className="text-sm font-medium text-gray-700 mb-3">Custom Width & Typography</h3>
         <Tooltip
-          maxWidth="300px"
-          minWidth="150px"
-          content="This tooltip has a custom width range. It will be between 150px and 300px wide, depending on the content."
+          maxWidth="320px"
+          minWidth="200px"
+          titleFontSize="1rem"
+          titleFontWeight="600"
+          descriptionFontSize="0.875rem"
+          title="Custom Typography"
+          description="This tooltip has custom width constraints and typography settings. The text will wrap nicely within the defined boundaries."
         >
           <button className="px-3 py-1.5 bg-blue-600 text-white rounded text-sm hover:bg-blue-700">
             Custom width
           </button>
         </Tooltip>
+      </div>
+
+      <div>
+        <h3 className="text-sm font-medium text-gray-700 mb-3">Glass Effect</h3>
+        <div className="p-8 bg-gradient-to-br from-blue-400 to-purple-600 rounded-lg">
+          <Tooltip
+            variant="outlined"
+            contentBackgroundColor="rgba(255, 255, 255, 0.1)"
+            contentBorderColor="rgba(255, 255, 255, 0.2)"
+            contentBoxShadow="0 8px 32px 0 rgba(31, 38, 135, 0.37)"
+            content="Glass morphism effect"
+            customStyles={{
+              contentStyles: {
+                backdropFilter: 'blur(8px)',
+                WebkitBackdropFilter: 'blur(8px)',
+              }
+            }}
+          >
+            <button className="px-4 py-2 bg-white/20 backdrop-blur-sm text-white rounded-lg border border-white/30">
+              Glass tooltip
+            </button>
+          </Tooltip>
+        </div>
       </div>
     </div>
   ),
@@ -796,20 +1226,58 @@ export const CustomContent: Story = {
         <h3 className="text-sm font-medium text-gray-700 mb-3">Rich Content</h3>
         <Tooltip
           renderContent={() => (
-            <div className="space-y-2">
-              <div className="font-bold text-sm">Rich Tooltip</div>
-              <div className="text-xs opacity-90">
-                This tooltip contains rich content with multiple elements.
+            <div className="space-y-3">
+              <div className="flex items-center gap-2">
+                <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center text-white text-xs font-bold">
+                  JD
+                </div>
+                <div>
+                  <div className="font-bold text-sm">John Doe</div>
+                  <div className="text-xs opacity-90">Software Engineer</div>
+                </div>
               </div>
-              <div className="flex gap-2 mt-2">
-                <span className="px-2 py-1 bg-blue-500 text-white text-xs rounded">Tag 1</span>
-                <span className="px-2 py-1 bg-green-500 text-white text-xs rounded">Tag 2</span>
+              <div className="text-xs">
+                <div>📧 john.doe@example.com</div>
+                <div>📱 +1 (555) 123-4567</div>
+              </div>
+              <div className="flex gap-1">
+                <span className="px-2 py-1 bg-blue-500/20 text-blue-200 text-xs rounded">React</span>
+                <span className="px-2 py-1 bg-green-500/20 text-green-200 text-xs rounded">Node.js</span>
+                <span className="px-2 py-1 bg-purple-500/20 text-purple-200 text-xs rounded">TypeScript</span>
               </div>
             </div>
           )}
         >
-          <button className="px-3 py-1.5 bg-blue-600 text-white rounded text-sm hover:bg-blue-700">
-            Rich content
+          <div className="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold cursor-pointer hover:bg-blue-600">
+            JD
+          </div>
+        </Tooltip>
+      </div>
+
+      <div>
+        <h3 className="text-sm font-medium text-gray-700 mb-3">Interactive Content</h3>
+        <Tooltip
+          trigger="click"
+          placement="bottom"
+          renderContent={() => (
+            <div className="space-y-3 min-w-[200px]">
+              <div className="font-medium">Quick Actions</div>
+              <div className="space-y-1">
+                <button className="w-full text-left px-2 py-1 text-sm hover:bg-white/10 rounded">
+                  ✏️ Edit
+                </button>
+                <button className="w-full text-left px-2 py-1 text-sm hover:bg-white/10 rounded">
+                  📋 Copy
+                </button>
+                <button className="w-full text-left px-2 py-1 text-sm hover:bg-white/10 rounded">
+                  🗑️ Delete
+                </button>
+              </div>
+            </div>
+          )}
+        >
+          <button className="px-3 py-1.5 bg-gray-600 text-white rounded text-sm hover:bg-gray-700">
+            Context Menu
           </button>
         </Tooltip>
       </div>
@@ -817,132 +1285,132 @@ export const CustomContent: Story = {
       <div>
         <h3 className="text-sm font-medium text-gray-700 mb-3">Custom Trigger</h3>
         <Tooltip
-          content="Custom trigger element"
+          content="This has a custom trigger design"
           renderTrigger={(isOpen, triggerProps) => (
             <div
               {...triggerProps}
-              className={`px-3 py-1.5 rounded cursor-pointer transition-colors text-sm ${
-                isOpen ? 'bg-purple-600 text-white' : 'bg-purple-500 text-white hover:bg-purple-600'
+              className={`px-4 py-2 rounded-lg cursor-pointer transition-all text-sm font-medium ${
+                isOpen 
+                  ? 'bg-purple-600 text-white shadow-lg transform scale-105' 
+                  : 'bg-purple-500 text-white hover:bg-purple-600'
               }`}
             >
-              {isOpen ? 'Tooltip is open' : 'Hover to open'}
+              {isOpen ? '🔓 Tooltip is open' : '🔒 Hover to open'}
             </div>
           )}
         />
       </div>
 
       <div>
-        <h3 className="text-sm font-medium text-gray-700 mb-3">Icon with Tooltip</h3>
-        <Tooltip content="Information icon">
-          <svg
-            className="w-5 h-5 text-blue-500 cursor-pointer"
-            fill="currentColor"
-            viewBox="0 0 20 20"
-          >
-            <path
-              fillRule="evenodd"
-              d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
-              clipRule="evenodd"
-            />
-          </svg>
+        <h3 className="text-sm font-medium text-gray-700 mb-3">Progress Indicator</h3>
+        <Tooltip
+          placement="right"
+          renderContent={() => (
+            <div className="space-y-2">
+              <div className="text-sm font-medium">Upload Progress</div>
+              <div className="w-32 bg-gray-200 rounded-full h-2">
+                <div className="bg-blue-500 h-2 rounded-full w-2/3"></div>
+              </div>
+              <div className="text-xs">67% complete</div>
+            </div>
+          )}
+        >
+          <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center cursor-pointer hover:bg-blue-200">
+            📊
+          </div>
         </Tooltip>
       </div>
     </div>
   ),
 }
 
-export const RealWorldExamples: Story = {
-  render: () => (
-    <div className="space-y-8">
-      <div className="space-y-4">
-        <h3 className="text-lg font-medium">Form Field Help</h3>
-        <div className="space-y-4 p-4 border rounded-lg">
-          <div className="flex items-center gap-2">
-            <label className="text-sm font-medium">Email Address</label>
-            <Tooltip content="We'll never share your email with anyone else">
-              <svg
-                className="w-4 h-4 text-gray-400 cursor-help"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
-                  clipRule="evenodd"
-                />
-              </svg>
-            </Tooltip>
-          </div>
+const FormIntegrationComponent = () => {
+  const [formData, setFormData] = useState({
+    email: '',
+    password: '',
+    confirmPassword: '',
+  })
+
+  return (
+    <form className="space-y-6 max-w-md">
+      <h3 className="text-lg font-medium">Registration Form</h3>
+
+      <div className="space-y-2">
+        <div className="flex items-center gap-2">
+          <label htmlFor="email" className="text-sm font-medium">Email Address</label>
+          <Tooltip 
+            content="We'll never share your email with anyone else"
+            size="sm"
+          >
+            <svg className="w-4 h-4 text-gray-400 cursor-help" fill="currentColor" viewBox="0 0 20 20">
+              <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
+            </svg>
+          </Tooltip>
+        </div>
+        <input
+          id="email"
+          type="email"
+          value={formData.email}
+          onChange={(e) => setFormData({...formData, email: e.target.value})}
+          className="w-full px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+          placeholder="Enter your email"
+        />
+      </div>
+
+      <div className="space-y-2">
+        <div className="flex items-center gap-2">
+          <label htmlFor="password" className="text-sm font-medium">Password</label>
+          <Tooltip 
+            title="Password Requirements"
+            description="Must be at least 8 characters with uppercase, lowercase, and numbers"
+            size="sm"
+            maxWidth="200px"
+          >
+            <svg className="w-4 h-4 text-gray-400 cursor-help" fill="currentColor" viewBox="0 0 20 20">
+              <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
+            </svg>
+          </Tooltip>
+        </div>
+        <input
+          id="password"
+          type="password"
+          value={formData.password}
+          onChange={(e) => setFormData({...formData, password: e.target.value})}
+          className="w-full px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+          placeholder="Enter password"
+        />
+      </div>
+
+      <div className="space-y-2">
+        <label htmlFor="confirmPassword" className="text-sm font-medium">Confirm Password</label>
+        <Tooltip
+          trigger="focus"
+          content={formData.confirmPassword && formData.password !== formData.confirmPassword ? "Passwords don't match" : "Passwords match"}
+          status={formData.confirmPassword && formData.password !== formData.confirmPassword ? "error" : "success"}
+        >
           <input
-            type="email"
-            className="w-full px-3 py-2 border rounded"
-            placeholder="Enter your email"
+            id="confirmPassword"
+            type="password"
+            value={formData.confirmPassword}
+            onChange={(e) => setFormData({...formData, confirmPassword: e.target.value})}
+            className="w-full px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+            placeholder="Confirm password"
           />
-        </div>
+        </Tooltip>
       </div>
 
-      <div className="space-y-4">
-        <h3 className="text-lg font-medium">Action Buttons</h3>
-        <div className="flex gap-4">
-          <Tooltip content="Save your changes">
-            <button className="p-2 bg-green-600 text-white rounded hover:bg-green-700">
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M5 13l4 4L19 7"
-                />
-              </svg>
-            </button>
-          </Tooltip>
+      <button 
+        type="submit" 
+        className="w-full px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+      >
+        Register
+      </button>
+    </form>
+  )
+}
 
-          <Tooltip content="Delete this item">
-            <button className="p-2 bg-red-600 text-white rounded hover:bg-red-700">
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-                />
-              </svg>
-            </button>
-          </Tooltip>
-
-          <Tooltip content="Edit this item">
-            <button className="p-2 bg-blue-600 text-white rounded hover:bg-blue-700">
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
-                />
-              </svg>
-            </button>
-          </Tooltip>
-        </div>
-      </div>
-
-      <div className="space-y-4">
-        <h3 className="text-lg font-medium">Status Indicators</h3>
-        <div className="flex gap-4">
-          <Tooltip status="success" content="All systems operational">
-            <div className="w-3 h-3 bg-green-500 rounded-full cursor-help"></div>
-          </Tooltip>
-
-          <Tooltip status="warning" content="System experiencing issues">
-            <div className="w-3 h-3 bg-yellow-500 rounded-full cursor-help"></div>
-          </Tooltip>
-
-          <Tooltip status="error" content="Critical system failure">
-            <div className="w-3 h-3 bg-red-500 rounded-full cursor-help"></div>
-          </Tooltip>
-        </div>
-      </div>
-    </div>
-  ),
+export const FormIntegration: Story = {
+  render: () => <FormIntegrationComponent />,
 }
 
 export const AccessibilityExample: Story = {
@@ -952,87 +1420,313 @@ export const AccessibilityExample: Story = {
 
       <div className="space-y-4">
         <p className="text-sm text-gray-600">
-          All tooltips are keyboard accessible. Try tabbing through them and using Enter/Space to
-          trigger.
+          All tooltips are keyboard accessible. Try tabbing through them and using Space/Enter to trigger.
         </p>
 
-        <Tooltip trigger="focus" content="Focus to show tooltip">
-          <button className="px-3 py-1.5 bg-blue-600 text-white rounded text-sm hover:bg-blue-700">
-            Focus me
-          </button>
-        </Tooltip>
-
-        <Tooltip
-          trigger="click"
-          content="Click to show tooltip"
-          renderTrigger={(isOpen, triggerProps) => (
-            <button
-              {...triggerProps}
-              className={`px-3 py-1.5 rounded text-sm ${
-                isOpen ? 'bg-green-600 text-white' : 'bg-green-500 text-white hover:bg-green-600'
-              }`}
-              aria-expanded={isOpen}
-            >
-              {isOpen ? 'Tooltip is open' : 'Click to open'}
-            </button>
-          )}
-        />
-
-        <Tooltip content="Screen reader friendly tooltip">
-          <button
-            className="px-3 py-1.5 bg-purple-600 text-white rounded text-sm hover:bg-purple-700"
-            aria-describedby="tooltip-description"
+        <div className="space-y-3">
+          <Tooltip 
+            trigger="focus" 
+            content="Focus-triggered tooltip for keyboard users"
+            aria-label="Additional information about this field"
           >
-            Accessible button
-          </button>
-        </Tooltip>
+            <button className="px-3 py-1.5 bg-blue-600 text-white rounded text-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
+              Focus me (Tab)
+            </button>
+          </Tooltip>
+
+          <Tooltip
+            content="Screen reader friendly tooltip with proper ARIA attributes"
+            role="tooltip"
+          >
+            <button 
+              className="px-3 py-1.5 bg-green-600 text-white rounded text-sm hover:bg-green-700"
+              aria-describedby="tooltip-description"
+            >
+              Accessible button
+            </button>
+          </Tooltip>
+
+          <Tooltip
+            trigger="click"
+            content="Click-triggered tooltip"
+            renderTrigger={(isOpen, triggerProps) => (
+              <button
+                {...triggerProps}
+                className={`px-3 py-1.5 rounded text-sm focus:outline-none focus:ring-2 focus:ring-purple-500 ${
+                  isOpen ? 'bg-purple-600 text-white' : 'bg-purple-500 text-white hover:bg-purple-600'
+                }`}
+                aria-expanded={isOpen}
+                aria-haspopup="true"
+              >
+                {isOpen ? 'Tooltip is open' : 'Click to open'}
+              </button>
+            )}
+          />
+
+          <Tooltip
+            content="High contrast tooltip for better visibility"
+            variant="outlined"
+            contentBorderWidth="2px"
+            contentBorderColor="#000000"
+            contentBackgroundColor="#ffffff"
+            customStyles={{ textColor: '#000000' }}
+          >
+            <button className="px-3 py-1.5 bg-gray-600 text-white rounded text-sm hover:bg-gray-700">
+              High contrast
+            </button>
+          </Tooltip>
+        </div>
       </div>
     </div>
   ),
 }
 
-export const ComplexLayouts: Story = {
+export const RealWorldExamples: Story = {
   render: () => (
     <div className="space-y-8">
-      <div className="p-6 bg-white border rounded-lg shadow-sm">
-        <div className="flex items-center justify-between mb-4">
-          <div>
-            <h3 className="text-lg font-medium">User Profile</h3>
-            <p className="text-sm text-gray-500 mt-1">Manage your account settings</p>
-          </div>
-          <Tooltip content="Click to edit profile">
-            <button className="p-2 bg-gray-100 rounded hover:bg-gray-200">
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
-                />
-              </svg>
-            </button>
-          </Tooltip>
+      {/* Dashboard with status indicators */}
+      <div className="space-y-4">
+        <h3 className="text-lg font-medium">System Status Dashboard</h3>
+        <div className="grid grid-cols-4 gap-4">
+          {[
+            { name: 'API Server', status: 'success', uptime: '99.9%' },
+            { name: 'Database', status: 'success', uptime: '99.8%' },
+            { name: 'Cache', status: 'warning', uptime: '97.2%' },
+            { name: 'CDN', status: 'error', uptime: '85.1%' },
+          ].map((service) => (
+            <Tooltip
+              key={service.name}
+              status={service.status as 'success' | 'warning' | 'error'}
+              title={service.name}
+              description={`Uptime: ${service.uptime}`}
+              placement="top"
+            >
+              <div className={`p-4 rounded-lg cursor-help ${
+                service.status === 'success' ? 'bg-green-100 border-green-200' :
+                service.status === 'warning' ? 'bg-yellow-100 border-yellow-200' :
+                'bg-red-100 border-red-200'
+              } border`}>
+                <div className="flex items-center gap-2">
+                  <div className={`w-3 h-3 rounded-full ${
+                    service.status === 'success' ? 'bg-green-500' :
+                    service.status === 'warning' ? 'bg-yellow-500' :
+                    'bg-red-500'
+                  }`}></div>
+                  <span className="text-sm font-medium">{service.name}</span>
+                </div>
+                <div className="text-xs text-gray-600 mt-1">{service.uptime}</div>
+              </div>
+            </Tooltip>
+          ))}
         </div>
-        <div className="text-sm text-gray-600">Profile information will be displayed here</div>
       </div>
 
-      <div className="grid grid-cols-3 gap-4">
-        {[
-          { icon: '📊', label: 'Analytics', tooltip: 'View detailed analytics' },
-          { icon: '⚙️', label: 'Settings', tooltip: 'Configure application settings' },
-          { icon: '👤', label: 'Profile', tooltip: 'Manage your profile' },
-          { icon: '📧', label: 'Messages', tooltip: 'Check your messages' },
-          { icon: '🔔', label: 'Notifications', tooltip: 'View notifications' },
-          { icon: '❓', label: 'Help', tooltip: 'Get help and support' },
-        ].map((item) => (
-          <Tooltip key={item.label} content={item.tooltip}>
-            <div className="p-4 bg-gray-50 rounded-lg cursor-pointer hover:bg-gray-100 transition-colors">
-              <div className="text-2xl mb-2">{item.icon}</div>
-              <div className="text-sm font-medium">{item.label}</div>
-            </div>
+      {/* Action buttons toolbar */}
+      <div className="space-y-4">
+        <h3 className="text-lg font-medium">Action Toolbar</h3>
+        <div className="flex gap-2 p-4 bg-gray-50 rounded-lg">
+          {[
+            { icon: '📝', action: 'Edit', shortcut: 'Ctrl+E' },
+            { icon: '📋', action: 'Copy', shortcut: 'Ctrl+C' },
+            { icon: '📤', action: 'Share', shortcut: 'Ctrl+S' },
+            { icon: '🗑️', action: 'Delete', shortcut: 'Del' },
+            { icon: '⚙️', action: 'Settings', shortcut: 'Ctrl+,' },
+          ].map((tool) => (
+            <Tooltip
+              key={tool.action}
+              title={tool.action}
+              description={`Shortcut: ${tool.shortcut}`}
+              size="sm"
+              delayOpen={300}
+            >
+              <button className="p-2 text-lg hover:bg-gray-200 rounded transition-colors">
+                {tool.icon}
+              </button>
+            </Tooltip>
+          ))}
+        </div>
+      </div>
+
+      {/* File explorer */}
+      <div className="space-y-4">
+        <h3 className="text-lg font-medium">File Explorer</h3>
+        <div className="space-y-2 max-w-md">
+          {[
+            { name: 'project-readme.md', size: '2.4 KB', modified: '2 hours ago', type: 'markdown' },
+            { name: 'components.tsx', size: '45.2 KB', modified: '1 day ago', type: 'typescript' },
+            { name: 'styles.css', size: '8.7 KB', modified: '3 days ago', type: 'css' },
+            { name: 'package.json', size: '1.8 KB', modified: '1 week ago', type: 'json' },
+          ].map((file) => (
+            <Tooltip
+              key={file.name}
+              placement="right"
+              renderContent={() => (
+                <div className="space-y-1">
+                  <div className="font-medium">{file.name}</div>
+                  <div className="text-xs opacity-90">Size: {file.size}</div>
+                  <div className="text-xs opacity-90">Modified: {file.modified}</div>
+                  <div className="text-xs opacity-90">Type: {file.type}</div>
+                </div>
+              )}
+            >
+              <div className="flex items-center gap-3 p-2 hover:bg-gray-100 rounded cursor-pointer">
+                <div className="text-lg">
+                  {file.type === 'markdown' ? '📄' : 
+                   file.type === 'typescript' ? '🔵' :
+                   file.type === 'css' ? '🎨' : '📦'}
+                </div>
+                <div className="flex-1">
+                  <div className="text-sm font-medium">{file.name}</div>
+                  <div className="text-xs text-gray-500">{file.size}</div>
+                </div>
+              </div>
+            </Tooltip>
+          ))}
+        </div>
+      </div>
+
+      {/* Chart data points */}
+      <div className="space-y-4">
+        <h3 className="text-lg font-medium">Interactive Chart</h3>
+        <div className="relative h-32 bg-gray-50 rounded-lg p-4">
+          <div className="flex items-end justify-between h-full">
+            {[
+              { value: 45, label: 'Jan', data: { sales: '$12,450', orders: 234 }},
+              { value: 62, label: 'Feb', data: { sales: '$18,250', orders: 312 }},
+              { value: 38, label: 'Mar', data: { sales: '$9,880', orders: 189 }},
+              { value: 71, label: 'Apr', data: { sales: '$22,100', orders: 387 }},
+              { value: 85, label: 'May', data: { sales: '$28,750', orders: 456 }},
+              { value: 59, label: 'Jun', data: { sales: '$16,900', orders: 298 }},
+            ].map((point, index) => (
+              <Tooltip
+                key={index}
+                title={point.label}
+                renderContent={() => (
+                  <div className="space-y-1">
+                    <div className="font-medium">{point.label} 2024</div>
+                    <div className="text-sm">Sales: {point.data.sales}</div>
+                    <div className="text-sm">Orders: {point.data.orders}</div>
+                  </div>
+                )}
+                placement="top"
+                // Adjust position for tall bars to avoid overlap
+                offsetY={point.value > 70 ? -10 : 0}
+              >
+                <div 
+                  className="bg-blue-500 hover:bg-blue-600 cursor-pointer rounded-t w-8 transition-colors"
+                  style={{ height: `${point.value}%` }}
+                />
+              </Tooltip>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Aligned icon buttons with adjusted tooltips */}
+      <div className="space-y-4">
+        <h3 className="text-lg font-medium">Toolbar with Position Adjustments</h3>
+        <div className="inline-flex rounded-lg border border-gray-200 divide-x divide-gray-200">
+          <Tooltip content="Bold" placement="top" nudgeLeft={20}>
+            <button className="p-2 hover:bg-gray-100 font-bold">B</button>
           </Tooltip>
-        ))}
+          <Tooltip content="Italic" placement="top" nudgeLeft={10}>
+            <button className="p-2 hover:bg-gray-100 italic">I</button>
+          </Tooltip>
+          <Tooltip content="Underline" placement="top">
+            <button className="p-2 hover:bg-gray-100 underline">U</button>
+          </Tooltip>
+          <Tooltip content="Strikethrough" placement="top" nudgeRight={10}>
+            <button className="p-2 hover:bg-gray-100 line-through">S</button>
+          </Tooltip>
+          <Tooltip content="Code" placement="top" nudgeRight={20}>
+            <button className="p-2 hover:bg-gray-100 font-mono text-sm">&lt;/&gt;</button>
+          </Tooltip>
+        </div>
+        <p className="text-xs text-gray-500">
+          Tooltips are nudged to avoid overlapping when shown close together
+        </p>
       </div>
     </div>
   ),
+}
+
+const ControlledExampleComponent = () => {
+  const [isOpen, setIsOpen] = useState(false)
+  const [manualTooltip, setManualTooltip] = useState(false)
+
+  return (
+    <div className="space-y-6">
+      <h3 className="text-lg font-medium mb-4">Controlled Tooltip Examples</h3>
+
+      <div className="space-y-4">
+        <div>
+          <h4 className="text-sm font-medium text-gray-700 mb-2">External Controls</h4>
+          <div className="flex items-center gap-4">
+            <Tooltip
+              isOpen={isOpen}
+              onOpenChange={setIsOpen}
+              content="This tooltip is controlled by external buttons"
+              trigger="manual"
+            >
+              <div className="px-4 py-2 bg-gray-100 rounded border">
+                Controlled Tooltip Target
+              </div>
+            </Tooltip>
+            
+            <div className="flex gap-2">
+              <button 
+                onClick={() => setIsOpen(true)}
+                className="px-3 py-1 bg-green-500 text-white rounded text-sm hover:bg-green-600"
+              >
+                Show
+              </button>
+              <button 
+                onClick={() => setIsOpen(false)}
+                className="px-3 py-1 bg-red-500 text-white rounded text-sm hover:bg-red-600"
+              >
+                Hide
+              </button>
+              <button 
+                onClick={() => setIsOpen(!isOpen)}
+                className="px-3 py-1 bg-blue-500 text-white rounded text-sm hover:bg-blue-600"
+              >
+                Toggle
+              </button>
+            </div>
+          </div>
+          <p className="text-xs text-gray-500 mt-2">
+            Current state: {isOpen ? 'Open' : 'Closed'}
+          </p>
+        </div>
+
+        <div>
+          <h4 className="text-sm font-medium text-gray-700 mb-2">Manual Trigger with State</h4>
+          <div className="flex items-center gap-4">
+            <Tooltip
+              isOpen={manualTooltip}
+              onOpenChange={setManualTooltip}
+              content="Manual tooltip with programmatic control"
+              trigger="manual"
+              status={manualTooltip ? "success" : "default"}
+            >
+              <button 
+                onClick={() => setManualTooltip(!manualTooltip)}
+                className={`px-4 py-2 rounded transition-colors ${
+                  manualTooltip 
+                    ? 'bg-green-500 text-white hover:bg-green-600' 
+                    : 'bg-gray-500 text-white hover:bg-gray-600'
+                }`}
+              >
+                {manualTooltip ? 'Hide Tooltip' : 'Show Tooltip'}
+              </button>
+            </Tooltip>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+export const ControlledExample: Story = {
+  render: () => <ControlledExampleComponent />,
 }

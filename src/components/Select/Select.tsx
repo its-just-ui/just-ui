@@ -1,16 +1,8 @@
 import React, { createContext, useContext, useState, useCallback, useRef, useMemo } from 'react'
 import { cn } from '@/utils'
+import type { SelectOption } from './types'
 
-// Main option interface - exported first to ensure visibility
-export interface SelectOption {
-  value: string | number
-  label: string
-  disabled?: boolean
-  group?: string
-  icon?: React.ReactNode
-  description?: string
-  [key: string]: unknown
-}
+// SelectOption type is imported from types.ts
 
 export interface SelectProps
   extends Omit<React.HTMLAttributes<HTMLDivElement>, 'onChange' | 'defaultValue'> {
@@ -1210,7 +1202,7 @@ export {
   SelectCompound,
   SelectInput,
   SelectDropdown,
-  SelectOptionComponent as SelectOption,
+  SelectOptionComponent,
   SelectEmpty,
 }
 export default SelectCompound
