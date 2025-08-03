@@ -15,8 +15,9 @@ import { Input } from '../Input'
 import { Badge } from '../Badge'
 import { Avatar } from '../Avatar'
 import { Select } from '../Select'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../Card'
 import { Pagination } from '../Pagination'
+import { Skeleton } from '../Skeleton'
+import { Card, CardHeader, CardBody } from '../Card'
 
 // Icon components to use in stories
 const Users: React.FC<{ className?: string }> = ({ className }) => (
@@ -1154,9 +1155,9 @@ const ExpansionComponent = () => {
       expandedContent={({ row }) => (
         <Card>
           <CardHeader>
-            <CardTitle>Additional Information</CardTitle>
+            <h3 className="text-lg font-semibold">Additional Information</h3>
           </CardHeader>
-          <CardContent>
+          <CardBody>
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <div className="text-sm font-medium text-muted-foreground">Department</div>
@@ -1172,10 +1173,10 @@ const ExpansionComponent = () => {
               </div>
               <div>
                 <div className="text-sm font-medium text-muted-foreground">Status</div>
-                <Badge>{row.status}</Badge>
+                <Badge>{row.status as string}</Badge>
               </div>
             </div>
-          </CardContent>
+          </CardBody>
         </Card>
       )}
     />
@@ -1395,7 +1396,7 @@ const FormIntegrationComponent = () => {
       header: 'Quantity',
       accessorKey: 'quantity',
       editable: true,
-      cell: ({ value }) => value as React.ReactNode,
+      cell: ({ value }) => value as string,
       editComponent: ({ value, onSave, onCancel }) => (
         <Input
           type="number"
@@ -1454,10 +1455,10 @@ const FormIntegrationComponent = () => {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Order Form</CardTitle>
-        <CardDescription>Edit items inline by double-clicking cells</CardDescription>
+        <h3 className="text-lg font-semibold">Order Form</h3>
+        <p className="text-sm text-gray-600">Edit items inline by double-clicking cells</p>
       </CardHeader>
-      <CardContent className="space-y-4">
+      <CardBody className="space-y-4">
         <div>
           <label className="text-sm font-medium">Customer Name</label>
           <Input
@@ -1483,7 +1484,7 @@ const FormIntegrationComponent = () => {
             <Button>Submit Order</Button>
           </div>
         </div>
-      </CardContent>
+      </CardBody>
     </Card>
   )
 }
@@ -1890,7 +1891,7 @@ const ServerPaginationComponent = () => {
       id: 'role',
       header: 'Role',
       accessorKey: 'role',
-      cell: ({ value }) => <Badge variant="ghost">{value as React.ReactNode}</Badge>,
+      cell: ({ value }) => <Badge variant="ghost">{value as string}</Badge>,
     },
     {
       id: 'department',
@@ -2247,7 +2248,7 @@ const AdvancedPaginationComponent = () => {
         }
         return (
           <Badge className={statusColors[value as keyof typeof statusColors]}>
-            {value as React.ReactNode}
+            {value as string}
           </Badge>
         )
       },
@@ -2635,7 +2636,7 @@ const VirtualPaginationComponent = () => {
       id: 'role',
       header: 'Role',
       accessorKey: 'role',
-      cell: ({ value }) => <Badge variant="ghost">{value}</Badge>,
+      cell: ({ value }) => <Badge variant="ghost">{value as string}</Badge>,
     },
     {
       id: 'department',
@@ -2647,9 +2648,7 @@ const VirtualPaginationComponent = () => {
       header: 'Status',
       accessorKey: 'status',
       cell: ({ value }) => (
-        <Badge variant={value === 'active' ? 'default' : 'outlined'}>
-          {value as React.ReactNode}
-        </Badge>
+        <Badge variant={value === 'active' ? 'default' : 'outlined'}>{value as string}</Badge>
       ),
     },
   ]
@@ -2775,4 +2774,236 @@ const VirtualPaginationComponent = () => {
 export const VirtualPagination: Story = {
   args: { data: [], columns: [] },
   render: () => <VirtualPaginationComponent />,
+}
+
+interface UserData extends RowData {
+  id: number
+  name: string
+  email: string
+  role: string
+  status: string
+  avatar: string
+}
+
+const SkeletonLoadingComponent = () => {
+  const [isLoading, setIsLoading] = useState(true)
+  const [data, setData] = useState<UserData[]>([])
+
+  const columns: ColumnDef<UserData>[] = [
+    {
+      id: 'avatar',
+      header: '',
+      cell: ({ row }) =>
+        isLoading ? (
+          <Skeleton variant="avatar" size="md" />
+        ) : (
+          <Avatar src={row.avatar} alt={row.name} size="md" />
+        ),
+      width: 60,
+    },
+    {
+      id: 'name',
+      header: 'Name',
+      accessorKey: 'name',
+      cell: ({ row }) =>
+        isLoading ? (
+          <Skeleton variant="text" width={120} />
+        ) : (
+          <div className="font-medium">{row.name}</div>
+        ),
+    },
+    {
+      id: 'email',
+      header: 'Email',
+      accessorKey: 'email',
+      cell: ({ row }) =>
+        isLoading ? (
+          <Skeleton variant="text" width={180} />
+        ) : (
+          <div className="text-muted-foreground">{row.email}</div>
+        ),
+    },
+    {
+      id: 'role',
+      header: 'Role',
+      accessorKey: 'role',
+      cell: ({ row }) =>
+        isLoading ? (
+          <Skeleton variant="button" size="sm" width={80} />
+        ) : (
+          <Badge variant="outlined">{row.role}</Badge>
+        ),
+    },
+    {
+      id: 'status',
+      header: 'Status',
+      accessorKey: 'status',
+      cell: ({ row }) =>
+        isLoading ? (
+          <Skeleton variant="rounded" width={60} height={20} />
+        ) : (
+          <Badge variant={row.status === 'Active' ? 'default' : 'outlined'}>{row.status}</Badge>
+        ),
+    },
+    {
+      id: 'actions',
+      header: 'Actions',
+      cell: ({ row: _row }) =>
+        isLoading ? (
+          <div className="flex gap-2">
+            <Skeleton variant="button" size="sm" width={60} />
+            <Skeleton variant="button" size="sm" width={60} />
+          </div>
+        ) : (
+          <div className="flex gap-2">
+            <Button variant="outlined" size="sm">
+              Edit
+            </Button>
+            <Button variant="outlined" size="sm">
+              Delete
+            </Button>
+          </div>
+        ),
+    },
+  ]
+
+  const skeletonData: UserData[] = Array.from({ length: 5 }, (_, index) => ({
+    id: index + 1,
+    name: '',
+    email: '',
+    role: '',
+    status: '',
+    avatar: '',
+  }))
+
+  useEffect(() => {
+    const actualDataRef = [
+      {
+        id: 1,
+        name: 'John Doe',
+        email: 'john@example.com',
+        role: 'Admin',
+        status: 'Active',
+        avatar: 'https://github.com/shadcn.png',
+      },
+      {
+        id: 2,
+        name: 'Jane Smith',
+        email: 'jane@example.com',
+        role: 'User',
+        status: 'Active',
+        avatar: 'https://github.com/vercel.png',
+      },
+      {
+        id: 3,
+        name: 'Bob Johnson',
+        email: 'bob@example.com',
+        role: 'Editor',
+        status: 'Inactive',
+        avatar: 'https://github.com/github.png',
+      },
+      {
+        id: 4,
+        name: 'Alice Brown',
+        email: 'alice@example.com',
+        role: 'User',
+        status: 'Active',
+        avatar: 'https://github.com/nextjs.png',
+      },
+      {
+        id: 5,
+        name: 'Charlie Wilson',
+        email: 'charlie@example.com',
+        role: 'Admin',
+        status: 'Active',
+        avatar: 'https://github.com/tailwindcss.png',
+      },
+    ]
+
+    const timer = setTimeout(() => {
+      setData(actualDataRef)
+      setIsLoading(false)
+    }, 2000)
+
+    return () => clearTimeout(timer)
+  }, [])
+
+  const handleReload = () => {
+    setIsLoading(true)
+    setData([])
+    setTimeout(() => {
+      const reloadData: UserData[] = [
+        {
+          id: 1,
+          name: 'John Doe',
+          email: 'john@example.com',
+          role: 'Admin',
+          status: 'Active',
+          avatar: 'https://github.com/shadcn.png',
+        },
+        {
+          id: 2,
+          name: 'Jane Smith',
+          email: 'jane@example.com',
+          role: 'User',
+          status: 'Active',
+          avatar: 'https://github.com/vercel.png',
+        },
+        {
+          id: 3,
+          name: 'Bob Johnson',
+          email: 'bob@example.com',
+          role: 'Editor',
+          status: 'Inactive',
+          avatar: 'https://github.com/github.png',
+        },
+        {
+          id: 4,
+          name: 'Alice Brown',
+          email: 'alice@example.com',
+          role: 'User',
+          status: 'Active',
+          avatar: 'https://github.com/nextjs.png',
+        },
+        {
+          id: 5,
+          name: 'Charlie Wilson',
+          email: 'charlie@example.com',
+          role: 'Admin',
+          status: 'Active',
+          avatar: 'https://github.com/tailwindcss.png',
+        },
+      ]
+      setData(reloadData)
+      setIsLoading(false)
+    }, 2000)
+  }
+
+  return (
+    <div className="space-y-4">
+      <div className="flex justify-between items-center">
+        <div>
+          <h3 className="text-lg font-semibold">Users Table</h3>
+          <p className="text-sm text-muted-foreground">
+            Example of skeleton loading states in table cells
+          </p>
+        </div>
+        <Button onClick={handleReload} disabled={isLoading}>
+          {isLoading ? 'Loading...' : 'Reload Data'}
+        </Button>
+      </div>
+
+      <Table
+        data={isLoading ? skeletonData : data}
+        columns={columns as any}
+        variant="default"
+        size="md"
+      />
+    </div>
+  )
+}
+
+export const SkeletonLoading: Story = {
+  args: { data: [], columns: [] },
+  render: () => <SkeletonLoadingComponent />,
 }
