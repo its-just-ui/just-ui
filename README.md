@@ -577,7 +577,118 @@ import { ToggleButtons } from 'just-ui'
 </ToggleButtons>
 ```
 
-**Features:** Single/multiple selection, custom icons, disabled states
+### Cascade
+
+Hierarchical dropdown/select component for nested options, ideal for location pickers, category trees, and more.
+
+```tsx
+import { Cascade } from 'just-ui'
+
+const options = [
+  {
+    label: 'Asia',
+    value: 'asia',
+    children: [
+      {
+        label: 'India',
+        value: 'india',
+        children: [
+          { label: 'Delhi', value: 'delhi' },
+          { label: 'Mumbai', value: 'mumbai' }
+        ]
+      },
+      {
+        label: 'Japan',
+        value: 'japan',
+        children: [
+          { label: 'Tokyo', value: 'tokyo' },
+          { label: 'Osaka', value: 'osaka' }
+        ]
+      }
+    ]
+  },
+  {
+    label: 'Europe',
+    value: 'europe',
+    children: [
+      {
+        label: 'Germany',
+        value: 'germany',
+        children: [
+          { label: 'Berlin', value: 'berlin' },
+          { label: 'Munich', value: 'munich' }
+        ]
+      }
+    ]
+  }
+]
+
+// Basic usage
+<Cascade
+  options={options}
+  placeholder="Select location"
+  onChange={(value) => console.log(value)}
+  searchable
+  clearable
+/>
+
+// Advanced usage with multiple selection
+<Cascade
+  options={options}
+  multiple
+  placeholder="Select multiple locations"
+  onChange={(values) => console.log(values)}
+  searchable
+  clearable
+  showPath
+  maxLevels={3}
+  variant="filled"
+  size="lg"
+/>
+
+// With custom rendering
+<Cascade
+  options={options}
+  renderOption={(option, isSelected, level) => (
+    <div className="flex items-center gap-2">
+      <span>{option.label}</span>
+      {option.icon && <span>{option.icon}</span>}
+      {isSelected && <CheckIcon />}
+    </div>
+  )}
+  renderValue={(value) => (
+    <span className="font-medium">{value?.label}</span>
+  )}
+/>
+```
+
+**Key Features:**
+
+- **Multi-level Selection:** Navigate through nested options with unlimited depth
+- **Search & Filter:** Search across all levels with real-time filtering
+- **Multiple Selection:** Support for single and multiple value selection
+- **Custom Rendering:** Customize option and value display with render functions
+- **Keyboard Navigation:** Full keyboard support with arrow keys and shortcuts
+- **Accessibility:** ARIA compliant with screen reader support
+- **Loading States:** Built-in loading indicators for async data
+- **Path Display:** Show selected path with customizable separators
+- **Form Integration:** Works seamlessly with form libraries
+- **Validation:** Error states and helper text support
+
+**Props:**
+
+**Core:** `options`, `placeholder`, `onChange`, `defaultValue`, `value`  
+**Selection:** `multiple`, `maxLevels`, `showPath`  
+**Interaction:** `searchable`, `clearable`, `disabled`, `loading`  
+**Styling:** `variant`, `size`, `status`, `placement`  
+**Customization:** `renderOption`, `renderValue`, `renderEmpty`, `renderPath`  
+**Animation:** `transition`, `transitionDuration`  
+**Icons:** `dropdownIcon`, `clearIcon`, `loadingIcon`  
+**Messages:** `emptyMessage`, `loadingMessage`, `helperText`, `errorMessage`
+
+**Variants:** `default`, `filled`, `outlined`, `ghost`, `underlined`  
+**Sizes:** `sm`, `md`, `lg`  
+**Status:** `default`, `success`, `warning`, `error`
 
 ### Tooltip
 
