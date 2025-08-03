@@ -2,6 +2,13 @@
 
 A modern, accessible, and customizable React UI component library built with TypeScript and Tailwind CSS. Create beautiful, consistent user interfaces with ease.
 
+🚀 **Build faster** with 26+ production-ready React components  
+⚡ **Lightweight** and tree-shakeable with zero runtime dependencies  
+🎨 **Fully customizable** with Tailwind CSS and CSS variables  
+♿ **Accessible by default** following WAI-ARIA best practices  
+📱 **Responsive** with mobile-first design approach  
+🔧 **TypeScript ready** with complete type definitions
+
 [![npm version](https://img.shields.io/npm/v/its-just-ui.svg?style=flat)](https://www.npmjs.com/package/its-just-ui)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![TypeScript](https://img.shields.io/badge/TypeScript-Ready-blue.svg)](https://www.typescriptlang.org/)
