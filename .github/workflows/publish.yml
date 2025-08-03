@@ -12,11 +12,11 @@ jobs:
     permissions:
       contents: write
       packages: write
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
         with:
-          token: ${{ secrets.GH_PAT }}
           fetch-depth: 0
 
       - name: Setup Node.js
@@ -37,22 +37,18 @@ jobs:
       - name: Determine version bump type
         id: bump-type
         run: |
-          # Default to patch
           VERSION_TYPE="patch"
-          
-          # Check if this is a merge commit
+
           if [ "$(git rev-list --merges -n 1 HEAD)" == "$(git rev-parse HEAD)" ]; then
-            # Get PR number from merge commit
             PR_NUMBER=$(git log -1 --pretty=%B | grep -oP '#\K\d+' | head -1)
-            
+
             if [ ! -z "$PR_NUMBER" ]; then
-              # Check PR labels using GitHub API
               LABELS=$(curl -s \
-                -H "Authorization: token ${{ secrets.GH_PAT }}" \
+                -H "Authorization: token ${{ secrets.GH_ORG_PAT }}" \
                 -H "Accept: application/vnd.github.v3+json" \
                 "https://api.github.com/repos/${{ github.repository }}/pulls/${PR_NUMBER}" \
                 | jq -r '.labels[].name' | tr '\n' ' ')
-              
+
               if [[ "$LABELS" == *"major"* ]]; then
                 VERSION_TYPE="major"
               elif [[ "$LABELS" == *"minor"* ]]; then
@@ -62,15 +58,14 @@ jobs:
               fi
             fi
           fi
-          
-          # Fallback to commit message parsing
+
           COMMIT_MSG=$(git log -1 --pretty=%B)
           if [[ "$COMMIT_MSG" == *"BREAKING CHANGE"* ]] || [[ "$COMMIT_MSG" == *"!"* ]]; then
             VERSION_TYPE="major"
           elif [[ "$COMMIT_MSG" == *"feat:"* ]] || [[ "$COMMIT_MSG" == *"feat("* ]]; then
             VERSION_TYPE="minor"
           fi
-          
+
           echo "type=$VERSION_TYPE" >> $GITHUB_OUTPUT
           echo "Determined version bump type: $VERSION_TYPE"
 
@@ -96,21 +91,19 @@ jobs:
           git add package.json package-lock.json
           git commit -m "chore: release v${{ steps.version-bump.outputs.new_version }} [skip ci]"
 
-      - name: Create and push Git tag using Org PAT
+      - name: Push commit and tag using PAT
         env:
           GH_TOKEN: ${{ secrets.GH_ORG_PAT }}
           TAG: v${{ steps.version-bump.outputs.new_version }}
         run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-      
-          # Use the token to authenticate push access
           git remote set-url origin https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }}.git
-      
-          # Delete tag if it exists (locally and remotely)
+
+          git push origin HEAD:${{ github.ref_name }}
+
+          # Delete existing tag if needed
           git tag -d $TAG 2>/dev/null || true
           git push origin :refs/tags/$TAG 2>/dev/null || true
-      
+
           # Create and push new tag
           git tag $TAG
           git push origin $TAG
@@ -129,11 +122,11 @@ jobs:
           release_name: Release v${{ steps.version-bump.outputs.new_version }}
           body: |
             ## What's Changed
-            
+
             Version bump type: ${{ steps.bump-type.outputs.type }}
             Previous version: ${{ steps.check-version.outputs.current_version }}
             New version: ${{ steps.version-bump.outputs.new_version }}
-            
+
             See [commit history](https://github.com/${{ github.repository }}/compare/v${{ steps.check-version.outputs.current_version }}...v${{ steps.version-bump.outputs.new_version }}) for details.
           draft: false
           prerelease: false
