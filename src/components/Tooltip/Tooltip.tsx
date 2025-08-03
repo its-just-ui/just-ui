@@ -1,189 +1,28 @@
-import React, {
-  createContext,
-  useContext,
-  useState,
-  useCallback,
-  forwardRef,
-  useRef,
-  useEffect,
-  useMemo,
-  useId,
-} from 'react'
+import React, { useState, useCallback, forwardRef, useRef, useEffect, useMemo, useId } from 'react'
 import { createPortal } from 'react-dom'
 import { cn } from '@/utils'
+import { TooltipContext } from './context'
+import { useTooltipContext } from './hooks'
+import type {
+  TooltipProps,
+  TooltipTriggerProps,
+  TooltipContentProps,
+  TooltipPlacement,
+} from './types'
+import type { TooltipContextValue } from './context'
 
-// Context for sharing state between Tooltip components
-interface TooltipContextValue {
-  isOpen: boolean
-  disabled: boolean
-  size: TooltipSize
-  variant: TooltipVariant
-  status: TooltipStatus
-  placement: TooltipPlacement
-  onOpenChange?: (isOpen: boolean) => void
-  triggerProps: React.HTMLAttributes<HTMLElement>
-  contentId: string
-}
-
-const TooltipContext = createContext<TooltipContextValue | null>(null)
-
-const useTooltipContext = () => {
-  const context = useContext(TooltipContext)
-  if (!context) {
-    throw new Error('Tooltip sub-components must be used within a Tooltip')
-  }
-  return context
-}
-
-// Type definitions
-export type TooltipVariant = 'default' | 'filled' | 'outlined' | 'flat' | 'elevated'
-export type TooltipSize = 'sm' | 'md' | 'lg'
-export type TooltipStatus = 'default' | 'success' | 'warning' | 'error'
-export type TooltipPlacement =
-  | 'top'
-  | 'bottom'
-  | 'left'
-  | 'right'
-  | 'top-start'
-  | 'top-end'
-  | 'bottom-start'
-  | 'bottom-end'
-  | 'left-start'
-  | 'left-end'
-  | 'right-start'
-  | 'right-end'
-
-export type TooltipTransition = 'none' | 'fade' | 'slide' | 'scale' | 'bounce'
-
-export interface TooltipCustomStyles {
-  // Border styles
-  borderWidth?: string
-  borderColor?: string
-  borderStyle?: string
-  borderRadius?: string
-
-  // Typography
-  fontSize?: string
-  fontWeight?: string
-  fontFamily?: string
-  textColor?: string
-  placeholderColor?: string
-
-  // Colors
-  backgroundColor?: string
-
-  // Focus styles
-  focusRingColor?: string
-  focusRingWidth?: string
-  focusRingOffset?: string
-  focusBorderColor?: string
-  focusBackgroundColor?: string
-
-  // Shadows
-  boxShadow?: string
-  focusBoxShadow?: string
-
-  // Spacing
-  padding?: string
-  paddingX?: string
-  paddingY?: string
-
-  // Sub-component styles
-  arrowStyles?: React.CSSProperties
-  contentStyles?: React.CSSProperties
-  triggerStyles?: React.CSSProperties
-}
-
-export interface TooltipProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'content'> {
-  // Core props
-  isOpen?: boolean
-  defaultIsOpen?: boolean
-  onOpenChange?: (isOpen: boolean) => void
-  disabled?: boolean
-
-  // Content props
-  content?: React.ReactNode
-  title?: string
-  description?: string
-
-  // Visual props
-  variant?: TooltipVariant
-  size?: TooltipSize
-  status?: TooltipStatus
-
-  // Positioning props
-  placement?: TooltipPlacement
-  offset?: number
-  delayOpen?: number
-  delayClose?: number
-  autoPlacement?: boolean
-  
-  // Fine-tuning position props
-  offsetX?: number
-  offsetY?: number
-  nudgeLeft?: number
-  nudgeRight?: number
-  nudgeTop?: number
-  nudgeBottom?: number
-
-  // Trigger props
-  trigger?: 'hover' | 'click' | 'focus' | 'manual'
-  showArrow?: boolean
-  arrowSize?: number
-  arrowColor?: string
-
-  // Animation props
-  transition?: TooltipTransition
-  transitionDuration?: number
-
-  // Container styles
-  containerClassName?: string
-  containerStyle?: React.CSSProperties
-  maxWidth?: string
-  minWidth?: string
-  width?: string
-
-  // Custom styles
-  customStyles?: TooltipCustomStyles
-
-  // Content styles
-  contentBackgroundColor?: string
-  contentBorderWidth?: string
-  contentBorderColor?: string
-  contentBorderRadius?: string
-  contentPadding?: string
-  contentBoxShadow?: string
-
-  // Typography styles
-  titleColor?: string
-  titleFontSize?: string
-  titleFontWeight?: string
-  titleFontFamily?: string
-  descriptionColor?: string
-  descriptionFontSize?: string
-  descriptionFontWeight?: string
-  descriptionFontFamily?: string
-
-  // Loading state
-  loading?: boolean
-  loadingMessage?: string
-
-  // Empty state
-  emptyMessage?: string
-
-  // Required field support
-  required?: boolean
-
-  // Labels and helper text
-  label?: React.ReactNode
-  helperText?: React.ReactNode
-
-  // Custom render functions
-  renderContent?: (isOpen: boolean) => React.ReactNode
-  renderTrigger?: (isOpen: boolean, triggerProps: React.HTMLAttributes<HTMLElement>) => React.ReactNode
-
-  children?: React.ReactNode
-}
+// Re-export types for convenience
+export type {
+  TooltipProps,
+  TooltipTriggerProps,
+  TooltipContentProps,
+  TooltipSize,
+  TooltipVariant,
+  TooltipStatus,
+  TooltipPlacement,
+  TooltipTransition,
+  TooltipCustomStyles,
+} from './types'
 
 const Tooltip = forwardRef<HTMLDivElement, TooltipProps>(
   (
@@ -336,21 +175,25 @@ const Tooltip = forwardRef<HTMLDivElement, TooltipProps>(
           border: contentBorderWidth
             ? `${contentBorderWidth} solid ${contentBorderColor || getStatusColors.border}`
             : 'none',
-          boxShadow: contentBoxShadow || '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
+          boxShadow:
+            contentBoxShadow ||
+            '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
         },
         filled: {
           background: contentBackgroundColor || getStatusColors.background,
           border: contentBorderWidth
             ? `${contentBorderWidth} solid ${contentBorderColor || getStatusColors.border}`
             : 'none',
-          boxShadow: contentBoxShadow || '0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)',
+          boxShadow:
+            contentBoxShadow || '0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)',
         },
         outlined: {
           background: contentBackgroundColor || 'rgba(255, 255, 255, 0.95)',
           border: contentBorderWidth
             ? `${contentBorderWidth} solid ${contentBorderColor || getStatusColors.border}`
             : `1px solid ${getStatusColors.border}`,
-          boxShadow: contentBoxShadow || '0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)',
+          boxShadow:
+            contentBoxShadow || '0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)',
         },
         flat: {
           background: contentBackgroundColor || getStatusColors.background,
@@ -364,12 +207,21 @@ const Tooltip = forwardRef<HTMLDivElement, TooltipProps>(
           border: contentBorderWidth
             ? `${contentBorderWidth} solid ${contentBorderColor || getStatusColors.border}`
             : 'none',
-          boxShadow: contentBoxShadow || '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
+          boxShadow:
+            contentBoxShadow ||
+            '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
         },
       }
 
       return variantStyles[variant]
-    }, [variant, contentBackgroundColor, contentBorderWidth, contentBorderColor, contentBoxShadow, getStatusColors])
+    }, [
+      variant,
+      contentBackgroundColor,
+      contentBorderWidth,
+      contentBorderColor,
+      contentBoxShadow,
+      getStatusColors,
+    ])
 
     // Calculate position relative to trigger
     const calculatePosition = useCallback(() => {
@@ -478,7 +330,7 @@ const Tooltip = forwardRef<HTMLDivElement, TooltipProps>(
       // Apply fine-tuning offsets
       left += offsetX
       top += offsetY
-      
+
       // Apply nudge adjustments (nudgeRight moves right, nudgeLeft moves left)
       left += nudgeRight - nudgeLeft
       top += nudgeBottom - nudgeTop
@@ -491,7 +343,17 @@ const Tooltip = forwardRef<HTMLDivElement, TooltipProps>(
         top: top + scrollY,
         left: left + scrollX,
       })
-    }, [currentPlacement, offset, autoPlacement, offsetX, offsetY, nudgeLeft, nudgeRight, nudgeTop, nudgeBottom])
+    }, [
+      currentPlacement,
+      offset,
+      autoPlacement,
+      offsetX,
+      offsetY,
+      nudgeLeft,
+      nudgeRight,
+      nudgeTop,
+      nudgeBottom,
+    ])
 
     // Handle open/close
     const handleOpen = useCallback(() => {
@@ -599,79 +461,94 @@ const Tooltip = forwardRef<HTMLDivElement, TooltipProps>(
     }, [])
 
     // Trigger props
-    const triggerProps = useMemo(() => ({
-      ref: triggerRef as React.Ref<HTMLDivElement>,
-      onMouseEnter: handleMouseEnter,
-      onMouseLeave: handleMouseLeave,
-      onFocus: handleFocus,
-      onBlur: handleBlur,
-      onClick: handleClick,
-      tabIndex: trigger === 'focus' ? 0 : undefined,
-      'aria-describedby': isOpen ? contentId : undefined,
-      'aria-expanded': trigger === 'click' ? isOpen : undefined,
-    }), [handleMouseEnter, handleMouseLeave, handleFocus, handleBlur, handleClick, trigger, isOpen, contentId])
+    const triggerProps = useMemo(
+      () => ({
+        ref: triggerRef as React.Ref<HTMLDivElement>,
+        onMouseEnter: handleMouseEnter,
+        onMouseLeave: handleMouseLeave,
+        onFocus: handleFocus,
+        onBlur: handleBlur,
+        onClick: handleClick,
+        tabIndex: trigger === 'focus' ? 0 : undefined,
+        'aria-describedby': isOpen ? contentId : undefined,
+        'aria-expanded': trigger === 'click' ? isOpen : undefined,
+      }),
+      [
+        handleMouseEnter,
+        handleMouseLeave,
+        handleFocus,
+        handleBlur,
+        handleClick,
+        trigger,
+        isOpen,
+        contentId,
+      ]
+    )
 
     // Tooltip content styles
-    const contentStyles: React.CSSProperties = useMemo(() => ({
-      position: 'absolute',
-      zIndex: 9999,
-      top: position.top,
-      left: position.left,
-      backgroundColor: getDefaultStyles.background,
-      border: getDefaultStyles.border,
-      borderRadius: contentBorderRadius || customStyles.borderRadius || '0.375rem',
-      padding: contentPadding || customStyles.padding || getSizeDimensions.padding,
-      boxShadow: getDefaultStyles.boxShadow,
-      maxWidth: maxWidth || getSizeDimensions.maxWidth,
-      minWidth: minWidth,
-      width: width,
-      fontSize: customStyles.fontSize || getSizeDimensions.fontSize,
-      fontWeight: customStyles.fontWeight,
-      fontFamily: customStyles.fontFamily,
-      color: customStyles.textColor || getStatusColors.text,
-      opacity: isOpen ? 1 : 0,
-      visibility: isOpen ? 'visible' : 'hidden',
-      pointerEvents: isOpen ? 'auto' : 'none',
-      transition:
-        transition === 'none'
-          ? 'none'
-          : transition === 'bounce'
-            ? `all ${transitionDuration}ms cubic-bezier(0.68, -0.55, 0.265, 1.55)`
-            : transition === 'scale'
-              ? `all ${transitionDuration}ms ease-in-out, transform ${transitionDuration}ms ease-in-out`
-              : `all ${transitionDuration}ms ease-in-out`,
-      transform:
-        transition === 'scale'
-          ? isOpen
-            ? 'scale(1)'
-            : 'scale(0.8)'
-          : transition === 'slide'
+    const contentStyles: React.CSSProperties = useMemo(
+      () => ({
+        position: 'absolute',
+        zIndex: 9999,
+        top: position.top,
+        left: position.left,
+        backgroundColor: getDefaultStyles.background,
+        border: getDefaultStyles.border,
+        borderRadius: contentBorderRadius || customStyles.borderRadius || '0.375rem',
+        padding: contentPadding || customStyles.padding || getSizeDimensions.padding,
+        boxShadow: getDefaultStyles.boxShadow,
+        maxWidth: maxWidth || getSizeDimensions.maxWidth,
+        minWidth: minWidth,
+        width: width,
+        fontSize: customStyles.fontSize || getSizeDimensions.fontSize,
+        fontWeight: customStyles.fontWeight,
+        fontFamily: customStyles.fontFamily,
+        color: customStyles.textColor || getStatusColors.text,
+        opacity: isOpen ? 1 : 0,
+        visibility: isOpen ? 'visible' : 'hidden',
+        pointerEvents: isOpen ? 'auto' : 'none',
+        transition:
+          transition === 'none'
+            ? 'none'
+            : transition === 'bounce'
+              ? `all ${transitionDuration}ms cubic-bezier(0.68, -0.55, 0.265, 1.55)`
+              : transition === 'scale'
+                ? `all ${transitionDuration}ms ease-in-out, transform ${transitionDuration}ms ease-in-out`
+                : `all ${transitionDuration}ms ease-in-out`,
+        transform:
+          transition === 'scale'
             ? isOpen
-              ? 'translateY(0)'
-              : `translateY(-${offset}px)`
-            : 'none',
-      lineHeight: '1.4',
-      whiteSpace: size === 'sm' ? 'nowrap' : 'normal',
-      ...customStyles.contentStyles,
-      ...style,
-    }), [
-      position,
-      getDefaultStyles,
-      contentBorderRadius,
-      contentPadding,
-      maxWidth,
-      minWidth,
-      width,
-      getSizeDimensions,
-      getStatusColors,
-      isOpen,
-      transition,
-      transitionDuration,
-      offset,
-      size,
-      customStyles,
-      style,
-    ])
+              ? 'scale(1)'
+              : 'scale(0.8)'
+            : transition === 'slide'
+              ? isOpen
+                ? 'translateY(0)'
+                : `translateY(-${offset}px)`
+              : 'none',
+        lineHeight: '1.4',
+        whiteSpace: size === 'sm' ? 'nowrap' : 'normal',
+        ...customStyles.contentStyles,
+        ...style,
+      }),
+      [
+        position,
+        getDefaultStyles,
+        contentBorderRadius,
+        contentPadding,
+        maxWidth,
+        minWidth,
+        width,
+        getSizeDimensions,
+        getStatusColors,
+        isOpen,
+        transition,
+        transitionDuration,
+        offset,
+        size,
+        customStyles,
+        style,
+      ]
+    )
 
     // Arrow styles
     const getArrowStyles = useCallback(() => {
@@ -727,7 +604,15 @@ const Tooltip = forwardRef<HTMLDivElement, TooltipProps>(
       }
 
       return { ...arrowStyles, ...customStyles.arrowStyles }
-    }, [showArrow, arrowColor, arrowSize, currentPlacement, getStatusColors, getSizeDimensions, customStyles.arrowStyles])
+    }, [
+      showArrow,
+      arrowColor,
+      arrowSize,
+      currentPlacement,
+      getStatusColors,
+      getSizeDimensions,
+      customStyles.arrowStyles,
+    ])
 
     const renderTooltipContent = () => {
       if (renderContent) {
@@ -846,10 +731,6 @@ const Tooltip = forwardRef<HTMLDivElement, TooltipProps>(
 Tooltip.displayName = 'Tooltip'
 
 // Export a TooltipTrigger component for compound usage
-export interface TooltipTriggerProps extends React.HTMLAttributes<HTMLDivElement> {
-  children: React.ReactNode
-}
-
 const TooltipTrigger = forwardRef<HTMLDivElement, TooltipTriggerProps>(
   ({ className, children, ...props }, ref) => {
     const { triggerProps } = useTooltipContext()
@@ -865,10 +746,6 @@ const TooltipTrigger = forwardRef<HTMLDivElement, TooltipTriggerProps>(
 TooltipTrigger.displayName = 'TooltipTrigger'
 
 // Export a TooltipContent component for compound usage
-export interface TooltipContentProps extends React.HTMLAttributes<HTMLDivElement> {
-  children: React.ReactNode
-}
-
 const TooltipContent = forwardRef<HTMLDivElement, TooltipContentProps>(
   ({ className, children, style, ...props }, ref) => {
     const { isOpen, contentId } = useTooltipContext()
@@ -907,4 +784,4 @@ const TooltipContent = forwardRef<HTMLDivElement, TooltipContentProps>(
 
 TooltipContent.displayName = 'TooltipContent'
 
-export { Tooltip, TooltipTrigger, TooltipContent, useTooltipContext }
+export { Tooltip, TooltipTrigger, TooltipContent }

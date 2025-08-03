@@ -1,6 +1,8 @@
-import React, { createContext, useContext, useState, useCallback, useRef, useMemo } from 'react'
+import React, { useState, useCallback, useRef, useMemo } from 'react'
 import { cn } from '@/utils'
 import type { SelectOption } from './types'
+import { SelectContext, type SelectContextValue } from './context'
+import { useSelect } from './hooks'
 
 // SelectOption type is imported from types.ts
 
@@ -131,98 +133,6 @@ export interface SelectProps
   'aria-describedby'?: string
   'aria-invalid'?: boolean
   'aria-required'?: boolean
-}
-
-export interface SelectContextValue {
-  // State
-  isOpen: boolean
-  setIsOpen: (open: boolean) => void
-  value: SelectOption | SelectOption[] | null
-  onChange: (value: SelectOption | SelectOption[] | null) => void
-  searchQuery: string
-  setSearchQuery: (query: string) => void
-  highlightedIndex: number
-  setHighlightedIndex: React.Dispatch<React.SetStateAction<number>>
-
-  // Options
-  options: SelectOption[]
-  filteredOptions: SelectOption[]
-
-  // Configuration
-  multiple: boolean
-  disabled: boolean
-  loading: boolean
-  searchable: boolean
-  clearable: boolean
-  variant: string
-  size: string
-  status: string
-  transition: string
-  transitionDuration: number
-  placement: string
-
-  // Messages
-  emptyMessage: string
-  loadingMessage: string
-
-  // Custom renders
-  renderOption?: (option: SelectOption, isSelected: boolean) => React.ReactNode
-  renderValue?: (value: SelectOption | SelectOption[]) => React.ReactNode
-  renderEmpty?: () => React.ReactNode
-
-  // Style props
-  borderWidth?: string
-  borderColor?: string
-  borderStyle?: string
-  borderRadius?: string
-  fontSize?: string
-  fontWeight?: string
-  fontFamily?: string
-  backgroundColor?: string
-  textColor?: string
-  placeholderColor?: string
-  focusRingColor?: string
-  focusRingWidth?: string
-  focusRingOffset?: string
-  focusBorderColor?: string
-  focusBackgroundColor?: string
-  boxShadow?: string
-  focusBoxShadow?: string
-  padding?: string
-  paddingX?: string
-  paddingY?: string
-  dropdownBackgroundColor?: string
-  dropdownBorderColor?: string
-  dropdownBorderWidth?: string
-  dropdownBorderRadius?: string
-  dropdownBoxShadow?: string
-  dropdownZIndex?: string
-  optionPadding?: string
-  optionHoverBackgroundColor?: string
-  optionSelectedBackgroundColor?: string
-  optionSelectedTextColor?: string
-  optionDisabledOpacity?: string
-  iconColor?: string
-  clearIconColor?: string
-  dropdownIconColor?: string
-  loadingIconColor?: string
-
-  // Event handlers
-  onFocus?: () => void
-  onBlur?: () => void
-  onOpen?: () => void
-  onClose?: () => void
-  onSearch?: (query: string) => void
-}
-
-const SelectContext = createContext<SelectContextValue | undefined>(undefined)
-
-export const useSelect = () => {
-  const context = useContext(SelectContext)
-  if (!context) {
-    throw new Error('useSelect must be used within a Select component')
-  }
-  return context
 }
 
 const Select = React.forwardRef<HTMLDivElement, SelectProps>(
@@ -1198,11 +1108,5 @@ SelectCompound.Dropdown = SelectDropdown
 SelectCompound.Option = SelectOptionComponent
 SelectCompound.Empty = SelectEmpty
 
-export {
-  SelectCompound,
-  SelectInput,
-  SelectDropdown,
-  SelectOptionComponent,
-  SelectEmpty,
-}
+export { SelectCompound, SelectInput, SelectDropdown, SelectOptionComponent, SelectEmpty }
 export default SelectCompound
