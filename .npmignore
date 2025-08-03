@@ -1,0 +1,38 @@
+# Source files
+src/
+*.stories.tsx
+*.test.tsx
+
+# Config files
+.husky/
+.storybook/
+commitlint.config.js
+postcss.config.js
+tailwind.config.js
+tsconfig.json
+tsconfig.node.json
+vite.config.ts
+.eslintrc.json
+.prettierrc
+
+# Build artifacts
+*.tsbuildinfo
+
+# Documentation
+docs/
+CONTRIBUTING.md
+
+# Git
+.git/
+.gitignore
+
+# Dependencies
+node_modules/
+
+# IDE
+.vscode/
+.idea/
+
+# Misc
+.DS_Store
+*.log

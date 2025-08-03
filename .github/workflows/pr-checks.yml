@@ -1,0 +1,55 @@
+name: PR Checks
+
+on:
+  pull_request:
+    branches:
+      - master
+      - main
+
+jobs:
+  quality-checks:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Cache dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run linter
+        run: npm run lint
+
+      - name: Check formatting
+        run: npm run format:check
+
+      - name: Build
+        run: npm run build
+
+      - name: Run tests
+        run: npm test
+        continue-on-error: true  # Remove this line once you have tests
+
+      - name: Check package size
+        run: |
+          npm pack --dry-run
+          SIZE=$(npm pack --dry-run 2>&1 | grep "unpacked size" | awk '{print $3}')
+          echo "Package size: $SIZE"
+          # Convert to KB for comparison
+          SIZE_KB=$(echo $SIZE | sed 's/[^0-9.]//g')
+          if (( $(echo "$SIZE_KB > 1500" | bc -l) )); then
+            echo "::error::Package size ($SIZE) exceeds 1.5MB limit"
+            exit 1
+          fi
