@@ -1,5 +1,6 @@
 export * from './Accordion'
 export * from './Alert'
+export * from './Anchor'
 export * from './Autocomplete'
 export * from './Avatar'
 export * from './Badge'

@@ -2,7 +2,7 @@
 
 A modern, accessible, and customizable React UI component library built with TypeScript and Tailwind CSS. Create beautiful, consistent user interfaces with ease.
 
-🚀 **Build faster** with 26+ production-ready React components  
+🚀 **Build faster** with 27+ production-ready React components  
 ⚡ **Lightweight** and tree-shakeable with zero runtime dependencies  
 🎨 **Fully customizable** with Tailwind CSS and CSS variables  
 ♿ **Accessible by default** following WAI-ARIA best practices  
@@ -15,7 +15,7 @@ A modern, accessible, and customizable React UI component library built with Typ
 
 ## Features
 
-- 🎨 **26+ Production-Ready Components** - Comprehensive set of UI components
+- 🎨 **27+ Production-Ready Components** - Comprehensive set of UI components
 - 🔧 **Full TypeScript Support** - Complete type safety and IntelliSense
 - 📱 **Responsive Design** - Mobile-first approach with adaptive layouts
 - ♿ **Accessibility First** - WAI-ARIA compliant with keyboard navigation
@@ -71,13 +71,13 @@ function App() {
 
 ## Components
 
-**27+ Production-Ready Components** with full TypeScript support, accessibility features, and extensive customization options.
+**28+ Production-Ready Components** with full TypeScript support, accessibility features, and extensive customization options.
 
 ### Component Categories:
 
 **🎯 Core Components:** Button, Card, Input, Progress, Checkbox, Slider  
 **📊 Data Display:** Table, List, Badge, Chip, Avatar  
-**🧭 Navigation:** Breadcrumb, Pagination, ToggleButtons  
+**🧭 Navigation:** Anchor, Breadcrumb, Pagination, ToggleButtons  
 **📝 Form Components:** Select, RadioGroup, Switch, Rating, Autocomplete  
 **💬 Feedback:** Alert, Skeleton, Tooltip, Dialog, Drawer  
 **📋 Layout:** Accordion, Stepper, Splitter
@@ -110,6 +110,46 @@ import { Accordion } from 'its-just-ui'
 ```
 
 **Props:** `type` ('single' | 'multiple'), `collapsible`, `defaultValue`, `disabled`
+
+### Anchor
+
+A navigation component that provides smooth scrolling between sections with scroll spy functionality and multiple visual variants.
+
+```tsx
+import { Anchor } from 'its-just-ui'
+
+// Basic usage with scroll spy
+<Anchor targetIds={['section1', 'section2', 'section3']}>
+  <Anchor.Link href="#section1">Introduction</Anchor.Link>
+  <Anchor.Link href="#section2">Getting Started</Anchor.Link>
+  <Anchor.Link href="#section3">Configuration</Anchor.Link>
+</Anchor>
+
+// With groups and indicator
+<Anchor variant="side-border" targetIds={['intro', 'features', 'api']}>
+  <Anchor.Indicator />
+  <Anchor.Group title="Documentation">
+    <Anchor.Link href="#intro">Introduction</Anchor.Link>
+    <Anchor.Link href="#features">Features</Anchor.Link>
+  </Anchor.Group>
+  <Anchor.Group title="Reference">
+    <Anchor.Link href="#api">API Reference</Anchor.Link>
+  </Anchor.Group>
+</Anchor>
+```
+
+**Key Features:**
+
+- 🎯 **7 Visual Variants** - underline, side-border, filled, minimal, dot, icon-based, nested
+- 📍 **Auto Scroll Spy** - Automatically highlights active section while scrolling
+- 🎢 **Smooth Scrolling** - Customizable easing functions and animation duration
+- 🔗 **Hash Sync** - Optional URL hash synchronization for shareable links
+- 📊 **Active Indicator** - Visual indicator showing current section
+- 📁 **Nested Groups** - Support for collapsible navigation groups
+- ⚙️ **Controlled/Uncontrolled** - Flexible state management options
+- 🎨 **Full Customization** - 30+ styling props for complete visual control
+
+**Props:** `variant`, `size`, `activeId`, `onChange`, `targetIds`, `scrollSpy`, `hashSync`, `offset`, `scrollBehavior`, `easing`, `duration`
 
 ### Alert
 
