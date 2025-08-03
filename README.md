@@ -74,7 +74,7 @@ pnpm add its-just-ui
 
 ```tsx
 // main.tsx or App.tsx
-import 'its-just-ui/dist/styles.css'
+import 'its-just-ui/styles.css'
 ```
 
 > **Important:** The CSS import is required for proper styling. Without it, components will not be styled correctly.
