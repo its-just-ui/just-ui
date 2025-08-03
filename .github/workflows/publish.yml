@@ -12,11 +12,11 @@ jobs:
     permissions:
       contents: write
       packages: write
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
         with:
-          token: ${{ secrets.GH_PAT }}
           fetch-depth: 0
 
       - name: Setup Node.js
@@ -28,8 +28,8 @@ jobs:
 
       - name: Configure Git
         run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "your-github-username"
+          git config --global user.email "your-email@example.com"
 
       - name: Install dependencies
         run: npm ci
@@ -37,22 +37,18 @@ jobs:
       - name: Determine version bump type
         id: bump-type
         run: |
-          # Default to patch
           VERSION_TYPE="patch"
-          
-          # Check if this is a merge commit
+
           if [ "$(git rev-list --merges -n 1 HEAD)" == "$(git rev-parse HEAD)" ]; then
-            # Get PR number from merge commit
             PR_NUMBER=$(git log -1 --pretty=%B | grep -oP '#\K\d+' | head -1)
-            
+
             if [ ! -z "$PR_NUMBER" ]; then
-              # Check PR labels using GitHub API
               LABELS=$(curl -s \
                 -H "Authorization: token ${{ secrets.GH_PAT }}" \
                 -H "Accept: application/vnd.github.v3+json" \
                 "https://api.github.com/repos/${{ github.repository }}/pulls/${PR_NUMBER}" \
                 | jq -r '.labels[].name' | tr '\n' ' ')
-              
+
               if [[ "$LABELS" == *"major"* ]]; then
                 VERSION_TYPE="major"
               elif [[ "$LABELS" == *"minor"* ]]; then
@@ -62,19 +58,17 @@ jobs:
               fi
             fi
           fi
-          
-          # Fallback to commit message parsing
+
           COMMIT_MSG=$(git log -1 --pretty=%B)
           if [[ "$COMMIT_MSG" == *"BREAKING CHANGE"* ]] || [[ "$COMMIT_MSG" == *"!"* ]]; then
             VERSION_TYPE="major"
           elif [[ "$COMMIT_MSG" == *"feat:"* ]] || [[ "$COMMIT_MSG" == *"feat("* ]]; then
             VERSION_TYPE="minor"
           fi
-          
-          echo "type=$VERSION_TYPE" >> $GITHUB_OUTPUT
-          echo "Determined version bump type: $VERSION_TYPE"
 
-      - name: Check current version
+          echo "type=$VERSION_TYPE" >> $GITHUB_OUTPUT
+
+      - name: Get current version
         id: check-version
         run: |
           CURRENT_VERSION=$(node -p "require('./package.json').version")
@@ -86,28 +80,30 @@ jobs:
           npm version ${{ steps.bump-type.outputs.type }} --no-git-tag-version
           NEW_VERSION=$(node -p "require('./package.json').version")
           echo "new_version=$NEW_VERSION" >> $GITHUB_OUTPUT
-          echo "Bumped from ${{ steps.check-version.outputs.current_version }} to $NEW_VERSION"
-
-      - name: Build
-        run: npm run build
 
       - name: Commit version bump
         run: |
           git add package.json package-lock.json
           git commit -m "chore: release v${{ steps.version-bump.outputs.new_version }} [skip ci]"
 
-      - name: Create and push tag
+      - name: Push changes and tag using GH_PAT
+        env:
+          GH_TOKEN: ${{ secrets.GH_PAT }}
+          TAG: v${{ steps.version-bump.outputs.new_version }}
         run: |
-          # Delete tag if it already exists (locally and remotely)
-          git tag -d v${{ steps.version-bump.outputs.new_version }} 2>/dev/null || true
-          git push origin :refs/tags/v${{ steps.version-bump.outputs.new_version }} 2>/dev/null || true
-          
-          # Create new tag
-          git tag v${{ steps.version-bump.outputs.new_version }}
-          
-          # Push changes and tag
-          git push origin HEAD:${{ github.ref_name }}
-          git push origin v${{ steps.version-bump.outputs.new_version }}
+          # Authenticate with GitHub via PAT
+          git remote set-url origin https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }}.git
+
+          # Push commit to master
+          git push origin HEAD:master
+
+          # Delete existing tag if present (locally and remotely)
+          git tag -d $TAG 2>/dev/null || true
+          git push origin :refs/tags/$TAG 2>/dev/null || true
+
+          # Create and push new tag
+          git tag $TAG
+          git push origin $TAG
 
       - name: Publish to npm
         run: npm publish
@@ -123,11 +119,11 @@ jobs:
           release_name: Release v${{ steps.version-bump.outputs.new_version }}
           body: |
             ## What's Changed
-            
+
             Version bump type: ${{ steps.bump-type.outputs.type }}
             Previous version: ${{ steps.check-version.outputs.current_version }}
             New version: ${{ steps.version-bump.outputs.new_version }}
-            
+
             See [commit history](https://github.com/${{ github.repository }}/compare/v${{ steps.check-version.outputs.current_version }}...v${{ steps.version-bump.outputs.new_version }}) for details.
           draft: false
           prerelease: false

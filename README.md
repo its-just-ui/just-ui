@@ -52,6 +52,8 @@ pnpm add its-just-ui
 import 'its-just-ui/dist/styles.css'
 ```
 
+**Note:** The CSS import is **required** for proper styling. Without importing the CSS file, the components will not be styled correctly.
+
 2. Start using components:
 
 ```tsx
