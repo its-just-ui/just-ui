@@ -1,6 +1,6 @@
 # its-just-ui - Modern React Component Library
 
-A comprehensive, accessible, and customizable React UI component library built with TypeScript and Tailwind CSS. Create beautiful, consistent user interfaces with 28+ production-ready components.
+A comprehensive, accessible, and customizable React UI component library built with TypeScript and Tailwind CSS. Create beautiful, consistent user interfaces with 30+ production-ready components.
 
 🚀 **Build faster** with production-ready React components  
 ⚡ **Lightweight** and tree-shakeable with zero runtime dependencies  
@@ -38,7 +38,7 @@ A comprehensive, accessible, and customizable React UI component library built w
 
 ### Why Choose its-just-ui?
 
-- 🎨 **29 Production-Ready Components** - Comprehensive UI component library for React applications
+- 🎨 **30 Production-Ready Components** - Comprehensive UI component library for React applications
 - 🔧 **Full TypeScript Support** - Built with TypeScript for complete type safety and excellent developer experience
 - 📱 **Responsive Design** - Mobile-first approach with adaptive layouts that work on all devices
 - ♿ **Accessibility First** - WAI-ARIA compliant components with full keyboard navigation support
@@ -105,11 +105,11 @@ Our comprehensive component library is organized into logical categories for eas
 
 ### Component Statistics
 
-- **Total Components:** 29
+- **Total Components:** 30
 - **Core Components:** 6
 - **Navigation Components:** 4
 - **Form Components:** 8
-- **Data Display Components:** 5
+- **Data Display Components:** 6
 - **Feedback Components:** 3
 - **Layout Components:** 3
 
@@ -679,6 +679,61 @@ import { Chip } from 'its-just-ui'
   React
 </Chip>
 ```
+
+#### Carousel
+
+Flexible image and content carousel with multiple transition effects.
+
+```tsx
+import { Carousel, CarouselSlide } from 'its-just-ui'
+
+// Basic carousel
+<Carousel height="400px" width="600px">
+  <CarouselSlide>
+    <img src="/image1.jpg" alt="Slide 1" />
+  </CarouselSlide>
+  <CarouselSlide>
+    <img src="/image2.jpg" alt="Slide 2" />
+  </CarouselSlide>
+</Carousel>
+
+// With autoplay and fade effect
+<Carousel
+  variant="fade"
+  autoplay
+  autoplayInterval={3000}
+  loop
+  pauseOnHover
+>
+  <CarouselSlide>Content 1</CarouselSlide>
+  <CarouselSlide>Content 2</CarouselSlide>
+</Carousel>
+
+// Advanced variants
+<Carousel variant="zoom">...</Carousel>
+<Carousel variant="stacked">...</Carousel>
+<Carousel variant="coverflow">...</Carousel>
+
+// Controlled mode
+<Carousel
+  currentIndex={currentIndex}
+  onSlideChange={setCurrentIndex}
+>
+  {slides}
+</Carousel>
+```
+
+**Features:**
+
+- Multiple variants: default, fade, slide, zoom, stacked, coverflow
+- Autoplay with customizable interval
+- Touch/swipe support
+- Keyboard navigation
+- Customizable controls and indicators
+- Controlled and uncontrolled modes
+- Lazy loading support
+- Responsive design
+- Full accessibility support
 
 ### Feedback Components
 
