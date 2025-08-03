@@ -15,10 +15,18 @@ export default defineConfig({
   ],
   build: {
     lib: {
-      entry: resolve(fileURLToPath(new URL('.', import.meta.url)), 'src/index.ts'),
+      entry: {
+        index: resolve(fileURLToPath(new URL('.', import.meta.url)), 'src/index.ts'),
+        styles: resolve(fileURLToPath(new URL('.', import.meta.url)), 'src/styles.ts'),
+      },
       name: 'UILibrary',
       formats: ['es', 'cjs'],
-      fileName: (format) => (format === 'es' ? 'index.js' : 'index.cjs'),
+      fileName: (format, entryName) => {
+        if (entryName === 'styles') {
+          return format === 'es' ? 'styles.js' : 'styles.cjs'
+        }
+        return format === 'es' ? 'index.js' : 'index.cjs'
+      },
     },
     rollupOptions: {
       external: ['react', 'react-dom', 'react/jsx-runtime'],
@@ -32,7 +40,7 @@ export default defineConfig({
           if (assetInfo.name === 'style.css') {
             return 'styles.css'
           }
-          return assetInfo.name
+          return assetInfo.name || 'assets/[name].[ext]'
         },
       },
     },
