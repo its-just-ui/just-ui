@@ -895,11 +895,11 @@ const DrawerItemList = React.forwardRef<HTMLDivElement, DrawerItemListProps>(
 
 DrawerItemList.displayName = 'DrawerItemList'
 
-export interface DrawerItemProps extends React.HTMLAttributes<HTMLDivElement> {
+export interface DrawerItemProps extends React.HTMLAttributes<HTMLElement> {
   item: DrawerItemData
 }
 
-const DrawerItemComponent = React.forwardRef<HTMLDivElement, DrawerItemProps>(
+const DrawerItemComponent = React.forwardRef<HTMLElement, DrawerItemProps>(
   ({ className, item, ...props }, ref) => {
     const { collapsed, renderItem, onItemClick, itemPadding, itemDisabledOpacity, iconColor } =
       useDrawer()
@@ -918,7 +918,7 @@ const DrawerItemComponent = React.forwardRef<HTMLDivElement, DrawerItemProps>(
 
     if (renderItem) {
       return (
-        <div ref={ref} className={className} {...props}>
+        <div ref={ref as React.Ref<HTMLDivElement>} className={className} {...props}>
           {renderItem(item, isActive)}
         </div>
       )
@@ -927,7 +927,7 @@ const DrawerItemComponent = React.forwardRef<HTMLDivElement, DrawerItemProps>(
     if (item.href) {
       return (
         <a
-          ref={ref as React.Ref<HTMLAnchorElement>}
+          ref={ref as React.ForwardedRef<HTMLAnchorElement>}
           className={cn(
             'w-full flex items-center gap-3 px-4 py-2 text-left transition-colors',
             'hover:bg-gray-100 focus:bg-gray-100 focus:outline-none',
@@ -968,7 +968,7 @@ const DrawerItemComponent = React.forwardRef<HTMLDivElement, DrawerItemProps>(
 
     return (
       <button
-        ref={ref as React.Ref<HTMLButtonElement>}
+        ref={ref as React.ForwardedRef<HTMLButtonElement>}
         className={cn(
           'w-full flex items-center gap-3 px-4 py-2 text-left transition-colors',
           'hover:bg-gray-100 focus:bg-gray-100 focus:outline-none',

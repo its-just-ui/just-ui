@@ -1161,15 +1161,15 @@ const ExpansionComponent = () => {
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <div className="text-sm font-medium text-muted-foreground">Department</div>
-                <div>{row.department}</div>
+                <div>{row.department as string}</div>
               </div>
               <div>
                 <div className="text-sm font-medium text-muted-foreground">Location</div>
-                <div>{row.location}</div>
+                <div>{row.location as string}</div>
               </div>
               <div>
                 <div className="text-sm font-medium text-muted-foreground">Join Date</div>
-                <div>{row.joinDate}</div>
+                <div>{row.joinDate as string}</div>
               </div>
               <div>
                 <div className="text-sm font-medium text-muted-foreground">Status</div>
@@ -1356,9 +1356,9 @@ export const Accessibility: Story = {
           enableExpanding
           expandedContent={({ row }) => (
             <div className="p-4">
-              <p>Additional information for {row.name}</p>
-              <p>Department: {row.department}</p>
-              <p>Location: {row.location}</p>
+              <p>Additional information for {row.name as string}</p>
+              <p>Department: {row.department as string}</p>
+              <p>Location: {row.location as string}</p>
             </div>
           )}
           aria-label="Users table with keyboard navigation"
@@ -2995,7 +2995,7 @@ const SkeletonLoadingComponent = () => {
 
       <Table
         data={isLoading ? skeletonData : data}
-        columns={columns as any}
+        columns={columns as unknown as ColumnDef<RowData>[]}
         variant="default"
         size="md"
       />
