@@ -1088,9 +1088,11 @@ const PaginationComponent = () => {
       </Table>
 
       <div className="flex items-center justify-between">
-        <div className="flex items-center gap-2 text-sm text-muted-foreground">
+        <div className="flex items-center gap-1 text-xs text-muted-foreground">
           <span>Rows per page:</span>
           <Select
+            className="w-16"
+            clearable={false}
             options={[
               { value: 5, label: '5' },
               { value: 10, label: '10' },
@@ -1103,7 +1105,7 @@ const PaginationComponent = () => {
               if (typeof value === 'number') handleItemsPerPageChange(value)
             }}
           />
-          <span className="ml-4">
+          <span className="ml-2">
             Showing {startIndex + 1} to {Math.min(endIndex, allData.length)} of {allData.length}{' '}
             results
           </span>
@@ -1953,9 +1955,11 @@ const ServerPaginationComponent = () => {
       </Table>
 
       <div className="flex items-center justify-between">
-        <div className="flex items-center gap-2 text-sm text-muted-foreground">
+        <div className="flex items-center gap-1 text-xs text-muted-foreground">
           <span>Rows per page:</span>
           <Select
+            className="w-16"
+            clearable={false}
             options={[
               { value: 10, label: '10' },
               { value: 15, label: '15' },
@@ -1968,7 +1972,7 @@ const ServerPaginationComponent = () => {
               if (typeof value === 'number') handleItemsPerPageChange(value)
             }}
           />
-          <span className="ml-4">
+          <span className="ml-2">
             {((currentPage - 1) * itemsPerPage + 1).toLocaleString()} to{' '}
             {Math.min(currentPage * itemsPerPage, totalCount).toLocaleString()} of{' '}
             {totalCount.toLocaleString()} results
@@ -2384,9 +2388,11 @@ const AdvancedPaginationComponent = () => {
       </Table>
 
       <div className="flex items-center justify-between">
-        <div className="flex items-center gap-2 text-sm text-muted-foreground">
+        <div className="flex items-center gap-1 text-xs text-muted-foreground">
           <span>Rows per page:</span>
           <Select
+            clearable={false}
+            className="w-16"
             options={[
               { value: 10, label: '10' },
               { value: 20, label: '20' },
@@ -2399,7 +2405,7 @@ const AdvancedPaginationComponent = () => {
               if (typeof value === 'number') handleItemsPerPageChange(value)
             }}
           />
-          <span className="ml-4">
+          <span className="ml-2">
             Showing {startIndex + 1} to {Math.min(endIndex, filteredData.length)} of{' '}
             {filteredData.length} results
             {filteredData.length !== allData.length && ` (filtered from ${allData.length})`}
@@ -2527,10 +2533,12 @@ const MobilePaginationComponent = () => {
       </Table>
 
       <div className="flex flex-col sm:flex-row gap-4 items-center justify-between">
-        <div className="flex flex-col sm:flex-row items-center gap-2 text-sm text-muted-foreground">
+        <div className="flex flex-col sm:flex-row items-center gap-1 text-xs text-muted-foreground">
           <div className="flex items-center gap-2">
             <span>Rows per page:</span>
             <Select
+              className="w-16"
+              clearable={false}
               options={[
                 { value: 5, label: '5' },
                 { value: 8, label: '8' },
@@ -2702,9 +2710,11 @@ const VirtualPaginationComponent = () => {
       </Table>
 
       <div className="flex items-center justify-between">
-        <div className="flex items-center gap-2 text-sm text-muted-foreground">
+        <div className="flex items-center gap-1 text-xs text-muted-foreground">
           <span>Rows per page:</span>
           <Select
+            className="w-16"
+            clearable={false}
             options={[
               { value: 25, label: '25' },
               { value: 50, label: '50' },
@@ -2717,7 +2727,7 @@ const VirtualPaginationComponent = () => {
               if (typeof value === 'number') handleItemsPerPageChange(value)
             }}
           />
-          <span className="ml-4">
+          <span className="ml-2">
             Showing {startIndex + 1} to {Math.min(endIndex, allData.length)} of{' '}
             {allData.length.toLocaleString()} results
           </span>
