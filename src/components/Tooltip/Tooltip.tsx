@@ -1,123 +1,28 @@
-import React, {
-  createContext,
-  useContext,
-  useState,
-  useCallback,
-  forwardRef,
-  useRef,
-  useEffect,
-} from 'react'
+import React, { useState, useCallback, forwardRef, useRef, useEffect, useMemo, useId } from 'react'
+import { createPortal } from 'react-dom'
 import { cn } from '@/utils'
+import { TooltipContext } from './context'
+import { useTooltipContext } from './hooks'
+import type {
+  TooltipProps,
+  TooltipTriggerProps,
+  TooltipContentProps,
+  TooltipPlacement,
+} from './types'
+import type { TooltipContextValue } from './context'
 
-export interface TooltipProps
-  extends Omit<React.HTMLAttributes<HTMLDivElement>, 'onChange' | 'content'> {
-  // Core props
-  isOpen?: boolean
-  defaultIsOpen?: boolean
-  onOpenChange?: (isOpen: boolean) => void
-  disabled?: boolean
-
-  // Content props
-  content?: React.ReactNode
-  title?: string
-  description?: string
-
-  // Visual props
-  variant?: 'default' | 'filled' | 'outlined' | 'flat' | 'elevated'
-  size?: 'sm' | 'md' | 'lg'
-  status?: 'default' | 'success' | 'warning' | 'error'
-
-  // Positioning props
-  placement?:
-    | 'top'
-    | 'bottom'
-    | 'left'
-    | 'right'
-    | 'top-start'
-    | 'top-end'
-    | 'bottom-start'
-    | 'bottom-end'
-    | 'left-start'
-    | 'left-end'
-    | 'right-start'
-    | 'right-end'
-  offset?: number
-  delayOpen?: number
-  delayClose?: number
-  autoPlacement?: boolean
-
-  // Trigger props
-  trigger?: 'hover' | 'click' | 'focus' | 'manual'
-  showArrow?: boolean
-  arrowSize?: number
-  arrowColor?: string
-
-  // Animation props
-  transition?: 'none' | 'fade' | 'slide' | 'scale' | 'bounce'
-  transitionDuration?: number
-
-  // Container styles
-  containerClassName?: string
-  containerStyle?: React.CSSProperties
-  maxWidth?: string
-  minWidth?: string
-  width?: string
-
-  // Content styles
-  contentBackgroundColor?: string
-  contentBorderWidth?: string
-  contentBorderColor?: string
-  contentBorderRadius?: string
-  contentPadding?: string
-  contentBoxShadow?: string
-
-  // Typography styles
-  titleColor?: string
-  titleFontSize?: string
-  titleFontWeight?: string
-  titleFontFamily?: string
-  descriptionColor?: string
-  descriptionFontSize?: string
-  descriptionFontWeight?: string
-  descriptionFontFamily?: string
-
-  // Hover styles
-  hoverBackgroundColor?: string
-  hoverBorderColor?: string
-  hoverBoxShadow?: string
-
-  // Status colors
-  successColor?: string
-  warningColor?: string
-  errorColor?: string
-
-  // Custom render props
-  renderContent?: (isOpen: boolean) => React.ReactNode
-  renderTrigger?: (isOpen: boolean, triggerProps: any) => React.ReactNode
-
-  children?: React.ReactNode
-}
-
-interface TooltipContextValue {
-  isOpen: boolean
-  disabled?: boolean
-  size?: 'sm' | 'md' | 'lg'
-  variant?: 'default' | 'filled' | 'outlined' | 'flat' | 'elevated'
-  status?: 'default' | 'success' | 'warning' | 'error'
-  placement?: string
-  onOpenChange?: (isOpen: boolean) => void
-  triggerProps: any
-}
-
-const TooltipContext = createContext<TooltipContextValue | undefined>(undefined)
-
-const useTooltip = () => {
-  const context = useContext(TooltipContext)
-  if (!context) {
-    throw new Error('useTooltip must be used within a Tooltip')
-  }
-  return context
-}
+// Re-export types for convenience
+export type {
+  TooltipProps,
+  TooltipTriggerProps,
+  TooltipContentProps,
+  TooltipSize,
+  TooltipVariant,
+  TooltipStatus,
+  TooltipPlacement,
+  TooltipTransition,
+  TooltipCustomStyles,
+} from './types'
 
 const Tooltip = forwardRef<HTMLDivElement, TooltipProps>(
   (
@@ -134,13 +39,20 @@ const Tooltip = forwardRef<HTMLDivElement, TooltipProps>(
       size = 'md',
       status = 'default',
       placement = 'top',
-      offset = 4,
+      offset = 8,
       delayOpen = 0,
       delayClose = 0,
       autoPlacement = true,
+      // Fine-tuning position
+      offsetX = 0,
+      offsetY = 0,
+      nudgeLeft = 0,
+      nudgeRight = 0,
+      nudgeTop = 0,
+      nudgeBottom = 0,
       trigger = 'hover',
-      showArrow = false,
-      arrowSize = 4,
+      showArrow = true,
+      arrowSize = 6,
       arrowColor,
       transition = 'fade',
       transitionDuration = 200,
@@ -150,6 +62,8 @@ const Tooltip = forwardRef<HTMLDivElement, TooltipProps>(
       maxWidth,
       minWidth,
       width,
+      // Custom styles
+      customStyles = {},
       // Content styles
       contentBackgroundColor,
       contentBorderWidth,
@@ -166,14 +80,14 @@ const Tooltip = forwardRef<HTMLDivElement, TooltipProps>(
       descriptionFontSize,
       descriptionFontWeight,
       descriptionFontFamily,
-      // Hover styles
-      hoverBackgroundColor,
-      hoverBorderColor,
-      hoverBoxShadow,
-      // Status colors
-      successColor,
-      warningColor,
-      errorColor,
+      // States
+      loading = false,
+      loadingMessage = 'Loading...',
+      emptyMessage = 'No content',
+      required = false,
+      // Labels
+      label,
+      helperText,
       // Custom render
       renderContent,
       renderTrigger,
@@ -184,19 +98,19 @@ const Tooltip = forwardRef<HTMLDivElement, TooltipProps>(
     _ref
   ) => {
     const [uncontrolledIsOpen, setUncontrolledIsOpen] = useState(defaultIsOpen)
-    const [isHovered, setIsHovered] = useState(false)
     const [position, setPosition] = useState({ top: 0, left: 0 })
     const [currentPlacement, setCurrentPlacement] = useState(placement)
 
     const triggerRef = useRef<HTMLElement>(null)
-    const tooltipRef = useRef<HTMLDivElement>(null)
+    const contentRef = useRef<HTMLDivElement>(null)
     const timeoutRef = useRef<NodeJS.Timeout>()
+    const contentId = useId()
 
     const isControlled = controlledIsOpen !== undefined
     const isOpen = isControlled ? controlledIsOpen : uncontrolledIsOpen
 
     // Get status colors
-    const getStatusColors = () => {
+    const getStatusColors = useMemo(() => {
       const statusColors = {
         default: {
           background: '#1f2937',
@@ -205,109 +119,116 @@ const Tooltip = forwardRef<HTMLDivElement, TooltipProps>(
           arrow: '#1f2937',
         },
         success: {
-          background: successColor || '#10b981',
-          border: successColor || '#059669',
+          background: '#10b981',
+          border: '#059669',
           text: '#ffffff',
-          arrow: successColor || '#10b981',
+          arrow: '#10b981',
         },
         warning: {
-          background: warningColor || '#f59e0b',
-          border: warningColor || '#d97706',
+          background: '#f59e0b',
+          border: '#d97706',
           text: '#ffffff',
-          arrow: warningColor || '#f59e0b',
+          arrow: '#f59e0b',
         },
         error: {
-          background: errorColor || '#ef4444',
-          border: errorColor || '#dc2626',
+          background: '#ef4444',
+          border: '#dc2626',
           text: '#ffffff',
-          arrow: errorColor || '#ef4444',
+          arrow: '#ef4444',
         },
       }
 
       return statusColors[status]
-    }
+    }, [status])
 
-    const statusColors = getStatusColors()
-
-    // Get size dimensions - much smaller like MUI
-    const getSizeDimensions = () => {
+    // Get size dimensions
+    const getSizeDimensions = useMemo(() => {
       const dimensions = {
         sm: {
           padding: '0.25rem 0.5rem',
           fontSize: '0.75rem',
-          arrowSize: 3,
+          arrowSize: 4,
           maxWidth: '120px',
         },
         md: {
           padding: '0.375rem 0.75rem',
           fontSize: '0.875rem',
-          arrowSize: 4,
-          maxWidth: '160px',
+          arrowSize: 6,
+          maxWidth: '180px',
         },
         lg: {
           padding: '0.5rem 1rem',
           fontSize: '1rem',
-          arrowSize: 5,
-          maxWidth: '200px',
+          arrowSize: 8,
+          maxWidth: '240px',
         },
       }
 
       return dimensions[size]
-    }
+    }, [size])
 
-    const dimensions = getSizeDimensions()
-
-    // Default styles based on variant - more like MUI
-    const getDefaultStyles = () => {
+    // Default styles based on variant
+    const getDefaultStyles = useMemo(() => {
       const variantStyles = {
         default: {
-          background: contentBackgroundColor || statusColors.background,
+          background: contentBackgroundColor || getStatusColors.background,
           border: contentBorderWidth
-            ? `${contentBorderWidth} solid ${contentBorderColor || statusColors.border}`
+            ? `${contentBorderWidth} solid ${contentBorderColor || getStatusColors.border}`
             : 'none',
-          boxShadow: contentBoxShadow || '0 2px 8px rgba(0, 0, 0, 0.15)',
+          boxShadow:
+            contentBoxShadow ||
+            '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
         },
         filled: {
-          background: contentBackgroundColor || statusColors.background,
+          background: contentBackgroundColor || getStatusColors.background,
           border: contentBorderWidth
-            ? `${contentBorderWidth} solid ${contentBorderColor || statusColors.border}`
+            ? `${contentBorderWidth} solid ${contentBorderColor || getStatusColors.border}`
             : 'none',
-          boxShadow: contentBoxShadow || '0 1px 4px rgba(0, 0, 0, 0.12)',
+          boxShadow:
+            contentBoxShadow || '0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)',
         },
         outlined: {
-          background: contentBackgroundColor || 'transparent',
+          background: contentBackgroundColor || 'rgba(255, 255, 255, 0.95)',
           border: contentBorderWidth
-            ? `${contentBorderWidth} solid ${contentBorderColor || statusColors.border}`
-            : '1px solid #d1d5db',
-          boxShadow: contentBoxShadow || '0 1px 3px rgba(0, 0, 0, 0.1)',
+            ? `${contentBorderWidth} solid ${contentBorderColor || getStatusColors.border}`
+            : `1px solid ${getStatusColors.border}`,
+          boxShadow:
+            contentBoxShadow || '0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)',
         },
         flat: {
-          background: contentBackgroundColor || statusColors.background,
+          background: contentBackgroundColor || getStatusColors.background,
           border: contentBorderWidth
-            ? `${contentBorderWidth} solid ${contentBorderColor || statusColors.border}`
+            ? `${contentBorderWidth} solid ${contentBorderColor || getStatusColors.border}`
             : 'none',
           boxShadow: contentBoxShadow || 'none',
         },
         elevated: {
-          background: contentBackgroundColor || statusColors.background,
+          background: contentBackgroundColor || getStatusColors.background,
           border: contentBorderWidth
-            ? `${contentBorderWidth} solid ${contentBorderColor || statusColors.border}`
+            ? `${contentBorderWidth} solid ${contentBorderColor || getStatusColors.border}`
             : 'none',
-          boxShadow: contentBoxShadow || '0 4px 12px rgba(0, 0, 0, 0.15)',
+          boxShadow:
+            contentBoxShadow ||
+            '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
         },
       }
 
       return variantStyles[variant]
-    }
+    }, [
+      variant,
+      contentBackgroundColor,
+      contentBorderWidth,
+      contentBorderColor,
+      contentBoxShadow,
+      getStatusColors,
+    ])
 
-    const defaultStyles = getDefaultStyles()
-
-    // Calculate position relative to trigger - improved like MUI
+    // Calculate position relative to trigger
     const calculatePosition = useCallback(() => {
-      if (!triggerRef.current || !tooltipRef.current) return
+      if (!triggerRef.current || !contentRef.current) return
 
       const triggerRect = triggerRef.current.getBoundingClientRect()
-      const tooltipRect = tooltipRef.current.getBoundingClientRect()
+      const contentRect = contentRef.current.getBoundingClientRect()
       const viewportWidth = window.innerWidth
       const viewportHeight = window.innerHeight
       const scrollX = window.pageXOffset || document.documentElement.scrollLeft
@@ -320,28 +241,28 @@ const Tooltip = forwardRef<HTMLDivElement, TooltipProps>(
       // Calculate base position
       switch (currentPlacement) {
         case 'top':
-          top = triggerRect.top - tooltipRect.height - offset
-          left = triggerRect.left + triggerRect.width / 2 - tooltipRect.width / 2
+          top = triggerRect.top - contentRect.height - offset
+          left = triggerRect.left + triggerRect.width / 2 - contentRect.width / 2
           break
         case 'bottom':
           top = triggerRect.bottom + offset
-          left = triggerRect.left + triggerRect.width / 2 - tooltipRect.width / 2
+          left = triggerRect.left + triggerRect.width / 2 - contentRect.width / 2
           break
         case 'left':
-          top = triggerRect.top + triggerRect.height / 2 - tooltipRect.height / 2
-          left = triggerRect.left - tooltipRect.width - offset
+          top = triggerRect.top + triggerRect.height / 2 - contentRect.height / 2
+          left = triggerRect.left - contentRect.width - offset
           break
         case 'right':
-          top = triggerRect.top + triggerRect.height / 2 - tooltipRect.height / 2
+          top = triggerRect.top + triggerRect.height / 2 - contentRect.height / 2
           left = triggerRect.right + offset
           break
         case 'top-start':
-          top = triggerRect.top - tooltipRect.height - offset
+          top = triggerRect.top - contentRect.height - offset
           left = triggerRect.left
           break
         case 'top-end':
-          top = triggerRect.top - tooltipRect.height - offset
-          left = triggerRect.right - tooltipRect.width
+          top = triggerRect.top - contentRect.height - offset
+          left = triggerRect.right - contentRect.width
           break
         case 'bottom-start':
           top = triggerRect.bottom + offset
@@ -349,57 +270,53 @@ const Tooltip = forwardRef<HTMLDivElement, TooltipProps>(
           break
         case 'bottom-end':
           top = triggerRect.bottom + offset
-          left = triggerRect.right - tooltipRect.width
+          left = triggerRect.right - contentRect.width
           break
         case 'left-start':
           top = triggerRect.top
-          left = triggerRect.left - tooltipRect.width - offset
+          left = triggerRect.left - contentRect.width - offset
           break
         case 'left-end':
-          top = triggerRect.bottom - tooltipRect.height
-          left = triggerRect.left - tooltipRect.width - offset
+          top = triggerRect.bottom - contentRect.height
+          left = triggerRect.left - contentRect.width - offset
           break
         case 'right-start':
           top = triggerRect.top
           left = triggerRect.right + offset
           break
         case 'right-end':
-          top = triggerRect.bottom - tooltipRect.height
+          top = triggerRect.bottom - contentRect.height
           left = triggerRect.right + offset
           break
       }
 
-      // Auto-placement logic - improved
+      // Auto-placement logic
       if (autoPlacement) {
         // Check horizontal overflow
         if (left < 0) {
           if (currentPlacement.includes('left')) {
-            newPlacement = currentPlacement.replace('left', 'right') as any
+            newPlacement = currentPlacement.replace('left', 'right') as TooltipPlacement
           } else if (currentPlacement.includes('right')) {
-            newPlacement = currentPlacement.replace('right', 'left') as any
+            newPlacement = currentPlacement.replace('right', 'left') as TooltipPlacement
           }
         }
-        if (left + tooltipRect.width > viewportWidth) {
+        if (left + contentRect.width > viewportWidth) {
           if (currentPlacement.includes('right')) {
-            newPlacement = currentPlacement.replace('right', 'left') as any
+            newPlacement = currentPlacement.replace('right', 'left') as TooltipPlacement
           } else if (currentPlacement.includes('left')) {
-            newPlacement = currentPlacement.replace('left', 'right') as any
+            newPlacement = currentPlacement.replace('left', 'right') as TooltipPlacement
           }
         }
 
         // Check vertical overflow
         if (top < 0) {
           if (currentPlacement.includes('top')) {
-            newPlacement = currentPlacement.replace('top', 'bottom') as any
-          } else if (currentPlacement.includes('bottom')) {
-            newPlacement = currentPlacement.replace('bottom', 'top') as any
+            newPlacement = currentPlacement.replace('top', 'bottom') as TooltipPlacement
           }
         }
-        if (top + tooltipRect.height > viewportHeight) {
+        if (top + contentRect.height > viewportHeight) {
           if (currentPlacement.includes('bottom')) {
-            newPlacement = currentPlacement.replace('bottom', 'top') as any
-          } else if (currentPlacement.includes('top')) {
-            newPlacement = currentPlacement.replace('top', 'bottom') as any
+            newPlacement = currentPlacement.replace('bottom', 'top') as TooltipPlacement
           }
         }
       }
@@ -410,15 +327,33 @@ const Tooltip = forwardRef<HTMLDivElement, TooltipProps>(
         return
       }
 
+      // Apply fine-tuning offsets
+      left += offsetX
+      top += offsetY
+
+      // Apply nudge adjustments (nudgeRight moves right, nudgeLeft moves left)
+      left += nudgeRight - nudgeLeft
+      top += nudgeBottom - nudgeTop
+
       // Ensure tooltip stays within viewport bounds
-      left = Math.max(0, Math.min(left, viewportWidth - tooltipRect.width))
-      top = Math.max(0, Math.min(top, viewportHeight - tooltipRect.height))
+      left = Math.max(8, Math.min(left, viewportWidth - contentRect.width - 8))
+      top = Math.max(8, Math.min(top, viewportHeight - contentRect.height - 8))
 
       setPosition({
         top: top + scrollY,
         left: left + scrollX,
       })
-    }, [currentPlacement, offset, autoPlacement])
+    }, [
+      currentPlacement,
+      offset,
+      autoPlacement,
+      offsetX,
+      offsetY,
+      nudgeLeft,
+      nudgeRight,
+      nudgeTop,
+      nudgeBottom,
+    ])
 
     // Handle open/close
     const handleOpen = useCallback(() => {
@@ -460,14 +395,12 @@ const Tooltip = forwardRef<HTMLDivElement, TooltipProps>(
     // Event handlers
     const handleMouseEnter = useCallback(() => {
       if (trigger === 'hover') {
-        setIsHovered(true)
         handleOpen()
       }
     }, [trigger, handleOpen])
 
     const handleMouseLeave = useCallback(() => {
       if (trigger === 'hover') {
-        setIsHovered(false)
         handleClose()
       }
     }, [trigger, handleClose])
@@ -496,7 +429,7 @@ const Tooltip = forwardRef<HTMLDivElement, TooltipProps>(
 
     // Update position when tooltip opens or placement changes
     useEffect(() => {
-      if (isOpen && tooltipRef.current) {
+      if (isOpen && contentRef.current) {
         const timer = setTimeout(calculatePosition, 10)
         return () => clearTimeout(timer)
       }
@@ -527,40 +460,100 @@ const Tooltip = forwardRef<HTMLDivElement, TooltipProps>(
       }
     }, [])
 
-    // Tooltip styles - much smaller like MUI
-    const tooltipStyles: React.CSSProperties = {
-      position: 'absolute',
-      zIndex: 9999,
-      top: position.top,
-      left: position.left,
-      backgroundColor:
-        isHovered && hoverBackgroundColor ? hoverBackgroundColor : defaultStyles.background,
-      border:
-        isHovered && hoverBorderColor ? `1px solid ${hoverBorderColor}` : defaultStyles.border,
-      borderRadius: contentBorderRadius || '0.25rem',
-      padding: contentPadding || dimensions.padding,
-      boxShadow: isHovered && hoverBoxShadow ? hoverBoxShadow : defaultStyles.boxShadow,
-      maxWidth: maxWidth || dimensions.maxWidth,
-      minWidth: minWidth,
-      width: width,
-      fontSize: dimensions.fontSize,
-      color: statusColors.text,
-      opacity: isOpen ? 1 : 0,
-      visibility: isOpen ? 'visible' : 'hidden',
-      pointerEvents: isOpen ? 'auto' : 'none',
-      transition:
-        transition === 'none'
-          ? 'none'
-          : transition === 'bounce'
-            ? `all ${transitionDuration}ms cubic-bezier(0.68, -0.55, 0.265, 1.55)`
-            : `all ${transitionDuration}ms ease-in-out`,
-      lineHeight: '1.4',
-      whiteSpace: 'nowrap',
-      ...style,
-    }
+    // Trigger props
+    const triggerProps = useMemo(
+      () => ({
+        ref: triggerRef as React.Ref<HTMLDivElement>,
+        onMouseEnter: handleMouseEnter,
+        onMouseLeave: handleMouseLeave,
+        onFocus: handleFocus,
+        onBlur: handleBlur,
+        onClick: handleClick,
+        tabIndex: trigger === 'focus' ? 0 : undefined,
+        'aria-describedby': isOpen ? contentId : undefined,
+        'aria-expanded': trigger === 'click' ? isOpen : undefined,
+      }),
+      [
+        handleMouseEnter,
+        handleMouseLeave,
+        handleFocus,
+        handleBlur,
+        handleClick,
+        trigger,
+        isOpen,
+        contentId,
+      ]
+    )
+
+    // Tooltip content styles
+    const contentStyles: React.CSSProperties = useMemo(
+      () => ({
+        position: 'absolute',
+        zIndex: 9999,
+        top: position.top,
+        left: position.left,
+        backgroundColor: getDefaultStyles.background,
+        border: getDefaultStyles.border,
+        borderRadius: contentBorderRadius || customStyles.borderRadius || '0.375rem',
+        padding: contentPadding || customStyles.padding || getSizeDimensions.padding,
+        boxShadow: getDefaultStyles.boxShadow,
+        maxWidth: maxWidth || getSizeDimensions.maxWidth,
+        minWidth: minWidth,
+        width: width,
+        fontSize: customStyles.fontSize || getSizeDimensions.fontSize,
+        fontWeight: customStyles.fontWeight,
+        fontFamily: customStyles.fontFamily,
+        color: customStyles.textColor || getStatusColors.text,
+        opacity: isOpen ? 1 : 0,
+        visibility: isOpen ? 'visible' : 'hidden',
+        pointerEvents: isOpen ? 'auto' : 'none',
+        transition:
+          transition === 'none'
+            ? 'none'
+            : transition === 'bounce'
+              ? `all ${transitionDuration}ms cubic-bezier(0.68, -0.55, 0.265, 1.55)`
+              : transition === 'scale'
+                ? `all ${transitionDuration}ms ease-in-out, transform ${transitionDuration}ms ease-in-out`
+                : `all ${transitionDuration}ms ease-in-out`,
+        transform:
+          transition === 'scale'
+            ? isOpen
+              ? 'scale(1)'
+              : 'scale(0.8)'
+            : transition === 'slide'
+              ? isOpen
+                ? 'translateY(0)'
+                : `translateY(-${offset}px)`
+              : 'none',
+        lineHeight: '1.4',
+        whiteSpace: size === 'sm' ? 'nowrap' : 'normal',
+        ...customStyles.contentStyles,
+        ...style,
+      }),
+      [
+        position,
+        getDefaultStyles,
+        contentBorderRadius,
+        contentPadding,
+        maxWidth,
+        minWidth,
+        width,
+        getSizeDimensions,
+        getStatusColors,
+        isOpen,
+        transition,
+        transitionDuration,
+        offset,
+        size,
+        customStyles,
+        style,
+      ]
+    )
 
     // Arrow styles
-    const getArrowStyles = () => {
+    const getArrowStyles = useCallback(() => {
+      if (!showArrow) return {}
+
       const arrowStyles: React.CSSProperties = {
         position: 'absolute',
         width: 0,
@@ -568,8 +561,8 @@ const Tooltip = forwardRef<HTMLDivElement, TooltipProps>(
         borderStyle: 'solid',
       }
 
-      const arrowColorValue = arrowColor || statusColors.arrow
-      const arrowSizeValue = arrowSize || dimensions.arrowSize
+      const arrowColorValue = arrowColor || getStatusColors.arrow
+      const arrowSizeValue = arrowSize || getSizeDimensions.arrowSize
 
       switch (currentPlacement) {
         case 'top':
@@ -610,47 +603,71 @@ const Tooltip = forwardRef<HTMLDivElement, TooltipProps>(
           break
       }
 
-      return arrowStyles
-    }
-
-    const arrowStyles = getArrowStyles()
-
-    // Trigger props
-    const triggerProps = {
-      ref: triggerRef as React.Ref<HTMLDivElement>,
-      onMouseEnter: handleMouseEnter,
-      onMouseLeave: handleMouseLeave,
-      onFocus: handleFocus,
-      onBlur: handleBlur,
-      onClick: handleClick,
-      tabIndex: trigger === 'focus' ? 0 : undefined,
-      'aria-describedby': isOpen ? 'tooltip-content' : undefined,
-    }
+      return { ...arrowStyles, ...customStyles.arrowStyles }
+    }, [
+      showArrow,
+      arrowColor,
+      arrowSize,
+      currentPlacement,
+      getStatusColors,
+      getSizeDimensions,
+      customStyles.arrowStyles,
+    ])
 
     const renderTooltipContent = () => {
       if (renderContent) {
         return renderContent(isOpen)
       }
 
+      if (loading) {
+        return (
+          <div className="flex items-center gap-2">
+            <svg className="animate-spin w-3 h-3" viewBox="0 0 24 24" fill="none">
+              <circle
+                cx="12"
+                cy="12"
+                r="10"
+                stroke="currentColor"
+                strokeWidth="4"
+                strokeLinecap="round"
+                opacity="0.25"
+              />
+              <path
+                d="M12 2a10 10 0 0 1 10 10"
+                stroke="currentColor"
+                strokeWidth="4"
+                strokeLinecap="round"
+              />
+            </svg>
+            {loadingMessage}
+          </div>
+        )
+      }
+
+      if (!content && !title && !description) {
+        return <div className="text-gray-400">{emptyMessage}</div>
+      }
+
       return (
-        <div id="tooltip-content">
+        <div id={contentId}>
           {title && (
             <div
               style={{
-                color: titleColor || statusColors.text,
-                fontSize: titleFontSize || dimensions.fontSize,
+                color: titleColor || getStatusColors.text,
+                fontSize: titleFontSize || getSizeDimensions.fontSize,
                 fontWeight: titleFontWeight || '500',
                 fontFamily: titleFontFamily,
                 marginBottom: description ? '0.125rem' : 0,
               }}
             >
               {title}
+              {required && <span className="text-red-400 ml-1">*</span>}
             </div>
           )}
           {description && (
             <div
               style={{
-                color: descriptionColor || statusColors.text,
+                color: descriptionColor || getStatusColors.text,
                 fontSize: descriptionFontSize || '0.75rem',
                 fontWeight: descriptionFontWeight || '400',
                 fontFamily: descriptionFontFamily,
@@ -661,23 +678,26 @@ const Tooltip = forwardRef<HTMLDivElement, TooltipProps>(
             </div>
           )}
           {content && <div>{content}</div>}
+          {label && <div className="mt-1 text-xs opacity-80">{label}</div>}
+          {helperText && <div className="mt-1 text-xs opacity-70">{helperText}</div>}
         </div>
       )
     }
 
+    const contextValue: TooltipContextValue = {
+      isOpen,
+      disabled,
+      size,
+      variant,
+      status,
+      placement: currentPlacement,
+      onOpenChange,
+      triggerProps,
+      contentId,
+    }
+
     return (
-      <TooltipContext.Provider
-        value={{
-          isOpen,
-          disabled,
-          size,
-          variant,
-          status,
-          placement: currentPlacement,
-          onOpenChange,
-          triggerProps,
-        }}
-      >
+      <TooltipContext.Provider value={contextValue}>
         <div className={cn('relative inline-block', containerClassName)} style={containerStyle}>
           {renderTrigger ? (
             renderTrigger(isOpen, triggerProps)
@@ -687,15 +707,21 @@ const Tooltip = forwardRef<HTMLDivElement, TooltipProps>(
             </div>
           )}
 
-          <div
-            ref={tooltipRef}
-            className={cn('tooltip', className)}
-            style={tooltipStyles}
-            {...props}
-          >
-            {showArrow && <div style={arrowStyles} />}
-            {renderTooltipContent()}
-          </div>
+          {typeof document !== 'undefined' &&
+            createPortal(
+              <div
+                ref={contentRef}
+                className={cn('tooltip-content', className)}
+                style={contentStyles}
+                role="tooltip"
+                aria-hidden={!isOpen}
+                {...props}
+              >
+                {showArrow && <div style={getArrowStyles()} />}
+                {renderTooltipContent()}
+              </div>,
+              document.body
+            )}
         </div>
       </TooltipContext.Provider>
     )
@@ -704,14 +730,10 @@ const Tooltip = forwardRef<HTMLDivElement, TooltipProps>(
 
 Tooltip.displayName = 'Tooltip'
 
-// Export a simplified TooltipTrigger component for custom layouts
-export interface TooltipTriggerProps extends React.HTMLAttributes<HTMLDivElement> {
-  children: React.ReactNode
-}
-
+// Export a TooltipTrigger component for compound usage
 const TooltipTrigger = forwardRef<HTMLDivElement, TooltipTriggerProps>(
   ({ className, children, ...props }, ref) => {
-    const { triggerProps } = useTooltip()
+    const { triggerProps } = useTooltipContext()
 
     return (
       <div ref={ref} className={cn('inline-block', className)} {...triggerProps} {...props}>
@@ -723,31 +745,43 @@ const TooltipTrigger = forwardRef<HTMLDivElement, TooltipTriggerProps>(
 
 TooltipTrigger.displayName = 'TooltipTrigger'
 
-// Export a simplified TooltipContent component for custom layouts
-export interface TooltipContentProps extends React.HTMLAttributes<HTMLDivElement> {
-  children: React.ReactNode
-}
-
+// Export a TooltipContent component for compound usage
 const TooltipContent = forwardRef<HTMLDivElement, TooltipContentProps>(
-  ({ className, children, ...props }, ref) => {
-    const { isOpen } = useTooltip()
+  ({ className, children, style, ...props }, ref) => {
+    const { isOpen, contentId } = useTooltipContext()
 
-    return (
+    if (typeof document === 'undefined') return null
+
+    return createPortal(
       <div
         ref={ref}
+        id={contentId}
         className={cn('tooltip-content', className)}
         style={{
+          position: 'absolute',
+          zIndex: 9999,
+          backgroundColor: '#1f2937',
+          color: '#ffffff',
+          padding: '0.375rem 0.75rem',
+          borderRadius: '0.375rem',
+          fontSize: '0.875rem',
           opacity: isOpen ? 1 : 0,
           visibility: isOpen ? 'visible' : 'hidden',
+          pointerEvents: isOpen ? 'auto' : 'none',
+          transition: 'all 200ms ease-in-out',
+          ...style,
         }}
+        role="tooltip"
+        aria-hidden={!isOpen}
         {...props}
       >
         {children}
-      </div>
+      </div>,
+      document.body
     )
   }
 )
 
 TooltipContent.displayName = 'TooltipContent'
 
-export { Tooltip, TooltipTrigger, TooltipContent, useTooltip }
+export { Tooltip, TooltipTrigger, TooltipContent }
