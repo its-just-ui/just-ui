@@ -10,6 +10,7 @@ import {
   EditingState,
   TableContextValue,
   FilterMatchMode,
+  ColumnDef,
 } from './types'
 
 export const useTable = <TData extends RowData = RowData>() => {
@@ -17,7 +18,7 @@ export const useTable = <TData extends RowData = RowData>() => {
   if (!context) {
     throw new Error('useTable must be used within a Table component')
   }
-  return context as TableContextValue<TData>
+  return context as unknown as TableContextValue<TData>
 }
 
 export const useTableData = <TData extends RowData = RowData>(
@@ -234,7 +235,7 @@ export const useTableFilter = () => {
   const [globalFilter, setGlobalFilter] = useState('')
 
   const setColumnFilter = useCallback(
-    (columnId: string, value: any, matchMode?: FilterMatchMode) => {
+    (columnId: string, value: unknown, matchMode?: FilterMatchMode) => {
       setFilters((prev) => {
         const newFilters = prev.filter((f) => f.columnId !== columnId)
         if (value !== undefined && value !== null && value !== '') {
@@ -355,16 +356,16 @@ export const useTableEditing = <TData extends RowData = RowData>(
   onEditCommit?: (
     rowId: string | number,
     columnId: string,
-    value: any,
+    value: unknown,
     row: TData
   ) => void | Promise<void>,
   onEditCancel?: (rowId: string | number, columnId: string) => void
 ) => {
   const [editingCell, setEditingCell] = useState<EditingState | null>(null)
-  const editValueRef = useRef<any>(null)
+  const editValueRef = useRef<unknown>(null)
 
   const startEditing = useCallback(
-    (rowId: string | number, columnId: string, initialValue?: any) => {
+    (rowId: string | number, columnId: string, initialValue?: unknown) => {
       setEditingCell({ rowId, columnId, value: initialValue })
       editValueRef.current = initialValue
     },
@@ -372,7 +373,7 @@ export const useTableEditing = <TData extends RowData = RowData>(
   )
 
   const commitEdit = useCallback(
-    async (value: any, row: TData) => {
+    async (value: unknown, row: TData) => {
       if (!editingCell) return
 
       try {
@@ -419,7 +420,7 @@ export const useTableKeyboardNavigation = <TData extends RowData = RowData>(
     startEditing,
   }: {
     data: TData[]
-    columns: any[]
+    columns: ColumnDef<TData>[]
     getRowId: (row: TData, index: number) => string | number
     selectionMode: 'none' | 'single' | 'multiple'
     toggleRowSelection: (rowId: string | number) => void

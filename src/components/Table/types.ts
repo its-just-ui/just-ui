@@ -18,13 +18,13 @@ export type PaginationMode = 'client' | 'server'
 export type AnimationType = 'fade' | 'slide' | 'scale' | 'none'
 
 // Column definition
-export interface ColumnDef<TData = any> {
+export interface ColumnDef<TData = RowData> {
   id: string
   accessorKey?: keyof TData | string
-  accessorFn?: (row: TData) => any
+  accessorFn?: (row: TData) => unknown
   header?: string | ((props: { column: ColumnDef<TData> }) => ReactNode)
   cell?: (props: {
-    value: any
+    value: unknown
     row: TData
     column: ColumnDef<TData>
     rowIndex: number
@@ -36,24 +36,24 @@ export interface ColumnDef<TData = any> {
   sortable?: boolean
   sortingFn?: (rowA: TData, rowB: TData, columnId: string) => number
   filterable?: boolean
-  filterFn?: (row: TData, columnId: string, filterValue: any) => boolean
+  filterFn?: (row: TData, columnId: string, filterValue: unknown) => boolean
   editable?: boolean
   editComponent?: (props: {
-    value: any
+    value: unknown
     row: TData
     column: ColumnDef<TData>
-    onSave: (value: any) => void
+    onSave: (value: unknown) => void
     onCancel: () => void
   }) => ReactNode
   align?: 'left' | 'center' | 'right'
   className?: string
   headerClassName?: string
-  cellClassName?: string | ((props: { row: TData; value: any }) => string)
+  cellClassName?: string | ((props: { row: TData; value: unknown }) => string)
   footerClassName?: string
   sticky?: 'left' | 'right'
   hidden?: boolean
   group?: string
-  meta?: Record<string, any>
+  meta?: Record<string, unknown>
 }
 
 // Sort descriptor
@@ -65,7 +65,7 @@ export interface SortDescriptor {
 // Filter descriptor
 export interface FilterDescriptor {
   columnId: string
-  value: any
+  value: unknown
   matchMode?: FilterMatchMode
 }
 
@@ -85,20 +85,20 @@ export type ExpandedState = Set<string | number>
 export interface EditingState {
   rowId: string | number
   columnId: string
-  value: any
+  value: unknown
 }
 
 // Group definition
-export interface GroupDef<TData = any> {
+export interface GroupDef<TData = RowData> {
   columnId: string
-  aggregationFn?: (rows: TData[]) => any
-  header?: (props: { group: GroupDef<TData>; rows: TData[]; value: any }) => ReactNode
+  aggregationFn?: (rows: TData[]) => unknown
+  header?: (props: { group: GroupDef<TData>; rows: TData[]; value: unknown }) => ReactNode
 }
 
 // Row data shape
 export interface RowData {
   id: string | number
-  [key: string]: any
+  [key: string]: unknown
 }
 
 // Table base props
@@ -165,7 +165,7 @@ export interface TableBaseProps<TData extends RowData = RowData> {
   onEditCommit?: (
     rowId: string | number,
     columnId: string,
-    value: any,
+    value: unknown,
     row: TData
   ) => void | Promise<void>
   onEditCancel?: (rowId: string | number, columnId: string) => void
@@ -335,7 +335,7 @@ export interface TableContextValue<TData extends RowData = RowData> {
   editingCell: EditingState | null
   setEditingCell: (editing: EditingState | null) => void
   startEditing: (rowId: string | number, columnId: string) => void
-  commitEdit: (value: any) => void
+  commitEdit: (value: unknown) => void
   cancelEdit: () => void
 
   // Grouping
@@ -352,7 +352,7 @@ export interface TableContextValue<TData extends RowData = RowData> {
   animationDuration: number
 
   // All style props
-  styles: Record<string, any>
+  styles: Record<string, unknown>
 
   // Icon components
   icons: {
@@ -430,9 +430,9 @@ export interface TablePaginationProps extends HTMLAttributes<HTMLDivElement> {
 }
 
 export interface TableFilterProps extends HTMLAttributes<HTMLDivElement> {
-  column: ColumnDef<any>
-  value: any
-  onChange: (value: any) => void
+  column: ColumnDef<RowData>
+  value: unknown
+  onChange: (value: unknown) => void
   matchMode?: FilterMatchMode
   placeholder?: string
 }
@@ -461,11 +461,11 @@ export interface TableSelectCheckboxProps
   disabled?: boolean
 }
 
-export interface TableEditCellProps<TData = any> {
-  value: any
+export interface TableEditCellProps<TData = RowData> {
+  value: unknown
   row: TData
   column: ColumnDef<TData>
-  onSave: (value: any) => void
+  onSave: (value: unknown) => void
   onCancel: () => void
 }
 

@@ -1,14 +1,14 @@
 import type { Meta, StoryObj } from '@storybook/react'
-import React, { useState } from 'react'
+import React, { useState, useEffect, useCallback, useMemo } from 'react'
 import { Table } from './Table'
 import type {
   ColumnDef,
   SelectionModel,
   SortDescriptor,
   FilterDescriptor,
-  PaginationState,
   ExpandedState,
   EditingState,
+  RowData,
 } from './types'
 import { Button } from '../Button'
 import { Input } from '../Input'
@@ -16,6 +16,7 @@ import { Badge } from '../Badge'
 import { Avatar } from '../Avatar'
 import { Select } from '../Select'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../Card'
+import { Pagination } from '../Pagination'
 
 // Icon components to use in stories
 const Users: React.FC<{ className?: string }> = ({ className }) => (
@@ -263,6 +264,7 @@ interface User {
   location: string
   joinDate: string
   avatar?: string
+  [key: string]: unknown // To make it compatible with RowData
 }
 
 interface Product {
@@ -275,6 +277,7 @@ interface Product {
   sales: number
   revenue: number
   trend: 'up' | 'down' | 'stable'
+  [key: string]: unknown // To make it compatible with RowData
 }
 
 interface Order {
@@ -289,6 +292,7 @@ interface Order {
   date: string
   paymentMethod: string
   shippingAddress: string
+  [key: string]: unknown // To make it compatible with RowData
 }
 
 // Generate sample data
@@ -433,7 +437,7 @@ const generateOrders = (count: number): Order[] => {
  *     accessorKey: 'status',
  *     cell: ({ value }) => (
  *       <Badge variant={value === 'active' ? 'success' : 'secondary'}>
- *         {value}
+ *         {value as React.ReactNode}
  *       </Badge>
  *     )
  *   }
@@ -629,14 +633,14 @@ type Story = StoryObj<typeof meta>
 // Basic table story
 export const Default: Story = {
   args: {
-    data: generateUsers(10),
+    data: generateUsers(10) as RowData[],
     columns: [
       { id: 'name', header: 'Name', accessorKey: 'name' },
       { id: 'email', header: 'Email', accessorKey: 'email' },
       { id: 'role', header: 'Role', accessorKey: 'role' },
       { id: 'department', header: 'Department', accessorKey: 'department' },
       { id: 'status', header: 'Status', accessorKey: 'status' },
-    ] as ColumnDef<any>[],
+    ],
   },
 }
 
@@ -644,8 +648,8 @@ export const Default: Story = {
 export const Variants: Story = {
   args: { data: [], columns: [] },
   render: () => {
-    const data = generateUsers(5)
-    const columns: ColumnDef<any>[] = [
+    const data = generateUsers(5) as RowData[]
+    const columns = [
       { id: 'name', header: 'Name', accessorKey: 'name' },
       { id: 'email', header: 'Email', accessorKey: 'email' },
       { id: 'role', header: 'Role', accessorKey: 'role' },
@@ -686,8 +690,8 @@ export const Variants: Story = {
 export const Sizes: Story = {
   args: { data: [], columns: [] },
   render: () => {
-    const data = generateUsers(3)
-    const columns: ColumnDef<any>[] = [
+    const data = generateUsers(3) as RowData[]
+    const columns = [
       { id: 'name', header: 'Name', accessorKey: 'name' },
       { id: 'email', header: 'Email', accessorKey: 'email' },
       { id: 'role', header: 'Role', accessorKey: 'role' },
@@ -716,7 +720,7 @@ export const Sizes: Story = {
 export const States: Story = {
   args: { data: [], columns: [] },
   render: () => {
-    const columns: ColumnDef<any>[] = [
+    const columns = [
       { id: 'name', header: 'Name', accessorKey: 'name' },
       { id: 'email', header: 'Email', accessorKey: 'email' },
       { id: 'role', header: 'Role', accessorKey: 'role' },
@@ -740,7 +744,7 @@ export const States: Story = {
         </div>
         <div>
           <h3 className="mb-4 text-lg font-semibold">Disabled State</h3>
-          <Table data={generateUsers(3)} columns={columns} disabled />
+          <Table data={generateUsers(3) as RowData[]} columns={columns} disabled />
         </div>
       </div>
     )
@@ -751,18 +755,18 @@ export const States: Story = {
 export const CustomCellRendering: Story = {
   args: { data: [], columns: [] },
   render: () => {
-    const data = generateUsers(10)
-    const columns: ColumnDef<any>[] = [
+    const data = generateUsers(10) as RowData[] as RowData[]
+    const columns = [
       {
         id: 'user',
         header: 'User',
         accessorKey: 'name',
         cell: ({ row }) => (
           <div className="flex items-center gap-3">
-            <Avatar src={row.avatar} alt={row.name} size="sm" />
+            <Avatar src={row.avatar as string} alt={row.name as string} size="sm" />
             <div>
-              <div className="font-medium">{row.name}</div>
-              <div className="text-sm text-muted-foreground">{row.email}</div>
+              <div className="font-medium">{row.name as React.ReactNode}</div>
+              <div className="text-sm text-muted-foreground">{row.email as React.ReactNode}</div>
             </div>
           </div>
         ),
@@ -774,7 +778,7 @@ export const CustomCellRendering: Story = {
         cell: ({ value }) => (
           <Badge variant="outlined">
             <Users className="mr-1 h-3 w-3" />
-            {value}
+            {value as React.ReactNode}
           </Badge>
         ),
       },
@@ -785,7 +789,7 @@ export const CustomCellRendering: Story = {
         cell: ({ value }) => (
           <div className="flex items-center gap-2">
             <Building className="h-4 w-4 text-muted-foreground" />
-            {value}
+            {value as React.ReactNode}
           </div>
         ),
       },
@@ -803,7 +807,7 @@ export const CustomCellRendering: Story = {
           return (
             <Badge variant={config.variant}>
               {config.icon && <config.icon className="mr-1 h-3 w-3" />}
-              {value}
+              {value as React.ReactNode}
             </Badge>
           )
         },
@@ -826,8 +830,8 @@ export const CustomCellRendering: Story = {
 
 // Selection examples
 const SelectionComponent = () => {
-  const data = generateUsers(10)
-  const columns: ColumnDef<any>[] = [
+  const data = generateUsers(10) as RowData[]
+  const columns = [
     { id: 'name', header: 'Name', accessorKey: 'name' },
     { id: 'email', header: 'Email', accessorKey: 'email' },
     { id: 'role', header: 'Role', accessorKey: 'role' },
@@ -875,8 +879,8 @@ export const Selection: Story = {
 
 // Sorting examples
 const SortingComponent = () => {
-  const data = generateProducts(20)
-  const columns: ColumnDef<any>[] = [
+  const data = generateProducts(20) as RowData[]
+  const columns = [
     { id: 'name', header: 'Product', accessorKey: 'name', sortable: true },
     { id: 'category', header: 'Category', accessorKey: 'category', sortable: true },
     {
@@ -884,7 +888,7 @@ const SortingComponent = () => {
       header: 'Price',
       accessorKey: 'price',
       sortable: true,
-      cell: ({ value }) => `$${value.toFixed(2)}`,
+      cell: ({ value }) => `$${(value as number).toFixed(2)}`,
     },
     {
       id: 'stock',
@@ -901,7 +905,7 @@ const SortingComponent = () => {
                 : 'outlined'
           }
         >
-          {value} units
+          {value as React.ReactNode} units
         </Badge>
       ),
     },
@@ -954,11 +958,11 @@ export const Sorting: Story = {
 
 // Filtering examples
 const FilteringComponent = () => {
-  const data = generateOrders(50)
+  const data = generateOrders(50) as RowData[]
   const [filters, setFilters] = useState<FilterDescriptor[]>([])
   const [globalFilter, setGlobalFilter] = useState('')
 
-  const columns: ColumnDef<any>[] = [
+  const columns = [
     { id: 'id', header: 'Order ID', accessorKey: 'id', filterable: true },
     { id: 'customer', header: 'Customer', accessorKey: 'customer', filterable: true },
     { id: 'product', header: 'Product', accessorKey: 'product', filterable: true },
@@ -966,7 +970,7 @@ const FilteringComponent = () => {
       id: 'total',
       header: 'Total',
       accessorKey: 'total',
-      cell: ({ value }) => `$${value.toFixed(2)}`,
+      cell: ({ value }) => `$${(value as number).toFixed(2)}`,
     },
     {
       id: 'status',
@@ -1013,17 +1017,17 @@ const FilteringComponent = () => {
         <h3 className="mb-4 text-lg font-semibold">Column Filters</h3>
         <div className="grid grid-cols-3 gap-4">
           <Input
-            value={filters.find((f) => f.columnId === 'id')?.value || ''}
+            value={(filters.find((f) => f.columnId === 'id')?.value as string) || ''}
             onChange={(e) => handleColumnFilter('id', e.target.value)}
             placeholder="Filter by Order ID..."
           />
           <Input
-            value={filters.find((f) => f.columnId === 'customer')?.value || ''}
+            value={(filters.find((f) => f.columnId === 'customer')?.value as string) || ''}
             onChange={(e) => handleColumnFilter('customer', e.target.value)}
             placeholder="Filter by Customer..."
           />
           <Input
-            value={filters.find((f) => f.columnId === 'product')?.value || ''}
+            value={(filters.find((f) => f.columnId === 'product')?.value as string) || ''}
             onChange={(e) => handleColumnFilter('product', e.target.value)}
             placeholder="Filter by Product..."
           />
@@ -1050,9 +1054,15 @@ export const Filtering: Story = {
 // Pagination examples
 const PaginationComponent = () => {
   const allData = generateUsers(100)
-  const [pagination, setPagination] = useState<PaginationState>({ pageIndex: 0, pageSize: 10 })
+  const [currentPage, setCurrentPage] = useState(1)
+  const [itemsPerPage, setItemsPerPage] = useState(10)
 
-  const columns: ColumnDef<any>[] = [
+  const totalPages = Math.ceil(allData.length / itemsPerPage)
+  const startIndex = (currentPage - 1) * itemsPerPage
+  const endIndex = startIndex + itemsPerPage
+  const currentData = allData.slice(startIndex, endIndex)
+
+  const columns = [
     { id: 'id', header: 'ID', accessorKey: 'id' },
     { id: 'name', header: 'Name', accessorKey: 'name' },
     { id: 'email', header: 'Email', accessorKey: 'email' },
@@ -1060,36 +1070,73 @@ const PaginationComponent = () => {
     { id: 'location', header: 'Location', accessorKey: 'location' },
   ]
 
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page)
+  }
+
+  const handleItemsPerPageChange = (newItemsPerPage: number) => {
+    setItemsPerPage(newItemsPerPage)
+    setCurrentPage(1) // Reset to first page when changing items per page
+  }
+
   return (
     <div className="space-y-4">
       <h3 className="text-lg font-semibold">Client-side Pagination</h3>
-      <Table
-        data={allData}
-        columns={columns}
-        enablePagination
-        paginationMode="client"
-        pagination={pagination}
-        onPaginationChange={setPagination}
-      >
+      <Table data={currentData} columns={columns}>
         <Table.Header />
         <Table.Body />
-        <Table.Pagination showPageSizeSelector showPageNumbers showTotalCount />
       </Table>
+
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-2 text-sm text-muted-foreground">
+          <span>Rows per page:</span>
+          <Select
+            options={[
+              { value: 5, label: '5' },
+              { value: 10, label: '10' },
+              { value: 25, label: '25' },
+              { value: 50, label: '50' },
+            ]}
+            value={{ value: itemsPerPage, label: itemsPerPage.toString() }}
+            onChange={(option) => {
+              const value = Array.isArray(option) ? option[0]?.value : option?.value
+              if (typeof value === 'number') handleItemsPerPageChange(value)
+            }}
+          />
+          <span className="ml-4">
+            Showing {startIndex + 1} to {Math.min(endIndex, allData.length)} of {allData.length}{' '}
+            results
+          </span>
+        </div>
+
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          totalItems={allData.length}
+          itemsPerPage={itemsPerPage}
+          onChange={handlePageChange}
+          showFirstLast
+          showPrevNext
+          showPageNumbers
+          maxPageNumbers={5}
+          variant="outlined"
+        />
+      </div>
     </div>
   )
 }
 
-export const Pagination: Story = {
+export const TablePagination: Story = {
   args: { data: [], columns: [] },
   render: () => <PaginationComponent />,
 }
 
 // Expansion examples
 const ExpansionComponent = () => {
-  const data = generateUsers(10)
+  const data = generateUsers(10) as RowData[]
   const [expandedRows, setExpandedRows] = useState<ExpandedState>(new Set())
 
-  const columns: ColumnDef<any>[] = [
+  const columns = [
     { id: 'name', header: 'Name', accessorKey: 'name' },
     { id: 'email', header: 'Email', accessorKey: 'email' },
     { id: 'role', header: 'Role', accessorKey: 'role' },
@@ -1140,10 +1187,10 @@ export const Expansion: Story = {
 
 // Editable cells
 const EditableCellsComponent = () => {
-  const [data, setData] = useState(generateUsers(5))
+  const [data, setData] = useState(generateUsers(5) as RowData[])
   const [editingCell, setEditingCell] = useState<EditingState | null>(null)
 
-  const handleEditCommit = async (rowId: string | number, columnId: string, value: any) => {
+  const handleEditCommit = async (rowId: string | number, columnId: string, value: unknown) => {
     setData((prev) =>
       prev.map((row) => {
         if (row.id === rowId) {
@@ -1154,7 +1201,7 @@ const EditableCellsComponent = () => {
     )
   }
 
-  const columns: ColumnDef<any>[] = [
+  const columns = [
     {
       id: 'name',
       header: 'Name',
@@ -1225,8 +1272,8 @@ export const EditableCells: Story = {
 export const CustomStyling: Story = {
   args: { data: [], columns: [] },
   render: () => {
-    const data = generateUsers(5)
-    const columns: ColumnDef<any>[] = [
+    const data = generateUsers(5) as RowData[]
+    const columns = [
       { id: 'name', header: 'Name', accessorKey: 'name' },
       { id: 'email', header: 'Email', accessorKey: 'email' },
       { id: 'role', header: 'Role', accessorKey: 'role' },
@@ -1286,8 +1333,8 @@ export const CustomStyling: Story = {
 export const Accessibility: Story = {
   args: { data: [], columns: [] },
   render: () => {
-    const data = generateUsers(10)
-    const columns: ColumnDef<any>[] = [
+    const data = generateUsers(10) as RowData[] as RowData[]
+    const columns = [
       { id: 'name', header: 'Name', accessorKey: 'name' },
       { id: 'email', header: 'Email', accessorKey: 'email' },
       { id: 'role', header: 'Role', accessorKey: 'role' },
@@ -1334,7 +1381,7 @@ const FormIntegrationComponent = () => {
     ],
   })
 
-  const columns: ColumnDef<any>[] = [
+  const columns = [
     {
       id: 'product',
       header: 'Product',
@@ -1346,11 +1393,11 @@ const FormIntegrationComponent = () => {
       header: 'Quantity',
       accessorKey: 'quantity',
       editable: true,
-      cell: ({ value }) => value,
+      cell: ({ value }) => value as React.ReactNode,
       editComponent: ({ value, onSave, onCancel }) => (
         <Input
           type="number"
-          defaultValue={value}
+          defaultValue={String(value)}
           onBlur={(e) => onSave(parseInt(e.target.value) || 0)}
           onKeyDown={(e) => {
             if (e.key === 'Enter') onSave(parseInt(e.currentTarget.value) || 0)
@@ -1365,12 +1412,12 @@ const FormIntegrationComponent = () => {
       header: 'Price',
       accessorKey: 'price',
       editable: true,
-      cell: ({ value }) => `$${value.toFixed(2)}`,
+      cell: ({ value }) => `$${(value as number).toFixed(2)}`,
       editComponent: ({ value, onSave, onCancel }) => (
         <Input
           type="number"
           step="0.01"
-          defaultValue={value}
+          defaultValue={String(value)}
           onBlur={(e) => onSave(parseFloat(e.target.value) || 0)}
           onKeyDown={(e) => {
             if (e.key === 'Enter') onSave(parseFloat(e.currentTarget.value) || 0)
@@ -1383,12 +1430,12 @@ const FormIntegrationComponent = () => {
     {
       id: 'total',
       header: 'Total',
-      accessorFn: (row) => row.quantity * row.price,
-      cell: ({ value }) => `$${value.toFixed(2)}`,
+      accessorFn: (row) => (row.quantity as number) * (row.price as number),
+      cell: ({ value }) => `$${(value as number).toFixed(2)}`,
     },
   ]
 
-  const handleEditCommit = (rowId: string | number, columnId: string, value: any) => {
+  const handleEditCommit = (rowId: string | number, columnId: string, value: unknown) => {
     setFormData((prev) => ({
       ...prev,
       items: prev.items.map((item) => {
@@ -1446,17 +1493,17 @@ export const FormIntegration: Story = {
 
 // Styling examples with animations and transitions
 const StyledExamplesComponent = () => {
-  const data = generateUsers(15)
+  const data = generateUsers(15) as RowData[]
   const [selectedRows, setSelectedRows] = useState<SelectionModel>(new Set())
 
-  const columns: ColumnDef<any>[] = [
+  const columns = [
     {
       id: 'name',
       header: 'Name',
       accessorKey: 'name',
       cell: ({ value, row }) => (
         <div className="flex items-center gap-2">
-          <Avatar src={row.avatar} alt={value} />
+          <Avatar src={row.avatar as string} alt={value as string} />
           <span className="font-medium">{value}</span>
         </div>
       ),
@@ -1470,7 +1517,7 @@ const StyledExamplesComponent = () => {
           status={value === 'active' ? 'success' : 'secondary'}
           className="transition-all duration-200 hover:scale-105"
         >
-          {value}
+          {value as React.ReactNode}
         </Badge>
       ),
     },
@@ -1480,7 +1527,7 @@ const StyledExamplesComponent = () => {
       accessorKey: 'department',
       cell: ({ value }) => (
         <div className="px-3 py-1 rounded-full bg-primary/10 text-primary inline-block transition-colors duration-200 hover:bg-primary/20">
-          {value}
+          {value as React.ReactNode}
         </div>
       ),
     },
@@ -1572,13 +1619,13 @@ export const StyledExamples: Story = {
 
 // Advanced styling with custom animations
 const AdvancedStylingComponent = () => {
-  const data = generateProducts(25)
+  const data = generateProducts(25) as RowData[]
   const [expandedRows, setExpandedRows] = useState<ExpandedState>(new Set())
   const [filters, setFilters] = useState<FilterDescriptor[]>([])
   const [sort, setSort] = useState<SortDescriptor[]>([])
   const [selectedRows, setSelectedRows] = useState<SelectionModel>(new Set())
 
-  const columns: ColumnDef<any>[] = [
+  const columns = [
     {
       id: 'product',
       header: 'Product',
@@ -1606,7 +1653,7 @@ const AdvancedStylingComponent = () => {
       sortable: true,
       cell: ({ value }) => (
         <div className="font-mono text-lg font-semibold bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent">
-          {value}
+          {value as React.ReactNode}
         </div>
       ),
     },
@@ -1707,8 +1754,8 @@ const AdvancedStylingComponent = () => {
                 <div>
                   <h4 className="font-semibold text-sm text-muted-foreground mb-2">Description</h4>
                   <p className="text-sm">
-                    Premium quality {row.name?.toLowerCase() || 'product'} with advanced features
-                    and modern design. Built to last with high-quality materials.
+                    Premium quality {(row.name as string)?.toLowerCase() || 'product'} with advanced
+                    features and modern design. Built to last with high-quality materials.
                   </p>
                   <div className="mt-3">
                     <span className="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded-full">
@@ -1780,4 +1827,942 @@ const AdvancedStylingComponent = () => {
 export const AdvancedStyling: Story = {
   args: { data: [], columns: [] },
   render: () => <AdvancedStylingComponent />,
+}
+
+// Server-side pagination example
+const ServerPaginationComponent = () => {
+  const [currentPage, setCurrentPage] = useState(1)
+  const [itemsPerPage, setItemsPerPage] = useState(15)
+  const [loading, setLoading] = useState(false)
+  const [data, setData] = useState<User[]>([])
+  const [totalCount, setTotalCount] = useState(0)
+
+  // Simulate server-side data fetching
+  const fetchData = useCallback(async (page: number, size: number) => {
+    setLoading(true)
+    // Simulate network delay
+    await new Promise((resolve) => setTimeout(resolve, 500))
+
+    const allData = generateUsers(247) // Total dataset
+    const startIndex = (page - 1) * size
+    const endIndex = startIndex + size
+    const pageData = allData.slice(startIndex, endIndex)
+
+    setData(pageData)
+    setTotalCount(allData.length)
+    setLoading(false)
+  }, [])
+
+  // Fetch data when pagination changes
+  useEffect(() => {
+    fetchData(currentPage, itemsPerPage)
+  }, [currentPage, itemsPerPage, fetchData])
+
+  const columns = [
+    {
+      id: 'id',
+      header: 'ID',
+      accessorKey: 'id',
+      width: 80,
+      cell: ({ value }) => (
+        <Badge variant="outlined" className="font-mono">
+          {String(value).padStart(3, '0')}
+        </Badge>
+      ),
+    },
+    {
+      id: 'user',
+      header: 'User',
+      accessorKey: 'name',
+      cell: ({ row }) => (
+        <div className="flex items-center gap-3">
+          <Avatar src={row.avatar as string} alt={row.name as string} className="h-8 w-8" />
+          <div>
+            <div className="font-medium">{row.name}</div>
+            <div className="text-sm text-muted-foreground">{row.email}</div>
+          </div>
+        </div>
+      ),
+    },
+    {
+      id: 'role',
+      header: 'Role',
+      accessorKey: 'role',
+      cell: ({ value }) => <Badge variant="ghost">{value as React.ReactNode}</Badge>,
+    },
+    {
+      id: 'department',
+      header: 'Department',
+      accessorKey: 'department',
+      cell: ({ value }) => (
+        <div className="flex items-center gap-2">
+          <Building className="h-4 w-4 text-muted-foreground" />
+          {value as React.ReactNode}
+        </div>
+      ),
+    },
+    {
+      id: 'status',
+      header: 'Status',
+      accessorKey: 'status',
+      cell: ({ value }) => {
+        const statusConfig = {
+          active: { variant: 'default' as const, color: 'text-green-600' },
+          inactive: { variant: 'outlined' as const, color: 'text-gray-600' },
+          pending: { variant: 'filled' as const, color: 'text-yellow-600' },
+        }
+        const config = statusConfig[value as keyof typeof statusConfig]
+        return (
+          <Badge variant={config.variant} className={config.color}>
+            {value as React.ReactNode}
+          </Badge>
+        )
+      },
+    },
+  ]
+
+  const totalPages = Math.ceil(totalCount / itemsPerPage)
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page)
+  }
+
+  const handleItemsPerPageChange = (newItemsPerPage: number) => {
+    setItemsPerPage(newItemsPerPage)
+    setCurrentPage(1) // Reset to first page when changing items per page
+  }
+
+  return (
+    <div className="space-y-4">
+      <div className="flex items-center justify-between">
+        <h3 className="text-lg font-semibold">Server-side Pagination</h3>
+        <div className="text-sm text-muted-foreground">
+          Total Records: {totalCount.toLocaleString()}
+        </div>
+      </div>
+
+      <Table
+        data={data}
+        columns={columns}
+        loading={loading}
+        variant="bordered"
+        loadingComponent={<Table.Loading message="Loading user data..." />}
+      >
+        <Table.Header />
+        <Table.Body />
+      </Table>
+
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-2 text-sm text-muted-foreground">
+          <span>Rows per page:</span>
+          <Select
+            options={[
+              { value: 10, label: '10' },
+              { value: 15, label: '15' },
+              { value: 25, label: '25' },
+              { value: 50, label: '50' },
+            ]}
+            value={{ value: itemsPerPage, label: itemsPerPage.toString() }}
+            onChange={(option) => {
+              const value = Array.isArray(option) ? option[0]?.value : option?.value
+              if (typeof value === 'number') handleItemsPerPageChange(value)
+            }}
+          />
+          <span className="ml-4">
+            {((currentPage - 1) * itemsPerPage + 1).toLocaleString()} to{' '}
+            {Math.min(currentPage * itemsPerPage, totalCount).toLocaleString()} of{' '}
+            {totalCount.toLocaleString()} results
+          </span>
+        </div>
+
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          totalItems={totalCount}
+          itemsPerPage={itemsPerPage}
+          onChange={handlePageChange}
+          loading={loading}
+          showFirstLast
+          showPrevNext
+          showPageNumbers
+          maxPageNumbers={7}
+          variant="filled"
+        />
+      </div>
+    </div>
+  )
+}
+
+export const ServerPagination: Story = {
+  args: { data: [], columns: [] },
+  render: () => <ServerPaginationComponent />,
+}
+
+// Compact pagination with different page sizes
+const CompactPaginationComponent = () => {
+  const allData = generateProducts(150)
+
+  // State for small pagination
+  const [smallPage, setSmallPage] = useState(1)
+  const [smallItemsPerPage] = useState(5)
+
+  // State for medium pagination
+  const [mediumPage, setMediumPage] = useState(1)
+  const [mediumItemsPerPage] = useState(10)
+
+  // State for large pagination
+  const [largePage, setLargePage] = useState(1)
+  const [largeItemsPerPage] = useState(25)
+
+  const columns = [
+    {
+      id: 'name',
+      header: 'Product',
+      accessorKey: 'name',
+      cell: ({ value, row }) => (
+        <div className="flex items-center gap-2">
+          <div className="w-8 h-8 rounded bg-primary/10 flex items-center justify-center">
+            <Package className="w-4 h-4 text-primary" />
+          </div>
+          <div>
+            <div className="font-medium">{value}</div>
+            <div className="text-xs text-muted-foreground">ID: {row.id}</div>
+          </div>
+        </div>
+      ),
+    },
+    {
+      id: 'category',
+      header: 'Category',
+      accessorKey: 'category',
+    },
+    {
+      id: 'price',
+      header: 'Price',
+      accessorKey: 'price',
+      cell: ({ value }) => (
+        <span className="font-mono font-semibold text-green-600">${value.toFixed(2)}</span>
+      ),
+    },
+    {
+      id: 'stock',
+      header: 'Stock',
+      accessorKey: 'stock',
+      cell: ({ value, row }) => (
+        <div className="text-center">
+          <div className="font-medium">{value}</div>
+          <Badge
+            variant={
+              row.status === 'in-stock'
+                ? 'default'
+                : row.status === 'low-stock'
+                  ? 'filled'
+                  : 'outlined'
+            }
+            className="text-xs"
+          >
+            {row.status.replace('-', ' ')}
+          </Badge>
+        </div>
+      ),
+    },
+  ]
+
+  // Calculate data for each table
+  const smallStartIndex = (smallPage - 1) * smallItemsPerPage
+  const smallData = allData.slice(smallStartIndex, smallStartIndex + smallItemsPerPage)
+  const smallTotalPages = Math.ceil(allData.length / smallItemsPerPage)
+
+  const mediumStartIndex = (mediumPage - 1) * mediumItemsPerPage
+  const mediumData = allData.slice(mediumStartIndex, mediumStartIndex + mediumItemsPerPage)
+  const mediumTotalPages = Math.ceil(allData.length / mediumItemsPerPage)
+
+  const largeStartIndex = (largePage - 1) * largeItemsPerPage
+  const largeData = allData.slice(largeStartIndex, largeStartIndex + largeItemsPerPage)
+  const largeTotalPages = Math.ceil(allData.length / largeItemsPerPage)
+
+  return (
+    <div className="space-y-6">
+      <div>
+        <h3 className="text-lg font-semibold mb-4">Compact Pagination (5 per page)</h3>
+        <Table data={smallData} columns={columns} size="sm" variant="striped">
+          <Table.Header />
+          <Table.Body />
+        </Table>
+        <div className="mt-4 flex justify-between items-center">
+          <div className="text-sm text-muted-foreground">
+            Showing {smallStartIndex + 1} to{' '}
+            {Math.min(smallStartIndex + smallItemsPerPage, allData.length)} of {allData.length}{' '}
+            results
+          </div>
+          <Pagination
+            currentPage={smallPage}
+            totalPages={smallTotalPages}
+            totalItems={allData.length}
+            itemsPerPage={smallItemsPerPage}
+            onChange={setSmallPage}
+            size="sm"
+            variant="flat"
+            maxPageNumbers={3}
+          />
+        </div>
+      </div>
+
+      <div>
+        <h3 className="text-lg font-semibold mb-4">Medium Pagination (10 per page)</h3>
+        <Table data={mediumData} columns={columns} variant="minimal">
+          <Table.Header />
+          <Table.Body />
+        </Table>
+        <div className="mt-4 flex justify-between items-center">
+          <div className="text-sm text-muted-foreground">
+            Showing {mediumStartIndex + 1} to{' '}
+            {Math.min(mediumStartIndex + mediumItemsPerPage, allData.length)} of {allData.length}{' '}
+            results
+          </div>
+          <Pagination
+            currentPage={mediumPage}
+            totalPages={mediumTotalPages}
+            totalItems={allData.length}
+            itemsPerPage={mediumItemsPerPage}
+            onChange={setMediumPage}
+            size="md"
+            variant="outlined"
+            maxPageNumbers={5}
+          />
+        </div>
+      </div>
+
+      <div>
+        <h3 className="text-lg font-semibold mb-4">Large Pagination (25 per page)</h3>
+        <Table data={largeData} columns={columns} size="lg" variant="card-style">
+          <Table.Header />
+          <Table.Body />
+        </Table>
+        <div className="mt-4 flex justify-between items-center">
+          <div className="text-sm text-muted-foreground">
+            Showing {largeStartIndex + 1} to{' '}
+            {Math.min(largeStartIndex + largeItemsPerPage, allData.length)} of {allData.length}{' '}
+            results
+          </div>
+          <Pagination
+            currentPage={largePage}
+            totalPages={largeTotalPages}
+            totalItems={allData.length}
+            itemsPerPage={largeItemsPerPage}
+            onChange={setLargePage}
+            size="lg"
+            variant="elevated"
+            maxPageNumbers={7}
+            showFirstLast
+            showPrevNext
+            showPageNumbers
+          />
+        </div>
+      </div>
+    </div>
+  )
+}
+
+export const CompactPagination: Story = {
+  args: { data: [], columns: [] },
+  render: () => <CompactPaginationComponent />,
+}
+
+// Advanced pagination with search and filtering
+const AdvancedPaginationComponent = () => {
+  const allData = generateOrders(500) as RowData[]
+  const [currentPage, setCurrentPage] = useState(1)
+  const [itemsPerPage, setItemsPerPage] = useState(20)
+  const [globalFilter, setGlobalFilter] = useState('')
+  const [filters, setFilters] = useState<FilterDescriptor[]>([])
+  const [selectedRows, setSelectedRows] = useState<SelectionModel>(new Set())
+
+  const columns = [
+    {
+      id: 'id',
+      header: 'Order ID',
+      accessorKey: 'id',
+      filterable: true,
+      width: 120,
+      cell: ({ value }) => (
+        <Badge variant="outlined" className="font-mono text-xs">
+          {value as React.ReactNode}
+        </Badge>
+      ),
+    },
+    {
+      id: 'customer',
+      header: 'Customer',
+      accessorKey: 'customer',
+      filterable: true,
+      cell: ({ value, row }) => (
+        <div>
+          <div className="font-medium">{value}</div>
+          <div className="text-xs text-muted-foreground">{row.email}</div>
+        </div>
+      ),
+    },
+    {
+      id: 'product',
+      header: 'Product',
+      accessorKey: 'product',
+      filterable: true,
+    },
+    {
+      id: 'quantity',
+      header: 'Qty',
+      accessorKey: 'quantity',
+      width: 80,
+      cell: ({ value }) => (
+        <Badge variant="ghost" className="font-mono">
+          {value as React.ReactNode}
+        </Badge>
+      ),
+    },
+    {
+      id: 'total',
+      header: 'Total',
+      accessorKey: 'total',
+      cell: ({ value }) => (
+        <span className="font-semibold text-green-600">${value.toFixed(2)}</span>
+      ),
+    },
+    {
+      id: 'status',
+      header: 'Status',
+      accessorKey: 'status',
+      filterable: true,
+      cell: ({ value }) => {
+        const statusColors = {
+          pending: 'bg-yellow-100 text-yellow-800',
+          processing: 'bg-blue-100 text-blue-800',
+          shipped: 'bg-purple-100 text-purple-800',
+          delivered: 'bg-green-100 text-green-800',
+          cancelled: 'bg-red-100 text-red-800',
+        }
+        return (
+          <Badge className={statusColors[value as keyof typeof statusColors]}>
+            {value as React.ReactNode}
+          </Badge>
+        )
+      },
+    },
+    {
+      id: 'date',
+      header: 'Date',
+      accessorKey: 'date',
+      cell: ({ value }) => (
+        <span className="text-sm">{new Date(value as string).toLocaleDateString()}</span>
+      ),
+    },
+  ]
+
+  // Apply filters and search
+  const filteredData = useMemo(() => {
+    let result = allData
+
+    // Apply global filter
+    if (globalFilter) {
+      result = result.filter((item) =>
+        Object.values(item).some((value) =>
+          String(value).toLowerCase().includes(globalFilter.toLowerCase())
+        )
+      )
+    }
+
+    // Apply column filters
+    filters.forEach((filter) => {
+      if (filter.value) {
+        result = result.filter((item) => {
+          const cellValue = String(item[filter.columnId as keyof Order]).toLowerCase()
+          const filterValue = String(filter.value).toLowerCase()
+
+          switch (filter.matchMode) {
+            case 'equals':
+              return cellValue === filterValue
+            case 'contains':
+            default:
+              return cellValue.includes(filterValue)
+          }
+        })
+      }
+    })
+
+    return result
+  }, [allData, globalFilter, filters])
+
+  // Apply pagination
+  const totalPages = Math.ceil(filteredData.length / itemsPerPage)
+  const startIndex = (currentPage - 1) * itemsPerPage
+  const endIndex = startIndex + itemsPerPage
+  const paginatedData = filteredData.slice(startIndex, endIndex)
+
+  const selectedTotal = Array.from(selectedRows)
+    .map((id) => filteredData.find((order) => order.id === id))
+    .filter(Boolean)
+    .reduce((sum, order) => sum + (order?.total as number), 0)
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page)
+  }
+
+  const handleItemsPerPageChange = (newItemsPerPage: number) => {
+    setItemsPerPage(newItemsPerPage)
+    setCurrentPage(1)
+  }
+
+  return (
+    <div className="space-y-4">
+      <div className="flex items-center justify-between">
+        <div>
+          <h3 className="text-lg font-semibold">Order Management Dashboard</h3>
+          <p className="text-sm text-muted-foreground">
+            Advanced pagination with search, filters, and bulk operations
+          </p>
+        </div>
+        <div className="flex items-center gap-4">
+          {selectedRows.size > 0 && (
+            <div className="text-sm">
+              <Badge variant="default" className="mr-2">
+                {selectedRows.size} selected
+              </Badge>
+              <span className="text-muted-foreground">
+                Total:{' '}
+                <span className="font-semibold text-green-600">${selectedTotal.toFixed(2)}</span>
+              </span>
+            </div>
+          )}
+          <div className="flex gap-2">
+            <Button variant="outlined" size="sm">
+              Export Selected
+            </Button>
+            <Button size="sm">Bulk Actions</Button>
+          </div>
+        </div>
+      </div>
+
+      <div className="flex gap-4">
+        <div className="flex-1">
+          <Table.GlobalFilter
+            value={globalFilter}
+            onChange={setGlobalFilter}
+            placeholder="Search orders, customers, products..."
+          />
+        </div>
+        <Select
+          options={[
+            { value: '', label: 'All Statuses' },
+            { value: 'pending', label: 'Pending' },
+            { value: 'processing', label: 'Processing' },
+            { value: 'shipped', label: 'Shipped' },
+            { value: 'delivered', label: 'Delivered' },
+            { value: 'cancelled', label: 'Cancelled' },
+          ]}
+          placeholder="Filter by status"
+          onChange={(option) => {
+            const value = Array.isArray(option) ? option[0]?.value : option?.value
+            if (value) {
+              setFilters([{ columnId: 'status', value, matchMode: 'equals' }])
+            } else {
+              setFilters([])
+            }
+          }}
+        />
+      </div>
+
+      <Table
+        data={paginatedData}
+        columns={columns}
+        selectionMode="multiple"
+        selectedRows={selectedRows}
+        onSelectionChange={setSelectedRows}
+        variant="minimal"
+      >
+        <Table.Header />
+        <Table.Body />
+      </Table>
+
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-2 text-sm text-muted-foreground">
+          <span>Rows per page:</span>
+          <Select
+            options={[
+              { value: 10, label: '10' },
+              { value: 20, label: '20' },
+              { value: 50, label: '50' },
+              { value: 100, label: '100' },
+            ]}
+            value={{ value: itemsPerPage, label: itemsPerPage.toString() }}
+            onChange={(option) => {
+              const value = Array.isArray(option) ? option[0]?.value : option?.value
+              if (typeof value === 'number') handleItemsPerPageChange(value)
+            }}
+          />
+          <span className="ml-4">
+            Showing {startIndex + 1} to {Math.min(endIndex, filteredData.length)} of{' '}
+            {filteredData.length} results
+            {filteredData.length !== allData.length && ` (filtered from ${allData.length})`}
+          </span>
+        </div>
+
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          totalItems={filteredData.length}
+          itemsPerPage={itemsPerPage}
+          onChange={handlePageChange}
+          showFirstLast
+          showPrevNext
+          showPageNumbers
+          maxPageNumbers={5}
+          variant="default"
+        />
+      </div>
+
+      {selectedRows.size > 0 && (
+        <div className="bg-primary/5 border border-primary/20 rounded-lg p-4">
+          <div className="flex items-center justify-between">
+            <div className="text-sm">
+              <strong>{selectedRows.size}</strong> orders selected with total value of{' '}
+              <strong className="text-green-600">${selectedTotal.toFixed(2)}</strong>
+            </div>
+            <div className="flex gap-2">
+              <Button variant="ghost" size="sm" onClick={() => setSelectedRows(new Set())}>
+                Clear Selection
+              </Button>
+              <Button variant="outlined" size="sm">
+                Bulk Update Status
+              </Button>
+              <Button variant="outlined" size="sm">
+                Generate Report
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  )
+}
+
+export const AdvancedPagination: Story = {
+  args: { data: [], columns: [] },
+  render: () => <AdvancedPaginationComponent />,
+}
+
+// Mobile-responsive pagination
+const MobilePaginationComponent = () => {
+  const allData = generateUsers(75)
+  const [currentPage, setCurrentPage] = useState(1)
+  const [itemsPerPage, setItemsPerPage] = useState(8)
+
+  const totalPages = Math.ceil(allData.length / itemsPerPage)
+  const startIndex = (currentPage - 1) * itemsPerPage
+  const endIndex = startIndex + itemsPerPage
+  const currentData = allData.slice(startIndex, endIndex)
+
+  const columns = [
+    {
+      id: 'user',
+      header: 'User Info',
+      accessorKey: 'name',
+      cell: ({ row }) => (
+        <div className="flex items-center gap-3">
+          <Avatar src={row.avatar as string} alt={row.name as string} className="h-10 w-10" />
+          <div className="min-w-0 flex-1">
+            <div className="font-medium truncate">{row.name as React.ReactNode}</div>
+            <div className="text-sm text-muted-foreground truncate">
+              {row.email as React.ReactNode}
+            </div>
+            <div className="flex items-center gap-2 mt-1">
+              <Badge variant="ghost" className="text-xs">
+                {row.role}
+              </Badge>
+              <Badge variant={row.status === 'active' ? 'default' : 'outlined'} className="text-xs">
+                {row.status}
+              </Badge>
+            </div>
+          </div>
+        </div>
+      ),
+    },
+    {
+      id: 'details',
+      header: 'Details',
+      accessorKey: 'department',
+      cell: ({ row }) => (
+        <div className="text-right">
+          <div className="flex items-center justify-end gap-1 text-sm">
+            <Building className="h-3 w-3" />
+            {row.department}
+          </div>
+          <div className="text-xs text-muted-foreground mt-1">{row.location}</div>
+          <div className="text-xs text-muted-foreground">
+            Joined: {new Date(row.joinDate).getFullYear()}
+          </div>
+        </div>
+      ),
+    },
+  ]
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page)
+  }
+
+  const handleItemsPerPageChange = (newItemsPerPage: number) => {
+    setItemsPerPage(newItemsPerPage)
+    setCurrentPage(1)
+  }
+
+  return (
+    <div className="space-y-4">
+      <h3 className="text-lg font-semibold">Mobile-Responsive Pagination</h3>
+      <div className="text-sm text-muted-foreground">
+        Optimized layout for mobile devices with condensed information
+      </div>
+
+      <Table data={currentData} columns={columns} variant="card-style" className="w-full">
+        <Table.Header />
+        <Table.Body />
+      </Table>
+
+      <div className="flex flex-col sm:flex-row gap-4 items-center justify-between">
+        <div className="flex flex-col sm:flex-row items-center gap-2 text-sm text-muted-foreground">
+          <div className="flex items-center gap-2">
+            <span>Rows per page:</span>
+            <Select
+              options={[
+                { value: 5, label: '5' },
+                { value: 8, label: '8' },
+                { value: 15, label: '15' },
+                { value: 30, label: '30' },
+              ]}
+              value={{ value: itemsPerPage, label: itemsPerPage.toString() }}
+              onChange={(option) => {
+                const value = Array.isArray(option) ? option[0]?.value : option?.value
+                if (value) handleItemsPerPageChange(Number(value))
+              }}
+            />
+          </div>
+          <span className="text-center sm:text-left">
+            Showing {startIndex + 1} to {Math.min(endIndex, allData.length)} of {allData.length}{' '}
+            results
+          </span>
+        </div>
+
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          totalItems={allData.length}
+          itemsPerPage={itemsPerPage}
+          onChange={handlePageChange}
+          size="sm"
+          variant="circular"
+          maxPageNumbers={3}
+          showPrevNext
+        />
+      </div>
+    </div>
+  )
+}
+
+export const MobilePagination: Story = {
+  args: { data: [], columns: [] },
+  render: () => <MobilePaginationComponent />,
+}
+
+// Performance optimization with virtual pagination
+const VirtualPaginationComponent = () => {
+  const [dataSize, setDataSize] = useState(1000)
+  const [currentPage, setCurrentPage] = useState(1)
+  const [itemsPerPage, setItemsPerPage] = useState(50)
+  const [loading, setLoading] = useState(false)
+
+  const generateLargeDataset = useCallback((size: number) => {
+    setLoading(true)
+    // Simulate heavy data generation
+    setTimeout(() => {
+      setLoading(false)
+    }, 200)
+    return generateUsers(size)
+  }, [])
+
+  const allData = useMemo(() => generateLargeDataset(dataSize), [dataSize, generateLargeDataset])
+
+  const totalPages = Math.ceil(allData.length / itemsPerPage)
+  const startIndex = (currentPage - 1) * itemsPerPage
+  const endIndex = startIndex + itemsPerPage
+  const currentData = allData.slice(startIndex, endIndex)
+
+  const columns = [
+    {
+      id: 'id',
+      header: 'ID',
+      accessorKey: 'id',
+      width: 80,
+      cell: ({ value }) => (
+        <Badge variant="outlined" className="font-mono text-xs">
+          #{value}
+        </Badge>
+      ),
+    },
+    {
+      id: 'name',
+      header: 'Name',
+      accessorKey: 'name',
+      cell: ({ value, row }) => (
+        <div className="flex items-center gap-2">
+          <Avatar src={row.avatar as string} alt={value as string} className="h-6 w-6" />
+          <span className="font-medium">{value}</span>
+        </div>
+      ),
+    },
+    {
+      id: 'email',
+      header: 'Email',
+      accessorKey: 'email',
+      cell: ({ value }) => <span className="text-sm text-muted-foreground">{value}</span>,
+    },
+    {
+      id: 'role',
+      header: 'Role',
+      accessorKey: 'role',
+      cell: ({ value }) => <Badge variant="ghost">{value}</Badge>,
+    },
+    {
+      id: 'department',
+      header: 'Department',
+      accessorKey: 'department',
+    },
+    {
+      id: 'status',
+      header: 'Status',
+      accessorKey: 'status',
+      cell: ({ value }) => (
+        <Badge variant={value === 'active' ? 'default' : 'outlined'}>
+          {value as React.ReactNode}
+        </Badge>
+      ),
+    },
+  ]
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page)
+  }
+
+  const handleItemsPerPageChange = (newItemsPerPage: number) => {
+    setItemsPerPage(newItemsPerPage)
+    setCurrentPage(1)
+  }
+
+  const handleDataSizeChange = (newSize: number) => {
+    setDataSize(newSize)
+    setCurrentPage(1)
+  }
+
+  return (
+    <div className="space-y-4">
+      <div className="flex items-center justify-between">
+        <div>
+          <h3 className="text-lg font-semibold">Performance Pagination</h3>
+          <p className="text-sm text-muted-foreground">
+            Handling large datasets efficiently with pagination
+          </p>
+        </div>
+        <div className="flex items-center gap-4">
+          <div className="text-sm">
+            <label className="text-muted-foreground mr-2">Dataset Size:</label>
+            <Select
+              options={[
+                { value: 500, label: '500 records' },
+                { value: 1000, label: '1,000 records' },
+                { value: 5000, label: '5,000 records' },
+                { value: 10000, label: '10,000 records' },
+              ]}
+              value={{ value: dataSize, label: `${dataSize.toLocaleString()} records` }}
+              onChange={(option) => {
+                const value = Array.isArray(option) ? option[0]?.value : option?.value
+                if (typeof value === 'number') handleDataSizeChange(value)
+              }}
+            />
+          </div>
+          <Badge variant="default">{allData.length.toLocaleString()} Total</Badge>
+        </div>
+      </div>
+
+      <Table
+        data={currentData}
+        columns={columns as ColumnDef[]}
+        loading={loading}
+        variant="bordered"
+        loadingComponent={<Table.Loading message="Generating dataset..." />}
+      >
+        <Table.Header />
+        <Table.Body />
+      </Table>
+
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-2 text-sm text-muted-foreground">
+          <span>Rows per page:</span>
+          <Select
+            options={[
+              { value: 25, label: '25' },
+              { value: 50, label: '50' },
+              { value: 100, label: '100' },
+              { value: 200, label: '200' },
+            ]}
+            value={{ value: itemsPerPage, label: itemsPerPage.toString() }}
+            onChange={(option) => {
+              const value = Array.isArray(option) ? option[0]?.value : option?.value
+              if (typeof value === 'number') handleItemsPerPageChange(value)
+            }}
+          />
+          <span className="ml-4">
+            Showing {startIndex + 1} to {Math.min(endIndex, allData.length)} of{' '}
+            {allData.length.toLocaleString()} results
+          </span>
+        </div>
+
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          totalItems={allData.length}
+          itemsPerPage={itemsPerPage}
+          onChange={handlePageChange}
+          loading={loading}
+          showFirstLast
+          showPrevNext
+          showPageNumbers
+          maxPageNumbers={7}
+          variant="elevated"
+        />
+      </div>
+
+      <div className="bg-muted/30 rounded-lg p-4">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+          <div>
+            <div className="text-muted-foreground">Current Page</div>
+            <div className="font-semibold">{currentPage}</div>
+          </div>
+          <div>
+            <div className="text-muted-foreground">Page Size</div>
+            <div className="font-semibold">{itemsPerPage}</div>
+          </div>
+          <div>
+            <div className="text-muted-foreground">Total Pages</div>
+            <div className="font-semibold">{totalPages.toLocaleString()}</div>
+          </div>
+          <div>
+            <div className="text-muted-foreground">Memory Usage</div>
+            <div className="font-semibold text-green-600">Optimized</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+export const VirtualPagination: Story = {
+  args: { data: [], columns: [] },
+  render: () => <VirtualPaginationComponent />,
 }

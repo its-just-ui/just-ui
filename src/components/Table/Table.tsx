@@ -40,6 +40,13 @@ import {
   TableExpandedPanelProps,
   ColumnDef,
   TableContextValue,
+  RowData,
+  SelectionModel,
+  SortDescriptor,
+  FilterDescriptor,
+  PaginationState,
+  ExpandedState,
+  EditingState,
 } from './types'
 
 // Main Table Component
@@ -222,7 +229,7 @@ const Table = forwardRef<HTMLTableElement, TableProps>(
       : (defaultSelectedRows ?? internalSelectedRows)
 
     const setSelectedRows = useCallback(
-      (value: any) => {
+      (value: SelectionModel | ((prev: SelectionModel) => SelectionModel)) => {
         if (isSelectionControlled && onSelectionChange) {
           onSelectionChange(typeof value === 'function' ? value(selectedRows) : value)
         } else {
@@ -282,7 +289,7 @@ const Table = forwardRef<HTMLTableElement, TableProps>(
     const sort = isSortControlled ? controlledSort : defaultSort.length ? defaultSort : internalSort
 
     const setSort = useCallback(
-      (value: any) => {
+      (value: SortDescriptor[] | ((prev: SortDescriptor[]) => SortDescriptor[])) => {
         if (isSortControlled && onSortChange) {
           onSortChange(typeof value === 'function' ? value(sort) : value)
         } else {
@@ -354,7 +361,7 @@ const Table = forwardRef<HTMLTableElement, TableProps>(
     const globalFilter = isGlobalFilterControlled ? controlledGlobalFilter : internalGlobalFilter
 
     const setFilters = useCallback(
-      (value: any) => {
+      (value: FilterDescriptor[] | ((prev: FilterDescriptor[]) => FilterDescriptor[])) => {
         if (isFiltersControlled && onFiltersChange) {
           onFiltersChange(typeof value === 'function' ? value(filters) : value)
         } else {
@@ -383,7 +390,7 @@ const Table = forwardRef<HTMLTableElement, TableProps>(
     const pagination = isPaginationControlled ? controlledPagination : internalPagination
 
     const setPagination = useCallback(
-      (value: any) => {
+      (value: PaginationState | ((prev: PaginationState) => PaginationState)) => {
         if (isPaginationControlled && onPaginationChange) {
           onPaginationChange(typeof value === 'function' ? value(pagination) : value)
         } else {
@@ -406,7 +413,7 @@ const Table = forwardRef<HTMLTableElement, TableProps>(
       : (defaultExpandedRows ?? internalExpandedRows)
 
     const setExpandedRows = useCallback(
-      (value: any) => {
+      (value: ExpandedState | ((prev: ExpandedState) => ExpandedState)) => {
         if (isExpansionControlled && onExpandedChange) {
           onExpandedChange(typeof value === 'function' ? value(expandedRows) : value)
         } else {
@@ -446,7 +453,7 @@ const Table = forwardRef<HTMLTableElement, TableProps>(
     const editingCell = isEditingControlled ? controlledEditingCell : internalEditingCell
 
     const setEditingCell = useCallback(
-      (value: any) => {
+      (value: EditingState | null) => {
         if (isEditingControlled && onEditingCellChange) {
           onEditingCellChange(value)
         } else {
@@ -477,7 +484,7 @@ const Table = forwardRef<HTMLTableElement, TableProps>(
     )
 
     const commitEdit = useCallback(
-      async (value: any) => {
+      async (value: unknown) => {
         if (!editingCell) return
         const rowIndex = data.findIndex((row, index) => getRowId(row, index) === editingCell.rowId)
         if (rowIndex === -1) return
@@ -513,17 +520,20 @@ const Table = forwardRef<HTMLTableElement, TableProps>(
     const canNextPage = pagination.pageIndex < pageCount - 1
 
     // Keyboard navigation
-    const { focusedCell } = useTableKeyboardNavigation(mergedRef as any, {
-      data: paginatedData,
-      columns,
-      getRowId,
-      selectionMode,
-      toggleRowSelection,
-      expandedRows,
-      toggleRowExpansion,
-      editMode,
-      startEditing,
-    })
+    const { focusedCell } = useTableKeyboardNavigation(
+      mergedRef as React.RefObject<HTMLTableElement>,
+      {
+        data: paginatedData,
+        columns,
+        getRowId,
+        selectionMode,
+        toggleRowSelection,
+        expandedRows,
+        toggleRowExpansion,
+        editMode,
+        startEditing,
+      }
+    )
 
     // Collect all style props
     const styles = useMemo(
@@ -767,7 +777,7 @@ const Table = forwardRef<HTMLTableElement, TableProps>(
             </div>
           )}
           <table
-            ref={mergedRef as any}
+            ref={mergedRef as React.RefObject<HTMLTableElement>}
             className={tableClasses}
             style={tableStyles}
             aria-label={ariaLabel}
@@ -809,9 +819,10 @@ const TableHeader = forwardRef<HTMLTableSectionElement, TableHeaderProps>(
       ...style,
     }
 
-    if (styles.headerBackgroundColor) headerStyles.backgroundColor = styles.headerBackgroundColor
-    if (styles.headerTextColor) headerStyles.color = styles.headerTextColor
-    if (styles.headerPadding) headerStyles.padding = styles.headerPadding
+    if (styles.headerBackgroundColor)
+      headerStyles.backgroundColor = styles.headerBackgroundColor as string
+    if (styles.headerTextColor) headerStyles.color = styles.headerTextColor as string
+    if (styles.headerPadding) headerStyles.padding = styles.headerPadding as string
 
     const headerClasses = cn(
       variant === 'bordered' && 'border-b',
@@ -918,8 +929,9 @@ const TableFooter = forwardRef<HTMLTableSectionElement, TableFooterProps>(
       ...style,
     }
 
-    if (styles.footerBackgroundColor) footerStyles.backgroundColor = styles.footerBackgroundColor
-    if (styles.footerPadding) footerStyles.padding = styles.footerPadding
+    if (styles.footerBackgroundColor)
+      footerStyles.backgroundColor = styles.footerBackgroundColor as string
+    if (styles.footerPadding) footerStyles.padding = styles.footerPadding as string
 
     const footerClasses = cn('font-medium', variant === 'bordered' && 'border-t', className)
 
@@ -942,78 +954,84 @@ const TableFooter = forwardRef<HTMLTableSectionElement, TableFooterProps>(
 TableFooter.displayName = 'TableFooter'
 
 // Table Row Component
-const TableRow = forwardRef<HTMLTableRowElement, TableRowProps & { row: any; rowIndex: number }>(
-  ({ className, style, row, rowIndex, status, selected, expanded, disabled, ...props }, ref) => {
-    const {
-      getRowId,
-      selectedRows,
-      styles,
-      rowStyle,
-      rowClassName,
-      variant,
-      animationType,
-      animationDuration,
-    } = useTable()
+const TableRow = forwardRef<
+  HTMLTableRowElement,
+  TableRowProps & { row: RowData; rowIndex: number }
+>(({ className, style, row, rowIndex, status, selected, expanded, disabled, ...props }, ref) => {
+  const {
+    getRowId,
+    selectedRows,
+    styles,
+    rowStyle,
+    rowClassName,
+    variant,
+    animationType,
+    animationDuration,
+  } = useTable()
 
-    const rowId = getRowId(row, rowIndex)
-    const isSelected = selected ?? selectedRows.has(rowId)
+  const rowId = getRowId(row, rowIndex)
+  const isSelected = selected ?? selectedRows.has(rowId)
 
-    const rowStyles: CSSProperties = {
-      ...(typeof rowStyle === 'function' ? rowStyle(row, rowIndex) : rowStyle),
-      ...style,
-    }
-
-    if (isSelected && styles.rowSelectedBackground) {
-      rowStyles.backgroundColor = styles.rowSelectedBackground
-    } else if (rowIndex % 2 === 1 && styles.alternateRowBackground && variant !== 'striped') {
-      rowStyles.backgroundColor = styles.alternateRowBackground
-    }
-
-    if (animationType !== 'none') {
-      rowStyles.transition = `all ${animationDuration}ms ${animationType}`
-    }
-
-    const statusClasses = {
-      default: '',
-      success: 'bg-green-50 hover:bg-green-100',
-      warning: 'bg-yellow-50 hover:bg-yellow-100',
-      error: 'bg-red-50 hover:bg-red-100',
-      info: 'bg-blue-50 hover:bg-blue-100',
-    }
-
-    const rowClasses = cn(
-      'border-b transition-colors',
-      styles.rowHoverBackground ? `hover:bg-[${styles.rowHoverBackground}]` : 'hover:bg-muted/50',
-      isSelected && 'bg-muted',
-      status && statusClasses[status],
-      disabled && 'opacity-50 pointer-events-none',
-      variant === 'minimal' && 'border-b-0',
-      typeof rowClassName === 'function' ? rowClassName(row, rowIndex) : rowClassName,
-      className
-    )
-
-    return (
-      <tr
-        ref={ref}
-        className={rowClasses}
-        style={rowStyles}
-        data-row-index={rowIndex}
-        role="row"
-        aria-selected={isSelected}
-        aria-expanded={expanded}
-        aria-disabled={disabled}
-        {...props}
-      />
-    )
+  const rowStyles: CSSProperties = {
+    ...(typeof rowStyle === 'function' ? rowStyle(row, rowIndex) : rowStyle),
+    ...style,
   }
-)
+
+  if (isSelected && styles.rowSelectedBackground) {
+    rowStyles.backgroundColor = styles.rowSelectedBackground as string
+  } else if (rowIndex % 2 === 1 && styles.alternateRowBackground && variant !== 'striped') {
+    rowStyles.backgroundColor = styles.alternateRowBackground as string
+  }
+
+  if (animationType !== 'none') {
+    rowStyles.transition = `all ${animationDuration}ms ${animationType}`
+  }
+
+  const statusClasses = {
+    default: '',
+    success: 'bg-green-50 hover:bg-green-100',
+    warning: 'bg-yellow-50 hover:bg-yellow-100',
+    error: 'bg-red-50 hover:bg-red-100',
+    info: 'bg-blue-50 hover:bg-blue-100',
+  }
+
+  const rowClasses = cn(
+    'border-b transition-colors',
+    styles.rowHoverBackground ? `hover:bg-[${styles.rowHoverBackground}]` : 'hover:bg-muted/50',
+    isSelected && 'bg-muted',
+    status && statusClasses[status],
+    disabled && 'opacity-50 pointer-events-none',
+    variant === 'minimal' && 'border-b-0',
+    typeof rowClassName === 'function' ? rowClassName(row, rowIndex) : rowClassName,
+    className
+  )
+
+  return (
+    <tr
+      ref={ref}
+      className={rowClasses}
+      style={rowStyles}
+      data-row-index={rowIndex}
+      role="row"
+      aria-selected={isSelected}
+      aria-expanded={expanded}
+      aria-disabled={disabled}
+      {...props}
+    />
+  )
+})
 
 TableRow.displayName = 'TableRow'
 
 // Table Cell Component
 const TableCell = forwardRef<
   HTMLTableCellElement,
-  TableCellProps & { row: any; column: ColumnDef<any>; rowIndex: number; columnIndex?: number }
+  TableCellProps & {
+    row: RowData
+    column: ColumnDef<RowData>
+    rowIndex: number
+    columnIndex?: number
+  }
 >(({ className, style, row, column, rowIndex, columnIndex, status: _status, ...props }, ref) => {
   const {
     getRowId,
@@ -1038,7 +1056,7 @@ const TableCell = forwardRef<
     ...style,
   }
 
-  if (styles.cellPadding) cellStyles.padding = styles.cellPadding
+  if (styles.cellPadding) cellStyles.padding = styles.cellPadding as string
   if (column.width) cellStyles.width = column.width
   if (column.minWidth) cellStyles.minWidth = column.minWidth
   if (column.maxWidth) cellStyles.maxWidth = column.maxWidth
@@ -1122,7 +1140,7 @@ TableCell.displayName = 'TableCell'
 // Table Header Cell Component
 const TableHeaderCell = forwardRef<
   HTMLTableCellElement,
-  TableHeaderCellProps & { column?: ColumnDef<any> }
+  TableHeaderCellProps & { column?: ColumnDef<RowData> }
 >(
   (
     {
@@ -1154,7 +1172,7 @@ const TableHeaderCell = forwardRef<
     if (column.width) headerStyles.width = column.width
     if (column.minWidth) headerStyles.minWidth = column.minWidth
     if (column.maxWidth) headerStyles.maxWidth = column.maxWidth
-    if (styles.headerPadding) headerStyles.padding = styles.headerPadding
+    if (styles.headerPadding) headerStyles.padding = styles.headerPadding as string
 
     const alignClasses = {
       left: 'text-left',
@@ -1246,7 +1264,7 @@ const TableSelectAllHeaderCell = () => {
 }
 
 // Select Cell
-const TableSelectCell = ({ rowId, row }: { rowId: string | number; row: any }) => {
+const TableSelectCell = ({ rowId, row }: { rowId: string | number; row: RowData }) => {
   const { selectedRows, toggleRowSelection, isRowSelectable } = useTable()
 
   const isSelected = selectedRows.has(rowId)
@@ -1283,7 +1301,7 @@ const TableExpandedRow = ({
   rowIndex,
 }: {
   rowId: string | number
-  row: any
+  row: RowData
   rowIndex: number
 }) => {
   const {
@@ -1459,7 +1477,7 @@ const TableEditCell: React.FC<TableEditCellProps> = ({ value, onSave, onCancel }
     <input
       ref={inputRef}
       type="text"
-      value={editValue ?? ''}
+      value={String(editValue ?? '')}
       onChange={(e) => setEditValue(e.target.value)}
       onKeyDown={handleKeyDown}
       onBlur={handleBlur}
@@ -1715,12 +1733,12 @@ const TableFilter: React.FC<TableFilterProps> = ({
       </div>
       <input
         type="text"
-        value={value ?? ''}
+        value={String(value ?? '')}
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
         className="h-8 w-full rounded border pl-9 pr-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
       />
-      {value && (
+      {String(value) && (
         <button
           onClick={() => onChange('')}
           className="absolute inset-y-0 right-0 flex items-center pr-3"

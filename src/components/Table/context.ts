@@ -1,4 +1,4 @@
 import { createContext } from 'react'
-import { TableContextValue } from './types'
+import { TableContextValue, RowData } from './types'
 
-export const TableContext = createContext<TableContextValue<any> | undefined>(undefined)
+export const TableContext = createContext<TableContextValue<RowData> | undefined>(undefined)
