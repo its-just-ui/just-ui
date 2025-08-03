@@ -69,8 +69,13 @@ If you need to manually control the version:
 ## Setup Requirements
 
 1. **NPM Token**: Add `NPM_TOKEN` secret in repository settings
-   - Get from npm.js → Account Settings → Access Tokens
-   - Use "Automation" token type
+   - Go to [npmjs.com](https://www.npmjs.com/) → Click your avatar → Access Tokens
+   - Click "Generate New Token" → "Classic Token"
+   - Select type: "Automation" (for CI/CD)
+   - Copy the token (starts with `npm_`)
+   - In GitHub: Settings → Secrets and variables → Actions → New repository secret
+   - Name: `NPM_TOKEN`
+   - Value: paste your npm token
 
 2. **Branch Protection**: Recommended settings for main branch
    - Require PR reviews
