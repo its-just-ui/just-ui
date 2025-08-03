@@ -28,10 +28,17 @@ export default defineConfig({
           'react-dom': 'ReactDOM',
           'react/jsx-runtime': 'react/jsx-runtime',
         },
+        assetFileNames: (assetInfo) => {
+          if (assetInfo.name === 'style.css') {
+            return 'styles.css'
+          }
+          return assetInfo.name
+        },
       },
     },
     sourcemap: false,
     emptyOutDir: true,
+    cssCodeSplit: false,
   },
   resolve: {
     alias: {
