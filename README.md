@@ -71,7 +71,7 @@ function App() {
 
 ## Components
 
-**26+ Production-Ready Components** with full TypeScript support, accessibility features, and extensive customization options.
+**27+ Production-Ready Components** with full TypeScript support, accessibility features, and extensive customization options.
 
 ### Component Categories:
 
@@ -79,14 +79,15 @@ function App() {
 **📊 Data Display:** Table, List, Badge, Chip, Avatar  
 **🧭 Navigation:** Breadcrumb, Pagination, ToggleButtons  
 **📝 Form Components:** Select, RadioGroup, Switch, Rating, Autocomplete  
-**💬 Feedback:** Alert, Skeleton, Tooltip, Popover, Dialog, Drawer  
-**📋 Layout:** Accordion, Stepper
+**💬 Feedback:** Alert, Skeleton, Tooltip, Dialog, Drawer  
+**📋 Layout:** Accordion, Stepper, Splitter
 
 ### 🆕 Latest Additions
 
 **Progress Component:** Advanced progress tracking with circular variants, multi-segment support, thresholds, and compound architecture.  
 **Slider Component:** Flexible range inputs with marks, labels, and extensive customization options.  
-**Enhanced Checkbox:** Tri-state support, groups, and comprehensive styling options.
+**Enhanced Checkbox:** Tri-state support, groups, and comprehensive styling options.  
+**Splitter Component:** Flexible resizable layouts with drag handles, keyboard navigation, and persistence support.
 
 ### Accordion
 
@@ -522,6 +523,32 @@ const steps = [
 
 **Orientations:** `horizontal`, `vertical`  
 **Features:** Custom icons, error states, clickable steps
+
+### Splitter
+
+Flexible splitter component for resizable layouts with drag handles.
+
+```tsx
+import { Splitter } from 'its-just-ui'
+;<Splitter direction="horizontal" initialSizes={[30, 70]}>
+  <Splitter.Pane index={0}>
+    <div className="h-full bg-blue-50 p-4">
+      <h3>Left Panel</h3>
+      <p>This panel can be resized by dragging the handle.</p>
+    </div>
+  </Splitter.Pane>
+  <Splitter.Handle index={0} />
+  <Splitter.Pane index={1}>
+    <div className="h-full bg-green-50 p-4">
+      <h3>Right Panel</h3>
+      <p>Drag the handle to resize this panel.</p>
+    </div>
+  </Splitter.Pane>
+</Splitter>
+```
+
+**Directions:** `horizontal`, `vertical`  
+**Features:** Drag handles, keyboard navigation, persistence, animations, controlled/uncontrolled
 
 ### Switch
 
