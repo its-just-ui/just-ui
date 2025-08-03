@@ -71,11 +71,13 @@ If you need to manually control the version:
 1. **NPM Token**: Add `NPM_TOKEN` secret in repository settings
    - Go to [npmjs.com](https://www.npmjs.com/) → Click your avatar → Access Tokens
    - Click "Generate New Token" → "Classic Token"
-   - Select type: "Automation" (for CI/CD)
+   - Select type: "Automation" (recommended for CI/CD)
+   - Token permissions: "Read and Write"
    - Copy the token (starts with `npm_`)
    - In GitHub: Settings → Secrets and variables → Actions → New repository secret
-   - Name: `NPM_TOKEN`
-   - Value: paste your npm token
+   - Name: `NPM_TOKEN` (exactly as shown)
+   - Value: paste your npm token (no quotes, no extra spaces)
+   - Important: Make sure the token has publish permissions for the package
 
 2. **Branch Protection**: Recommended settings for main branch
    - Require PR reviews
@@ -84,9 +86,36 @@ If you need to manually control the version:
 
 ## Troubleshooting
 
-- **Publish fails**: Check NPM_TOKEN is valid and has publish permissions
+### NPM Publish Errors
+
+If you get `401 Unauthorized` or `ENEEDAUTH` errors:
+
+1. **Verify token is valid**:
+
+   ```bash
+   # Test locally with your token
+   npm config set //registry.npmjs.org/:_authToken YOUR_TOKEN
+   npm whoami  # Should show your npm username
+   ```
+
+2. **Check token permissions**:
+   - Token must have "Read and Write" permissions
+   - Token type should be "Automation" for CI/CD
+   - If using 2FA, use "Automation" token type (bypasses 2FA for CI)
+
+3. **Verify GitHub secret**:
+   - Secret name must be exactly `NPM_TOKEN`
+   - Token value should not include quotes or spaces
+   - Token should start with `npm_`
+
+4. **Check package access**:
+   - Ensure you have publish rights to the package
+   - For scoped packages (@org/package), verify org permissions
+
+### Other Issues
+
 - **Version not bumping**: Ensure PR title follows conventions
-- **Tests failing**: Add tests or remove `continue-on-error` from test steps
+- **Tests**: Test step is currently disabled. Add `npm test` to workflows when tests are implemented
 - **Package too large**: Run build locally and check with `npm pack --dry-run`
 
 ## Skip CI
