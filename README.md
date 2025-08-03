@@ -66,7 +66,6 @@ A collapsible content component for organizing information.
 
 ```tsx
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from 'just-ui'
-
 ;<Accordion type="single" collapsible>
   <AccordionItem value="item-1">
     <AccordionTrigger>Is it accessible?</AccordionTrigger>
@@ -92,7 +91,6 @@ Display important messages and notifications.
 
 ```tsx
 import { Alert, AlertTitle, AlertDescription } from 'just-ui'
-
 ;<Alert variant="success">
   <AlertTitle>Success!</AlertTitle>
   <AlertDescription>Your changes have been saved successfully.</AlertDescription>
@@ -150,7 +148,6 @@ Navigation hierarchy indicator.
 
 ```tsx
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbSeparator } from 'just-ui'
-
 ;<Breadcrumb>
   <BreadcrumbItem>
     <BreadcrumbLink href="/">Home</BreadcrumbLink>
@@ -195,7 +192,6 @@ Container component for grouping content.
 
 ```tsx
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from 'just-ui'
-
 ;<Card>
   <CardHeader>
     <CardTitle>Card Title</CardTitle>
@@ -241,7 +237,6 @@ import {
   DialogTitle,
   DialogDescription,
 } from 'just-ui'
-
 ;<Dialog>
   <DialogTrigger asChild>
     <Button>Open Dialog</Button>
@@ -265,7 +260,6 @@ Side panel overlay for additional content.
 
 ```tsx
 import { Drawer, DrawerTrigger, DrawerContent, DrawerHeader, DrawerTitle } from 'just-ui'
-
 ;<Drawer>
   <DrawerTrigger asChild>
     <Button>Open Drawer</Button>
@@ -314,7 +308,6 @@ Display items in a structured list format.
 
 ```tsx
 import { List, ListItem, ListItemIcon, ListItemText } from 'just-ui'
-
 ;<List>
   <ListItem>
     <ListItemIcon>
@@ -337,7 +330,6 @@ Group of radio buttons for single selection.
 
 ```tsx
 import { RadioGroup, RadioGroupItem } from 'just-ui'
-
 ;<RadioGroup defaultValue="option1">
   <div className="flex items-center space-x-2">
     <RadioGroupItem value="option1" id="option1" />
@@ -419,7 +411,6 @@ Toggle switch for on/off states.
 
 ```tsx
 import { Switch } from 'just-ui'
-
 ;<Switch checked={isEnabled} onCheckedChange={setIsEnabled} label="Enable notifications" />
 ```
 
@@ -437,7 +428,6 @@ Group of toggle buttons for multi-selection.
 
 ```tsx
 import { ToggleButtons, ToggleButton } from 'just-ui'
-
 ;<ToggleButtons>
   <ToggleButton value="bold" aria-label="Bold">
     <BoldIcon />
@@ -450,6 +440,143 @@ import { ToggleButtons, ToggleButton } from 'just-ui'
   </ToggleButton>
 </ToggleButtons>
 ```
+
+### Table
+
+A comprehensive data table component with sorting, filtering, pagination, selection, and more.
+
+```tsx
+import { Table } from 'just-ui'
+
+const columns = [
+  { id: 'name', header: 'Name', accessorKey: 'name' },
+  { id: 'email', header: 'Email', accessorKey: 'email' },
+  { id: 'role', header: 'Role', accessorKey: 'role' },
+  { id: 'status', header: 'Status', accessorKey: 'status' }
+]
+
+const data = [
+  { id: 1, name: 'John Doe', email: 'john@example.com', role: 'Admin', status: 'active' },
+  { id: 2, name: 'Jane Smith', email: 'jane@example.com', role: 'User', status: 'inactive' }
+]
+
+<Table data={data} columns={columns} />
+```
+
+**Features:**
+
+- **Sorting**: Single and multi-column sorting
+- **Filtering**: Column-level and global search
+- **Selection**: Single and multiple row selection
+- **Pagination**: Client and server-side pagination
+- **Expansion**: Expandable rows with custom content
+- **Editing**: Inline cell editing
+- **Grouping**: Group rows by column values
+- **Virtualization**: Handle large datasets efficiently
+- **Sticky headers/columns**: Keep headers/columns visible while scrolling
+- **Full accessibility**: ARIA compliant with keyboard navigation
+
+**Advanced Example with All Features:**
+
+```tsx
+<Table
+  data={users}
+  columns={columns}
+  // Variants & Styling
+  variant="bordered"
+  size="md"
+
+  // Selection
+  selectionMode="multiple"
+  onSelectionChange={setSelectedRows}
+
+  // Sorting
+  enableSorting
+  enableMultiSort
+  onSortChange={setSort}
+
+  // Filtering
+  enableFiltering
+  onFiltersChange={setFilters}
+
+  // Pagination
+  enablePagination
+  pagination={{ pageIndex: 0, pageSize: 10 }}
+  onPaginationChange={setPagination}
+
+  // Expansion
+  enableExpanding
+  expandedContent={({ row }) => <UserDetails user={row} />}
+
+  // Editing
+  editMode="cell"
+  onEditCommit={(rowId, columnId, value) => {
+    // Save changes
+  }}
+
+  // Custom styling
+  stickyHeader
+  rowHoverBackground="#f3f4f6"
+  rowSelectedBackground="#e5e7eb"
+/>
+
+// With pagination controls
+<Table.Pagination showPageSizeSelector showPageNumbers showTotalCount />
+```
+
+**Column Definition:**
+
+```tsx
+const columns = [
+  {
+    id: 'user',
+    header: 'User',
+    accessorKey: 'name',
+    // Custom cell rendering
+    cell: ({ row }) => (
+      <div className="flex items-center gap-2">
+        <Avatar src={row.avatar} />
+        <span>{row.name}</span>
+      </div>
+    ),
+    // Enable features
+    sortable: true,
+    filterable: true,
+    editable: true,
+    // Styling
+    width: 200,
+    align: 'left',
+  },
+  {
+    id: 'status',
+    header: 'Status',
+    accessorKey: 'status',
+    // Custom sorting
+    sortingFn: (rowA, rowB, columnId) => {
+      // Custom sort logic
+    },
+    // Custom filtering
+    filterFn: (row, columnId, filterValue) => {
+      // Custom filter logic
+    },
+  },
+]
+```
+
+**Props:**
+
+- `data`: Array of row data
+- `columns`: Array of column definitions
+- `variant`: 'default' | 'striped' | 'bordered' | 'minimal' | 'card-style' | 'compact'
+- `size`: 'sm' | 'md' | 'lg'
+- `selectionMode`: 'none' | 'single' | 'multiple'
+- `enableSorting`: boolean - Enable column sorting
+- `enableFiltering`: boolean - Enable filtering
+- `enablePagination`: boolean - Enable pagination
+- `enableExpanding`: boolean - Enable row expansion
+- `editMode`: 'none' | 'cell' | 'row' | 'inline'
+- `stickyHeader`: boolean - Stick header to top
+- Plus extensive styling props for full customization
 
 ### Tooltip
 

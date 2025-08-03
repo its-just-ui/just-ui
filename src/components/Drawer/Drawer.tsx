@@ -132,7 +132,7 @@ export interface DrawerProps
   // Event handlers
   onFocus?: () => void
   onBlur?: () => void
-  onItemClick?: (item: any) => void
+  onItemClick?: (item: DrawerItemData) => void
   onKeyDown?: (event: React.KeyboardEvent) => void
   onTransitionStart?: () => void
   onTransitionEnd?: () => void
@@ -156,7 +156,7 @@ export interface DrawerContextValue {
   setCollapsed: (collapsed: boolean) => void
 
   // Items
-  items: any[]
+  items: DrawerItemData[]
 
   // Configuration
   position: string
@@ -182,7 +182,7 @@ export interface DrawerContextValue {
   emptyMessage: string
 
   // Custom renders
-  renderItem?: (item: any, isActive: boolean) => React.ReactNode
+  renderItem?: (item: DrawerItemData, isActive: boolean) => React.ReactNode
   renderHeader?: () => React.ReactNode
   renderFooter?: () => React.ReactNode
   renderEmpty?: () => React.ReactNode
@@ -227,7 +227,7 @@ export interface DrawerContextValue {
   // Event handlers
   onFocus?: () => void
   onBlur?: () => void
-  onItemClick?: (item: any) => void
+  onItemClick?: (item: DrawerItemData) => void
 
   // Close icon
   showCloseIcon?: boolean
@@ -896,7 +896,7 @@ const DrawerItemList = React.forwardRef<HTMLDivElement, DrawerItemListProps>(
 DrawerItemList.displayName = 'DrawerItemList'
 
 export interface DrawerItemProps extends React.HTMLAttributes<HTMLDivElement> {
-  item: any // Changed from DrawerItem to any to avoid using private type
+  item: DrawerItemData
 }
 
 const DrawerItemComponent = React.forwardRef<HTMLDivElement, DrawerItemProps>(
