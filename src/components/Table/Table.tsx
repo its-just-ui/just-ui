@@ -1614,17 +1614,17 @@ const TablePagination: React.FC<TablePaginationProps> = ({
       {...props}
     >
       {showTotalCount && (
-        <div className="text-sm text-muted-foreground">
+        <div className="text-xs text-muted-foreground">
           Showing {startItem} to {endItem} of {totalCount} results
         </div>
       )}
 
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-1">
         {showPageSizeSelector && (
           <select
             value={pagination.pageSize}
             onChange={(e) => handlePageSizeChange(Number(e.target.value))}
-            className="h-8 rounded border px-2 text-sm"
+            className="h-8 w-20 rounded border px-2 text-xs"
           >
             {pageSizeOptions.map((size) => (
               <option key={size} value={size}>
