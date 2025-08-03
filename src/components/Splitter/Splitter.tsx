@@ -10,12 +10,6 @@ import React, {
 } from 'react'
 import { cn } from '@/utils'
 
-/**
- * Splitter Component Types and Interfaces
- *
- * @description Defines the types and interfaces used by the Splitter component
- */
-
 // Types and Interfaces
 export type SplitterDirection = 'horizontal' | 'vertical'
 export type SplitterSize = 'sm' | 'md' | 'lg'
