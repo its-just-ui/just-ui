@@ -108,4 +108,5 @@ When creating new components:
 2. Update documentation if needed
 3. Add/update Storybook stories
 4. Ensure your commits follow the convention
-5. Request review from maintainers
+5. Github copilot will review your PR first.
+6. Request review from maintainers
