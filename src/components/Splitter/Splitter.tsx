@@ -10,11 +10,20 @@ import React, {
 } from 'react'
 import { cn } from '@/utils'
 
+/**
+ * Splitter Component Types and Interfaces
+ *
+ * @description Defines the types and interfaces used by the Splitter component
+ */
+
 // Types and Interfaces
 export type SplitterDirection = 'horizontal' | 'vertical'
 export type SplitterSize = 'sm' | 'md' | 'lg'
 export type SplitterVariant = 'basic' | 'shadowed' | 'bordered' | 'compact'
 
+/**
+ * Context value for the Splitter component
+ */
 export interface SplitterContextValue {
   direction: SplitterDirection
   sizes: number[]
@@ -30,6 +39,9 @@ export interface SplitterContextValue {
   onDragEnd?: (index: number) => void
 }
 
+/**
+ * Base props for the Splitter component
+ */
 export interface SplitterBaseProps {
   // Core props
   direction?: SplitterDirection
@@ -73,12 +85,18 @@ export interface SplitterBaseProps {
   tabIndex?: number
 }
 
+/**
+ * Props for the main Splitter component
+ */
 export interface SplitterProps
   extends Omit<React.HTMLAttributes<HTMLDivElement>, keyof SplitterBaseProps>,
     SplitterBaseProps {
   children?: React.ReactNode
 }
 
+/**
+ * Props for individual Splitter panes
+ */
 export interface SplitterPaneProps {
   index: number
   children?: React.ReactNode
@@ -89,6 +107,9 @@ export interface SplitterPaneProps {
   collapsed?: boolean
 }
 
+/**
+ * Props for Splitter handles
+ */
 export interface SplitterHandleProps {
   index: number
   children?: React.ReactNode
@@ -110,7 +131,25 @@ export const useSplitterContext = () => {
   return context
 }
 
-// Main Splitter Component
+/**
+ * Main Splitter Component
+ *
+ * A flexible splitter component that allows users to resize panes by dragging handles.
+ * Supports both horizontal and vertical layouts with extensive customization options.
+ *
+ * @example
+ * ```tsx
+ * <Splitter direction="horizontal" initialSizes={[30, 70]}>
+ *   <Splitter.Pane index={0}>
+ *     <div>Left Panel</div>
+ *   </Splitter.Pane>
+ *   <Splitter.Handle index={0} />
+ *   <Splitter.Pane index={1}>
+ *     <div>Right Panel</div>
+ *   </Splitter.Pane>
+ * </Splitter>
+ * ```
+ */
 const SplitterComponent = forwardRef<HTMLDivElement, SplitterProps>(
   (
     {
@@ -250,7 +289,19 @@ const SplitterComponent = forwardRef<HTMLDivElement, SplitterProps>(
 
 SplitterComponent.displayName = 'Splitter'
 
-// Pane Component
+/**
+ * Splitter Pane Component
+ *
+ * Represents a resizable pane within the splitter. Each pane can be resized
+ * by dragging the handles between them.
+ *
+ * @example
+ * ```tsx
+ * <Splitter.Pane index={0}>
+ *   <div>Content for this pane</div>
+ * </Splitter.Pane>
+ * ```
+ */
 const SplitterPane = forwardRef<HTMLDivElement, SplitterPaneProps>(
   (
     {
@@ -295,7 +346,17 @@ const SplitterPane = forwardRef<HTMLDivElement, SplitterPaneProps>(
 
 SplitterPane.displayName = 'SplitterPane'
 
-// Handle Component
+/**
+ * Splitter Handle Component
+ *
+ * Represents a draggable handle between panes that allows users to resize
+ * the adjacent panes by dragging.
+ *
+ * @example
+ * ```tsx
+ * <Splitter.Handle index={0} />
+ * ```
+ */
 const SplitterHandle = forwardRef<HTMLDivElement, SplitterHandleProps>(
   (
     {
