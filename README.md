@@ -79,7 +79,7 @@ function App() {
 **📊 Data Display:** Table, List, Badge, Chip, Avatar  
 **🧭 Navigation:** Breadcrumb, Pagination, ToggleButtons  
 **📝 Form Components:** Select, RadioGroup, Switch, Rating, Autocomplete  
-**💬 Feedback:** Alert, Skeleton, Tooltip, Dialog, Drawer  
+**💬 Feedback:** Alert, Skeleton, Tooltip, Popover, Dialog, Drawer  
 **📋 Layout:** Accordion, Stepper
 
 ### 🆕 Latest Additions
@@ -600,6 +600,68 @@ import { ToggleButtons } from 'its-just-ui'
   </ToggleButtons.Item>
 </ToggleButtons>
 ```
+
+### Popover
+
+A floating element that displays rich content in a portal, positioned relative to a trigger element.
+
+```tsx
+import { Popover } from 'its-just-ui'
+
+// Basic usage
+<Popover>
+  <Popover.Trigger>
+    <button>Open Popover</button>
+  </Popover.Trigger>
+  <Popover.Content>
+    <Popover.Arrow />
+    <Popover.Title>Popover Title</Popover.Title>
+    <Popover.Description>
+      This is the popover content that appears when triggered.
+    </Popover.Description>
+  </Popover.Content>
+</Popover>
+
+// Hover trigger
+<Popover trigger="hover">
+  <Popover.Trigger>Hover me</Popover.Trigger>
+  <Popover.Content>
+    <Popover.Description>
+      This appears on hover like a tooltip
+    </Popover.Description>
+  </Popover.Content>
+</Popover>
+
+// Controlled usage
+const [open, setOpen] = useState(false)
+<Popover open={open} onOpenChange={setOpen}>
+  <Popover.Trigger>Controlled</Popover.Trigger>
+  <Popover.Content>
+    <Popover.Title>Controlled Popover</Popover.Title>
+    <Popover.Close className="ml-auto">
+      <CloseIcon />
+    </Popover.Close>
+  </Popover.Content>
+</Popover>
+```
+
+**Key Features:**
+
+- **Compound Components:** Flexible structure with Trigger, Content, Arrow, Title, Description, and Close
+- **Multiple Triggers:** Click, hover, or manual control
+- **Smart Positioning:** 12 placement options (top, bottom, left, right with start/end variants)
+- **Portal Rendering:** Content rendered to document.body for proper z-index layering
+- **Focus Management:** Keyboard navigation, focus trapping, and return focus
+- **Accessibility:** Full ARIA support and screen reader compatibility
+- **Close Behaviors:** Multiple dismissal methods (outside click, escape key, blur)
+- **Rich Animations:** 5 animation types (fade, scale, slide, pop) with customizable timing
+- **Extensive Styling:** 50+ style props for visual customization
+
+**Triggers:** `click`, `hover`, `manual`  
+**Positions:** `top`, `bottom`, `left`, `right` with `-start` and `-end` variants, plus `auto`  
+**Variants:** `default`, `bordered`, `shadowed`, `filled`, `translucent`, `minimal`  
+**Sizes:** `sm`, `md`, `lg`  
+**Tones:** `light`, `dark`, `info`, `success`, `warning`, `danger`
 
 ### Cascade
 
