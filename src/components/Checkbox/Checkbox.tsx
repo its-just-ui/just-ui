@@ -66,6 +66,7 @@ export interface CheckboxContextValue {
   focusBoxShadow?: string
   checkedBoxShadow?: string
   labelFontSize?: string
+  labelTextSize?: string
   labelFontWeight?: string
   labelFontFamily?: string
   descriptionFontSize?: string
@@ -155,6 +156,7 @@ export interface CheckboxProps
 
   // Style props - Typography
   labelFontSize?: string
+  labelTextSize?: string // Alias for labelFontSize for better UX
   labelFontWeight?: string
   labelFontFamily?: string
   labelTextColor?: string
@@ -297,6 +299,7 @@ const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(
       checkmarkColor,
       indeterminateColor,
       labelFontSize,
+      labelTextSize,
       labelFontWeight,
       labelFontFamily,
       labelTextColor,
@@ -411,6 +414,7 @@ const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(
         focusBoxShadow,
         checkedBoxShadow,
         labelFontSize,
+        labelTextSize,
         labelFontWeight,
         labelFontFamily,
         descriptionFontSize,
@@ -459,6 +463,7 @@ const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(
         focusBoxShadow,
         checkedBoxShadow,
         labelFontSize,
+        labelTextSize,
         labelFontWeight,
         labelFontFamily,
         descriptionFontSize,
@@ -822,6 +827,7 @@ const CheckboxLabel = React.forwardRef<HTMLLabelElement, CheckboxLabelProps>(
       isDisabled,
       size,
       labelFontSize,
+      labelTextSize,
       labelFontWeight,
       labelFontFamily,
       labelTextColor,
@@ -836,7 +842,7 @@ const CheckboxLabel = React.forwardRef<HTMLLabelElement, CheckboxLabelProps>(
 
     // Custom styles
     const customStyles: React.CSSProperties = { ...style }
-    if (labelFontSize) customStyles.fontSize = labelFontSize
+    if (labelFontSize || labelTextSize) customStyles.fontSize = labelTextSize || labelFontSize
     if (labelFontWeight) customStyles.fontWeight = labelFontWeight
     if (labelFontFamily) customStyles.fontFamily = labelFontFamily
     if (labelTextColor) customStyles.color = labelTextColor

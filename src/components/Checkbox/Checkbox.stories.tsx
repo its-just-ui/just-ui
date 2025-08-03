@@ -76,6 +76,8 @@ import { Checkbox } from './index'
  *   checkedBackgroundColor="#10b981"
  *   borderRadius="8px"
  *   focusRingColor="#10b981"
+ *   labelTextSize="18px"
+ *   labelTextColor="#059669"
  *   label="Custom styled checkbox"
  * />
  * ```
@@ -159,6 +161,63 @@ const meta = {
     errorText: {
       control: 'text',
       description: 'Error message text',
+    },
+
+    // Typography Controls
+    labelTextSize: {
+      control: 'text',
+      description: 'Font size for the label text (CSS value like "16px", "1rem", etc.)',
+    },
+    labelFontSize: {
+      control: 'text',
+      description: 'Font size for the label text (alias for labelTextSize)',
+    },
+    labelFontWeight: {
+      control: 'select',
+      options: ['normal', 'bold', '100', '200', '300', '400', '500', '600', '700', '800', '900'],
+      description: 'Font weight for the label text',
+    },
+    labelTextColor: {
+      control: 'color',
+      description: 'Color of the label text',
+    },
+
+    // Color Controls
+    backgroundColor: {
+      control: 'color',
+      description: 'Background color of the checkbox',
+    },
+    checkedBackgroundColor: {
+      control: 'color',
+      description: 'Background color when checked',
+    },
+    hoverBackgroundColor: {
+      control: 'color',
+      description: 'Background color on hover',
+    },
+    borderColor: {
+      control: 'color',
+      description: 'Border color of the checkbox',
+    },
+    checkmarkColor: {
+      control: 'color',
+      description: 'Color of the checkmark icon',
+    },
+    focusRingColor: {
+      control: 'color',
+      description: 'Color of the focus ring',
+    },
+    descriptionTextColor: {
+      control: 'color',
+      description: 'Color of the description text',
+    },
+    helperTextColor: {
+      control: 'color',
+      description: 'Color of the helper text',
+    },
+    errorTextColor: {
+      control: 'color',
+      description: 'Color of the error text',
     },
 
     // Style props - disable complex objects
@@ -638,7 +697,7 @@ const SettingsPanelExample = () => {
   const [settings, setSettings] = useState({
     notifications: ['email'],
     privacy: ['analytics'],
-    features: [],
+    features: [] as string[],
   })
 
   return (
@@ -698,4 +757,141 @@ const SettingsPanelExample = () => {
 export const SettingsPanel: Story = {
   args: { label: 'Settings panel example' },
   render: () => <SettingsPanelExample />,
+}
+
+// Typography and Color Customization Examples
+export const TypographyCustomization: Story = {
+  args: { label: 'Typography customization' },
+  render: () => (
+    <div className="space-y-6">
+      <h3 className="text-lg font-semibold mb-4">Typography Controls</h3>
+
+      <div className="space-y-4">
+        <CheckboxWithState
+          label="Small text size"
+          labelTextSize="12px"
+          description="Using labelTextSize prop with 12px"
+        />
+
+        <CheckboxWithState
+          label="Medium text size"
+          labelTextSize="16px"
+          labelFontWeight="500"
+          description="Using labelTextSize prop with 16px and medium weight"
+        />
+
+        <CheckboxWithState
+          label="Large bold text"
+          labelTextSize="20px"
+          labelFontWeight="bold"
+          description="Using labelTextSize prop with 20px and bold weight"
+        />
+
+        <CheckboxWithState
+          label="Custom font weight variations"
+          labelTextSize="18px"
+          labelFontWeight="300"
+          description="Light font weight (300)"
+        />
+      </div>
+    </div>
+  ),
+}
+
+export const ColorCustomization: Story = {
+  args: { label: 'Color customization' },
+  render: () => (
+    <div className="space-y-6">
+      <h3 className="text-lg font-semibold mb-4">Color Controls</h3>
+
+      <div className="space-y-4">
+        <CheckboxWithState
+          label="Custom label color"
+          labelTextColor="#e11d48"
+          description="Using red label text color"
+          descriptionTextColor="#6b7280"
+        />
+
+        <CheckboxWithState
+          label="Custom checkbox colors"
+          checkedBackgroundColor="#10b981"
+          checkmarkColor="#ffffff"
+          borderColor="#10b981"
+          description="Green checkbox with white checkmark"
+        />
+
+        <CheckboxWithState
+          label="Purple theme"
+          checkedBackgroundColor="#8b5cf6"
+          checkmarkColor="#ffffff"
+          borderColor="#8b5cf6"
+          focusRingColor="#8b5cf6"
+          labelTextColor="#6b21a8"
+          description="Purple-themed checkbox"
+        />
+
+        <CheckboxWithState
+          label="Blue theme with hover effects"
+          checkedBackgroundColor="#3b82f6"
+          hoverBackgroundColor="#dbeafe"
+          borderColor="#3b82f6"
+          focusRingColor="#3b82f6"
+          labelTextColor="#1e40af"
+          description="Blue theme with hover background"
+        />
+      </div>
+    </div>
+  ),
+}
+
+export const CombinedCustomization: Story = {
+  args: { label: 'Combined typography and color customization' },
+  render: () => (
+    <div className="space-y-6">
+      <h3 className="text-lg font-semibold mb-4">Typography + Color Combined</h3>
+
+      <div className="space-y-4">
+        <CheckboxWithState
+          label="Premium feature"
+          labelTextSize="18px"
+          labelFontWeight="600"
+          labelTextColor="#059669"
+          checkedBackgroundColor="#059669"
+          checkmarkColor="#ffffff"
+          borderColor="#059669"
+          focusRingColor="#059669"
+          description="Large, bold green text with matching checkbox"
+          descriptionTextColor="#6b7280"
+        />
+
+        <CheckboxWithState
+          label="Warning option"
+          labelTextSize="16px"
+          labelFontWeight="500"
+          labelTextColor="#d97706"
+          checkedBackgroundColor="#f59e0b"
+          checkmarkColor="#ffffff"
+          borderColor="#f59e0b"
+          focusRingColor="#f59e0b"
+          description="Medium orange text with warning colors"
+          descriptionTextColor="#92400e"
+        />
+
+        <CheckboxWithState
+          label="Danger action"
+          labelTextSize="14px"
+          labelFontWeight="bold"
+          labelTextColor="#dc2626"
+          checkedBackgroundColor="#ef4444"
+          checkmarkColor="#ffffff"
+          borderColor="#ef4444"
+          focusRingColor="#ef4444"
+          description="Small, bold red text for critical actions"
+          descriptionTextColor="#b91c1c"
+          errorText="This action cannot be undone"
+          errorTextColor="#dc2626"
+        />
+      </div>
+    </div>
+  ),
 }
