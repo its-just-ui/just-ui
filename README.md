@@ -447,6 +447,58 @@ import { ToggleButtons } from 'its-just-ui'
 
 Comprehensive form controls for user input.
 
+#### Segmented
+
+Segmented control for switching between mutually exclusive options.
+
+```tsx
+import { Segmented } from 'its-just-ui'
+
+// Basic usage
+const options = [
+  { label: 'List', value: 'list' },
+  { label: 'Grid', value: 'grid' },
+  { label: 'Chart', value: 'chart' },
+]
+
+<Segmented
+  value={view}
+  onChange={setView}
+  options={options}
+/>
+
+// With icons
+const iconOptions = [
+  { label: 'List', value: 'list', icon: <ListIcon /> },
+  { label: 'Grid', value: 'grid', icon: <GridIcon /> },
+  { label: 'Chart', value: 'chart', icon: <ChartIcon /> },
+]
+
+<Segmented
+  options={iconOptions}
+  variant="outline"
+  size="lg"
+/>
+
+// Vertical layout
+<Segmented
+  options={options}
+  direction="vertical"
+  fullWidth
+/>
+```
+
+**Features:**
+
+- 5 visual variants (solid, outline, ghost, filled, minimal)
+- Animated sliding indicator
+- Keyboard navigation support
+- Icon support
+- Vertical/horizontal layouts
+- Disabled option support
+- WAI-ARIA compliant
+- Custom styling props
+
 #### Select
 
 Advanced dropdown with search and multi-select.
