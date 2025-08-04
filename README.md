@@ -1,13 +1,13 @@
-# its-just-ui - Modern React Component Library
+# its-just-ui - Because It's "Just UI" (How Hard Could It Be? 🙄)
 
-A comprehensive, accessible, and customizable React UI component library built with TypeScript and Tailwind CSS. Create beautiful, consistent user interfaces with 30+ production-ready components.
+Oh, you know, it's JUST UI. Just whip up 30+ production-ready React components with TypeScript, Tailwind CSS, full accessibility, dark mode, animations, and comprehensive testing. I mean, how hard could it be? It's not like frontend is real programming, right? 😏
 
-🚀 **Build faster** with production-ready React components  
-⚡ **Lightweight** and tree-shakeable with zero runtime dependencies  
-🎨 **Fully customizable** with Tailwind CSS and CSS variables  
-♿ **Accessible by default** following WAI-ARIA best practices  
-📱 **Responsive** with mobile-first design approach  
-🔧 **TypeScript ready** with complete type definitions
+🚀 **"Just" build faster** - Because making 31 components is basically a weekend project  
+⚡ **"Just" lightweight** - Only took us months to optimize every byte  
+🎨 **"Just" customizable** - Sure, managing 100+ CSS variables is trivial  
+♿ **"Just" accessible** - WAI-ARIA? More like "Why, I Already Regret It Amirite?"  
+📱 **"Just" responsive** - Because making things work on 17 different screen sizes is child's play  
+🔧 **"Just" TypeScript ready** - Writing 5000+ lines of type definitions was a breeze
 
 [![npm version](https://img.shields.io/npm/v/its-just-ui.svg?style=flat)](https://www.npmjs.com/package/its-just-ui)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
@@ -36,24 +36,25 @@ A comprehensive, accessible, and customizable React UI component library built w
 
 ## Features
 
-### Why Choose its-just-ui?
+### Why Choose its-just-ui? (As If You Have a Choice After Your PM Said "Just Make It Like Material UI But Different")
 
-- 🎨 **31 Production-Ready Components** - Comprehensive UI component library for React applications
-- 🔧 **Full TypeScript Support** - Built with TypeScript for complete type safety and excellent developer experience
-- 📱 **Responsive Design** - Mobile-first approach with adaptive layouts that work on all devices
-- ♿ **Accessibility First** - WAI-ARIA compliant components with full keyboard navigation support
-- 🎯 **Tree-shakeable** - Import only what you need for optimal bundle size and performance
-- 🌗 **Dark Mode Ready** - Built-in theming system with CSS variables for easy customization
-- ⚡ **Zero Dependencies** - Lightweight library with no external runtime dependencies
-- 🎛️ **Highly Customizable** - Extensive styling props and theme support for complete control
-- 📚 **Storybook Documentation** - Interactive component explorer with live examples
-- 🔄 **Form Integration Ready** - Works seamlessly with popular form libraries
-- 🎭 **Animation Support** - Smooth transitions and animations built-in
-- 🧩 **Compound Components** - Flexible component architecture for complex use cases
+- 🎨 **31 "Simple" Components** - Because Button, Card, and Input are basically the same thing with different CSS, right?
+- 🔧 **Full TypeScript "Support"** - Enjoy our 10,000 lines of type gymnastics so your IDE doesn't cry
+- 📱 **"Responsive" Design** - Works perfectly on all devices\*  
+  \*_Tested on exactly 3 phones and my mom's iPad_
+- ♿ **Accessibility "First"** - We added aria-labels after someone on Twitter yelled at us
+- 🎯 **Tree-shakeable** - Unlike your hands after debugging our DatePicker for 6 hours
+- 🌗 **Dark Mode "Ready"** - Just invert all the colors, how hard can it be? (Spoiler: very)
+- ⚡ **Zero Dependencies** - We rewrote lodash 17 times because "we don't need dependencies"
+- 🎛️ **"Highly" Customizable** - Change any of our 147 CSS variables and pray nothing breaks
+- 📚 **Storybook Documentation** - Where components work perfectly until you use them in production
+- 🔄 **Form Integration "Ready"** - Compatible with any form library that can handle our quirks
+- 🎭 **Animation "Support"** - Smooth 60fps animations (on M3 MacBook Pros only)
+- 🧩 **Compound Components** - Because `<Card.Header.Title.Subtitle.Icon />` is intuitive, obviously
 
 ## Quick Start
 
-Get up and running with its-just-ui in minutes:
+Get up and running with its-just-ui in "minutes" (actual time: 3-5 business days):
 
 ### Installation
 
@@ -101,25 +102,25 @@ function App() {
 
 ## Component Library
 
-Our comprehensive component library is organized into logical categories for easy discovery and use.
+Our "comprehensive" component library is organized into categories that made sense at 2 AM after too much coffee.
 
-### Component Statistics
+### Component Statistics (Or: How We Justify Our Salaries)
 
-- **Total Components:** 31
-- **Core Components:** 6
-- **Navigation Components:** 4
-- **Form Components:** 9
-- **Data Display Components:** 6
-- **Feedback Components:** 3
-- **Layout Components:** 3
+- **Total Components:** 31 (But who's counting? Our PM, that's who)
+- **Core Components:** 6 (The ones that actually work)
+- **Navigation Components:** 4 (For when users get lost in your app)
+- **Form Components:** 9 (Because HTML inputs are "too basic")
+- **Data Display Components:** 6 (Tables are hard, okay?)
+- **Feedback Components:** 3 (For telling users what they did wrong)
+- **Layout Components:** 3 (Flexbox nightmares as React components)
 
 ### Core Components
 
-Essential building blocks for any React application.
+Essential building blocks for any React application (because native HTML elements are for peasants).
 
 #### Button
 
-Interactive button component with multiple variants, sizes, and states.
+Interactive button component with multiple variants, sizes, and states. Because `<button>` wasn't complicated enough.
 
 ```tsx
 import { Button } from 'its-just-ui'
