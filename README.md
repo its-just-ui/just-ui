@@ -1,4 +1,6 @@
-# its-just-ui - The Best React UI Component Library 🚀
+# its-just-ui - (How hard could it be🙄?) 🚀
+
+Oh, you know, it's JUST UI. Just whip up 36 production-ready React components with TypeScript, Tailwind CSS, full accessibility, dark mode, animations, and comprehensive testing. I mean, how hard could it be? It's not like frontend is real programming, right? 😏
 
 **The ultimate Material UI alternative for modern React applications**
 
