@@ -28,3 +28,39 @@ storybook-static
 
 # Strategy documents
 docs/NPM_PROMOTION_STRATEGY.md
+
+# Build artifacts
+*.tsbuildinfo
+*.tgz
+package/
+
+# Testing
+coverage/
+.nyc_output/
+
+# Environment files
+.env
+.env.local
+.env.production.local
+.env.development.local
+.env.test.local
+
+# Temporary files
+*.tmp
+*.temp
+.cache/
+
+# Lock files (if using multiple package managers)
+yarn.lock
+pnpm-lock.yaml
+
+# Husky directory (old version)
+husky/
+
+# OS files
+Thumbs.db
+
+# Editor backup files
+*~
+*.bak
+*.backup

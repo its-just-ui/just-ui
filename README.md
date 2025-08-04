@@ -38,7 +38,7 @@ Oh, you know, it's JUST UI. Just whip up 36 production-ready React components wi
 
 ### Why Choose its-just-ui? (As If You Have a Choice After Your PM Said "Just Make It Like Material UI But Different")
 
-- 🎨 **36 "Simple" Components** - Because Button, Card, and Input are basically the same thing with different CSS, right?
+- 🎨 **36 Production-Ready Components** - Because Button, Card, and Input are basically the same thing with different CSS, right?
 - 🔧 **Full TypeScript "Support"** - Enjoy our 10,000 lines of type gymnastics so your IDE doesn't cry
 - 📱 **"Responsive" Design** - Works perfectly on all devices\*  
   \*_Tested on exactly 3 phones and my mom's iPad_
@@ -68,6 +68,14 @@ yarn add its-just-ui
 # Using pnpm
 pnpm add its-just-ui
 ```
+
+**Package Details:**
+
+- 📦 **Unpacked Size:** ~1.2MB (optimized from 1.6MB)
+- 🗜️ **Gzipped:** ~150KB
+- 🌳 **Tree-shakeable:** Import only what you need
+- 📝 **TypeScript:** Full type definitions included
+- 🚀 **Zero runtime dependencies:** Just React
 
 ### Basic Setup
 
@@ -124,12 +132,73 @@ Our "comprehensive" component library is organized into categories that made sen
 ### Component Statistics (Or: How We Justify Our Salaries)
 
 - **Total Components:** 36 (But who's counting? Our PM, that's who)
-- **Core Components:** 6 (The ones that actually work)
-- **Navigation Components:** 4 (For when users get lost in your app)
+- **Core Components:** 3 (The ones that actually work)
+- **Navigation Components:** 6 (For when users get lost in your app)
 - **Form Components:** 11 (Because HTML inputs are "too basic")
-- **Data Display Components:** 6 (Tables are hard, okay?)
+- **Data Display Components:** 7 (Tables are hard, okay?)
 - **Feedback Components:** 3 (For telling users what they did wrong)
 - **Layout Components:** 6 (Flexbox nightmares as React components)
+
+### Complete Component List
+
+<details>
+<summary>📦 All 36 Components (Click to expand)</summary>
+
+#### Core Components
+
+- **Button** - The component that started it all
+- **Badge** - For those important notification counts
+- **Chip** - Tags, but fancier
+
+#### Navigation Components
+
+- **Anchor** - Scroll spy included (you're welcome)
+- **Breadcrumb** - So users know where they are
+- **Pagination** - Because infinite scroll is "too mainstream"
+- **Stepper** - Multi-step forms made "easy"
+- **Segmented** - Radio buttons in disguise
+- **ToggleButtons** - For when regular buttons aren't enough
+
+#### Form Components
+
+- **Input** - Text input with 47 different states
+- **Select** - Dropdown that actually works on mobile
+- **Checkbox** - With indeterminate state (because binary choices are outdated)
+- **RadioGroup** - Round checkboxes, basically
+- **Switch** - Toggle with unnecessary animations
+- **Slider** - Draggable number picker
+- **DatePicker** - Calendar component that handles leap years
+- **ColorPicker** - 16.7 million choices
+- **Upload** - Drag & drop with progress bars
+- **Autocomplete** - Search with suggestions
+- **TreeSelect** - Hierarchical selection nightmare
+
+#### Data Display Components
+
+- **Table** - Excel wannabe
+- **List** - `<ul>` with superpowers
+- **Card** - Container with shadows
+- **Avatar** - Circle with initials
+- **Carousel** - Slideshow nobody asked for
+- **Accordion** - Collapsible content panels
+- **Rating** - 5-star system (revolutionary!)
+
+#### Feedback Components
+
+- **Alert** - Important messages users ignore
+- **Progress** - Loading bars for everything
+- **Skeleton** - Placeholder for placeholders
+
+#### Layout Components
+
+- **Dialog** - Modal that traps focus
+- **Drawer** - Slide-out panel
+- **Popover** - Floating content container
+- **Tooltip** - Hover hints
+- **Splitter** - Resizable panels
+- **Cascade** - Nested menus
+
+</details>
 
 ### Core Components
 

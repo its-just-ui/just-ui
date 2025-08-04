@@ -20,12 +20,12 @@ export default defineConfig({
         styles: resolve(fileURLToPath(new URL('.', import.meta.url)), 'src/styles.ts'),
       },
       name: 'UILibrary',
-      formats: ['es', 'cjs'],
-      fileName: (format, entryName) => {
+      formats: ['es'],
+      fileName: (_format, entryName) => {
         if (entryName === 'styles') {
-          return format === 'es' ? 'styles.js' : 'styles.cjs'
+          return 'styles.js'
         }
-        return format === 'es' ? 'index.js' : 'index.cjs'
+        return 'index.js'
       },
     },
     rollupOptions: {
@@ -42,11 +42,32 @@ export default defineConfig({
           }
           return assetInfo.name || 'assets/[name].[ext]'
         },
+        manualChunks: undefined,
+        compact: true,
+        generatedCode: {
+          constBindings: true,
+        },
       },
     },
     sourcemap: false,
     emptyOutDir: true,
     cssCodeSplit: false,
+    minify: 'terser',
+    terserOptions: {
+      compress: {
+        drop_console: true,
+        drop_debugger: true,
+        pure_funcs: ['console.log', 'console.info', 'console.debug', 'console.trace'],
+        passes: 2,
+      },
+      mangle: {
+        safari10: true,
+      },
+      format: {
+        comments: false,
+        ascii_only: true,
+      },
+    },
   },
   resolve: {
     alias: {
