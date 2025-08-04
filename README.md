@@ -1,4 +1,4 @@
-# its-just-ui - Because It's "Just UI" (How Hard Could It Be? 🙄)
+# its-just-ui - (How hard could it be🙄?)
 
 Oh, you know, it's JUST UI. Just whip up 30+ production-ready React components with TypeScript, Tailwind CSS, full accessibility, dark mode, animations, and comprehensive testing. I mean, how hard could it be? It's not like frontend is real programming, right? 😏
 
