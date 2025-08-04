@@ -38,7 +38,7 @@ A comprehensive, accessible, and customizable React UI component library built w
 
 ### Why Choose its-just-ui?
 
-- 🎨 **30 Production-Ready Components** - Comprehensive UI component library for React applications
+- 🎨 **31 Production-Ready Components** - Comprehensive UI component library for React applications
 - 🔧 **Full TypeScript Support** - Built with TypeScript for complete type safety and excellent developer experience
 - 📱 **Responsive Design** - Mobile-first approach with adaptive layouts that work on all devices
 - ♿ **Accessibility First** - WAI-ARIA compliant components with full keyboard navigation support
@@ -105,10 +105,10 @@ Our comprehensive component library is organized into logical categories for eas
 
 ### Component Statistics
 
-- **Total Components:** 30
+- **Total Components:** 31
 - **Core Components:** 6
 - **Navigation Components:** 4
-- **Form Components:** 8
+- **Form Components:** 9
 - **Data Display Components:** 6
 - **Feedback Components:** 3
 - **Layout Components:** 3
@@ -652,6 +652,65 @@ import { ColorPicker } from 'its-just-ui'
 - Keyboard navigation
 - Custom rendering options
 - Extensive styling props
+
+#### Upload
+
+Comprehensive file upload component with drag-and-drop support and progress tracking.
+
+```tsx
+import { Upload } from 'its-just-ui'
+
+// Basic upload
+const [files, setFiles] = useState<File[]>([])
+
+<Upload
+  files={files}
+  onChange={setFiles}
+  accept="image/*"
+  multiple
+  maxFiles={5}
+  maxSize={5 * 1024 * 1024} // 5MB
+/>
+
+// With custom dropzone
+<Upload files={files} onChange={setFiles}>
+  <Upload.Dropzone className="custom-dropzone">
+    <MyCustomDropzoneContent />
+  </Upload.Dropzone>
+  <Upload.FileList />
+</Upload>
+
+// Async upload with progress
+<Upload
+  files={files}
+  onChange={setFiles}
+  onUploadStart={(file) => startUpload(file)}
+  onUploadProgress={(file, progress) => updateProgress(file, progress)}
+  onUploadComplete={(file) => completeUpload(file)}
+/>
+
+// Form integration
+<Upload
+  files={files}
+  onChange={setFiles}
+  label="Upload Documents"
+  required
+  helperText="PDF or Word documents only"
+  accept=".pdf,.doc,.docx"
+/>
+```
+
+**Features:**
+
+- Controlled component with file state management
+- Compound components: Dropzone, Preview, Progress, FileList, Button
+- Drag-and-drop with visual feedback
+- File validation (size, count, type)
+- Upload progress tracking
+- Multiple variants and sizes
+- Custom rendering options
+- Full accessibility support
+- Form integration ready
 
 ### Data Display Components
 
