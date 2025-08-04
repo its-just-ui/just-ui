@@ -121,16 +121,16 @@
     "avatar",
     "breadcrumb"
   ],
-  "author": "xanxit",
+  "author": "its-just-ui",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/xanxit/just-ui.git"
+    "url": "git+https://github.com/its-just-ui/just-ui.git"
   },
   "bugs": {
-    "url": "https://github.com/xanxit/just-ui/issues"
+    "url": "https://github.com/its-just-ui/just-ui/issues"
   },
-  "homepage": "https://github.com/xanxit/just-ui#readme",
+  "homepage": "https://github.com/its-just-ui/just-ui#readme",
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [
       "eslint",

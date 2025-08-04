@@ -1,6 +1,6 @@
 # its-just-ui - Modern React Component Library
 
-A comprehensive, accessible, and customizable React UI component library built with TypeScript and Tailwind CSS. Create beautiful, consistent user interfaces with 28+ production-ready components.
+A comprehensive, accessible, and customizable React UI component library built with TypeScript and Tailwind CSS. Create beautiful, consistent user interfaces with 30+ production-ready components.
 
 🚀 **Build faster** with production-ready React components  
 ⚡ **Lightweight** and tree-shakeable with zero runtime dependencies  
@@ -38,7 +38,7 @@ A comprehensive, accessible, and customizable React UI component library built w
 
 ### Why Choose its-just-ui?
 
-- 🎨 **28 Production-Ready Components** - Comprehensive UI component library for React applications
+- 🎨 **31 Production-Ready Components** - Comprehensive UI component library for React applications
 - 🔧 **Full TypeScript Support** - Built with TypeScript for complete type safety and excellent developer experience
 - 📱 **Responsive Design** - Mobile-first approach with adaptive layouts that work on all devices
 - ♿ **Accessibility First** - WAI-ARIA compliant components with full keyboard navigation support
@@ -105,11 +105,11 @@ Our comprehensive component library is organized into logical categories for eas
 
 ### Component Statistics
 
-- **Total Components:** 28
+- **Total Components:** 31
 - **Core Components:** 6
 - **Navigation Components:** 4
-- **Form Components:** 7
-- **Data Display Components:** 5
+- **Form Components:** 9
+- **Data Display Components:** 6
 - **Feedback Components:** 3
 - **Layout Components:** 3
 
@@ -447,6 +447,58 @@ import { ToggleButtons } from 'its-just-ui'
 
 Comprehensive form controls for user input.
 
+#### Segmented
+
+Segmented control for switching between mutually exclusive options.
+
+```tsx
+import { Segmented } from 'its-just-ui'
+
+// Basic usage
+const options = [
+  { label: 'List', value: 'list' },
+  { label: 'Grid', value: 'grid' },
+  { label: 'Chart', value: 'chart' },
+]
+
+<Segmented
+  value={view}
+  onChange={setView}
+  options={options}
+/>
+
+// With icons
+const iconOptions = [
+  { label: 'List', value: 'list', icon: <ListIcon /> },
+  { label: 'Grid', value: 'grid', icon: <GridIcon /> },
+  { label: 'Chart', value: 'chart', icon: <ChartIcon /> },
+]
+
+<Segmented
+  options={iconOptions}
+  variant="outline"
+  size="lg"
+/>
+
+// Vertical layout
+<Segmented
+  options={options}
+  direction="vertical"
+  fullWidth
+/>
+```
+
+**Features:**
+
+- 5 visual variants (solid, outline, ghost, filled, minimal)
+- Animated sliding indicator
+- Keyboard navigation support
+- Icon support
+- Vertical/horizontal layouts
+- Disabled option support
+- WAI-ARIA compliant
+- Custom styling props
+
 #### Select
 
 Advanced dropdown with search and multi-select.
@@ -540,6 +592,126 @@ import { Cascade } from 'its-just-ui'
 />
 ```
 
+#### ColorPicker
+
+Comprehensive color selection component with multiple formats and variants.
+
+```tsx
+import { ColorPicker } from 'its-just-ui'
+
+// Basic color picker
+<ColorPicker
+  value={color}
+  onChange={(value, colorData) => {
+    setColor(value)
+    console.log('Color data:', colorData)
+  }}
+/>
+
+// Different variants
+<ColorPicker value={color} onChange={setColor} variant="inline" />
+<ColorPicker value={color} onChange={setColor} variant="popover" />
+<ColorPicker value={color} onChange={setColor} variant="minimal" />
+
+// Without alpha channel
+<ColorPicker
+  value={color}
+  onChange={setColor}
+  allowAlpha={false}
+  defaultFormat="rgb"
+/>
+
+// Custom preset colors
+<ColorPicker
+  value={color}
+  onChange={setColor}
+  presetColors={[
+    { value: '#FF6B6B', label: 'Coral' },
+    { value: '#4ECDC4', label: 'Turquoise' },
+    { value: '#45B7D1', label: 'Sky Blue' },
+  ]}
+/>
+
+// Custom styling
+<ColorPicker
+  value={color}
+  onChange={setColor}
+  swatchShape="circle"
+  borderRadius="12px"
+  popoverBackgroundColor="#f3f4f6"
+/>
+```
+
+**Features:**
+
+- Multiple color formats (hex, rgb, rgba, hsl, hsla)
+- Controlled component design
+- Various UI variants (default, inline, popover, minimal)
+- Customizable sliders, inputs, and preset swatches
+- Alpha channel support
+- Keyboard navigation
+- Custom rendering options
+- Extensive styling props
+
+#### Upload
+
+Comprehensive file upload component with drag-and-drop support and progress tracking.
+
+```tsx
+import { Upload } from 'its-just-ui'
+
+// Basic upload
+const [files, setFiles] = useState<File[]>([])
+
+<Upload
+  files={files}
+  onChange={setFiles}
+  accept="image/*"
+  multiple
+  maxFiles={5}
+  maxSize={5 * 1024 * 1024} // 5MB
+/>
+
+// With custom dropzone
+<Upload files={files} onChange={setFiles}>
+  <Upload.Dropzone className="custom-dropzone">
+    <MyCustomDropzoneContent />
+  </Upload.Dropzone>
+  <Upload.FileList />
+</Upload>
+
+// Async upload with progress
+<Upload
+  files={files}
+  onChange={setFiles}
+  onUploadStart={(file) => startUpload(file)}
+  onUploadProgress={(file, progress) => updateProgress(file, progress)}
+  onUploadComplete={(file) => completeUpload(file)}
+/>
+
+// Form integration
+<Upload
+  files={files}
+  onChange={setFiles}
+  label="Upload Documents"
+  required
+  helperText="PDF or Word documents only"
+  accept=".pdf,.doc,.docx"
+/>
+```
+
+**Features:**
+
+- Controlled component with file state management
+- Compound components: Dropzone, Preview, Progress, FileList, Button
+- Drag-and-drop with visual feedback
+- File validation (size, count, type)
+- Upload progress tracking
+- Multiple variants and sizes
+- Custom rendering options
+- Full accessibility support
+- Form integration ready
+
 ### Data Display Components
 
 Components for presenting data effectively.
@@ -618,6 +790,61 @@ import { Chip } from 'its-just-ui'
   React
 </Chip>
 ```
+
+#### Carousel
+
+Flexible image and content carousel with multiple transition effects.
+
+```tsx
+import { Carousel, CarouselSlide } from 'its-just-ui'
+
+// Basic carousel
+<Carousel height="400px" width="600px">
+  <CarouselSlide>
+    <img src="/image1.jpg" alt="Slide 1" />
+  </CarouselSlide>
+  <CarouselSlide>
+    <img src="/image2.jpg" alt="Slide 2" />
+  </CarouselSlide>
+</Carousel>
+
+// With autoplay and fade effect
+<Carousel
+  variant="fade"
+  autoplay
+  autoplayInterval={3000}
+  loop
+  pauseOnHover
+>
+  <CarouselSlide>Content 1</CarouselSlide>
+  <CarouselSlide>Content 2</CarouselSlide>
+</Carousel>
+
+// Advanced variants
+<Carousel variant="zoom">...</Carousel>
+<Carousel variant="stacked">...</Carousel>
+<Carousel variant="coverflow">...</Carousel>
+
+// Controlled mode
+<Carousel
+  currentIndex={currentIndex}
+  onSlideChange={setCurrentIndex}
+>
+  {slides}
+</Carousel>
+```
+
+**Features:**
+
+- Multiple variants: default, fade, slide, zoom, stacked, coverflow
+- Autoplay with customizable interval
+- Touch/swipe support
+- Keyboard navigation
+- Customizable controls and indicators
+- Controlled and uncontrolled modes
+- Lazy loading support
+- Responsive design
+- Full accessibility support
 
 ### Feedback Components
 
