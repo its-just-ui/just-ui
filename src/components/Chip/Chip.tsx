@@ -539,49 +539,74 @@ const ChipItem = React.forwardRef<HTMLDivElement, ChipItemProps>(
       selectable && !disabled && 'cursor-pointer'
     )
 
-    const variants = {
+    // Base variant styles (without status-specific colors)
+    const baseVariantStyles = {
       default: cn(
         'border border-gray-300 bg-white text-gray-700',
         'hover:bg-gray-50 focus:ring-gray-400',
         isSelected && 'bg-gray-100 border-gray-400'
       ),
-      filled: cn(
-        'border-0',
-        status === 'success' && 'bg-green-100 text-green-800',
-        status === 'warning' && 'bg-yellow-100 text-yellow-800',
-        status === 'error' && 'bg-red-100 text-red-800',
-        status === 'info' && 'bg-blue-100 text-blue-800',
-        status === 'default' && 'bg-gray-100 text-gray-800',
-        isSelected && 'bg-gray-200'
-      ),
-      outlined: cn(
-        'border-2 bg-transparent',
-        status === 'success' && 'border-green-500 text-green-700',
-        status === 'warning' && 'border-yellow-500 text-yellow-700',
-        status === 'error' && 'border-red-500 text-red-700',
-        status === 'info' && 'border-blue-500 text-blue-700',
-        status === 'default' && 'border-gray-300 text-gray-700',
-        isSelected && 'border-gray-500 bg-gray-50'
-      ),
-      soft: cn(
-        'border-0',
-        status === 'success' && 'bg-green-50 text-green-700',
-        status === 'warning' && 'bg-yellow-50 text-yellow-700',
-        status === 'error' && 'bg-red-50 text-red-700',
-        status === 'info' && 'bg-blue-50 text-blue-700',
-        status === 'default' && 'bg-gray-50 text-gray-700',
-        isSelected && 'bg-gray-100'
-      ),
+      filled: cn('border-0', isSelected && 'bg-gray-200'),
+      outlined: cn('border-2 bg-transparent', isSelected && 'border-gray-500 bg-gray-50'),
+      soft: cn('border-0', isSelected && 'bg-gray-100'),
       gradient: cn(
         'border-0 text-white',
-        status === 'success' && 'bg-gradient-to-r from-green-400 to-green-600',
-        status === 'warning' && 'bg-gradient-to-r from-yellow-400 to-yellow-600',
-        status === 'error' && 'bg-gradient-to-r from-red-400 to-red-600',
-        status === 'info' && 'bg-gradient-to-r from-blue-400 to-blue-600',
-        status === 'default' && 'bg-gradient-to-r from-gray-400 to-gray-600',
         isSelected && 'bg-gradient-to-r from-gray-500 to-gray-700'
       ),
     }
+
+    // Status-specific styles for each variant
+    const statusVariantStyles = {
+      default: {
+        success: '',
+        warning: '',
+        error: '',
+        info: '',
+        default: '',
+      },
+      filled: {
+        success: 'bg-green-100 text-green-800',
+        warning: 'bg-yellow-100 text-yellow-800',
+        error: 'bg-red-100 text-red-800',
+        info: 'bg-blue-100 text-blue-800',
+        default: 'bg-gray-100 text-gray-800',
+      },
+      outlined: {
+        success: 'border-green-500 text-green-700',
+        warning: 'border-yellow-500 text-yellow-700',
+        error: 'border-red-500 text-red-700',
+        info: 'border-blue-500 text-blue-700',
+        default: 'border-gray-300 text-gray-700',
+      },
+      soft: {
+        success: 'bg-green-50 text-green-700',
+        warning: 'bg-yellow-50 text-yellow-700',
+        error: 'bg-red-50 text-red-700',
+        info: 'bg-blue-50 text-blue-700',
+        default: 'bg-gray-50 text-gray-700',
+      },
+      gradient: {
+        success: 'bg-gradient-to-r from-green-400 to-green-600',
+        warning: 'bg-gradient-to-r from-yellow-400 to-yellow-600',
+        error: 'bg-gradient-to-r from-red-400 to-red-600',
+        info: 'bg-gradient-to-r from-blue-400 to-blue-600',
+        default: 'bg-gradient-to-r from-gray-400 to-gray-600',
+      },
+    }
+
+    // Combine base variant with status-specific styles
+    const getVariantStyles = () => {
+      const currentVariant = variant || 'default'
+      const currentStatus = status || 'default'
+      const baseStyle = baseVariantStyles[currentVariant] || baseVariantStyles.default
+      const statusStyle =
+        statusVariantStyles[currentVariant]?.[currentStatus] ||
+        statusVariantStyles[currentVariant]?.default ||
+        ''
+      return cn(baseStyle, statusStyle)
+    }
+
+    const variantClassName = getVariantStyles()
 
     const sizes = {
       sm: 'px-2 py-0.5 text-xs',
@@ -653,7 +678,7 @@ const ChipItem = React.forwardRef<HTMLDivElement, ChipItemProps>(
       return (
         <div
           ref={ref}
-          className={cn(baseStyles, variants[variant || 'default'], sizes[size || 'md'], className)}
+          className={cn(baseStyles, variantClassName, sizes[size || 'md'], className)}
           style={{
             ...customStyles,
             ...(hoverBoxShadow &&
@@ -672,7 +697,7 @@ const ChipItem = React.forwardRef<HTMLDivElement, ChipItemProps>(
     return (
       <div
         ref={ref}
-        className={cn(baseStyles, variants[variant || 'default'], sizes[size || 'md'], className)}
+        className={cn(baseStyles, variantClassName, sizes[size || 'md'], className)}
         style={{
           ...customStyles,
           ...(hoverBoxShadow &&

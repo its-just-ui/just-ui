@@ -455,138 +455,140 @@ const ButtonBase = memo(
         animated && animation === 'glow' && 'animate-glow'
       )
 
-      // Variant styles
-      const variantStyles = {
+      // Base variant styles (without status-specific colors)
+      const baseVariantStyles = {
         default: cn(
           'bg-white border border-gray-300 text-gray-700',
           'hover:bg-gray-50 hover:border-gray-400',
           'focus-visible:ring-gray-500',
           'active:bg-gray-100'
         ),
-        filled: cn(
-          status === 'primary' &&
-            'bg-blue-600 text-white hover:bg-blue-700 focus-visible:ring-blue-500',
-          status === 'secondary' &&
-            'bg-gray-600 text-white hover:bg-gray-700 focus-visible:ring-gray-500',
-          status === 'success' &&
-            'bg-green-600 text-white hover:bg-green-700 focus-visible:ring-green-500',
-          status === 'warning' &&
-            'bg-yellow-600 text-white hover:bg-yellow-700 focus-visible:ring-yellow-500',
-          status === 'error' && 'bg-red-600 text-white hover:bg-red-700 focus-visible:ring-red-500',
-          status === 'info' &&
-            'bg-cyan-600 text-white hover:bg-cyan-700 focus-visible:ring-cyan-500',
-          status === 'default' &&
-            'bg-gray-600 text-white hover:bg-gray-700 focus-visible:ring-gray-500'
-        ),
-        outlined: cn(
-          'border-2 bg-transparent',
-          status === 'primary' &&
-            'border-blue-600 text-blue-600 hover:bg-blue-50 focus-visible:ring-blue-500',
-          status === 'secondary' &&
-            'border-gray-600 text-gray-600 hover:bg-gray-50 focus-visible:ring-gray-500',
-          status === 'success' &&
-            'border-green-600 text-green-600 hover:bg-green-50 focus-visible:ring-green-500',
-          status === 'warning' &&
-            'border-yellow-600 text-yellow-600 hover:bg-yellow-50 focus-visible:ring-yellow-500',
-          status === 'error' &&
-            'border-red-600 text-red-600 hover:bg-red-50 focus-visible:ring-red-500',
-          status === 'info' &&
-            'border-cyan-600 text-cyan-600 hover:bg-cyan-50 focus-visible:ring-cyan-500',
-          status === 'default' &&
-            'border-gray-600 text-gray-600 hover:bg-gray-50 focus-visible:ring-gray-500'
-        ),
-        ghost: cn(
-          'bg-transparent border-transparent',
-          status === 'primary' && 'text-blue-600 hover:bg-blue-50 focus-visible:ring-blue-500',
-          status === 'secondary' && 'text-gray-600 hover:bg-gray-50 focus-visible:ring-gray-500',
-          status === 'success' && 'text-green-600 hover:bg-green-50 focus-visible:ring-green-500',
-          status === 'warning' &&
-            'text-yellow-600 hover:bg-yellow-50 focus-visible:ring-yellow-500',
-          status === 'error' && 'text-red-600 hover:bg-red-50 focus-visible:ring-red-500',
-          status === 'info' && 'text-cyan-600 hover:bg-cyan-50 focus-visible:ring-cyan-500',
-          status === 'default' && 'text-gray-600 hover:bg-gray-50 focus-visible:ring-gray-500'
-        ),
-        solid: cn(
-          'border-0 shadow-md',
-          status === 'primary' &&
-            'bg-blue-700 text-white hover:bg-blue-800 focus-visible:ring-blue-600',
-          status === 'secondary' &&
-            'bg-gray-700 text-white hover:bg-gray-800 focus-visible:ring-gray-600',
-          status === 'success' &&
-            'bg-green-700 text-white hover:bg-green-800 focus-visible:ring-green-600',
-          status === 'warning' &&
-            'bg-yellow-700 text-white hover:bg-yellow-800 focus-visible:ring-yellow-600',
-          status === 'error' && 'bg-red-700 text-white hover:bg-red-800 focus-visible:ring-red-600',
-          status === 'info' &&
-            'bg-cyan-700 text-white hover:bg-cyan-800 focus-visible:ring-cyan-600',
-          status === 'default' &&
-            'bg-gray-700 text-white hover:bg-gray-800 focus-visible:ring-gray-600'
-        ),
-        gradient: cn(
-          'border-0 bg-gradient-to-r text-white shadow-lg',
-          status === 'primary' &&
-            'from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 focus-visible:ring-blue-500',
-          status === 'secondary' &&
-            'from-gray-500 to-gray-600 hover:from-gray-600 hover:to-gray-700 focus-visible:ring-gray-500',
-          status === 'success' &&
-            'from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 focus-visible:ring-green-500',
-          status === 'warning' &&
-            'from-yellow-500 to-orange-600 hover:from-yellow-600 hover:to-orange-700 focus-visible:ring-yellow-500',
-          status === 'error' &&
-            'from-red-500 to-pink-600 hover:from-red-600 hover:to-pink-700 focus-visible:ring-red-500',
-          status === 'info' &&
-            'from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 focus-visible:ring-cyan-500',
-          status === 'default' &&
-            'from-gray-500 to-gray-600 hover:from-gray-600 hover:to-gray-700 focus-visible:ring-gray-500'
-        ),
-        glass: cn(
-          'backdrop-blur-md bg-opacity-20 border border-opacity-30',
-          status === 'primary' &&
-            'bg-blue-500 border-blue-300 text-blue-900 hover:bg-opacity-30 focus-visible:ring-blue-500',
-          status === 'secondary' &&
-            'bg-gray-500 border-gray-300 text-gray-900 hover:bg-opacity-30 focus-visible:ring-gray-500',
-          status === 'success' &&
-            'bg-green-500 border-green-300 text-green-900 hover:bg-opacity-30 focus-visible:ring-green-500',
-          status === 'warning' &&
-            'bg-yellow-500 border-yellow-300 text-yellow-900 hover:bg-opacity-30 focus-visible:ring-yellow-500',
-          status === 'error' &&
-            'bg-red-500 border-red-300 text-red-900 hover:bg-opacity-30 focus-visible:ring-red-500',
-          status === 'info' &&
-            'bg-cyan-500 border-cyan-300 text-cyan-900 hover:bg-opacity-30 focus-visible:ring-cyan-500',
-          status === 'default' &&
-            'bg-gray-500 border-gray-300 text-gray-900 hover:bg-opacity-30 focus-visible:ring-gray-500'
-        ),
-        neon: cn(
-          'border-2 bg-transparent shadow-lg',
-          status === 'primary' &&
-            'border-blue-400 text-blue-400 shadow-blue-400/50 hover:shadow-blue-400/75 hover:text-blue-300 focus-visible:ring-blue-400',
-          status === 'secondary' &&
-            'border-gray-400 text-gray-400 shadow-gray-400/50 hover:shadow-gray-400/75 hover:text-gray-300 focus-visible:ring-gray-400',
-          status === 'success' &&
-            'border-green-400 text-green-400 shadow-green-400/50 hover:shadow-green-400/75 hover:text-green-300 focus-visible:ring-green-400',
-          status === 'warning' &&
-            'border-yellow-400 text-yellow-400 shadow-yellow-400/50 hover:shadow-yellow-400/75 hover:text-yellow-300 focus-visible:ring-yellow-400',
-          status === 'error' &&
-            'border-red-400 text-red-400 shadow-red-400/50 hover:shadow-red-400/75 hover:text-red-300 focus-visible:ring-red-400',
-          status === 'info' &&
-            'border-cyan-400 text-cyan-400 shadow-cyan-400/50 hover:shadow-cyan-400/75 hover:text-cyan-300 focus-visible:ring-cyan-400',
-          status === 'default' &&
-            'border-gray-400 text-gray-400 shadow-gray-400/50 hover:shadow-gray-400/75 hover:text-gray-300 focus-visible:ring-gray-400'
-        ),
+        filled: 'text-white', // Base filled style, colors come from status
+        outlined: 'border-2 bg-transparent', // Base outlined style, colors come from status
+        ghost: 'bg-transparent border-transparent', // Base ghost style, colors come from status
+        solid: 'border-0 shadow-md', // Base solid style, colors come from status
+        gradient: 'border-0 bg-gradient-to-r text-white shadow-lg', // Base gradient style, colors come from status
+        glass: 'backdrop-blur-md bg-opacity-20 border border-opacity-30', // Base glass style, colors come from status
+        neon: 'border-2 bg-transparent shadow-lg', // Base neon style, colors come from status
         link: cn(
           'bg-transparent border-transparent p-0 h-auto text-left underline-offset-4',
-          'hover:underline focus-visible:ring-2 focus-visible:ring-offset-2',
-          status === 'primary' && 'text-blue-600 hover:text-blue-700 focus-visible:ring-blue-500',
-          status === 'secondary' && 'text-gray-600 hover:text-gray-700 focus-visible:ring-gray-500',
-          status === 'success' &&
-            'text-green-600 hover:text-green-700 focus-visible:ring-green-500',
-          status === 'warning' &&
-            'text-yellow-600 hover:text-yellow-700 focus-visible:ring-yellow-500',
-          status === 'error' && 'text-red-600 hover:text-red-700 focus-visible:ring-red-500',
-          status === 'info' && 'text-cyan-600 hover:text-cyan-700 focus-visible:ring-cyan-500',
-          status === 'default' && 'text-gray-600 hover:text-gray-700 focus-visible:ring-gray-500'
+          'hover:underline focus-visible:ring-2 focus-visible:ring-offset-2'
         ),
       }
+
+      // Status-specific styles for each variant
+      const statusVariantStyles = {
+        default: {
+          primary: '',
+          secondary: '',
+          success: '',
+          warning: '',
+          error: '',
+          info: '',
+          default: '',
+        },
+        filled: {
+          primary: 'bg-blue-600 hover:bg-blue-700 focus-visible:ring-blue-500',
+          secondary: 'bg-gray-600 hover:bg-gray-700 focus-visible:ring-gray-500',
+          success: 'bg-green-600 hover:bg-green-700 focus-visible:ring-green-500',
+          warning: 'bg-yellow-600 hover:bg-yellow-700 focus-visible:ring-yellow-500',
+          error: 'bg-red-600 hover:bg-red-700 focus-visible:ring-red-500',
+          info: 'bg-cyan-600 hover:bg-cyan-700 focus-visible:ring-cyan-500',
+          default: 'bg-gray-600 hover:bg-gray-700 focus-visible:ring-gray-500',
+        },
+        outlined: {
+          primary: 'border-blue-600 text-blue-600 hover:bg-blue-50 focus-visible:ring-blue-500',
+          secondary: 'border-gray-600 text-gray-600 hover:bg-gray-50 focus-visible:ring-gray-500',
+          success: 'border-green-600 text-green-600 hover:bg-green-50 focus-visible:ring-green-500',
+          warning:
+            'border-yellow-600 text-yellow-600 hover:bg-yellow-50 focus-visible:ring-yellow-500',
+          error: 'border-red-600 text-red-600 hover:bg-red-50 focus-visible:ring-red-500',
+          info: 'border-cyan-600 text-cyan-600 hover:bg-cyan-50 focus-visible:ring-cyan-500',
+          default: 'border-gray-600 text-gray-600 hover:bg-gray-50 focus-visible:ring-gray-500',
+        },
+        ghost: {
+          primary: 'text-blue-600 hover:bg-blue-50 focus-visible:ring-blue-500',
+          secondary: 'text-gray-600 hover:bg-gray-50 focus-visible:ring-gray-500',
+          success: 'text-green-600 hover:bg-green-50 focus-visible:ring-green-500',
+          warning: 'text-yellow-600 hover:bg-yellow-50 focus-visible:ring-yellow-500',
+          error: 'text-red-600 hover:bg-red-50 focus-visible:ring-red-500',
+          info: 'text-cyan-600 hover:bg-cyan-50 focus-visible:ring-cyan-500',
+          default: 'text-gray-600 hover:bg-gray-50 focus-visible:ring-gray-500',
+        },
+        solid: {
+          primary: 'bg-blue-700 text-white hover:bg-blue-800 focus-visible:ring-blue-600',
+          secondary: 'bg-gray-700 text-white hover:bg-gray-800 focus-visible:ring-gray-600',
+          success: 'bg-green-700 text-white hover:bg-green-800 focus-visible:ring-green-600',
+          warning: 'bg-yellow-700 text-white hover:bg-yellow-800 focus-visible:ring-yellow-600',
+          error: 'bg-red-700 text-white hover:bg-red-800 focus-visible:ring-red-600',
+          info: 'bg-cyan-700 text-white hover:bg-cyan-800 focus-visible:ring-cyan-600',
+          default: 'bg-gray-700 text-white hover:bg-gray-800 focus-visible:ring-gray-600',
+        },
+        gradient: {
+          primary:
+            'from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 focus-visible:ring-blue-500',
+          secondary:
+            'from-gray-500 to-gray-600 hover:from-gray-600 hover:to-gray-700 focus-visible:ring-gray-500',
+          success:
+            'from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 focus-visible:ring-green-500',
+          warning:
+            'from-yellow-500 to-orange-600 hover:from-yellow-600 hover:to-orange-700 focus-visible:ring-yellow-500',
+          error:
+            'from-red-500 to-pink-600 hover:from-red-600 hover:to-pink-700 focus-visible:ring-red-500',
+          info: 'from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 focus-visible:ring-cyan-500',
+          default:
+            'from-gray-500 to-gray-600 hover:from-gray-600 hover:to-gray-700 focus-visible:ring-gray-500',
+        },
+        glass: {
+          primary:
+            'bg-blue-500 border-blue-300 text-blue-900 hover:bg-opacity-30 focus-visible:ring-blue-500',
+          secondary:
+            'bg-gray-500 border-gray-300 text-gray-900 hover:bg-opacity-30 focus-visible:ring-gray-500',
+          success:
+            'bg-green-500 border-green-300 text-green-900 hover:bg-opacity-30 focus-visible:ring-green-500',
+          warning:
+            'bg-yellow-500 border-yellow-300 text-yellow-900 hover:bg-opacity-30 focus-visible:ring-yellow-500',
+          error:
+            'bg-red-500 border-red-300 text-red-900 hover:bg-opacity-30 focus-visible:ring-red-500',
+          info: 'bg-cyan-500 border-cyan-300 text-cyan-900 hover:bg-opacity-30 focus-visible:ring-cyan-500',
+          default:
+            'bg-gray-500 border-gray-300 text-gray-900 hover:bg-opacity-30 focus-visible:ring-gray-500',
+        },
+        neon: {
+          primary:
+            'border-blue-400 text-blue-400 shadow-blue-400/50 hover:shadow-blue-400/75 hover:text-blue-300 focus-visible:ring-blue-400',
+          secondary:
+            'border-gray-400 text-gray-400 shadow-gray-400/50 hover:shadow-gray-400/75 hover:text-gray-300 focus-visible:ring-gray-400',
+          success:
+            'border-green-400 text-green-400 shadow-green-400/50 hover:shadow-green-400/75 hover:text-green-300 focus-visible:ring-green-400',
+          warning:
+            'border-yellow-400 text-yellow-400 shadow-yellow-400/50 hover:shadow-yellow-400/75 hover:text-yellow-300 focus-visible:ring-yellow-400',
+          error:
+            'border-red-400 text-red-400 shadow-red-400/50 hover:shadow-red-400/75 hover:text-red-300 focus-visible:ring-red-400',
+          info: 'border-cyan-400 text-cyan-400 shadow-cyan-400/50 hover:shadow-cyan-400/75 hover:text-cyan-300 focus-visible:ring-cyan-400',
+          default:
+            'border-gray-400 text-gray-400 shadow-gray-400/50 hover:shadow-gray-400/75 hover:text-gray-300 focus-visible:ring-gray-400',
+        },
+        link: {
+          primary: 'text-blue-600 hover:text-blue-700 focus-visible:ring-blue-500',
+          secondary: 'text-gray-600 hover:text-gray-700 focus-visible:ring-gray-500',
+          success: 'text-green-600 hover:text-green-700 focus-visible:ring-green-500',
+          warning: 'text-yellow-600 hover:text-yellow-700 focus-visible:ring-yellow-500',
+          error: 'text-red-600 hover:text-red-700 focus-visible:ring-red-500',
+          info: 'text-cyan-600 hover:text-cyan-700 focus-visible:ring-cyan-500',
+          default: 'text-gray-600 hover:text-gray-700 focus-visible:ring-gray-500',
+        },
+      }
+
+      // Combine base variant with status-specific styles
+      const getVariantStyles = () => {
+        const baseStyle = baseVariantStyles[variant] || baseVariantStyles.default
+        const statusStyle =
+          statusVariantStyles[variant]?.[status] || statusVariantStyles[variant]?.default || ''
+        return cn(baseStyle, statusStyle)
+      }
+
+      const variantStyles = getVariantStyles()
 
       // Size styles
       const sizeStyles = {
@@ -819,7 +821,7 @@ const ButtonBase = memo(
             form={form}
             className={cn(
               baseStyles,
-              variantStyles[variant],
+              variantStyles,
               sizeStyles[size],
               transitionStyles[transition],
               className
