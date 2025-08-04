@@ -83,13 +83,30 @@ import 'its-just-ui/styles.css'
 2. **Start using components** in your React application:
 
 ```tsx
-import { Button, Card, Input, Checkbox, Progress } from 'its-just-ui'
+import { Button, Card, Input, Checkbox, Progress, TreeSelect } from 'its-just-ui'
 
 function App() {
+  const treeData = [
+    {
+      key: 'react',
+      title: 'React',
+      children: [
+        { key: 'hooks', title: 'Hooks' },
+        { key: 'components', title: 'Components' },
+      ],
+    },
+  ]
+
   return (
     <Card className="p-6 max-w-md mx-auto">
       <h2 className="text-2xl font-bold mb-4">Welcome to its-just-ui</h2>
       <Input placeholder="Enter your name" label="Name" className="mb-4" />
+      <TreeSelect
+        treeData={treeData}
+        placeholder="Select technology"
+        label="Technology"
+        className="mb-4"
+      />
       <Checkbox label="I agree to the terms and conditions" className="mb-4" />
       <Progress value={75} className="mb-4" />
       <Button variant="primary" className="w-full">
@@ -106,10 +123,10 @@ Our "comprehensive" component library is organized into categories that made sen
 
 ### Component Statistics (Or: How We Justify Our Salaries)
 
-- **Total Components:** 31 (But who's counting? Our PM, that's who)
+- **Total Components:** 33 (But who's counting? Our PM, that's who)
 - **Core Components:** 6 (The ones that actually work)
 - **Navigation Components:** 4 (For when users get lost in your app)
-- **Form Components:** 9 (Because HTML inputs are "too basic")
+- **Form Components:** 11 (Because HTML inputs are "too basic")
 - **Data Display Components:** 6 (Tables are hard, okay?)
 - **Feedback Components:** 3 (For telling users what they did wrong)
 - **Layout Components:** 3 (Flexbox nightmares as React components)
@@ -593,6 +610,110 @@ import { Cascade } from 'its-just-ui'
 />
 ```
 
+#### TreeSelect
+
+Hierarchical tree selection component with support for single/multiple selection, search, and async loading.
+
+```tsx
+import { TreeSelect } from 'its-just-ui'
+
+// Basic tree select
+const [value, setValue] = useState()
+const treeData = [
+  {
+    key: '1',
+    title: 'Parent 1',
+    children: [
+      { key: '1-1', title: 'Child 1-1' },
+      { key: '1-2', title: 'Child 1-2' }
+    ]
+  }
+]
+
+<TreeSelect
+  value={value}
+  onChange={setValue}
+  treeData={treeData}
+  placeholder="Select from tree"
+/>
+
+// Multiple selection with checkboxes
+<TreeSelect
+  mode="multiple"
+  checkable
+  value={values}
+  onChange={setValues}
+  treeData={treeData}
+  placeholder="Select multiple items"
+  checkStrategy="SHOW_CHILD"
+/>
+
+// Searchable tree select
+<TreeSelect
+  searchable
+  value={value}
+  onChange={setValue}
+  treeData={treeData}
+  placeholder="Search and select..."
+  filterTreeNode={(input, node) =>
+    node.title.toLowerCase().includes(input.toLowerCase())
+  }
+/>
+
+// Inline tree (no popup)
+<TreeSelect
+  inline
+  variant="inline-tree"
+  treeData={treeData}
+  defaultExpandedKeys={['1', '2']}
+/>
+
+// Async loading
+<TreeSelect
+  treeData={treeData}
+  loadData={async (node) => {
+    const children = await fetchChildren(node.key)
+    node.children = children
+  }}
+  placeholder="Load children dynamically"
+/>
+
+// Custom node rendering
+<TreeSelect
+  treeData={treeData}
+  renderNode={(node, { selected, level }) => (
+    <div className={`custom-node level-${level}`}>
+      <span className={selected ? 'selected' : ''}>{node.title}</span>
+      {node.badge && <span className="badge">{node.badge}</span>}
+    </div>
+  )}
+/>
+
+// Compound components
+<TreeSelect treeData={treeData}>
+  <TreeSelect.Input placeholder="Custom search..." />
+  <TreeSelect.Popup>
+    <div className="custom-header">Select items:</div>
+    {/* Tree nodes rendered automatically */}
+  </TreeSelect.Popup>
+</TreeSelect>
+```
+
+**Features:**
+
+- Single, multiple, and checkable selection modes
+- Hierarchical data with expand/collapse
+- Search and filter functionality
+- Async loading support for large datasets
+- Keyboard navigation (arrow keys, enter, escape)
+- Custom node and tag renderers
+- Compound component architecture
+- Controlled and uncontrolled patterns
+- Check strategies (SHOW_PARENT, SHOW_CHILD, SHOW_ALL)
+- Inline or popup display modes
+- Full accessibility support (ARIA roles, screen readers)
+- Real-world examples: organization charts, permissions, locations
+
 #### ColorPicker
 
 Comprehensive color selection component with multiple formats and variants.
@@ -712,6 +833,84 @@ const [files, setFiles] = useState<File[]>([])
 - Custom rendering options
 - Full accessibility support
 - Form integration ready
+
+#### DatePicker
+
+Comprehensive date picker component with support for single dates, date ranges, and multiple date selection.
+
+```tsx
+import { DatePicker } from 'its-just-ui'
+
+// Single date picker
+const [date, setDate] = useState<Date>()
+<DatePicker
+  value={date}
+  onChange={setDate}
+  label="Select Date"
+  placeholder="Choose a date"
+/>
+
+// Date range picker
+const [range, setRange] = useState<DateRange>()
+<DatePicker
+  mode="range"
+  value={range}
+  onChange={setRange}
+  label="Select Date Range"
+  placeholder="Choose start and end dates"
+/>
+
+// Multiple date selection
+const [dates, setDates] = useState<Date[]>([])
+<DatePicker
+  mode="multiple"
+  value={dates}
+  onChange={setDates}
+  label="Select Multiple Dates"
+  placeholder="Choose multiple dates"
+  closeOnSelect={false}
+/>
+
+// Inline calendar
+<DatePicker
+  inline
+  variant="inline-calendar"
+  label="Inline Calendar"
+/>
+
+// With date restrictions
+<DatePicker
+  minDate={new Date()}
+  maxDate={new Date(2025, 11, 31)}
+  disabledDates={{
+    days: [0, 6], // Disable weekends
+    dates: [new Date(2024, 11, 25)] // Disable Christmas
+  }}
+  label="Business Days Only"
+/>
+
+// Custom day renderer
+<DatePicker
+  renderDay={(date, isSelected, isDisabled, isToday, isInRange) => (
+    <div className={`custom-day ${isSelected ? 'selected' : ''}`}>
+      {date.getDate()}
+    </div>
+  )}
+  label="Custom Styled"
+/>
+```
+
+**Features:**
+
+- Single, range, and multiple date selection modes
+- Inline or popup calendar display
+- Keyboard navigation support
+- Date restrictions (min/max dates, disabled dates/days)
+- Locale and format customization
+- Custom day renderers
+- Comprehensive accessibility support
+- Form integration ready
+- Controlled and uncontrolled usage patterns
 
 ### Data Display Components
 
@@ -1103,6 +1302,10 @@ import type {
   PopoverProps,
   ProgressSegment,
   SliderMark,
+  TreeSelectProps,
+  TreeNode,
+  TreeSelectValue,
+  CheckStrategy,
 } from 'its-just-ui'
 ```
 
@@ -1124,6 +1327,23 @@ const options: SelectOption<number>[] = [
   { value: 1, label: 'Option 1' },
   { value: 2, label: 'Option 2' },
 ]
+
+// Typed tree data
+const treeData: TreeNode[] = [
+  {
+    key: 'engineering',
+    title: 'Engineering',
+    children: [
+      { key: 'frontend', title: 'Frontend Team' },
+      { key: 'backend', title: 'Backend Team' },
+    ],
+  },
+]
+
+// Typed tree select handler
+const handleTreeChange = (value: TreeSelectValue | TreeSelectValue[] | undefined) => {
+  console.log('Selected:', value)
+}
 ```
 
 ### Custom Component Props
