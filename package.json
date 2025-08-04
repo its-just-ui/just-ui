@@ -128,7 +128,7 @@
   "bugs": {
     "url": "https://github.com/its-just-ui/just-ui/issues"
   },
-  "homepage": "https://github.com/its-just-ui/just-ui#readme",
+  "homepage": "https://its-just-ui.com",
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [
       "eslint",
