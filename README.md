@@ -1,8 +1,8 @@
 # its-just-ui - (How hard could it be🙄?)
 
-Oh, you know, it's JUST UI. Just whip up 30+ production-ready React components with TypeScript, Tailwind CSS, full accessibility, dark mode, animations, and comprehensive testing. I mean, how hard could it be? It's not like frontend is real programming, right? 😏
+Oh, you know, it's JUST UI. Just whip up 36 production-ready React components with TypeScript, Tailwind CSS, full accessibility, dark mode, animations, and comprehensive testing. I mean, how hard could it be? It's not like frontend is real programming, right? 😏
 
-🚀 **"Just" build faster** - Because making 31 components is basically a weekend project  
+🚀 **"Just" build faster** - Because making 36 components is basically a weekend project  
 ⚡ **"Just" lightweight** - Only took us months to optimize every byte  
 🎨 **"Just" customizable** - Sure, managing 100+ CSS variables is trivial  
 ♿ **"Just" accessible** - WAI-ARIA? More like "Why, I Already Regret It Amirite?"  
@@ -38,7 +38,7 @@ Oh, you know, it's JUST UI. Just whip up 30+ production-ready React components w
 
 ### Why Choose its-just-ui? (As If You Have a Choice After Your PM Said "Just Make It Like Material UI But Different")
 
-- 🎨 **31 "Simple" Components** - Because Button, Card, and Input are basically the same thing with different CSS, right?
+- 🎨 **36 "Simple" Components** - Because Button, Card, and Input are basically the same thing with different CSS, right?
 - 🔧 **Full TypeScript "Support"** - Enjoy our 10,000 lines of type gymnastics so your IDE doesn't cry
 - 📱 **"Responsive" Design** - Works perfectly on all devices\*  
   \*_Tested on exactly 3 phones and my mom's iPad_
@@ -123,13 +123,13 @@ Our "comprehensive" component library is organized into categories that made sen
 
 ### Component Statistics (Or: How We Justify Our Salaries)
 
-- **Total Components:** 33 (But who's counting? Our PM, that's who)
+- **Total Components:** 36 (But who's counting? Our PM, that's who)
 - **Core Components:** 6 (The ones that actually work)
 - **Navigation Components:** 4 (For when users get lost in your app)
 - **Form Components:** 11 (Because HTML inputs are "too basic")
 - **Data Display Components:** 6 (Tables are hard, okay?)
 - **Feedback Components:** 3 (For telling users what they did wrong)
-- **Layout Components:** 3 (Flexbox nightmares as React components)
+- **Layout Components:** 6 (Flexbox nightmares as React components)
 
 ### Core Components
 
