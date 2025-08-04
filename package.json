@@ -1,6 +1,6 @@
 {
   "name": "its-just-ui",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "description": "ITS Just UI - The easiest and best React UI component library. Modern, accessible, and customizable components built with TypeScript and Tailwind CSS. Simple to use, production-ready components for building beautiful user interfaces with ease.",
   "type": "module",
   "main": "./dist/index.js",
