@@ -106,10 +106,10 @@ Our "comprehensive" component library is organized into categories that made sen
 
 ### Component Statistics (Or: How We Justify Our Salaries)
 
-- **Total Components:** 31 (But who's counting? Our PM, that's who)
+- **Total Components:** 32 (But who's counting? Our PM, that's who)
 - **Core Components:** 6 (The ones that actually work)
 - **Navigation Components:** 4 (For when users get lost in your app)
-- **Form Components:** 9 (Because HTML inputs are "too basic")
+- **Form Components:** 10 (Because HTML inputs are "too basic")
 - **Data Display Components:** 6 (Tables are hard, okay?)
 - **Feedback Components:** 3 (For telling users what they did wrong)
 - **Layout Components:** 3 (Flexbox nightmares as React components)
@@ -712,6 +712,84 @@ const [files, setFiles] = useState<File[]>([])
 - Custom rendering options
 - Full accessibility support
 - Form integration ready
+
+#### DatePicker
+
+Comprehensive date picker component with support for single dates, date ranges, and multiple date selection.
+
+```tsx
+import { DatePicker } from 'its-just-ui'
+
+// Single date picker
+const [date, setDate] = useState<Date>()
+<DatePicker
+  value={date}
+  onChange={setDate}
+  label="Select Date"
+  placeholder="Choose a date"
+/>
+
+// Date range picker
+const [range, setRange] = useState<DateRange>()
+<DatePicker
+  mode="range"
+  value={range}
+  onChange={setRange}
+  label="Select Date Range"
+  placeholder="Choose start and end dates"
+/>
+
+// Multiple date selection
+const [dates, setDates] = useState<Date[]>([])
+<DatePicker
+  mode="multiple"
+  value={dates}
+  onChange={setDates}
+  label="Select Multiple Dates"
+  placeholder="Choose multiple dates"
+  closeOnSelect={false}
+/>
+
+// Inline calendar
+<DatePicker
+  inline
+  variant="inline-calendar"
+  label="Inline Calendar"
+/>
+
+// With date restrictions
+<DatePicker
+  minDate={new Date()}
+  maxDate={new Date(2025, 11, 31)}
+  disabledDates={{
+    days: [0, 6], // Disable weekends
+    dates: [new Date(2024, 11, 25)] // Disable Christmas
+  }}
+  label="Business Days Only"
+/>
+
+// Custom day renderer
+<DatePicker
+  renderDay={(date, isSelected, isDisabled, isToday, isInRange) => (
+    <div className={`custom-day ${isSelected ? 'selected' : ''}`}>
+      {date.getDate()}
+    </div>
+  )}
+  label="Custom Styled"
+/>
+```
+
+**Features:**
+
+- Single, range, and multiple date selection modes
+- Inline or popup calendar display
+- Keyboard navigation support
+- Date restrictions (min/max dates, disabled dates/days)
+- Locale and format customization
+- Custom day renderers
+- Comprehensive accessibility support
+- Form integration ready
+- Controlled and uncontrolled usage patterns
 
 ### Data Display Components
 
