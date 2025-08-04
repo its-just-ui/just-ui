@@ -335,7 +335,7 @@ const Chip = React.forwardRef<HTMLDivElement, ChipProps>(
                 size === 'sm' && 'text-sm',
                 size === 'md' && 'text-base',
                 size === 'lg' && 'text-lg',
-                status === 'error' && 'text-red-600',
+                status === 'error' ? 'text-red-600' : 'text-gray-900',
                 disabled && 'opacity-50'
               )}
               style={{
@@ -361,10 +361,13 @@ const Chip = React.forwardRef<HTMLDivElement, ChipProps>(
                 size === 'sm' && 'text-xs',
                 size === 'md' && 'text-sm',
                 size === 'lg' && 'text-base',
-                status === 'success' && 'text-green-600',
-                status === 'warning' && 'text-yellow-600',
-                status === 'error' && 'text-red-600',
-                status === 'default' && 'text-gray-500'
+                status === 'success'
+                  ? 'text-green-600'
+                  : status === 'warning'
+                    ? 'text-yellow-600'
+                    : status === 'error'
+                      ? 'text-red-600'
+                      : 'text-gray-500'
               )}
               style={{
                 fontSize: helperTextFontSize,
