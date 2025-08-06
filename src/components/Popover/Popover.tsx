@@ -1,7 +1,7 @@
 import React, { useState, useCallback, useMemo, useEffect, useRef, useId, forwardRef } from 'react'
 import { createPortal } from 'react-dom'
 import { cn } from '../../utils'
-import { PopoverContext } from './context'
+import { PopoverContext, usePopover } from './context'
 import { calculatePopoverPosition } from './positioning'
 import type {
   PopoverVariant,
@@ -285,8 +285,9 @@ const Popover = forwardRef<HTMLDivElement, PopoverProps>(
         }
       }
 
-      document.addEventListener('mousedown', handleOutsideClick)
-      return () => document.removeEventListener('mousedown', handleOutsideClick)
+      // Use click instead of mousedown to avoid conflicts with trigger clicks
+      document.addEventListener('click', handleOutsideClick)
+      return () => document.removeEventListener('click', handleOutsideClick)
     }, [currentOpen, closeOnOutsideClick, handleOpenChange, onOutsideClick])
 
     // Focus management
@@ -433,11 +434,12 @@ export interface PopoverTriggerProps extends React.HTMLAttributes<HTMLElement> {
 
 const PopoverTrigger = forwardRef<HTMLElement, PopoverTriggerProps>(
   ({ children, asChild = false, onClick, onMouseEnter, onMouseLeave, onBlur, ...props }, ref) => {
-    const { open, setOpen, trigger, triggerId, contentId, triggerRef, closeOnBlur } =
-      React.useContext(PopoverContext)!
+    const { open, setOpen, trigger, triggerId, contentId, triggerRef, closeOnBlur } = usePopover()
 
     const handleClick = useCallback(
       (event: React.MouseEvent<HTMLElement>) => {
+        event.preventDefault()
+        event.stopPropagation()
         if (trigger === 'click') {
           setOpen(!open)
         }
@@ -468,12 +470,12 @@ const PopoverTrigger = forwardRef<HTMLElement, PopoverTriggerProps>(
 
     const handleBlur = useCallback(
       (event: React.FocusEvent<HTMLElement>) => {
-        if (closeOnBlur) {
+        if (closeOnBlur && trigger === 'hover') {
           setOpen(false)
         }
         onBlur?.(event)
       },
-      [closeOnBlur, setOpen, onBlur]
+      [closeOnBlur, trigger, setOpen, onBlur]
     )
 
     const triggerProps = {
@@ -548,7 +550,7 @@ const PopoverContent = forwardRef<HTMLDivElement, PopoverContentProps>(
       fontFamily,
       padding,
       boxShadow,
-    } = React.useContext(PopoverContext)!
+    } = usePopover()
 
     const [positioningResult, setPositioningResult] = useState<ReturnType<
       typeof calculatePopoverPosition
@@ -617,7 +619,9 @@ const PopoverContent = forwardRef<HTMLDivElement, PopoverContentProps>(
       contentRef,
     ])
 
-    if (!open) return null
+    if (!open) {
+      return null
+    }
 
     // Base styles
     const baseStyles = 'outline-none'
@@ -775,7 +779,7 @@ const PopoverArrow = forwardRef<HTMLDivElement, PopoverArrowProps>(
       offsetBottom,
       offsetLeft,
       offsetRight,
-    } = React.useContext(PopoverContext)!
+    } = usePopover()
 
     const [arrowPosition, setArrowPosition] = useState<React.CSSProperties>({})
 
@@ -854,9 +858,38 @@ const PopoverArrow = forwardRef<HTMLDivElement, PopoverArrowProps>(
     const customStyles: React.CSSProperties = {
       ...style,
       ...arrowPosition,
-      width: arrowSize || '8px',
-      height: arrowSize || '8px',
-      backgroundColor: getArrowColor(),
+      width: 0,
+      height: 0,
+      borderStyle: 'solid',
+      borderWidth: arrowSize || '8px',
+      borderColor: 'transparent',
+      borderTopColor: getArrowColor(),
+      borderBottomColor: getArrowColor(),
+      borderLeftColor: getArrowColor(),
+      borderRightColor: getArrowColor(),
+    }
+
+    // Set the appropriate border color based on position
+    if (position?.startsWith('top')) {
+      customStyles.borderBottomColor = getArrowColor()
+      customStyles.borderTopColor = 'transparent'
+      customStyles.borderLeftColor = 'transparent'
+      customStyles.borderRightColor = 'transparent'
+    } else if (position?.startsWith('bottom')) {
+      customStyles.borderTopColor = getArrowColor()
+      customStyles.borderBottomColor = 'transparent'
+      customStyles.borderLeftColor = 'transparent'
+      customStyles.borderRightColor = 'transparent'
+    } else if (position?.startsWith('left')) {
+      customStyles.borderRightColor = getArrowColor()
+      customStyles.borderLeftColor = 'transparent'
+      customStyles.borderTopColor = 'transparent'
+      customStyles.borderBottomColor = 'transparent'
+    } else if (position?.startsWith('right')) {
+      customStyles.borderLeftColor = getArrowColor()
+      customStyles.borderRightColor = 'transparent'
+      customStyles.borderTopColor = 'transparent'
+      customStyles.borderBottomColor = 'transparent'
     }
 
     return (
@@ -868,7 +901,7 @@ const PopoverArrow = forwardRef<HTMLDivElement, PopoverArrowProps>(
           if (typeof ref === 'function') ref(node)
           else if (ref) ref.current = node
         }}
-        className={cn('absolute border border-inherit', className)}
+        className={cn('absolute', className)}
         style={customStyles}
         {...props}
       />
@@ -886,7 +919,7 @@ export interface PopoverTitleProps extends React.HTMLAttributes<HTMLHeadingEleme
 
 const PopoverTitle = forwardRef<HTMLHeadingElement, PopoverTitleProps>(
   ({ children, className, level = 3, style, ...props }, ref) => {
-    const { titleId, size, headingColor, fontSize, fontWeight } = React.useContext(PopoverContext)!
+    const { titleId, size, headingColor, fontSize, fontWeight } = usePopover()
 
     // Size-based title styles
     const titleSizes = {
@@ -924,7 +957,7 @@ export interface PopoverDescriptionProps extends React.HTMLAttributes<HTMLParagr
 
 const PopoverDescription = forwardRef<HTMLParagraphElement, PopoverDescriptionProps>(
   ({ children, className, style, ...props }, ref) => {
-    const { descriptionId, size, descriptionColor, fontSize } = React.useContext(PopoverContext)!
+    const { descriptionId, size, descriptionColor, fontSize } = usePopover()
 
     // Size-based description styles
     const descriptionSizes = {
@@ -961,7 +994,7 @@ export interface PopoverCloseProps extends React.ButtonHTMLAttributes<HTMLButton
 
 const PopoverClose = forwardRef<HTMLButtonElement, PopoverCloseProps>(
   ({ children, asChild = false, onClick, ...props }, ref) => {
-    const { setOpen } = React.useContext(PopoverContext)!
+    const { setOpen } = usePopover()
 
     const handleClick = useCallback(
       (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -1005,7 +1038,6 @@ PopoverClose.displayName = 'PopoverClose'
 
 // Export all components
 export {
-  Popover,
   PopoverTrigger,
   PopoverContent,
   PopoverArrow,
@@ -1035,3 +1067,4 @@ PopoverCompound.Description = PopoverDescription
 PopoverCompound.Close = PopoverClose
 
 export default PopoverCompound
+export { PopoverCompound as Popover }

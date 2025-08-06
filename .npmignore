@@ -21,6 +21,7 @@ vite.config.ts
 # Documentation
 docs/
 CONTRIBUTING.md
+README.md
 
 # Git
 .git/
@@ -36,3 +37,60 @@ node_modules/
 # Misc
 .DS_Store
 *.log
+*.tmp
+*.temp
+.cache/
+*~
+*.bak
+*.backup
+Thumbs.db
+
+# Testing
+coverage/
+.nyc_output/
+*.test.*
+*.spec.*
+__tests__/
+__mocks__/
+
+# Environment files
+.env
+.env.*
+
+# Package files
+*.tgz
+package/
+
+# CI/CD
+.github/
+.travis.yml
+.circleci/
+.gitlab-ci.yml
+azure-pipelines.yml
+
+# Editor config
+.editorconfig
+.eslintignore
+.prettierignore
+
+# Lock files (keep only package-lock.json)
+yarn.lock
+pnpm-lock.yaml
+
+# Storybook
+storybook-static/
+.storybook/
+
+# Old directories
+husky/
+
+# Claude AI
+.claude/
+
+# Linting configs
+.eslintrc.cjs
+commitlint.config.js
+
+# Build info files
+*.tsbuildinfo
+tsconfig.node.tsbuildinfo
