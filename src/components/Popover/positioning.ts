@@ -159,10 +159,7 @@ export function calculatePopoverPosition(
 
       arrowPosition = {
         left: Math.max(8, Math.min(arrowLeft, contentRect.width - ARROW_SIZE - 8)),
-        top: actualPosition.startsWith('top')
-          ? contentRect.height - ARROW_SIZE / 2
-          : -ARROW_SIZE / 2,
-        transform: 'rotate(45deg)',
+        top: actualPosition.startsWith('top') ? contentRect.height : -ARROW_SIZE,
       }
     } else if (isLeftOrRight) {
       const triggerCenter = triggerRect.top + triggerRect.height / 2
@@ -171,10 +168,7 @@ export function calculatePopoverPosition(
 
       arrowPosition = {
         top: Math.max(8, Math.min(arrowTop, contentRect.height - ARROW_SIZE - 8)),
-        left: actualPosition.startsWith('left')
-          ? contentRect.width - ARROW_SIZE / 2
-          : -ARROW_SIZE / 2,
-        transform: 'rotate(45deg)',
+        left: actualPosition.startsWith('left') ? contentRect.width : -ARROW_SIZE,
       }
     }
   }
