@@ -108,9 +108,18 @@ pnpm add its-just-ui
 ```tsx
 // main.tsx or App.tsx
 import 'its-just-ui/styles.css'
+import { ThemeProvider } from 'its-just-ui'
+
+function App() {
+  return (
+    <ThemeProvider>
+      <YourApp />
+    </ThemeProvider>
+  )
+}
 ```
 
-> **Important:** The CSS import is required for proper styling. Without it, components will not be styled correctly.
+> **Important:** The CSS import is required for proper styling. The ThemeProvider is optional but recommended for consistent theming across your application.
 
 2. **Start using components** in your React application:
 
@@ -155,8 +164,8 @@ Our "comprehensive" component library is organized into categories that made sen
 
 ### Component Statistics (Or: How We Justify Our Salaries)
 
-- **Total Components:** 36 (But who's counting? Our PM, that's who)
-- **Core Components:** 3 (The ones that actually work)
+- **Total Components:** 37 (But who's counting? Our PM, that's who)
+- **Core Components:** 4 (The ones that actually work)
 - **Navigation Components:** 6 (For when users get lost in your app)
 - **Form Components:** 11 (Because HTML inputs are "too basic")
 - **Data Display Components:** 7 (Tables are hard, okay?)
@@ -173,6 +182,7 @@ Our "comprehensive" component library is organized into categories that made sen
 - **Button** - The component that started it all
 - **Badge** - For those important notification counts
 - **Chip** - Tags, but fancier
+- **ThemeProvider** - Because consistent theming is actually important
 
 #### Navigation Components
 
@@ -227,6 +237,88 @@ Our "comprehensive" component library is organized into categories that made sen
 ### Core Components
 
 Essential building blocks for any React application (because native HTML elements are for peasants).
+
+#### ThemeProvider
+
+Comprehensive theming solution for consistent styling across all components.
+
+```tsx
+import { ThemeProvider, useTheme } from 'its-just-ui'
+
+// Basic usage with default theme
+<ThemeProvider>
+  <App />
+</ThemeProvider>
+
+// With custom theme configuration
+const customTheme = {
+  colors: {
+    light: {
+      primary: '#8b5cf6',
+      secondary: '#ec4899',
+      background: '#ffffff',
+      text: '#1a1a1a',
+      // ... other colors
+    },
+    dark: {
+      primary: '#a78bfa',
+      secondary: '#f472b6',
+      background: '#0a0a0a',
+      text: '#fafafa',
+      // ... other colors
+    }
+  },
+  spacing: {
+    xs: '0.25rem',
+    sm: '0.5rem',
+    md: '1rem',
+    // ... other spacing
+  }
+}
+
+<ThemeProvider theme={customTheme} defaultMode="light">
+  <App />
+</ThemeProvider>
+
+// Using theme in components
+function MyComponent() {
+  const { theme, toggleMode, isDark, currentColors } = useTheme()
+
+  return (
+    <div style={{ backgroundColor: currentColors.background }}>
+      <button onClick={toggleMode}>
+        Switch to {isDark ? 'Light' : 'Dark'} Mode
+      </button>
+    </div>
+  )
+}
+
+// System preference detection
+<ThemeProvider defaultMode="system" enableSystemMode={true}>
+  <App />
+</ThemeProvider>
+```
+
+**Features:**
+
+- Light, dark, and system mode support
+- Comprehensive theme configuration (colors, spacing, typography, shadows)
+- CSS custom properties integration
+- useTheme hook for easy access
+- Local storage persistence
+- Nested theme support
+- Real-time theme updates
+- System preference detection
+
+**Theme Configuration:**
+
+- **Colors**: Primary, secondary, success, warning, error, info, background, surface, text colors
+- **Spacing**: xs to 4xl spacing values
+- **Typography**: Font families, sizes, and weights
+- **Border Radius**: From none to full rounded corners
+- **Shadows**: Multiple shadow levels
+- **Transitions**: Predefined transition configurations
+- **Breakpoints**: Responsive design breakpoints
 
 #### Button
 
@@ -1276,6 +1368,133 @@ import { Popover } from 'its-just-ui'
 ```
 
 ## Theming & Customization
+
+### ThemeProvider Integration
+
+The recommended way to theme your application is using the ThemeProvider component:
+
+```tsx
+import { ThemeProvider, useTheme } from 'its-just-ui'
+
+// Define your custom theme
+const myTheme = {
+  colors: {
+    light: {
+      primary: '#3b82f6',
+      secondary: '#6b7280',
+      success: '#10b981',
+      warning: '#f59e0b',
+      error: '#ef4444',
+      info: '#06b6d4',
+      background: '#ffffff',
+      surface: '#f9fafb',
+      text: '#111827',
+      textSecondary: '#6b7280',
+      border: '#e5e7eb',
+      focus: '#3b82f6',
+      hover: '#f3f4f6',
+      disabled: '#9ca3af',
+    },
+    dark: {
+      primary: '#60a5fa',
+      secondary: '#9ca3af',
+      success: '#34d399',
+      warning: '#fbbf24',
+      error: '#f87171',
+      info: '#22d3ee',
+      background: '#111827',
+      surface: '#1f2937',
+      text: '#f9fafb',
+      textSecondary: '#d1d5db',
+      border: '#374151',
+      focus: '#60a5fa',
+      hover: '#374151',
+      disabled: '#6b7280',
+    },
+  },
+  spacing: {
+    xs: '0.25rem',
+    sm: '0.5rem',
+    md: '1rem',
+    lg: '1.5rem',
+    xl: '2rem',
+    '2xl': '3rem',
+    '3xl': '4rem',
+    '4xl': '6rem',
+  },
+  borderRadius: {
+    none: '0',
+    sm: '0.125rem',
+    DEFAULT: '0.25rem',
+    md: '0.375rem',
+    lg: '0.5rem',
+    xl: '0.75rem',
+    '2xl': '1rem',
+    '3xl': '1.5rem',
+    full: '9999px',
+  },
+}
+
+// Apply the theme
+function App() {
+  return (
+    <ThemeProvider theme={myTheme} defaultMode="light" storageKey="app-theme">
+      <YourComponents />
+    </ThemeProvider>
+  )
+}
+
+// Access theme in components
+function ThemedButton() {
+  const { currentColors, isDark } = useTheme()
+
+  return (
+    <Button
+      style={{
+        backgroundColor: currentColors.primary,
+        color: isDark ? '#000' : '#fff',
+      }}
+    >
+      Themed Button
+    </Button>
+  )
+}
+```
+
+### Theme Mode Management
+
+```tsx
+function ThemeSwitcher() {
+  const { theme, toggleMode, setTheme } = useTheme()
+
+  return (
+    <div>
+      {/* Toggle between light/dark/system */}
+      <Button onClick={toggleMode}>Mode: {theme.mode}</Button>
+
+      {/* Programmatically set theme */}
+      <Button onClick={() => setTheme({ mode: 'dark' })}>Set Dark Mode</Button>
+
+      {/* Update specific colors */}
+      <Button
+        onClick={() =>
+          setTheme({
+            colors: {
+              ...theme.colors,
+              light: {
+                ...theme.colors.light,
+                primary: '#8b5cf6',
+              },
+            },
+          })
+        }
+      >
+        Change Primary Color
+      </Button>
+    </div>
+  )
+}
+```
 
 ### CSS Variables
 
