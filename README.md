@@ -1,10 +1,10 @@
-# its-just-ui - (How hard could it be🙄?) 🚀
+# its-just-ui - How hard could it be🙄? (React Component Library ) 🚀
 
 Oh, you know, it's JUST UI. Just whip up 36 production-ready React components with TypeScript, Tailwind CSS, full accessibility, dark mode, animations, and comprehensive testing. I mean, how hard could it be? It's not like frontend is real programming, right? 😏
 
-**The ultimate Material UI alternative for modern React applications**
+**The Best Material UI Alternative 2025 | React UI Components Library | TypeScript + Tailwind CSS**
 
-its-just-ui is the easiest, fastest React UI component library with 36+ production-ready components. Zero-config setup, plug-and-play design system perfect for startups, SaaS applications, dashboards, and enterprise projects. Built with TypeScript and Tailwind CSS for maximum developer experience.
+its-just-ui is the easiest, fastest React UI component library with 36+ production-ready components. Zero-config Material UI, Chakra UI, and Ant Design alternative. Perfect React component library for SaaS applications, admin dashboards, and enterprise projects. Built with TypeScript and Tailwind CSS for modern React development.
 
 > **Why choose its-just-ui over Material UI, Chakra UI, or Ant Design?**  
 > ✅ Faster setup (5 minutes vs hours)  
