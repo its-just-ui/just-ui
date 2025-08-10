@@ -1,10 +1,15 @@
-# Source files
-src/
-*.stories.tsx
-*.test.tsx
+# Source files (keep only compiled output)
+src/**/*.stories.tsx
+src/**/*.test.tsx
+src/**/*.test.ts
+src/**/*.spec.tsx
+src/**/*.spec.ts
+src/tests/
+src/just-ui-logo.png
 
 # Config files
 .husky/
+husky/
 .storybook/
 commitlint.config.js
 postcss.config.js
@@ -12,16 +17,17 @@ tailwind.config.js
 tsconfig.json
 tsconfig.node.json
 vite.config.ts
+vercel.json
 .eslintrc.json
 .prettierrc
 
 # Build artifacts
 *.tsbuildinfo
+tsconfig.node.tsbuildinfo
 
-# Documentation
+# Documentation (keep README for npm page)
 docs/
 CONTRIBUTING.md
-README.md
 
 # Git
 .git/
@@ -81,11 +87,15 @@ pnpm-lock.yaml
 storybook-static/
 .storybook/
 
+# Public assets
+public/
+
 # Old directories
 husky/
 
 # Claude AI
 .claude/
+CLAUDE.md
 
 # Linting configs
 .eslintrc.cjs
