@@ -85,3 +85,13 @@ body::after {
   background-image: none !important;
   background: #ffffff !important;
 }
+
+/* Fix logo sizing in Storybook header */
+.sidebar-header img[src*='just-ui-logo'],
+img[src*='just-ui-logo'],
+[class*='brand'] img {
+  max-height: 30px !important;
+  height: auto !important;
+  width: auto !important;
+  object-fit: contain !important;
+}
