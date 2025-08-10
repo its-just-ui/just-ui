@@ -89,9 +89,16 @@ body::after {
 /* Fix logo sizing in Storybook header */
 .sidebar-header img[src*='just-ui-logo'],
 img[src*='just-ui-logo'],
-[class*='brand'] img {
-  max-height: 30px !important;
-  height: auto !important;
+[class*='brand'] img,
+a[title='its-just-ui'] img,
+a[href='/'] img,
+div[role='presentation'] img,
+header img,
+nav img {
+  max-height: 26px !important;
+  height: 26px !important;
   width: auto !important;
   object-fit: contain !important;
+  display: inline-block !important;
+  vertical-align: middle !important;
 }
