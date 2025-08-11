@@ -80,6 +80,20 @@ its-just-ui is the easiest, fastest React UI component library with 36+ producti
 
 Get up and running with its-just-ui in 5 minutes - the fastest React UI setup:
 
+### 🎮 Interactive Live Playground
+
+**New in v1.5.6!** Try out all components instantly in our interactive Live Playground. No setup required - just edit the code and see live results!
+
+Visit the [Live Playground](https://its-just-ui.com/storybook) to:
+
+- ✨ Edit component code in real-time
+- 🔄 See instant visual feedback
+- 📖 Learn component APIs interactively
+- 🎯 Test different props and configurations
+- 📋 Copy code snippets for your projects
+
+Every component now includes an interactive playground in Storybook where you can modify JSX code and see changes immediately. Perfect for learning and prototyping!
+
 ### Installation
 
 ```bash
