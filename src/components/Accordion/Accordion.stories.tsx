@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import type { Meta, StoryObj } from '@storybook/react'
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from './Accordion'
+import LivePlayground from '../../../.storybook/components/LivePlayground'
 
 /**
  * Accordion is a vertically stacked set of interactive headings that reveal or hide associated content sections.
@@ -1421,5 +1422,42 @@ export const WithComplexContent: Story = {
   ),
   args: {
     children: 'Accordion with complex content elements',
+  },
+}
+
+export const Playground: Story = {
+  name: 'Live Playground',
+  render: () => (
+    <div className="space-y-3">
+      <p className="text-sm text-gray-600">
+        Edit the JSX on the right. Components from Just UI are available in scope (Accordion,
+        AccordionItem, AccordionTrigger, AccordionContent).
+      </p>
+      <LivePlayground
+        code={`<Accordion type="single" collapsible>
+  <AccordionItem value="item-1">
+    <AccordionTrigger>What is Just UI?</AccordionTrigger>
+    <AccordionContent>
+      Just UI is a modern React component library built with TypeScript and Tailwind.
+    </AccordionContent>
+  </AccordionItem>
+  <AccordionItem value="item-2">
+    <AccordionTrigger>Is it customizable?</AccordionTrigger>
+    <AccordionContent>
+      Yes! You can customize variants, sizes, transitions, and much more.
+    </AccordionContent>
+  </AccordionItem>
+  <AccordionItem value="item-3">
+    <AccordionTrigger>Can I use it in production?</AccordionTrigger>
+    <AccordionContent>
+      Absolutely. It is designed to be accessible, flexible, and production-ready.
+    </AccordionContent>
+  </AccordionItem>
+</Accordion>`}
+      />
+    </div>
+  ),
+  args: {
+    children: 'Accordion live playground',
   },
 }

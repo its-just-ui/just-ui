@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import React, { useState } from 'react'
 import { Alert, AlertTitle, AlertDescription, AlertIcon, AlertDismissButton } from './Alert'
+import LivePlayground from '../../../.storybook/components/LivePlayground'
 
 // Wrapper component for controlled state management
 const AlertWithState = ({
@@ -871,6 +872,27 @@ export const AccessibilityFeatures: Story = {
           </ul>
         </div>
       </div>
+    </div>
+  ),
+  args: {},
+}
+
+export const Playground: Story = {
+  name: 'Live Playground',
+  render: () => (
+    <div className="space-y-3">
+      <p className="text-sm text-gray-600">
+        Edit the JSX on the right. Components from Just UI are available in scope (Alert,
+        AlertTitle, AlertDescription, AlertIcon, AlertDismissButton).
+      </p>
+      <LivePlayground
+        code={`<Alert status="info">
+  <AlertIcon>ℹ️</AlertIcon>
+  <AlertTitle>Heads up!</AlertTitle>
+  <AlertDescription>This is a live playground.</AlertDescription>
+  <AlertDismissButton />
+</Alert>`}
+      />
     </div>
   ),
   args: {},

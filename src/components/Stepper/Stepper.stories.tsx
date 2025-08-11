@@ -2,6 +2,7 @@ import type { StoryObj } from '@storybook/react'
 import React, { useState } from 'react'
 import { Stepper } from './Stepper'
 import type { StepperStep } from './Stepper'
+import LivePlayground from '../../../.storybook/components/LivePlayground'
 
 /**
  * Stepper is a comprehensive component for guiding users through multi-step processes.
@@ -885,4 +886,26 @@ export const CustomBorderColors: Story = {
     ],
     currentStep: 1,
   },
+}
+
+export const Playground: StoryObj<typeof meta> = {
+  name: 'Live Playground',
+  render: () => (
+    <div className="space-y-3">
+      <p className="text-sm text-gray-600">
+        Edit the JSX on the right. Components are in scope (Stepper).
+      </p>
+      <LivePlayground
+        code={`<Stepper
+  steps={[{ id: '1', title: 'Step 1' }, { id: '2', title: 'Step 2' }, { id: '3', title: 'Step 3' }]}
+  currentStep={0}
+>
+  <Stepper.StepList />
+  <Stepper.Content />
+  <Stepper.Navigation />
+</Stepper>`}
+      />
+    </div>
+  ),
+  args: {},
 }

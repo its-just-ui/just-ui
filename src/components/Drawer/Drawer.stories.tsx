@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import type { Meta, StoryObj } from '@storybook/react'
 import { DrawerCompound as Drawer, type DrawerItem } from './Drawer'
 import { cn } from '../../utils/cn'
+import LivePlayground from '../../../.storybook/components/LivePlayground'
 
 /**
  * Drawer is a flexible slide-out panel component that provides navigation, content, or controls.
@@ -1875,6 +1876,20 @@ export const RealWorldExamples: Story = {
           </div>
         </div>
       </div>
+    </div>
+  ),
+}
+
+export const Playground: StoryObj<typeof meta> = {
+  name: 'Live Playground',
+  render: () => (
+    <div className="space-y-3">
+      <p className="text-sm text-gray-600">
+        Edit the JSX on the right. Components are in scope (Drawer).
+      </p>
+      <LivePlayground
+        code={`<Drawer open title="Menu" items={[{ id: '1', label: 'Dashboard', icon: '📊' }, { id: '2', label: 'Settings', icon: '⚙️' }]} />`}
+      />
     </div>
   ),
 }

@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react'
 import React, { useState } from 'react'
 import { Cascade } from './Cascade'
 import type { CascadeOption, CascadeValue } from './types'
+import LivePlayground from '../../../.storybook/components/LivePlayground'
 
 const meta: Meta<typeof Cascade> = {
   title: 'Components/Cascade',
@@ -556,4 +557,24 @@ const ComplexExampleComponent = () => {
 
 export const ComplexExample: Story = {
   render: () => <ComplexExampleComponent />,
+}
+
+export const Playground: StoryObj<typeof meta> = {
+  name: 'Live Playground',
+  render: () => (
+    <div className="space-y-3">
+      <p className="text-sm text-gray-600">
+        Edit the JSX on the right. Components from Just UI are in scope (Cascade).
+      </p>
+      <LivePlayground
+        code={`<Cascade
+  options=[
+    { value: 'fruits', label: 'Fruits', children: [ { value: 'apple', label: 'Apple' }, { value: 'banana', label: 'Banana' } ] },
+    { value: 'vegetables', label: 'Vegetables', children: [ { value: 'carrot', label: 'Carrot' } ] }
+  ]
+  placeholder="Select..."
+/>`}
+      />
+    </div>
+  ),
 }

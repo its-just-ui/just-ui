@@ -9,6 +9,7 @@ import {
   DialogDescription,
   DialogClose,
 } from './Dialog'
+import LivePlayground from '../../../.storybook/components/LivePlayground'
 
 // Wrapper component for controlled state management
 const DialogWithState = ({
@@ -1771,4 +1772,27 @@ export const AccessibilityFeatures: Story = {
     open: false,
     onOpenChange: () => {},
   },
+}
+
+export const Playground: Story = {
+  name: 'Live Playground',
+  render: () => (
+    <div className="space-y-3">
+      <p className="text-sm text-gray-600">
+        Edit the JSX on the right. Components are in scope (Dialog and sub-components).
+      </p>
+      <LivePlayground
+        code={`<Dialog open>
+  <DialogHeader>
+    <DialogTitle>Dialog Title</DialogTitle>
+    <DialogDescription>Dialog description goes here.</DialogDescription>
+  </DialogHeader>
+  <DialogBody>Content goes here...</DialogBody>
+  <DialogFooter>
+    <DialogClose>Close</DialogClose>
+  </DialogFooter>
+</Dialog>`}
+      />
+    </div>
+  ),
 }

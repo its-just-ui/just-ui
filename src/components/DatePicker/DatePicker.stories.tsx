@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react'
 import React, { useState } from 'react'
 import { DatePicker } from './DatePicker'
 import type { DatePickerProps, DateRange as DateRangeType, DatePickerMode } from './DatePicker'
+import LivePlayground from '../../../.storybook/components/LivePlayground'
 
 /**
  * # DatePicker Component
@@ -1488,4 +1489,16 @@ const EventPlanningComponent: React.FC = () => {
 
 export const EventPlanningSystem: Story = {
   render: () => <EventPlanningComponent />,
+}
+
+export const Playground: StoryObj<typeof meta> = {
+  name: 'Live Playground',
+  render: () => (
+    <div className="space-y-3">
+      <p className="text-sm text-gray-600">
+        Edit the JSX on the right. Components are in scope (DatePicker).
+      </p>
+      <LivePlayground code={`<DatePicker defaultValue={new Date()} />`} />
+    </div>
+  ),
 }

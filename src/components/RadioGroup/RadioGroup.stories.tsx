@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import type { Meta, StoryObj } from '@storybook/react'
 import { RadioGroup } from './RadioGroup'
+import LivePlayground from '../../../.storybook/components/LivePlayground'
 
 /**
  * RadioGroup is a set of checkable buttons where no more than one can be selected at a time.
@@ -1258,6 +1259,23 @@ export const AccessibilityExample: Story = {
           <RadioGroup.Option value="error2" label="Unavailable option 2" disabled />
         </RadioGroupWithState>
       </div>
+    </div>
+  ),
+}
+
+export const Playground: Story = {
+  name: 'Live Playground',
+  render: () => (
+    <div className="space-y-3">
+      <p className="text-sm text-gray-600">
+        Edit the JSX on the right. Components are in scope (RadioGroup).
+      </p>
+      <LivePlayground
+        code={`<RadioGroup defaultValue="option1" label="Choose an option">
+  <RadioGroup.Option value="option1" label="Option 1" />
+  <RadioGroup.Option value="option2" label="Option 2" />
+</RadioGroup>`}
+      />
     </div>
   ),
 }

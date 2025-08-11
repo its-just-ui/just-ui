@@ -18,6 +18,7 @@ import { Select } from '../Select'
 import { Pagination } from '../Pagination'
 import { Skeleton } from '../Skeleton'
 import { Card, CardHeader, CardBody } from '../Card'
+import LivePlayground from '../../../.storybook/components/LivePlayground'
 
 // Icon components to use in stories
 const Users: React.FC<{ className?: string }> = ({ className }) => (
@@ -3006,4 +3007,22 @@ const SkeletonLoadingComponent = () => {
 export const SkeletonLoading: Story = {
   args: { data: [], columns: [] },
   render: () => <SkeletonLoadingComponent />,
+}
+
+export const Playground: StoryObj<typeof meta> = {
+  name: 'Live Playground',
+  render: () => (
+    <div className="space-y-3">
+      <p className="text-sm text-gray-600">
+        Edit the JSX on the right. Components are in scope (Table).
+      </p>
+      <LivePlayground
+        code={`<Table
+  data={[{ id: 1, name: 'Alice' }, { id: 2, name: 'Bob' }]}
+  columns={[{ id: 'name', header: 'Name', accessorKey: 'name' }]}
+/>`}
+      />
+    </div>
+  ),
+  args: {},
 }

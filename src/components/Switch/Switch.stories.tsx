@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import type { Meta, StoryObj } from '@storybook/react'
 import { Switch } from './Switch'
+import LivePlayground from '../../../.storybook/components/LivePlayground'
 
 /**
  * Switch is a toggle component that allows users to switch between two states (on/off, true/false).
@@ -1025,6 +1026,23 @@ export const ComplexLayouts: Story = {
           />
         ))}
       </div>
+    </div>
+  ),
+}
+
+export const Playground: StoryObj<typeof meta> = {
+  name: 'Live Playground',
+  render: () => (
+    <div className="space-y-3">
+      <p className="text-sm text-gray-600">
+        Edit the JSX on the right. Components are in scope (Switch).
+      </p>
+      <LivePlayground
+        code={`<div className="space-y-2">
+  <Switch label="Enable notifications" defaultChecked={false} />
+  <Switch label="Dark mode" defaultChecked />
+</div>`}
+      />
     </div>
   ),
 }

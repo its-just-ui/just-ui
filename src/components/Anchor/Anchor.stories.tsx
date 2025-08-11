@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import type { Meta, StoryObj } from '@storybook/react'
 import { Anchor } from './Anchor'
+import LivePlayground from '../../../.storybook/components/LivePlayground'
 
 /**
  * Anchor is a navigation component that provides smooth scrolling between sections with scroll spy functionality.
@@ -1017,4 +1018,28 @@ function MyComponent() {
       </div>
     )
   },
+}
+
+export const Playground: Story = {
+  name: 'Live Playground',
+  render: () => (
+    <div className="space-y-3">
+      <p className="text-sm text-gray-600">
+        Edit the JSX on the right. Components from Just UI are available in scope (Anchor and
+        sub-components).
+      </p>
+      <LivePlayground
+        code={`<div className="flex gap-8">
+  <Anchor targetIds={["intro","guide"]} className="w-64">
+    <Anchor.Link href="#intro">Introduction</Anchor.Link>
+    <Anchor.Link href="#guide">Guide</Anchor.Link>
+  </Anchor>
+  <div className="flex-1 space-y-6">
+    <div id="intro"><h3 className="font-semibold">Intro</h3><p>Welcome</p></div>
+    <div id="guide"><h3 className="font-semibold">Guide</h3><p>Getting started</p></div>
+  </div>
+</div>`}
+      />
+    </div>
+  ),
 }

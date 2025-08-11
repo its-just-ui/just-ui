@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { Meta, StoryObj } from '@storybook/react'
 import { Carousel, CarouselSlide } from './Carousel'
+import LivePlayground from '../../../.storybook/components/LivePlayground'
 
 /**
  * Carousel component provides a flexible and customizable way to display a series of content in a sliding format.
@@ -501,4 +502,23 @@ export const TestimonialCarousel: Story = {
       </CarouselSlide>
     </Carousel>
   ),
+}
+
+export const Playground: StoryObj<typeof meta> = {
+  name: 'Live Playground',
+  render: () => (
+    <div className="space-y-3">
+      <p className="text-sm text-gray-600">
+        Edit the JSX on the right. Components from Just UI are in scope (Carousel).
+      </p>
+      <LivePlayground
+        code={`<Carousel>
+  <Carousel.Slide><div className="h-24 bg-gray-100 flex items-center justify-center">Slide 1</div></Carousel.Slide>
+  <Carousel.Slide><div className="h-24 bg-gray-100 flex items-center justify-center">Slide 2</div></Carousel.Slide>
+  <Carousel.Slide><div className="h-24 bg-gray-100 flex items-center justify-center">Slide 3</div></Carousel.Slide>
+</Carousel>`}
+      />
+    </div>
+  ),
+  args: {} as any,
 }

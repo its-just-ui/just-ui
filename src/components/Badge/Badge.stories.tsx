@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import type { Meta, StoryObj } from '@storybook/react'
 import { Badge } from './Badge'
+import LivePlayground from '../../../.storybook/components/LivePlayground'
 
 // Wrapper component for controlled state
 const BadgeWithState = ({
@@ -1390,4 +1391,23 @@ export const AccessibilityFeatures: Story = {
   args: {
     children: 'Badge',
   },
+}
+
+export const Playground: Story = {
+  name: 'Live Playground',
+  render: () => (
+    <div className="space-y-3">
+      <p className="text-sm text-gray-600">
+        Edit the JSX on the right. Components from Just UI are available in scope (Badge).
+      </p>
+      <LivePlayground
+        code={`<div className="flex flex-wrap gap-2">
+  <Badge>Default</Badge>
+  <Badge variant="filled" status="success">Success</Badge>
+  <Badge variant="outlined" status="warning">Warning</Badge>
+</div>`}
+      />
+    </div>
+  ),
+  args: {} as any,
 }

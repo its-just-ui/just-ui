@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import type { Meta, StoryObj } from '@storybook/react'
 import { Pagination } from './Pagination'
+import LivePlayground from '../../../.storybook/components/LivePlayground'
 
 /**
  * Pagination is a navigation component that allows users to navigate through multiple pages of content.
@@ -1901,6 +1902,18 @@ export const OverallLoadingScenarios: Story = {
           </div>
         </div>
       </div>
+    </div>
+  ),
+}
+
+export const Playground: Story = {
+  name: 'Live Playground',
+  render: () => (
+    <div className="space-y-3">
+      <p className="text-sm text-gray-600">
+        Edit the JSX on the right. Components are in scope (Pagination).
+      </p>
+      <LivePlayground code={`<Pagination defaultCurrentPage={1} totalPages={10} />`} />
     </div>
   ),
 }

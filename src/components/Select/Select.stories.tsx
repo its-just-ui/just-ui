@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import type { Meta, StoryObj } from '@storybook/react'
 import { SelectCompound as Select } from './Select'
 import type { SelectOption } from './types'
+import LivePlayground from '../../../.storybook/components/LivePlayground'
 
 /**
  * Select is a dropdown component that allows users to choose from a list of options.
@@ -1556,6 +1557,20 @@ export const RealWorldExamples: Story = {
           />
         </div>
       </div>
+    </div>
+  ),
+}
+
+export const Playground: StoryObj<typeof meta> = {
+  name: 'Live Playground',
+  render: () => (
+    <div className="space-y-3">
+      <p className="text-sm text-gray-600">
+        Edit the JSX on the right. Components are in scope (Select).
+      </p>
+      <LivePlayground
+        code={`<Select options={[{ value: '1', label: 'Option 1' }, { value: '2', label: 'Option 2' }]} placeholder="Choose..." />`}
+      />
     </div>
   ),
 }

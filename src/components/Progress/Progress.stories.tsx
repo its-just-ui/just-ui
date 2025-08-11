@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import React, { useState, useEffect } from 'react'
 import { Progress } from './Progress'
+import LivePlayground from '../../../.storybook/components/LivePlayground'
 
 /**
  * Progress is a versatile component for displaying task completion status, loading states,
@@ -1150,4 +1151,21 @@ export const MultiStepWizard: Story = {
 export const DashboardMetrics: Story = {
   args: {},
   render: () => <DashboardMetricsExample />,
+}
+
+export const Playground: StoryObj<typeof meta> = {
+  name: 'Live Playground',
+  render: () => (
+    <div className="space-y-3">
+      <p className="text-sm text-gray-600">
+        Edit the JSX on the right. Components are in scope (Progress).
+      </p>
+      <LivePlayground
+        code={`<div className="space-y-3">
+  <Progress value={45} />
+  <Progress variant="circular" value={75} />
+</div>`}
+      />
+    </div>
+  ),
 }

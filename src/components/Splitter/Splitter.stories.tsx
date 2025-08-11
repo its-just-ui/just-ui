@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import type { Meta, StoryObj } from '@storybook/react'
 import { Splitter } from './Splitter'
+import LivePlayground from '../../../.storybook/components/LivePlayground'
 
 /**
  * # Splitter Component
@@ -408,6 +409,26 @@ export const Accessibility: Story = {
       <p className="text-sm text-gray-600">
         💡 Try using Tab to focus the handle, then use arrow keys to resize.
       </p>
+    </div>
+  ),
+}
+
+export const Playground: StoryObj<typeof meta> = {
+  name: 'Live Playground',
+  render: () => (
+    <div className="space-y-3">
+      <p className="text-sm text-gray-600">
+        Edit the JSX on the right. Components are in scope (Splitter).
+      </p>
+      <LivePlayground
+        code={`<div className="h-40">
+  <Splitter direction="horizontal" initialSizes={[40,60]}>
+    <Splitter.Pane index={0}><div className="h-full flex items-center justify-center">Left</div></Splitter.Pane>
+    <Splitter.Handle index={0} />
+    <Splitter.Pane index={1}><div className="h-full flex items-center justify-center">Right</div></Splitter.Pane>
+  </Splitter>
+</div>`}
+      />
     </div>
   ),
 }

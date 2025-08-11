@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import type { Meta, StoryObj } from '@storybook/react'
 import { Autocomplete, AutocompleteOption } from './Autocomplete'
+import LivePlayground from '../../../.storybook/components/LivePlayground'
 
 /**
  * Autocomplete is a controlled component that provides a searchable dropdown selection.
@@ -1050,4 +1051,28 @@ export const FormExample: Story = {
     options: basicOptions,
   },
   render: () => <FormExampleComponent />,
+}
+
+export const Playground: Story = {
+  name: 'Live Playground',
+  render: () => (
+    <div className="space-y-3">
+      <p className="text-sm text-gray-600">
+        Edit the JSX on the right. Components from Just UI are available in scope (Autocomplete).
+      </p>
+      <LivePlayground
+        code={`<Autocomplete
+  options={[
+    { value: '1', label: 'Option 1' },
+    { value: '2', label: 'Option 2' },
+    { value: '3', label: 'Option 3' },
+  ]}
+  value={null}
+  onChange={() => {}}
+  placeholder="Search..."
+/>`}
+      />
+    </div>
+  ),
+  args: {} as any,
 }
