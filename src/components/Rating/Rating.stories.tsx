@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import type { Meta, StoryObj } from '@storybook/react'
 import { Rating } from './Rating'
 import { Button } from '../Button/Button'
+import LivePlayground from '../../../.storybook/components/LivePlayground'
 
 /**
  * Rating is a component that allows users to provide feedback by rating items on a scale.
@@ -661,6 +662,23 @@ export const StatusStates: Story = {
           errorMessage="This rating has an error"
         />
       </div>
+    </div>
+  ),
+}
+
+export const Playground: Story = {
+  name: 'Live Playground',
+  render: () => (
+    <div className="space-y-3">
+      <p className="text-sm text-gray-600">
+        Edit the JSX on the right. Components are in scope (Rating).
+      </p>
+      <LivePlayground
+        code={`<div className="space-y-2">
+  <Rating defaultValue={3} maxValue={5} />
+  <Rating defaultValue={4} variant="emoji" />
+</div>`}
+      />
     </div>
   ),
 }

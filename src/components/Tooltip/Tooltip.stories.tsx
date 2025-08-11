@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import type { Meta, StoryObj } from '@storybook/react'
 import { Tooltip } from './Tooltip'
+import LivePlayground from '../../../.storybook/components/LivePlayground'
 
 /**
  * Tooltip is a component that displays additional information when users hover over, focus on, or click an element.
@@ -1683,6 +1684,23 @@ export const RealWorldExamples: Story = {
       </div>
     </div>
   ),
+}
+
+export const TooltipPlayground: StoryObj<typeof meta> = {
+  name: 'Live Playground',
+  render: () => (
+    <div className="space-y-3">
+      <p className="text-sm text-gray-600">
+        Edit the JSX on the right. Components are in scope (Tooltip).
+      </p>
+      <LivePlayground
+        code={`<Tooltip content="This is a tooltip">
+  <button className="px-3 py-1.5 bg-primary-600 text-white rounded text-sm">Hover me</button>
+</Tooltip>`}
+      />
+    </div>
+  ),
+  args: {},
 }
 
 const ControlledExampleComponent = () => {

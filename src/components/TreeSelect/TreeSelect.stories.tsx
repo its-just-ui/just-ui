@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react'
 import React, { useState } from 'react'
 import TreeSelectComponent from './TreeSelect'
 import type { TreeSelectProps, TreeNode, TreeSelectValue } from './TreeSelect'
+import LivePlayground from '../../../.storybook/components/LivePlayground'
 
 // Use the default export which has the compound components attached
 const TreeSelect = TreeSelectComponent
@@ -205,7 +206,7 @@ const meta: Meta<typeof TreeSelect> = {
       description: 'Placeholder text when no selection',
       control: 'text',
       table: {
-        defaultValue: { summary: "'Please select'" },
+        defaultValue: { summary: { summary: "'Please select'" } },
       },
     },
     mode: {
@@ -1646,4 +1647,21 @@ const EcommerceCategoryPickerComponent: React.FC = () => {
 
 export const EcommerceCategoryPicker: Story = {
   render: () => <EcommerceCategoryPickerComponent />,
+}
+
+export const Playground: StoryObj<typeof meta> = {
+  name: 'Live Playground',
+  render: () => (
+    <div className="space-y-3">
+      <p className="text-sm text-gray-600">
+        Edit the JSX on the right. Components are in scope (TreeSelect).
+      </p>
+      <LivePlayground
+        code={`<TreeSelect
+  treeData={[{ key: '1', title: 'Parent 1', children: [{ key: '1-1', title: 'Child 1-1' }] }]}
+  placeholder="Select..."
+/>`}
+      />
+    </div>
+  ),
 }

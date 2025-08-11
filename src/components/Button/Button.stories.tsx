@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import type { Meta, StoryObj } from '@storybook/react'
 import { Button, ButtonProps } from './Button'
+import LivePlayground from '../../../.storybook/components/LivePlayground'
 
 const FormIntegrationComponent = () => {
   const [formData, setFormData] = useState({ name: '', email: '' })
@@ -1617,4 +1618,22 @@ export const RealWorldExamples: Story = {
   args: {
     children: 'Button content will be overridden by render function',
   },
+}
+
+export const Playground: Story = {
+  name: 'Live Playground',
+  render: () => (
+    <div className="space-y-3">
+      <p className="text-sm text-gray-600">
+        Edit the JSX on the right. Components from Just UI are available in scope (e.g., Button).
+      </p>
+      <LivePlayground
+        code={`<div className="flex flex-col gap-3">
+  <Button variant="filled" status="primary">Primary</Button>
+  <Button variant="outlined" status="success" icon="✅">Outlined Success</Button>
+  <Button variant="gradient" status="info">Gradient Info</Button>
+</div>`}
+      />
+    </div>
+  ),
 }

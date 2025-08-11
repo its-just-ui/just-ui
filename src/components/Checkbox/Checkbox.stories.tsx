@@ -1,6 +1,7 @@
 import type { StoryObj } from '@storybook/react'
 import React, { useState } from 'react'
 import { Checkbox } from './index'
+import LivePlayground from '../../../.storybook/components/LivePlayground'
 
 /**
  * Checkbox is a versatile form control that allows users to select one or more options from a set.
@@ -892,6 +893,27 @@ export const CombinedCustomization: Story = {
           errorTextColor="#dc2626"
         />
       </div>
+    </div>
+  ),
+}
+
+export const Playground: Story = {
+  name: 'Live Playground',
+  render: () => (
+    <div className="space-y-3">
+      <p className="text-sm text-gray-600">
+        Edit the JSX on the right. Components are in scope (Checkbox).
+      </p>
+      <LivePlayground
+        code={`<div className="space-y-2">
+  <Checkbox label="Accept terms" defaultChecked={false} />
+  <Checkbox label="Subscribe" defaultChecked />
+  <Checkbox.Group label="Features" defaultValue={["a"]}>
+    <Checkbox.Item value="a" label="Feature A" />
+    <Checkbox.Item value="b" label="Feature B" />
+  </Checkbox.Group>
+</div>`}
+      />
     </div>
   ),
 }

@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import type { Meta, StoryObj } from '@storybook/react'
 import { ColorPicker } from './ColorPicker'
 import { cn } from '@/utils'
+import LivePlayground from '../../../.storybook/components/LivePlayground'
 
 const meta = {
   title: 'Components/ColorPicker',
@@ -935,4 +936,17 @@ const AsyncUpdatesComponent = () => {
 
 export const AsyncUpdates: Story = {
   render: () => <AsyncUpdatesComponent />,
+}
+
+export const Playground: StoryObj<typeof meta> = {
+  name: 'Live Playground',
+  render: () => (
+    <div className="space-y-3">
+      <p className="text-sm text-gray-600">
+        Edit the JSX on the right. Components are in scope (ColorPicker).
+      </p>
+      <LivePlayground code={`<ColorPicker />`} />
+    </div>
+  ),
+  args: {},
 }

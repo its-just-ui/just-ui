@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import type { Meta, StoryObj } from '@storybook/react'
 import { Input, InputProps } from './Input'
+import LivePlayground from '../../../.storybook/components/LivePlayground'
 
 /**
  * Input is a versatile form input component with extensive customization options and compound architecture.
@@ -973,4 +974,21 @@ export const ControlledVsUncontrolled: Story = {
   args: {
     placeholder: 'Button content will be overridden by render function',
   },
+}
+
+export const Playground: Story = {
+  name: 'Live Playground',
+  render: () => (
+    <div className="space-y-3">
+      <p className="text-sm text-gray-600">
+        Edit the JSX on the right. Components are in scope (Input).
+      </p>
+      <LivePlayground
+        code={`<div className="space-y-3">
+  <Input placeholder="Enter text..." />
+  <Input variant="filled" size="lg" placeholder="Large filled input" />
+</div>`}
+      />
+    </div>
+  ),
 }

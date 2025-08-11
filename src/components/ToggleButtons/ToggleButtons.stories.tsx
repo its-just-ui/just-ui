@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import type { Meta, StoryObj } from '@storybook/react'
 import { ToggleButtons } from './ToggleButtons'
+import LivePlayground from '../../../.storybook/components/LivePlayground'
 
 /**
  * ToggleButtons is a versatile component that allows users to select one or multiple options from a group of buttons.
@@ -684,4 +685,23 @@ const FormExampleComponent = () => {
 
 export const FormExample: Story = {
   render: () => <FormExampleComponent />,
+}
+
+export const Playground: Story = {
+  name: 'Live Playground',
+  render: () => (
+    <div className="space-y-3">
+      <p className="text-sm text-gray-600">
+        Edit the JSX on the right. Components are in scope (ToggleButtons).
+      </p>
+      <LivePlayground
+        code={`<ToggleButtons defaultValue="bold">
+  <ToggleButtons.Button value="bold" icon="B" />
+  <ToggleButtons.Button value="italic" icon="I" />
+  <ToggleButtons.Button value="underline" icon="U" />
+</ToggleButtons>`}
+      />
+    </div>
+  ),
+  args: {},
 }

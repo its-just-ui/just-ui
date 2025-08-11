@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import type { Meta, StoryObj } from '@storybook/react'
 import Card from './Card'
 import type { CardAction } from './types'
+import LivePlayground from '../../../.storybook/components/LivePlayground'
 
 /**
  * Card is a versatile container component that displays content in a structured, accessible way.
@@ -1556,6 +1557,28 @@ export const AccessibilityExample: Story = {
           }}
         />
       </div>
+    </div>
+  ),
+}
+
+export const Playground: Story = {
+  name: 'Live Playground',
+  render: () => (
+    <div className="space-y-3">
+      <p className="text-sm text-gray-600">
+        Edit the JSX on the right. Components from Just UI are in scope (Card and sub-components).
+      </p>
+      <LivePlayground
+        code={`<Card>
+  <Card.Header title="Card Title" subtitle="Subtitle" />
+  <Card.Body>
+    <p>Card body content</p>
+  </Card.Body>
+  <Card.Footer>
+    <Card.Actions action={{ id: 'save', label: 'Save', variant: 'primary' }} />
+  </Card.Footer>
+</Card>`}
+      />
     </div>
   ),
 }

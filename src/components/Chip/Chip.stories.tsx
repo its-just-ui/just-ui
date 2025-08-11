@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import type { Meta, StoryObj } from '@storybook/react'
 import { Chip, ChipContainer, ChipItem, ChipInput } from './Chip'
+import LivePlayground from '../../../.storybook/components/LivePlayground'
 
 /**
  * Chip is a versatile component for displaying selectable or removable tags with extensive customization options.
@@ -1309,4 +1310,24 @@ const CompoundComponentsComponent = () => {
 
 export const CompoundComponents: Story = {
   render: () => <CompoundComponentsComponent />,
+}
+
+export const Playground: Story = {
+  name: 'Live Playground',
+  render: () => (
+    <div className="space-y-3">
+      <p className="text-sm text-gray-600">
+        Edit the JSX on the right. Components are in scope (Chip).
+      </p>
+      <LivePlayground
+        code={`<Chip>
+  <ChipContainer>
+    <ChipItem value="React" />
+    <ChipItem value="Vue" />
+    <ChipInput placeholder="Add more..." />
+  </ChipContainer>
+</Chip>`}
+      />
+    </div>
+  ),
 }

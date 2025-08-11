@@ -68,6 +68,7 @@ export default defineConfig({
         ascii_only: true,
       },
     },
+    copyPublicDir: false,
   },
   resolve: {
     alias: {

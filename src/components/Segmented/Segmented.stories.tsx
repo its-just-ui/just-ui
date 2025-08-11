@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import React, { useState } from 'react'
 import { Segmented } from './Segmented'
+import LivePlayground from '../../../.storybook/components/LivePlayground'
 
 // Icons for examples
 const ListIcon = () => (
@@ -697,4 +698,19 @@ export const KeyboardNavigation: Story = {
       <SegmentedWithState options={basicOptions} direction="vertical" variant="outline" />
     </div>
   ),
+}
+
+export const Playground: Story = {
+  name: 'Live Playground',
+  render: () => (
+    <div className="space-y-3">
+      <p className="text-sm text-gray-600">
+        Edit the JSX on the right. Components are in scope (Segmented).
+      </p>
+      <LivePlayground
+        code={`<Segmented defaultValue="list" options={[{ label: 'List', value: 'list' }, { label: 'Grid', value: 'grid' }, { label: 'Chart', value: 'chart' }]} />`}
+      />
+    </div>
+  ),
+  args: {},
 }

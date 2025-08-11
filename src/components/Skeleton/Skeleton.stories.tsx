@@ -1,6 +1,7 @@
 import React from 'react'
 import type { Meta, StoryObj } from '@storybook/react'
 import { Skeleton } from './Skeleton'
+import LivePlayground from '../../../.storybook/components/LivePlayground'
 
 /**
  * Skeleton is a loading placeholder component that displays animated placeholders
@@ -458,6 +459,23 @@ export const RealWorldExamples: Story = {
           </div>
         </div>
       </div>
+    </div>
+  ),
+}
+
+export const Playground: StoryObj<typeof meta> = {
+  name: 'Live Playground',
+  render: () => (
+    <div className="space-y-3">
+      <p className="text-sm text-gray-600">
+        Edit the JSX on the right. Components are in scope (Skeleton).
+      </p>
+      <LivePlayground
+        code={`<div className="space-y-2">
+  <Skeleton variant="text" lines={3} />
+  <Skeleton variant="avatar" size="lg" />
+</div>`}
+      />
     </div>
   ),
 }

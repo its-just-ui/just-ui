@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import type { Meta, StoryObj } from '@storybook/react'
 import { Slider } from './Slider'
+import LivePlayground from '../../../.storybook/components/LivePlayground'
 
 /**
  * Professional Slider component with clean, modern design.
@@ -1089,6 +1090,23 @@ export const AccessibilityExample: Story = {
           formatTooltip={(value) => `${value}%`}
         />
       </div>
+    </div>
+  ),
+}
+
+export const Playground: StoryObj<typeof meta> = {
+  name: 'Live Playground',
+  render: () => (
+    <div className="space-y-3">
+      <p className="text-sm text-gray-600">
+        Edit the JSX on the right. Components are in scope (Slider).
+      </p>
+      <LivePlayground
+        code={`<div className="space-y-3">
+  <Slider defaultValue={50} label="Volume" />
+  <Slider range defaultValue={[20,80]} label="Range" />
+</div>`}
+      />
     </div>
   ),
 }

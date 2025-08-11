@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import type { Meta, StoryObj } from '@storybook/react'
 import { Popover } from './Popover'
 import { cn } from '../../utils'
+import LivePlayground from '../../../.storybook/components/LivePlayground'
 
 /**
  * Popover is a floating element that displays rich content in a portal, positioned relative to a trigger element.
@@ -1343,4 +1344,27 @@ export const NestedPopover: Story = {
       </Popover>
     </div>
   ),
+}
+
+export const Playground: Story = {
+  name: 'Live Playground',
+  render: () => (
+    <div className="space-y-3">
+      <p className="text-sm text-gray-600">
+        Edit the JSX on the right. Components are in scope (Popover).
+      </p>
+      <LivePlayground
+        code={`<Popover>
+  <Popover.Trigger>
+    <button className="px-3 py-1.5 bg-blue-600 text-white rounded text-sm">Open Popover</button>
+  </Popover.Trigger>
+  <Popover.Content>
+    <Popover.Title>Title</Popover.Title>
+    <Popover.Description>Description</Popover.Description>
+  </Popover.Content>
+</Popover>`}
+      />
+    </div>
+  ),
+  args: {},
 }

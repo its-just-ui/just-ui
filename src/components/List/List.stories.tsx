@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import type { Meta, StoryObj } from '@storybook/react'
 import { List, ListContainer, ListItem, ListHeader, ListFooter } from './List'
+import LivePlayground from '../../../.storybook/components/LivePlayground'
 
 /**
  * List is a versatile component for displaying selectable or interactive items.
@@ -703,4 +704,20 @@ const FormExampleComponent = () => {
 
 export const FormExample: Story = {
   render: () => <FormExampleComponent />,
+}
+
+export const Playground: Story = {
+  name: 'Live Playground',
+  render: () => (
+    <div className="space-y-3">
+      <p className="text-sm text-gray-600">
+        Edit the JSX on the right. Components are in scope (List).
+      </p>
+      <LivePlayground
+        code={`<List
+  items={[{ id: '1', title: 'Item 1' }, { id: '2', title: 'Item 2' }, { id: '3', title: 'Item 3' }]}
+/>`}
+      />
+    </div>
+  ),
 }

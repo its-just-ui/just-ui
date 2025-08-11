@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import React, { useState } from 'react'
 import { Upload, FileWithProgress } from './Upload'
+import LivePlayground from '../../../.storybook/components/LivePlayground'
 
 /**
  * # Upload Component
@@ -666,4 +667,18 @@ export const WithLabelRequired: Story = {
     accept: '.pdf,.doc,.docx',
     helperText: 'Please upload your resume in PDF or Word format',
   },
+}
+
+export const Playground: StoryObj<typeof meta> = {
+  name: 'Live Playground',
+  render: () => (
+    <div className="space-y-3">
+      <p className="text-sm text-gray-600">
+        Edit the JSX on the right. Components are in scope (Upload).
+      </p>
+      <LivePlayground
+        code={`<Upload files={[]} onChange={() => {}} label="Drag & drop files here or click to upload" accept="image/*" />`}
+      />
+    </div>
+  ),
 }

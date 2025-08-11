@@ -7,6 +7,7 @@ import {
   BreadcrumbSeparator,
   BreadcrumbLink,
 } from './Breadcrumb'
+import LivePlayground from '../../../.storybook/components/LivePlayground'
 
 /**
  * Breadcrumb is a navigation component that shows the user's current location within a website's hierarchy.
@@ -821,4 +822,24 @@ const RealWorldExampleComponent = () => {
 
 export const RealWorldExample: Story = {
   render: () => <RealWorldExampleComponent />,
+}
+
+export const Playground: Story = {
+  name: 'Live Playground',
+  render: () => (
+    <div className="space-y-3">
+      <p className="text-sm text-gray-600">
+        Edit the JSX on the right. Components from Just UI are in scope (Breadcrumb).
+      </p>
+      <LivePlayground
+        code={`<Breadcrumb
+  items={[
+    { label: 'Home', href: '/' },
+    { label: 'Library', href: '/library' },
+    { label: 'Data' }
+  ]}
+/>`}
+      />
+    </div>
+  ),
 }
