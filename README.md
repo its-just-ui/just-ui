@@ -1803,9 +1803,9 @@ MIT © its-just-ui
 ## Support
 
 - 📧 Email: support@its-just-ui.com
-- 💬 Discord: [Join our community](https://discord.gg/its-just-ui)
+- 💬 Linkedin: [Follow our page](https://www.linkedin.com/company/its-just-ui/)
 - 🐛 Issues: [GitHub Issues](https://github.com/its-just-ui/its-just-ui/issues)
-- 📚 Docs: [Documentation](https://its-just-ui.com/docs)
+- 📚 Docs: [Documentation](https://docs.its-just-ui.com/)
 
 ## Acknowledgments
 
