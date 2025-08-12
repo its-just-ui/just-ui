@@ -2,6 +2,48 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Occasion Theming tokens */
+:root {
+  --occasion-accent: currentColor;
+  --occasion-bg: transparent;
+  --occasion-contrast: #ffffff;
+}
+
+[data-occasion='christmas'] {
+  --occasion-accent: #22c55e;
+}
+
+[data-occasion='diwali'] {
+  --occasion-accent: #f97316;
+}
+
+/* Subtle sparkle animation for local ambient layer */
+@keyframes occasion-sparkle-scale {
+  0% {
+    transform: scale(0.9);
+    opacity: 0.6;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(0.9);
+    opacity: 0.6;
+  }
+}
+
+.occasion-sparkle {
+  animation: occasion-sparkle-scale 2.6s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .occasion-sparkle {
+    animation: none;
+    opacity: 0.8;
+  }
+}
+
 /* Progress component animations */
 @keyframes progress-indeterminate {
   0% {

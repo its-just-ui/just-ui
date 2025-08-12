@@ -205,7 +205,7 @@ export default meta
 type Story = StoryObj<typeof meta>
 
 // Wrapper component for controlled behavior
-const UploadWithState = (props: any) => {
+const UploadWithState = (props: UploadProps) => {
   const [files, setFiles] = useState<File[]>([])
 
   return (
@@ -432,8 +432,8 @@ export const AsyncUpload: Story = {
       return (
         <div className="w-full max-w-2xl">
           <Upload
-            files={files as any}
-            onChange={handleChange as any}
+            files={files}
+            onChange={handleChange}
             multiple
             helperText="Files will automatically upload with progress simulation"
           />
@@ -552,9 +552,12 @@ export const CustomFilePreview: Story = {
             {getFileIcon(file)}
           </div>
           <div className="ml-4 flex-grow">
-            <p className="font-medium text-gray-900">{file.file?.name || (file as any).name}</p>
+            <p className="font-medium text-gray-900">
+              {file.file?.name || (file as FileItem & { name?: string }).name}
+            </p>
             <p className="text-sm text-gray-500">
-              {((file.file?.size || (file as any).size) / 1024).toFixed(1)} KB
+              {((file.file?.size || (file as FileItem & { size?: number }).size) / 1024).toFixed(1)}{' '}
+              KB
             </p>
             {file.status === 'uploading' && <Upload.Progress file={file} className="mt-2" />}
           </div>

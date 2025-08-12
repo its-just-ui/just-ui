@@ -874,13 +874,16 @@ export const DatePickerDaysView = memo(
       renderDay,
     } = useDatePicker()
 
-    const dayNamesShort = locale.dayNamesShort || ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
+    const dayNamesShort = useMemo(
+      () => locale.dayNamesShort || ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+      [locale.dayNamesShort]
+    )
     const firstDayOfWeek = locale.firstDayOfWeek || 0
 
     const orderedDayNames = useMemo(() => {
       const days = [...dayNamesShort]
       return [...days.slice(firstDayOfWeek), ...days.slice(0, firstDayOfWeek)]
-    }, [dayNamesShort, firstDayOfWeek])
+    }, [firstDayOfWeek, dayNamesShort])
 
     const monthDays = useMemo(() => {
       return getMonthDays(displayDate, firstDayOfWeek)
@@ -1477,6 +1480,7 @@ const DatePickerBase = memo(
           status,
           transition,
           locale,
+          _renderDay,
           disabledDates,
           minDate,
           maxDate,

@@ -1,0 +1,322 @@
+.occasion-table {
+  background: var(--occasion-table-bg, white);
+  border-radius: 0.5rem;
+  overflow: hidden;
+  position: relative;
+}
+
+.occasion-table__wrapper {
+  overflow-x: auto;
+}
+
+.occasion-table__table {
+  width: 100%;
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+/* Variants */
+.occasion-table--bordered {
+  border: 1px solid var(--occasion-border, #e5e7eb);
+}
+
+.occasion-table--bordered .occasion-table__cell {
+  border: 1px solid var(--occasion-border, #e5e7eb);
+}
+
+.occasion-table--striped .occasion-table__row:nth-child(even) {
+  background: var(--occasion-stripe, #f9fafb);
+}
+
+.occasion-table--hover .occasion-table__row:hover {
+  background: var(--occasion-hover, #f3f4f6);
+}
+
+/* Size variants */
+.occasion-table--small .occasion-table__cell {
+  padding: 0.375rem 0.75rem;
+  font-size: 0.875rem;
+}
+
+.occasion-table--medium .occasion-table__cell {
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+}
+
+.occasion-table--large .occasion-table__cell {
+  padding: 1rem 1.25rem;
+  font-size: 1.125rem;
+}
+
+/* Header */
+.occasion-table__header {
+  background: var(--occasion-header-bg, #f9fafb);
+  border-bottom: 2px solid var(--occasion-border, #e5e7eb);
+}
+
+.occasion-table--sticky .occasion-table__header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.occasion-table__header-content {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.occasion-table__header-text {
+  font-weight: 600;
+  color: var(--occasion-header-text, #374151);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* Cells */
+.occasion-table__cell {
+  padding: 0.75rem 1rem;
+  text-align: left;
+  vertical-align: middle;
+  color: var(--occasion-text, #1f2937);
+}
+
+.occasion-table__cell--center {
+  text-align: center;
+}
+
+.occasion-table__cell--right {
+  text-align: right;
+}
+
+.occasion-table__cell--checkbox {
+  width: 40px;
+  text-align: center;
+}
+
+.occasion-table__cell--header {
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+/* Rows */
+.occasion-table__row {
+  border-bottom: 1px solid var(--occasion-border, #e5e7eb);
+  transition: background-color 0.2s ease;
+}
+
+.occasion-table__row:last-child {
+  border-bottom: none;
+}
+
+.occasion-table__row--selected {
+  background: var(--occasion-selected, #eff6ff);
+}
+
+.occasion-table__row--clickable {
+  cursor: pointer;
+}
+
+.occasion-table__row--clickable:hover {
+  background: var(--occasion-hover, #f3f4f6);
+}
+
+/* Sort controls */
+.occasion-table__sort {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 0;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  margin-left: 0.25rem;
+  font-size: 0.625rem;
+  line-height: 0.5;
+  color: var(--occasion-muted, #9ca3af);
+}
+
+.occasion-table__sort:hover {
+  color: var(--occasion-text, #4b5563);
+}
+
+.occasion-table__sort span {
+  opacity: 0.3;
+  transition: opacity 0.2s ease;
+}
+
+.occasion-table__sort span.active {
+  opacity: 1;
+  color: var(--occasion-primary, #3b82f6);
+}
+
+/* Filter */
+.occasion-table__filter {
+  width: 100%;
+  margin-top: 0.5rem;
+  padding: 0.25rem 0.5rem;
+  font-size: 0.875rem;
+  border: 1px solid var(--occasion-border, #d1d5db);
+  border-radius: 0.25rem;
+  outline: none;
+}
+
+.occasion-table__filter:focus {
+  border-color: var(--occasion-primary, #3b82f6);
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
+}
+
+/* Footer */
+.occasion-table__footer {
+  background: var(--occasion-footer-bg, #f9fafb);
+  border-top: 2px solid var(--occasion-border, #e5e7eb);
+}
+
+.occasion-table__footer td {
+  padding: 1rem;
+}
+
+/* Decoration */
+.occasion-table__decoration {
+  display: inline-block;
+  margin-left: 0.5rem;
+  animation: decoration-rotate 4s linear infinite;
+}
+
+@keyframes decoration-rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Loading & Empty states */
+.occasion-table__message {
+  text-align: center;
+  padding: 3rem 1rem;
+  color: var(--occasion-muted, #6b7280);
+}
+
+.occasion-table__loader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.occasion-table__spinner {
+  width: 2rem;
+  height: 2rem;
+  border: 3px solid var(--occasion-spinner, #e5e7eb);
+  border-top-color: var(--occasion-primary, #3b82f6);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.occasion-table--loading {
+  pointer-events: none;
+}
+
+.occasion-table--loading .occasion-table__body {
+  opacity: 0.5;
+}
+
+/* Pagination */
+.occasion-table__pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  padding: 1rem;
+  border-top: 1px solid var(--occasion-border, #e5e7eb);
+  background: var(--occasion-pagination-bg, #f9fafb);
+}
+
+.occasion-table__page-btn {
+  padding: 0.5rem 1rem;
+  background: var(--occasion-btn-bg, white);
+  border: 1px solid var(--occasion-border, #d1d5db);
+  border-radius: 0.375rem;
+  cursor: pointer;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--occasion-text, #374151);
+  transition: all 0.2s ease;
+}
+
+.occasion-table__page-btn:hover:not(:disabled) {
+  background: var(--occasion-hover, #f3f4f6);
+  border-color: var(--occasion-primary, #3b82f6);
+}
+
+.occasion-table__page-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.occasion-table__page-info {
+  font-size: 0.875rem;
+  color: var(--occasion-muted, #6b7280);
+}
+
+/* Responsive */
+.occasion-table--responsive {
+  overflow-x: auto;
+}
+
+@media (max-width: 768px) {
+  .occasion-table--responsive .occasion-table__table {
+    min-width: 600px;
+  }
+}
+
+/* Checkbox styling */
+.occasion-table input[type='checkbox'] {
+  width: 1rem;
+  height: 1rem;
+  cursor: pointer;
+  accent-color: var(--occasion-primary, #3b82f6);
+}
+
+/* Occasion themes */
+.occasion-table.occasion-christmas {
+  --occasion-primary: #dc2626;
+  --occasion-selected: #fee2e2;
+  --occasion-hover: #fef2f2;
+  --occasion-header-bg: #fef2f2;
+}
+
+.occasion-table.occasion-halloween {
+  --occasion-primary: #ea580c;
+  --occasion-selected: #fff7ed;
+  --occasion-hover: #fffbeb;
+  --occasion-header-bg: #fff7ed;
+}
+
+.occasion-table.occasion-diwali {
+  --occasion-primary: #eab308;
+  --occasion-selected: #fefce8;
+  --occasion-hover: #fefef3;
+  --occasion-header-bg: #fefce8;
+}
+
+.occasion-table.occasion-holi {
+  --occasion-primary: #8b5cf6;
+  --occasion-selected: #f3e8ff;
+  --occasion-hover: #faf5ff;
+  --occasion-header-bg: linear-gradient(
+    90deg,
+    rgba(236, 72, 153, 0.1) 0%,
+    rgba(139, 92, 246, 0.1) 50%,
+    rgba(59, 130, 246, 0.1) 100%
+  );
+}

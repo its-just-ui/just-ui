@@ -1409,5 +1409,5 @@ export const Playground: Story = {
       />
     </div>
   ),
-  args: {} as any,
+  args: {},
 }

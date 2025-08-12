@@ -1,0 +1,224 @@
+/* Shared animations for OccasionDecorator components */
+
+/* Sophisticated pulse animation */
+@keyframes occasionPulse {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+  50% {
+    transform: scale(1.05);
+    opacity: 0.6;
+  }
+}
+
+/* Smooth fade in animation */
+@keyframes occasionFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Elegant slide animations */
+@keyframes occasionSlideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes occasionSlideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Sophisticated scale animation */
+@keyframes occasionScaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Refined shimmer effect for loading states */
+@keyframes occasionShimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+/* Elegant glow animation */
+@keyframes occasionGlow {
+  0%,
+  100% {
+    box-shadow: 0 0 5px rgba(99, 102, 241, 0.3);
+  }
+  50% {
+    box-shadow:
+      0 0 20px rgba(99, 102, 241, 0.5),
+      0 0 30px rgba(99, 102, 241, 0.3);
+  }
+}
+
+/* Smooth rotation for spinners */
+@keyframes occasionRotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Refined wave animation */
+@keyframes occasionWave {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  25% {
+    transform: translateY(-8px);
+  }
+  75% {
+    transform: translateY(8px);
+  }
+}
+
+/* Sophisticated morph animation */
+@keyframes occasionMorph {
+  0%,
+  100% {
+    border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+  }
+  50% {
+    border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%;
+  }
+}
+
+/* Elegant float animation */
+@keyframes occasionFloat {
+  0%,
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  33% {
+    transform: translateY(-10px) rotate(-3deg);
+  }
+  66% {
+    transform: translateY(5px) rotate(3deg);
+  }
+}
+
+/* Refined bounce animation */
+@keyframes occasionBounce {
+  0%,
+  100% {
+    transform: translateY(0);
+    animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
+  }
+  50% {
+    transform: translateY(-15px);
+    animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
+  }
+}
+
+/* Sophisticated ripple expansion */
+@keyframes occasionRipple {
+  0% {
+    transform: scale(0);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(4);
+    opacity: 0;
+  }
+}
+
+/* Elegant stagger animation helper classes */
+.occasion-stagger-1 {
+  animation-delay: 0.1s;
+}
+.occasion-stagger-2 {
+  animation-delay: 0.2s;
+}
+.occasion-stagger-3 {
+  animation-delay: 0.3s;
+}
+.occasion-stagger-4 {
+  animation-delay: 0.4s;
+}
+.occasion-stagger-5 {
+  animation-delay: 0.5s;
+}
+
+/* Animation utility classes */
+.occasion-animate-fade-in {
+  animation: occasionFadeIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.occasion-animate-scale-in {
+  animation: occasionScaleIn 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.occasion-animate-slide-left {
+  animation: occasionSlideInLeft 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.occasion-animate-slide-right {
+  animation: occasionSlideInRight 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.occasion-animate-glow {
+  animation: occasionGlow 2s ease-in-out infinite;
+}
+
+.occasion-animate-float {
+  animation: occasionFloat 4s ease-in-out infinite;
+}
+
+.occasion-animate-bounce {
+  animation: occasionBounce 1.5s infinite;
+}
+
+/* Transition utility classes */
+.occasion-transition-all {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.occasion-transition-transform {
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.occasion-transition-opacity {
+  transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.occasion-transition-colors {
+  transition:
+    background-color 0.3s,
+    border-color 0.3s,
+    color 0.3s;
+}

@@ -156,27 +156,24 @@ const DemoContent = () => {
 }
 
 export const Default: Story = {
-  render: () => (
-    <ThemeProvider>
-      <DemoContent />
-    </ThemeProvider>
-  ),
+  args: {
+    children: <DemoContent />,
+  },
 }
 
 export const DarkModeDefault: Story = {
-  render: () => (
-    <ThemeProvider defaultMode="dark">
-      <DemoContent />
-    </ThemeProvider>
-  ),
+  args: {
+    children: <DemoContent />,
+    defaultMode: 'dark',
+  },
 }
 
 export const SystemModeDefault: Story = {
-  render: () => (
-    <ThemeProvider defaultMode="system" enableSystemMode={true}>
-      <DemoContent />
-    </ThemeProvider>
-  ),
+  args: {
+    children: <DemoContent />,
+    defaultMode: 'system',
+    enableSystemMode: true,
+  },
 }
 
 const customTheme: Partial<Theme> = {
@@ -217,11 +214,10 @@ const customTheme: Partial<Theme> = {
 }
 
 export const CustomTheme: Story = {
-  render: () => (
-    <ThemeProvider theme={customTheme}>
-      <DemoContent />
-    </ThemeProvider>
-  ),
+  args: {
+    children: <DemoContent />,
+    theme: customTheme,
+  },
 }
 
 const NestedThemeDemo = () => {
@@ -261,7 +257,10 @@ const NestedThemeDemo = () => {
 }
 
 export const NestedThemes: Story = {
-  render: () => <NestedThemeDemo />,
+  args: {
+    children: <NestedThemeDemo />,
+  },
+  render: (args) => <>{args.children}</>,
 }
 
 const ThemeControlPanel = () => {
@@ -402,9 +401,7 @@ const ThemeControlPanel = () => {
 }
 
 export const LiveThemeEditor: Story = {
-  render: () => (
-    <ThemeProvider>
-      <ThemeControlPanel />
-    </ThemeProvider>
-  ),
+  args: {
+    children: <ThemeControlPanel />,
+  },
 }

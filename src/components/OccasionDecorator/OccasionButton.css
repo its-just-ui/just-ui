@@ -1,0 +1,279 @@
+@import './animations.css';
+
+.occasion-button {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-family: inherit;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
+  white-space: nowrap;
+  text-decoration: none;
+  outline: none;
+  transform: translateZ(0);
+}
+
+/* Size variants */
+.occasion-button--small {
+  padding: 0.375rem 0.75rem;
+  font-size: 0.875rem;
+  min-height: 32px;
+}
+
+.occasion-button--medium {
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  min-height: 40px;
+}
+
+.occasion-button--large {
+  padding: 0.625rem 1.25rem;
+  font-size: 1.125rem;
+  min-height: 48px;
+}
+
+.occasion-button--xlarge {
+  padding: 0.75rem 1.5rem;
+  font-size: 1.25rem;
+  min-height: 56px;
+}
+
+/* Variant styles */
+.occasion-button--primary {
+  background-color: var(--occasion-primary, #3b82f6);
+  color: white;
+}
+
+.occasion-button--primary:hover:not(:disabled) {
+  background-color: var(--occasion-primary-hover, #2563eb);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+}
+
+.occasion-button--secondary {
+  background-color: var(--occasion-secondary, #e5e7eb);
+  color: var(--occasion-text, #1f2937);
+}
+
+.occasion-button--secondary:hover:not(:disabled) {
+  background-color: var(--occasion-secondary-hover, #d1d5db);
+}
+
+.occasion-button--ghost {
+  background-color: transparent;
+  color: var(--occasion-text, #1f2937);
+  border: 1px solid var(--occasion-border, #e5e7eb);
+}
+
+.occasion-button--ghost:hover:not(:disabled) {
+  background-color: var(--occasion-ghost-hover, rgba(0, 0, 0, 0.05));
+}
+
+.occasion-button--danger {
+  background-color: var(--occasion-danger, #ef4444);
+  color: white;
+}
+
+.occasion-button--danger:hover:not(:disabled) {
+  background-color: var(--occasion-danger-hover, #dc2626);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+}
+
+.occasion-button--success {
+  background-color: var(--occasion-success, #10b981);
+  color: white;
+}
+
+.occasion-button--success:hover:not(:disabled) {
+  background-color: var(--occasion-success-hover, #059669);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(34, 197, 94, 0.3);
+}
+
+.occasion-button--warning {
+  background-color: var(--occasion-warning, #f59e0b);
+  color: white;
+}
+
+.occasion-button--warning:hover:not(:disabled) {
+  background-color: var(--occasion-warning-hover, #d97706);
+}
+
+/* States */
+.occasion-button--full-width {
+  width: 100%;
+}
+
+.occasion-button--rounded {
+  border-radius: 9999px;
+}
+
+.occasion-button--elevated {
+  box-shadow:
+    0 4px 6px -1px rgb(0 0 0 / 0.1),
+    0 2px 4px -2px rgb(0 0 0 / 0.1);
+}
+
+.occasion-button--elevated:hover:not(:disabled) {
+  box-shadow:
+    0 10px 15px -3px rgb(0 0 0 / 0.15),
+    0 4px 6px -4px rgb(0 0 0 / 0.1);
+  transform: translateY(-3px) scale(1.02);
+}
+
+.occasion-button--disabled,
+.occasion-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.occasion-button--loading {
+  color: transparent;
+}
+
+/* Loader */
+.occasion-button__loader {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.occasion-button__spinner {
+  width: 1.25rem;
+  height: 1.25rem;
+  animation: spin 1s linear infinite;
+}
+
+.occasion-button__spinner circle {
+  stroke: currentColor;
+  stroke-dasharray: 62.83;
+  stroke-dashoffset: 47.12;
+  animation: spinner-dash 1.5s ease-in-out infinite;
+}
+
+/* Icons and decorations */
+.occasion-button__icon {
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.occasion-button__decoration {
+  display: inline-flex;
+  align-items: center;
+  animation: decoration-float 3s ease-in-out infinite;
+}
+
+@keyframes decoration-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-2px);
+  }
+}
+
+/* Ripple effect */
+.occasion-button-ripple {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.5);
+  animation: ripple 0.6s ease-out;
+  pointer-events: none;
+}
+
+@keyframes ripple {
+  to {
+    transform: scale(4);
+    opacity: 0;
+  }
+}
+
+/* Click burst */
+.occasion-click-burst {
+  position: fixed;
+  pointer-events: none;
+  z-index: 2147483647;
+  transform: translate(-50%, -50%);
+  transition:
+    opacity 600ms ease-out,
+    transform 600ms ease-out;
+  opacity: 1;
+}
+
+.occasion-click-burst-active {
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(1.6);
+}
+
+@keyframes occasionBurstExpand {
+  0% {
+    transform: translate(-50%, -50%) scale(0);
+    opacity: 0.8;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(3);
+    opacity: 0;
+  }
+}
+
+/* Animations */
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes spinner-dash {
+  0% {
+    stroke-dashoffset: 47.12;
+  }
+  50% {
+    stroke-dashoffset: 11.78;
+  }
+  100% {
+    stroke-dashoffset: 47.12;
+  }
+}
+
+/* Occasion themes */
+.occasion-button.occasion-christmas {
+  --occasion-primary: #dc2626;
+  --occasion-primary-hover: #b91c1c;
+}
+
+.occasion-button.occasion-halloween {
+  --occasion-primary: #ea580c;
+  --occasion-primary-hover: #c2410c;
+}
+
+.occasion-button.occasion-diwali {
+  --occasion-primary: #facc15;
+  --occasion-primary-hover: #eab308;
+  color: #1f2937;
+}
+
+.occasion-button.occasion-holi {
+  background: linear-gradient(45deg, #ec4899, #8b5cf6, #3b82f6, #10b981);
+  background-size: 300% 300%;
+  animation: gradient-shift 3s ease infinite;
+}
+
+@keyframes gradient-shift {
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}

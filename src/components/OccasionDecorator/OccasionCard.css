@@ -1,0 +1,386 @@
+@import './animations.css';
+
+.occasion-card {
+  position: relative;
+  background: var(--occasion-card-bg, white);
+  border-radius: 0.5rem;
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  animation: occasionFadeIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Size variants */
+.occasion-card--small {
+  max-width: 300px;
+}
+
+.occasion-card--medium {
+  max-width: 400px;
+}
+
+.occasion-card--large {
+  max-width: 600px;
+}
+
+.occasion-card--fullwidth {
+  max-width: 100%;
+  width: 100%;
+}
+
+/* Variant styles */
+.occasion-card--elevated {
+  box-shadow:
+    0 4px 6px -1px rgb(0 0 0 / 0.1),
+    0 2px 4px -2px rgb(0 0 0 / 0.1);
+}
+
+.occasion-card--elevated:hover {
+  box-shadow:
+    0 10px 15px -3px rgb(0 0 0 / 0.1),
+    0 4px 6px -4px rgb(0 0 0 / 0.1);
+}
+
+.occasion-card--outlined {
+  border: 1px solid var(--occasion-border, #e5e7eb);
+}
+
+.occasion-card--filled {
+  background: var(--occasion-fill, #f9fafb);
+}
+
+.occasion-card--gradient {
+  background: linear-gradient(
+    135deg,
+    var(--occasion-gradient-from, #667eea) 0%,
+    var(--occasion-gradient-to, #764ba2) 100%
+  );
+  color: white;
+}
+
+/* Layout variants */
+.occasion-card--horizontal .occasion-card__wrapper {
+  display: flex;
+  flex-direction: row;
+}
+
+.occasion-card--horizontal .occasion-card__content {
+  flex: 1;
+}
+
+.occasion-card--compact {
+  padding: 0;
+}
+
+.occasion-card--compact .occasion-card__body {
+  padding: 1rem;
+}
+
+/* Aspect ratios */
+.occasion-card--aspect-1-1 {
+  aspect-ratio: 1 / 1;
+}
+
+.occasion-card--aspect-16-9 {
+  aspect-ratio: 16 / 9;
+}
+
+.occasion-card--aspect-4-3 {
+  aspect-ratio: 4 / 3;
+}
+
+.occasion-card--aspect-3-2 {
+  aspect-ratio: 3 / 2;
+}
+
+/* States */
+.occasion-card--hoverable:hover {
+  transform: translateY(-4px) scale(1.02);
+  box-shadow:
+    0 20px 25px -5px rgb(0 0 0 / 0.1),
+    0 8px 10px -6px rgb(0 0 0 / 0.1);
+}
+
+.occasion-card--clickable {
+  cursor: pointer;
+  user-select: none;
+}
+
+.occasion-card--clickable:active {
+  transform: scale(0.98);
+}
+
+.occasion-card--selected {
+  border: 2px solid var(--occasion-primary, #3b82f6);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.occasion-card--disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.occasion-card--loading {
+  pointer-events: none;
+}
+
+/* Wrapper */
+.occasion-card__wrapper {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+/* Content areas */
+.occasion-card__content {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.occasion-card__header {
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid var(--occasion-border, #e5e7eb);
+  font-weight: 600;
+}
+
+.occasion-card__meta {
+  padding: 1.5rem 1.5rem 0;
+}
+
+.occasion-card__title {
+  margin: 0 0 0.5rem;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--occasion-title, #111827);
+}
+
+.occasion-card__subtitle {
+  margin: 0 0 0.5rem;
+  font-size: 0.875rem;
+  color: var(--occasion-subtitle, #6b7280);
+  font-weight: 500;
+}
+
+.occasion-card__description {
+  margin: 0;
+  font-size: 1rem;
+  color: var(--occasion-text, #4b5563);
+  line-height: 1.5;
+}
+
+.occasion-card__body {
+  padding: 1.5rem;
+  flex: 1;
+}
+
+.occasion-card__actions {
+  padding: 1rem 1.5rem;
+  border-top: 1px solid var(--occasion-border, #e5e7eb);
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.occasion-card__footer {
+  padding: 1rem 1.5rem;
+  background: var(--occasion-footer-bg, #f9fafb);
+  border-top: 1px solid var(--occasion-border, #e5e7eb);
+}
+
+/* Image handling */
+.occasion-card__image {
+  position: relative;
+  overflow: hidden;
+  background: var(--occasion-image-bg, #f3f4f6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.occasion-card__image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.occasion-card--image-left .occasion-card__image,
+.occasion-card--image-right .occasion-card__image {
+  width: 40%;
+  flex-shrink: 0;
+}
+
+.occasion-card--image-left .occasion-card__wrapper,
+.occasion-card--image-right .occasion-card__wrapper {
+  flex-direction: row;
+}
+
+.occasion-card__background-image {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  opacity: 0.1;
+  z-index: 0;
+}
+
+.occasion-card--image-background .occasion-card__wrapper {
+  position: relative;
+  z-index: 1;
+}
+
+/* Badge */
+.occasion-card__badge {
+  position: absolute;
+  z-index: 10;
+  padding: 0.25rem 0.5rem;
+  background: var(--occasion-badge-bg, #ef4444);
+  color: white;
+  border-radius: 0.25rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.occasion-card__badge--top-left {
+  top: 1rem;
+  left: 1rem;
+}
+
+.occasion-card__badge--top-right {
+  top: 1rem;
+  right: 1rem;
+}
+
+.occasion-card__badge--bottom-left {
+  bottom: 1rem;
+  left: 1rem;
+}
+
+.occasion-card__badge--bottom-right {
+  bottom: 1rem;
+  right: 1rem;
+}
+
+/* Decorations */
+.occasion-card__decoration {
+  position: absolute;
+  font-size: 1.25rem;
+  z-index: 10;
+  animation: decoration-spin 10s linear infinite;
+}
+
+.occasion-card__decoration--tl {
+  top: 0.5rem;
+  left: 0.5rem;
+}
+
+.occasion-card__decoration--tr {
+  top: 0.5rem;
+  right: 0.5rem;
+}
+
+.occasion-card__decoration--bl {
+  bottom: 0.5rem;
+  left: 0.5rem;
+}
+
+.occasion-card__decoration--br {
+  bottom: 0.5rem;
+  right: 0.5rem;
+}
+
+@keyframes decoration-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Loader */
+.occasion-card__loader {
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 20;
+}
+
+.occasion-card__spinner {
+  width: 2rem;
+  height: 2rem;
+  border: 3px solid var(--occasion-spinner, #e5e7eb);
+  border-top-color: var(--occasion-primary, #3b82f6);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Click burst */
+.occasion-card-burst {
+  position: fixed;
+  pointer-events: none;
+  z-index: 2147483647;
+  transform: translate(-50%, -50%);
+  transition:
+    opacity 600ms ease-out,
+    transform 600ms ease-out;
+  opacity: 1;
+  font-size: 1.5rem;
+}
+
+.occasion-card-burst-active {
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(1.8);
+}
+
+@keyframes cardBurstPulse {
+  0% {
+    transform: translate(-50%, -50%) scale(0);
+    opacity: 0.8;
+  }
+  50% {
+    opacity: 0.6;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(3.5);
+    opacity: 0;
+  }
+}
+
+/* Occasion themes */
+.occasion-card.occasion-christmas {
+  --occasion-card-bg: #fef2f2;
+  --occasion-primary: #dc2626;
+  --occasion-border: #fecaca;
+}
+
+.occasion-card.occasion-halloween {
+  --occasion-card-bg: #fff7ed;
+  --occasion-primary: #ea580c;
+  --occasion-border: #fed7aa;
+}
+
+.occasion-card.occasion-diwali {
+  --occasion-card-bg: #fefce8;
+  --occasion-primary: #eab308;
+  --occasion-border: #fef3c7;
+}
+
+.occasion-card.occasion-holi {
+  background: linear-gradient(
+    135deg,
+    rgba(236, 72, 153, 0.1) 0%,
+    rgba(139, 92, 246, 0.1) 50%,
+    rgba(59, 130, 246, 0.1) 100%
+  );
+}

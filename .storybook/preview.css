@@ -1,10 +1,8 @@
 /* Storybook Preview Styles */
 
-/* Force white background globally and remove ALL background patterns */
-*,
-*::before,
-*::after {
-  background-image: none !important;
+/* Enable animations globally */
+* {
+  animation-play-state: running !important;
 }
 
 /* Root elements white background */
@@ -32,7 +30,6 @@ body,
 body {
   background: #ffffff !important;
   background-color: #ffffff !important;
-  background-image: none !important;
 }
 
 /* Remove any potential grid overlay */
@@ -56,7 +53,6 @@ body::after {
 .os-host {
   background: #ffffff !important;
   background-color: #ffffff !important;
-  background-image: none !important;
 }
 
 /* Override any addon backgrounds */
@@ -65,7 +61,6 @@ body::after {
 .innerZoomElementWrapper > * {
   background: #ffffff !important;
   background-color: #ffffff !important;
-  background-image: none !important;
 }
 
 /* Target Docs page specifically */
@@ -75,15 +70,28 @@ body::after {
 .sbdocs-content {
   background: #ffffff !important;
   background-color: #ffffff !important;
-  background-image: none !important;
 }
 
-/* Remove grid from any container that might have inline styles */
-[style*='background-image'],
+/* Remove grid patterns specifically but preserve other backgrounds */
 [style*='grid'],
 [style*='repeating-linear-gradient'] {
   background-image: none !important;
   background: #ffffff !important;
+}
+
+/* Ensure animations and transitions work */
+* {
+  -webkit-animation: initial;
+  animation: initial;
+  -webkit-transition: initial;
+  transition: initial;
+}
+
+/* Re-enable all animations */
+*[class*='occasion-animate'],
+*[class*='occasion-transition'] {
+  animation-play-state: running !important;
+  -webkit-animation-play-state: running !important;
 }
 
 /* Fix logo sizing in Storybook header */

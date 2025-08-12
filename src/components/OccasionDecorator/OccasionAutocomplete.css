@@ -1,0 +1,287 @@
+@import './animations.css';
+
+.occasion-autocomplete {
+  position: relative;
+  width: 100%;
+}
+
+.occasion-autocomplete__input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  background: var(--occasion-bg, white);
+  transition: all 0.2s ease;
+}
+
+/* Size variants */
+.occasion-autocomplete--small .occasion-autocomplete__input {
+  padding: 0.375rem 2rem 0.375rem 0.75rem;
+  font-size: 0.875rem;
+  min-height: 32px;
+}
+
+.occasion-autocomplete--medium .occasion-autocomplete__input {
+  padding: 0.5rem 2rem 0.5rem 1rem;
+  font-size: 1rem;
+  min-height: 40px;
+}
+
+.occasion-autocomplete--large .occasion-autocomplete__input {
+  padding: 0.625rem 2rem 0.625rem 1.25rem;
+  font-size: 1.125rem;
+  min-height: 48px;
+}
+
+/* Variant styles */
+.occasion-autocomplete--outlined .occasion-autocomplete__input-wrapper {
+  border: 1px solid var(--occasion-border, #d1d5db);
+  border-radius: 0.375rem;
+}
+
+.occasion-autocomplete--outlined .occasion-autocomplete__input-wrapper:focus-within {
+  border-color: var(--occasion-primary, #3b82f6);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.occasion-autocomplete--filled .occasion-autocomplete__input-wrapper {
+  background: var(--occasion-fill, #f3f4f6);
+  border-radius: 0.375rem;
+  border: 1px solid transparent;
+}
+
+.occasion-autocomplete--filled .occasion-autocomplete__input-wrapper:focus-within {
+  background: var(--occasion-bg, white);
+  border-color: var(--occasion-primary, #3b82f6);
+}
+
+.occasion-autocomplete--borderless .occasion-autocomplete__input-wrapper {
+  border-bottom: 1px solid var(--occasion-border, #d1d5db);
+}
+
+.occasion-autocomplete--borderless .occasion-autocomplete__input-wrapper:focus-within {
+  border-bottom-color: var(--occasion-primary, #3b82f6);
+}
+
+/* Input */
+.occasion-autocomplete__input {
+  flex: 1;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-family: inherit;
+  color: var(--occasion-text, #1f2937);
+  width: 100%;
+}
+
+.occasion-autocomplete__input::placeholder {
+  color: var(--occasion-placeholder, #9ca3af);
+}
+
+/* Icons */
+.occasion-autocomplete__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--occasion-icon, #6b7280);
+  flex-shrink: 0;
+}
+
+.occasion-autocomplete__icon--left {
+  margin-left: 0.75rem;
+  margin-right: 0.5rem;
+}
+
+.occasion-autocomplete__icon--right {
+  margin-left: 0.5rem;
+  margin-right: 0.75rem;
+}
+
+/* Clear button */
+.occasion-autocomplete__clear {
+  position: absolute;
+  right: 2rem;
+  padding: 0.25rem;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: var(--occasion-icon, #6b7280);
+  transition: color 0.2s ease;
+  font-size: 1rem;
+  line-height: 1;
+}
+
+.occasion-autocomplete__clear:hover {
+  color: var(--occasion-text, #1f2937);
+}
+
+/* Arrow */
+.occasion-autocomplete__arrow {
+  position: absolute;
+  right: 0.75rem;
+  pointer-events: none;
+  color: var(--occasion-icon, #6b7280);
+  transition: transform 0.2s ease;
+  font-size: 0.75rem;
+}
+
+.occasion-autocomplete--open .occasion-autocomplete__arrow {
+  transform: rotate(180deg);
+}
+
+/* Dropdown */
+.occasion-autocomplete__dropdown {
+  position: absolute;
+  top: calc(100% + 0.5rem);
+  left: 0;
+  right: 0;
+  background: var(--occasion-bg, white);
+  border: 1px solid var(--occasion-border, #d1d5db);
+  border-radius: 0.375rem;
+  box-shadow:
+    0 10px 15px -3px rgb(0 0 0 / 0.1),
+    0 4px 6px -4px rgb(0 0 0 / 0.1);
+  overflow-y: auto;
+  z-index: 1000;
+  list-style: none;
+  margin: 0;
+  padding: 0.25rem 0;
+  animation: dropdown-appear 0.2s ease;
+}
+
+@keyframes dropdown-appear {
+  from {
+    opacity: 0;
+    transform: translateY(-0.5rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Group header */
+.occasion-autocomplete__group-header {
+  padding: 0.5rem 1rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--occasion-muted, #6b7280);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* Options */
+.occasion-autocomplete__option {
+  display: flex;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  transition: background-color 0.1s ease;
+  gap: 0.5rem;
+}
+
+.occasion-autocomplete__option:hover {
+  background: var(--occasion-hover, #f3f4f6);
+}
+
+.occasion-autocomplete__option--highlighted {
+  background: var(--occasion-highlight, #eff6ff);
+}
+
+.occasion-autocomplete__option--selected {
+  background: var(--occasion-selected, #dbeafe);
+  font-weight: 500;
+}
+
+.occasion-autocomplete__option--disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.occasion-autocomplete__option--disabled:hover {
+  background: transparent;
+}
+
+/* Option content */
+.occasion-autocomplete__checkbox {
+  font-size: 1.125rem;
+  line-height: 1;
+  color: var(--occasion-primary, #3b82f6);
+}
+
+.occasion-autocomplete__option-icon {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.occasion-autocomplete__option-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+  min-width: 0;
+}
+
+.occasion-autocomplete__option-label {
+  color: var(--occasion-text, #1f2937);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.occasion-autocomplete__option-description {
+  font-size: 0.875rem;
+  color: var(--occasion-muted, #6b7280);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.occasion-autocomplete__option-decoration {
+  margin-left: auto;
+  flex-shrink: 0;
+  animation: decoration-float 3s ease-in-out infinite;
+}
+
+/* Message */
+.occasion-autocomplete__message {
+  padding: 1rem;
+  text-align: center;
+  color: var(--occasion-muted, #6b7280);
+}
+
+/* Disabled state */
+.occasion-autocomplete--disabled {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+/* Occasion themes */
+.occasion-autocomplete.occasion-christmas {
+  --occasion-primary: #dc2626;
+  --occasion-highlight: #fee2e2;
+  --occasion-selected: #fecaca;
+}
+
+.occasion-autocomplete.occasion-halloween {
+  --occasion-primary: #ea580c;
+  --occasion-highlight: #fff7ed;
+  --occasion-selected: #fed7aa;
+}
+
+.occasion-autocomplete.occasion-diwali {
+  --occasion-primary: #eab308;
+  --occasion-highlight: #fefce8;
+  --occasion-selected: #fef3c7;
+}
+
+@keyframes decoration-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-2px);
+  }
+}

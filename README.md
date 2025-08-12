@@ -1383,6 +1383,36 @@ import { Popover } from 'its-just-ui'
 
 ## Theming & Customization
 
+### Occasion Theming (Festive Decorations)
+
+Occasion theming lets components auto-decorate during specific festivals/holidays with accessibility and reduced-motion support.
+
+- Wrap your app:
+
+```tsx
+import { OccasionProvider, DecorationPortal, OccasionDecorator } from 'its-just-ui'
+
+;<OccasionProvider config={{ locale: 'GLOBAL', enabled: true }}>
+  <DecorationPortal />
+  <OccasionDecorator>
+    <Input label="Your name" />
+  </OccasionDecorator>
+  <OccasionDecorator scope="clickBurst">
+    <Button>Save</Button>
+  </OccasionDecorator>
+</OccasionProvider>
+```
+
+Tokens: `--occasion-accent`, `--occasion-bg`, `--occasion-contrast`. The `<html>` element gets `data-occasion="<id>"` when active.
+
+Add a new occasion in 5 steps:
+
+1. Add an entry in `src/occasion/OccasionRegistry.tsx` with `id`, `locales`, `rule`, `priority`, and `assets`.
+2. Provide assets under `src/occasion/assets/` (static components or lazy loaders).
+3. Optionally add date helpers/overrides in `src/occasion/dateRules.ts`.
+4. Tune behavior: `onAnyClick`, `maxBurstsPerMinute`.
+5. (Optional) Add tests in `src/tests/occasion.test.tsx`.
+
 ### ThemeProvider Integration
 
 The recommended way to theme your application is using the ThemeProvider component:

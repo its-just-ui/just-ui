@@ -1,0 +1,317 @@
+@import './animations.css';
+
+.occasion-switch {
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+  user-select: none;
+  position: relative;
+}
+
+.occasion-switch__input {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* Track (background) */
+.occasion-switch__track {
+  position: relative;
+  display: inline-block;
+  background: var(--occasion-switch-bg, #d1d5db);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+/* Size variants */
+.occasion-switch--small .occasion-switch__track {
+  width: 36px;
+  height: 20px;
+  border-radius: 10px;
+}
+
+.occasion-switch--small .occasion-switch__thumb {
+  width: 16px;
+  height: 16px;
+}
+
+.occasion-switch--medium .occasion-switch__track {
+  width: 44px;
+  height: 24px;
+  border-radius: 12px;
+}
+
+.occasion-switch--medium .occasion-switch__thumb {
+  width: 20px;
+  height: 20px;
+}
+
+.occasion-switch--large .occasion-switch__track {
+  width: 56px;
+  height: 30px;
+  border-radius: 15px;
+}
+
+.occasion-switch--large .occasion-switch__thumb {
+  width: 26px;
+  height: 26px;
+}
+
+/* Variant styles */
+.occasion-switch--ios .occasion-switch__track {
+  border-radius: 999px;
+}
+
+.occasion-switch--ios .occasion-switch__thumb {
+  border-radius: 50%;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.occasion-switch--material .occasion-switch__track {
+  border-radius: 8px;
+}
+
+.occasion-switch--material .occasion-switch__thumb {
+  border-radius: 4px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.occasion-switch--rounded .occasion-switch__track {
+  border-radius: 999px;
+}
+
+.occasion-switch--rounded .occasion-switch__thumb {
+  border-radius: 999px;
+}
+
+/* Thumb (slider) */
+.occasion-switch__thumb {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  background: white;
+  border-radius: 50%;
+  transition:
+    transform 0.3s ease,
+    background-color 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Checked state */
+.occasion-switch--checked .occasion-switch__track {
+  background: var(--occasion-switch-checked, #3b82f6);
+}
+
+.occasion-switch--checked .occasion-switch__thumb {
+  transform: translateX(20px);
+}
+
+.occasion-switch--small.occasion-switch--checked .occasion-switch__thumb {
+  transform: translateX(16px);
+}
+
+.occasion-switch--large.occasion-switch--checked .occasion-switch__thumb {
+  transform: translateX(26px);
+}
+
+/* Color variants */
+.occasion-switch--primary.occasion-switch--checked .occasion-switch__track {
+  background: var(--occasion-primary, #3b82f6);
+}
+
+.occasion-switch--success.occasion-switch--checked .occasion-switch__track {
+  background: var(--occasion-success, #10b981);
+}
+
+.occasion-switch--danger.occasion-switch--checked .occasion-switch__track {
+  background: var(--occasion-danger, #ef4444);
+}
+
+.occasion-switch--warning.occasion-switch--checked .occasion-switch__track {
+  background: var(--occasion-warning, #f59e0b);
+}
+
+/* States */
+.occasion-switch--disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.occasion-switch--loading .occasion-switch__thumb {
+  background: var(--occasion-switch-loading, #9ca3af);
+}
+
+/* Icons */
+.occasion-switch__icon {
+  font-size: 0.75rem;
+  line-height: 1;
+  color: var(--occasion-switch-icon, #3b82f6);
+}
+
+/* Spinner */
+.occasion-switch__spinner {
+  width: 12px;
+  height: 12px;
+  border: 2px solid transparent;
+  border-top-color: var(--occasion-primary, #3b82f6);
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Decoration */
+.occasion-switch__decoration {
+  position: absolute;
+  right: -20px;
+  top: 50%;
+  transform: translateY(-50%);
+  animation: decoration-pulse 2s ease-in-out infinite;
+}
+
+@keyframes decoration-pulse {
+  0%,
+  100% {
+    opacity: 1;
+    transform: translateY(-50%) scale(1);
+  }
+  50% {
+    opacity: 0.6;
+    transform: translateY(-50%) scale(1.1);
+  }
+}
+
+/* Wrapper with label */
+.occasion-switch-wrapper {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.occasion-switch-wrapper--left {
+  flex-direction: row-reverse;
+}
+
+.occasion-switch__label-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.occasion-switch__label {
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--occasion-text, #111827);
+}
+
+.occasion-switch__description {
+  font-size: 0.875rem;
+  color: var(--occasion-muted, #6b7280);
+}
+
+.occasion-switch__required {
+  color: var(--occasion-danger, #ef4444);
+  margin-left: 0.25rem;
+}
+
+/* Click burst */
+.occasion-switch-burst {
+  position: fixed;
+  pointer-events: none;
+  z-index: 2147483647;
+  transform: translate(-50%, -50%);
+  transition:
+    opacity 600ms ease-out,
+    transform 600ms ease-out;
+  opacity: 1;
+  font-size: 1.5rem;
+}
+
+.occasion-switch-burst-active {
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(2) rotate(180deg);
+}
+
+@keyframes switchBurstGlow {
+  0% {
+    transform: translate(-50%, -50%) scale(0);
+    opacity: 0.9;
+  }
+  50% {
+    opacity: 0.5;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(2.5);
+    opacity: 0;
+  }
+}
+
+/* Focus styles */
+.occasion-switch__input:focus-visible + .occasion-switch__track {
+  outline: 2px solid var(--occasion-primary, #3b82f6);
+  outline-offset: 2px;
+}
+
+/* Hover effects */
+.occasion-switch:hover:not(.occasion-switch--disabled) .occasion-switch__track {
+  opacity: 0.9;
+}
+
+.occasion-switch:hover:not(.occasion-switch--disabled) .occasion-switch__thumb {
+  transform: scale(1.05);
+}
+
+.occasion-switch--checked:hover:not(.occasion-switch--disabled) .occasion-switch__thumb {
+  transform: translateX(20px) scale(1.05);
+}
+
+.occasion-switch--small.occasion-switch--checked:hover:not(.occasion-switch--disabled)
+  .occasion-switch__thumb {
+  transform: translateX(16px) scale(1.05);
+}
+
+.occasion-switch--large.occasion-switch--checked:hover:not(.occasion-switch--disabled)
+  .occasion-switch__thumb {
+  transform: translateX(26px) scale(1.05);
+}
+
+/* Occasion themes */
+.occasion-switch.occasion-christmas {
+  --occasion-switch-checked: #dc2626;
+}
+
+.occasion-switch.occasion-halloween {
+  --occasion-switch-checked: #ea580c;
+}
+
+.occasion-switch.occasion-diwali {
+  --occasion-switch-checked: #eab308;
+}
+
+.occasion-switch.occasion-holi {
+  --occasion-switch-checked: #8b5cf6;
+}
+
+.occasion-switch.occasion-holi.occasion-switch--checked .occasion-switch__track {
+  background: linear-gradient(45deg, #ec4899, #8b5cf6, #3b82f6);
+  background-size: 200% 200%;
+  animation: gradient-shift 3s ease infinite;
+}
+
+@keyframes gradient-shift {
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}

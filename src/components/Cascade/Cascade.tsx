@@ -26,7 +26,7 @@ export interface CascadeContextValue {
 
   // Options and levels
   options: CascadeOption[]
-  levels: any[]
+  levels: CascadeOption[][]
   filteredOptions: CascadeOption[]
 
   // Configuration
@@ -1003,7 +1003,6 @@ const Cascade = React.forwardRef<HTMLDivElement, CascadeProps>(
         onBlur,
         onOpen,
         onClose,
-        onLevelChange,
         props,
       ]
     )

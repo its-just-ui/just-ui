@@ -437,7 +437,7 @@ const Preview = forwardRef<HTMLDivElement, PreviewProps>(
     const [preview, setPreview] = useState<string | null>(null)
 
     React.useEffect(() => {
-      const actualFile = (file as any).file || file
+      const actualFile = (file as FileWithProgress & { file?: File }).file || file
       if (actualFile.type && actualFile.type.startsWith('image/')) {
         const reader = new FileReader()
         reader.onloadend = () => {
@@ -463,7 +463,10 @@ const Preview = forwardRef<HTMLDivElement, PreviewProps>(
         {preview ? (
           <img
             src={preview}
-            alt={(file as any).file?.name || (file as any).name}
+            alt={
+              (file as FileWithProgress & { file?: File; name?: string }).file?.name ||
+              (file as FileWithProgress & { name?: string }).name
+            }
             className="w-full h-full object-cover"
           />
         ) : (
@@ -509,7 +512,7 @@ const FileList = forwardRef<HTMLDivElement, FileListProps>(
 
     const handleRemove = (fileId: string, file: FileWithProgress) => {
       removeFile(fileId)
-      const actualFile = (file as any).file || file
+      const actualFile = (file as FileWithProgress & { file?: File }).file || file
       uploadProps.onRemoveFile?.(actualFile)
     }
 
@@ -525,10 +528,15 @@ const FileList = forwardRef<HTMLDivElement, FileListProps>(
                   <Preview file={file} className="w-10 h-10" />
                   <div>
                     <p className="text-sm font-medium text-gray-900">
-                      {(file as any).file?.name || (file as any).name}
+                      {(file as FileWithProgress & { file?: File; name?: string }).file?.name ||
+                        (file as FileWithProgress & { name?: string }).name}
                     </p>
                     <p className="text-xs text-gray-500">
-                      {formatFileSize((file as any).file?.size || (file as any).size)}
+                      {formatFileSize(
+                        (file as FileWithProgress & { file?: File; size?: number }).file?.size ||
+                          (file as FileWithProgress & { size?: number }).size ||
+                          0
+                      )}
                     </p>
                   </div>
                 </div>
@@ -699,7 +707,6 @@ const UploadRoot = forwardRef<HTMLDivElement, UploadProps>((props, ref) => {
     onUploadProgress,
     onUploadComplete,
     onError,
-    ...restProps
   } = props
 
   const [internalFiles, setInternalFiles] = useState<FileWithProgress[]>([])
@@ -874,7 +881,7 @@ const UploadRoot = forwardRef<HTMLDivElement, UploadProps>((props, ref) => {
 
   return (
     <UploadContext.Provider value={contextValue}>
-      <div ref={ref} className={uploadClasses} style={mergedStyle} {...(restProps as any)}>
+      <div ref={ref} className={uploadClasses} style={mergedStyle}>
         {label && (
           <label className="block mb-2 font-medium text-gray-700">
             {label}
