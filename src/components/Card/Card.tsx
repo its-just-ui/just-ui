@@ -550,15 +550,20 @@ const Card = React.forwardRef<HTMLDivElement, CardProps>(
 
     // Variant styles
     const variants = {
-      default: 'rounded-lg border border-gray-200 bg-white shadow-sm',
-      elevated: 'rounded-lg bg-white shadow-lg border-0',
-      outlined: 'rounded-lg border-2 border-gray-300 bg-white shadow-none',
-      flat: 'rounded-lg bg-gray-50 border-0 shadow-none',
-      glass: 'rounded-lg bg-white/80 backdrop-blur-sm border border-gray-200/50 shadow-lg',
-      'card-with-shadow': 'rounded-xl bg-white shadow-xl border border-gray-100',
+      default:
+        'rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 shadow-sm',
+      elevated: 'rounded-lg bg-white dark:bg-gray-800 shadow-lg border-0',
+      outlined:
+        'rounded-lg border-2 border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 shadow-none',
+      flat: 'rounded-lg bg-gray-50 dark:bg-gray-900 border-0 shadow-none',
+      glass:
+        'rounded-lg bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border border-gray-200/50 dark:border-gray-700/50 shadow-lg',
+      'card-with-shadow':
+        'rounded-xl bg-white dark:bg-gray-800 shadow-xl border border-gray-100 dark:border-gray-700',
       interactive:
-        'rounded-lg bg-white border border-gray-200 shadow-sm hover:shadow-md transition-shadow cursor-pointer',
-      bordered: 'rounded-lg bg-white border-2 border-gray-400 shadow-none',
+        'rounded-lg bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md transition-shadow cursor-pointer',
+      bordered:
+        'rounded-lg bg-white dark:bg-gray-800 border-2 border-gray-400 dark:border-gray-600 shadow-none',
       ghost: 'rounded-lg bg-transparent border-0 shadow-none',
     }
 
@@ -572,11 +577,12 @@ const Card = React.forwardRef<HTMLDivElement, CardProps>(
     // Status styles
     const statusStyles = {
       default: '',
-      success: 'border-green-200 bg-green-50',
-      warning: 'border-yellow-200 bg-yellow-50',
-      error: 'border-red-200 bg-red-50',
-      info: 'border-blue-200 bg-blue-50',
-      featured: 'border-purple-200 bg-purple-50 ring-2 ring-purple-200',
+      success: 'border-green-200 dark:border-green-800 bg-green-50 dark:bg-green-900/30',
+      warning: 'border-yellow-200 dark:border-yellow-800 bg-yellow-50 dark:bg-yellow-900/30',
+      error: 'border-red-200 dark:border-red-800 bg-red-50 dark:bg-red-900/30',
+      info: 'border-blue-200 dark:border-blue-800 bg-blue-50 dark:bg-blue-900/30',
+      featured:
+        'border-purple-200 dark:border-purple-800 bg-purple-50 dark:bg-purple-900/30 ring-2 ring-purple-200 dark:ring-purple-800',
     }
 
     // State styles
@@ -867,7 +873,9 @@ const CardHeader = React.forwardRef<HTMLDivElement, CardHeaderProps>(
               {title}
             </h3>
           )}
-          {subtitle && <p className="text-sm text-gray-600 mt-1 truncate">{subtitle}</p>}
+          {subtitle && (
+            <p className="text-sm text-gray-600 dark:text-gray-400 mt-1 truncate">{subtitle}</p>
+          )}
           {children}
         </div>
 
@@ -875,7 +883,7 @@ const CardHeader = React.forwardRef<HTMLDivElement, CardHeaderProps>(
           <button
             type="button"
             onClick={handleExpandToggle}
-            className="ml-3 p-1 rounded-full hover:bg-gray-100 transition-colors"
+            className="ml-3 p-1 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
             aria-label={isExpanded ? 'Collapse' : 'Expand'}
           >
             {isExpanded
@@ -1033,10 +1041,15 @@ const CardBody = React.forwardRef<HTMLDivElement, CardBodyProps>(
 
     return (
       <div ref={ref} className={cn(sizeStyles[size], className)} style={customStyles} {...props}>
-        {description && <p className="text-gray-700 leading-relaxed">{description}</p>}
+        {description && (
+          <p className="text-gray-700 dark:text-gray-300 leading-relaxed">{description}</p>
+        )}
 
         {metadata && (
-          <p className="text-sm text-gray-500 mt-2" style={{ color: metaTextColor }}>
+          <p
+            className="text-sm text-gray-500 dark:text-gray-400 mt-2"
+            style={{ color: metaTextColor }}
+          >
             {metadata}
           </p>
         )}
@@ -1092,11 +1105,13 @@ const CardFooter = React.forwardRef<HTMLDivElement, CardFooterProps>(
     return (
       <div
         ref={ref}
-        className={cn(sizeStyles[size], 'border-t border-gray-100', className)}
+        className={cn(sizeStyles[size], 'border-t border-gray-100 dark:border-gray-700', className)}
         style={customStyles}
         {...props}
       >
-        {helperText && <p className="text-sm text-gray-600 mb-3">{helperText}</p>}
+        {helperText && (
+          <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">{helperText}</p>
+        )}
 
         {allActions.length > 0 && (
           <div className="flex items-center gap-2 flex-wrap" style={{ gap: actionGap }}>
@@ -1130,8 +1145,10 @@ const CardActions = React.memo<CardActionsProps>(({ action, onActionClick }) => 
 
   const variants = {
     primary: 'bg-blue-600 text-white hover:bg-blue-700 disabled:bg-blue-300',
-    secondary: 'bg-gray-100 text-gray-900 hover:bg-gray-200 disabled:bg-gray-50',
-    ghost: 'bg-transparent text-gray-700 hover:bg-gray-100 disabled:text-gray-400',
+    secondary:
+      'bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-gray-100 hover:bg-gray-200 dark:hover:bg-gray-600 disabled:bg-gray-50 dark:disabled:bg-gray-800',
+    ghost:
+      'bg-transparent text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 disabled:text-gray-400 dark:disabled:text-gray-600',
     danger: 'bg-red-600 text-white hover:bg-red-700 disabled:bg-red-300',
   }
 
@@ -1176,13 +1193,13 @@ export type CardBadgeProps = CardBadgeConfig
 const CardBadge = React.memo<CardBadgeProps>(
   ({ label, variant = 'default', icon, position = 'top-right', color, backgroundColor }) => {
     const variants = {
-      default: 'bg-gray-100 text-gray-800',
-      primary: 'bg-blue-100 text-blue-800',
-      secondary: 'bg-gray-100 text-gray-800',
-      success: 'bg-green-100 text-green-800',
-      warning: 'bg-yellow-100 text-yellow-800',
-      error: 'bg-red-100 text-red-800',
-      info: 'bg-blue-100 text-blue-800',
+      default: 'bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200',
+      primary: 'bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200',
+      secondary: 'bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200',
+      success: 'bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200',
+      warning: 'bg-yellow-100 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-200',
+      error: 'bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-200',
+      info: 'bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200',
     }
 
     const positions = {

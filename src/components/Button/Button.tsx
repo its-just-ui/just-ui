@@ -458,10 +458,10 @@ const ButtonBase = memo(
       // Base variant styles (without status-specific colors)
       const baseVariantStyles = {
         default: cn(
-          'bg-white border border-gray-300 text-gray-700',
-          'hover:bg-gray-50 hover:border-gray-400',
+          'bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-200',
+          'hover:bg-gray-50 dark:hover:bg-gray-700 hover:border-gray-400 dark:hover:border-gray-500',
           'focus-visible:ring-gray-500',
-          'active:bg-gray-100'
+          'active:bg-gray-100 dark:active:bg-gray-600'
         ),
         filled: 'text-white', // Base filled style, colors come from status
         outlined: 'border-2 bg-transparent', // Base outlined style, colors come from status
