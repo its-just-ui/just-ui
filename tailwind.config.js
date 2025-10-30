@@ -1,6 +1,7 @@
 /** @type {import('tailwindcss').Config} */
 export default {
   content: ['./src/**/*.{js,jsx,ts,tsx}'],
+  darkMode: 'class',
   safelist: [
     // Comprehensive list of all classes used in components to ensure they're always included
 
@@ -39,6 +40,19 @@ export default {
     'bg-white',
     'bg-transparent',
 
+    // Dark mode background colors
+    'dark:bg-gray-500',
+    'dark:bg-gray-600',
+    'dark:bg-gray-700',
+    'dark:bg-gray-800',
+    'dark:bg-gray-900',
+    'dark:bg-gray-950',
+    'dark:border-gray-400',
+    'dark:border-gray-600',
+    'dark:border-gray-700',
+    'dark:hover:bg-gray-600',
+    'dark:hover:bg-gray-700',
+
     // Text colors
     'text-white',
     'text-gray-600',
@@ -61,6 +75,43 @@ export default {
     'text-cyan-700',
     'text-cyan-900',
     'text-indigo-800',
+
+    // Dark mode text colors
+    'dark:text-gray-100',
+    'dark:text-gray-200',
+    'dark:text-gray-300',
+    'dark:text-gray-400',
+    'dark:text-gray-600',
+    // Dark mode badge colors
+    'dark:bg-blue-900',
+    'dark:text-blue-200',
+    'dark:bg-green-900',
+    'dark:text-green-200',
+    'dark:bg-yellow-900',
+    'dark:text-yellow-200',
+    'dark:bg-red-900',
+    'dark:text-red-200',
+    'dark:bg-purple-900',
+    'dark:bg-indigo-900',
+    'dark:text-indigo-200',
+    'dark:border-green-800',
+    'dark:border-yellow-800',
+    'dark:border-red-800',
+    'dark:border-purple-800',
+    'dark:border-blue-800',
+    'dark:border-indigo-800',
+    'dark:border-gray-500',
+    'dark:active:bg-gray-600',
+    'dark:text-green-300',
+    'dark:text-yellow-300',
+    'dark:text-red-300',
+    'dark:text-blue-300',
+    // Dark mode ring colors
+    'dark:ring-purple-800',
+    // Dark mode hover/focus states
+    'dark:focus:bg-gray-700',
+    'dark:disabled:bg-gray-800',
+    'dark:disabled:text-gray-600',
 
     // Border colors
     'border-gray-200',

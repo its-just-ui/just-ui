@@ -369,13 +369,15 @@ const Badge = forwardRef<HTMLDivElement, BadgeProps>(
 
     // Variant styles
     const variants = {
-      default: 'bg-gray-100 text-gray-800 border border-gray-200',
+      default:
+        'bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200 border border-gray-200 dark:border-gray-600',
       filled: 'bg-blue-500 text-white',
       outlined: 'bg-transparent border border-blue-500 text-blue-600',
       ghost: 'bg-transparent text-blue-600 hover:bg-blue-50',
       solid: 'bg-blue-600 text-white',
       gradient: 'bg-gradient-to-r from-purple-500 to-pink-500 text-white',
-      glass: 'bg-white/20 backdrop-blur-sm border border-white/30 text-gray-800',
+      glass:
+        'bg-white/20 dark:bg-gray-800/20 backdrop-blur-sm border border-white/30 dark:border-gray-700/30 text-gray-800 dark:text-gray-200',
       neon: 'bg-cyan-400 text-cyan-900 shadow-lg shadow-cyan-400/50',
     }
 
@@ -392,12 +394,17 @@ const Badge = forwardRef<HTMLDivElement, BadgeProps>(
     // Status styles
     const statusStyles = {
       default: '',
-      success: 'bg-green-100 text-green-800 border-green-200',
-      warning: 'bg-yellow-100 text-yellow-800 border-yellow-200',
-      error: 'bg-red-100 text-red-800 border-red-200',
-      info: 'bg-blue-100 text-blue-800 border-blue-200',
-      primary: 'bg-indigo-100 text-indigo-800 border-indigo-200',
-      secondary: 'bg-gray-100 text-gray-600 border-gray-200',
+      success:
+        'bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 border-green-200 dark:border-green-800',
+      warning:
+        'bg-yellow-100 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-200 border-yellow-200 dark:border-yellow-800',
+      error:
+        'bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-200 border-red-200 dark:border-red-800',
+      info: 'bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 border-blue-200 dark:border-blue-800',
+      primary:
+        'bg-indigo-100 dark:bg-indigo-900 text-indigo-800 dark:text-indigo-200 border-indigo-200 dark:border-indigo-800',
+      secondary:
+        'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 border-gray-200 dark:border-gray-600',
     }
 
     // Disabled styles

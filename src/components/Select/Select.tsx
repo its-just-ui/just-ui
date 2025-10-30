@@ -622,7 +622,7 @@ const SelectInput = React.forwardRef<HTMLDivElement, SelectInputProps>(
 
     const variants = {
       default: cn(
-        'border rounded-md bg-white',
+        'border rounded-md bg-white dark:bg-gray-800',
         status === 'error'
           ? 'border-red-500 focus-within:ring-red-500'
           : 'border-gray-300 focus-within:ring-primary-600',
@@ -847,7 +847,7 @@ const SelectDropdown = React.forwardRef<HTMLUListElement, SelectDropdownProps>(
     if (!isOpen) return null
 
     const baseStyles = cn(
-      'absolute z-50 w-full mt-1 bg-white rounded-md shadow-lg border border-gray-200 overflow-auto',
+      'absolute z-50 w-full mt-1 bg-white dark:bg-gray-800 rounded-md shadow-lg border border-gray-200 dark:border-gray-700 overflow-auto',
       placement === 'top' && 'bottom-full mb-1 mt-0'
     )
 

@@ -215,39 +215,48 @@ const Alert = forwardRef<HTMLDivElement, AlertProps>(
       // Variant and status combinations
       {
         // Default variant
-        'bg-white border-gray-200 text-gray-900': variant === 'default' && status === 'default',
-        'bg-green-50 border-green-200 text-green-900':
+        'bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 text-gray-900 dark:text-gray-100':
+          variant === 'default' && status === 'default',
+        'bg-green-50 dark:bg-green-900/30 border-green-200 dark:border-green-800 text-green-900 dark:text-green-200':
           variant === 'default' && status === 'success',
-        'bg-yellow-50 border-yellow-200 text-yellow-900':
+        'bg-yellow-50 dark:bg-yellow-900/30 border-yellow-200 dark:border-yellow-800 text-yellow-900 dark:text-yellow-200':
           variant === 'default' && status === 'warning',
-        'bg-red-50 border-red-200 text-red-900': variant === 'default' && status === 'error',
-        'bg-blue-50 border-blue-200 text-blue-900': variant === 'default' && status === 'info',
+        'bg-red-50 dark:bg-red-900/30 border-red-200 dark:border-red-800 text-red-900 dark:text-red-200':
+          variant === 'default' && status === 'error',
+        'bg-blue-50 dark:bg-blue-900/30 border-blue-200 dark:border-blue-800 text-blue-900 dark:text-blue-200':
+          variant === 'default' && status === 'info',
 
         // Filled variant
-        'bg-gray-900 border-gray-900 text-white': variant === 'filled' && status === 'default',
+        'bg-gray-900 dark:bg-gray-950 border-gray-900 dark:border-gray-950 text-white':
+          variant === 'filled' && status === 'default',
         'bg-green-600 border-green-600 text-white': variant === 'filled' && status === 'success',
         'bg-yellow-600 border-yellow-600 text-white': variant === 'filled' && status === 'warning',
         'bg-red-600 border-red-600 text-white': variant === 'filled' && status === 'error',
         'bg-blue-600 border-blue-600 text-white': variant === 'filled' && status === 'info',
 
         // Outlined variant
-        'bg-transparent border-gray-300 text-gray-900':
+        'bg-transparent border-gray-300 dark:border-gray-600 text-gray-900 dark:text-gray-100':
           variant === 'outlined' && status === 'default',
-        'bg-transparent border-green-500 text-green-700':
+        'bg-transparent border-green-500 text-green-700 dark:text-green-300':
           variant === 'outlined' && status === 'success',
-        'bg-transparent border-yellow-500 text-yellow-700':
+        'bg-transparent border-yellow-500 text-yellow-700 dark:text-yellow-300':
           variant === 'outlined' && status === 'warning',
-        'bg-transparent border-red-500 text-red-700': variant === 'outlined' && status === 'error',
-        'bg-transparent border-blue-500 text-blue-700': variant === 'outlined' && status === 'info',
+        'bg-transparent border-red-500 text-red-700 dark:text-red-300':
+          variant === 'outlined' && status === 'error',
+        'bg-transparent border-blue-500 text-blue-700 dark:text-blue-300':
+          variant === 'outlined' && status === 'info',
 
         // Ghost variant
-        'bg-gray-100 border-transparent text-gray-900': variant === 'ghost' && status === 'default',
-        'bg-green-100 border-transparent text-green-900':
+        'bg-gray-100 dark:bg-gray-700 border-transparent text-gray-900 dark:text-gray-100':
+          variant === 'ghost' && status === 'default',
+        'bg-green-100 dark:bg-green-900/30 border-transparent text-green-900 dark:text-green-200':
           variant === 'ghost' && status === 'success',
-        'bg-yellow-100 border-transparent text-yellow-900':
+        'bg-yellow-100 dark:bg-yellow-900/30 border-transparent text-yellow-900 dark:text-yellow-200':
           variant === 'ghost' && status === 'warning',
-        'bg-red-100 border-transparent text-red-900': variant === 'ghost' && status === 'error',
-        'bg-blue-100 border-transparent text-blue-900': variant === 'ghost' && status === 'info',
+        'bg-red-100 dark:bg-red-900/30 border-transparent text-red-900 dark:text-red-200':
+          variant === 'ghost' && status === 'error',
+        'bg-blue-100 dark:bg-blue-900/30 border-transparent text-blue-900 dark:text-blue-200':
+          variant === 'ghost' && status === 'info',
       },
       // States
       {
@@ -341,7 +350,7 @@ const Alert = forwardRef<HTMLDivElement, AlertProps>(
           </div>
 
           {helperText && (
-            <div id="alert-helper" className="mt-2 text-sm text-gray-600">
+            <div id="alert-helper" className="mt-2 text-sm text-gray-600 dark:text-gray-400">
               {helperText}
             </div>
           )}

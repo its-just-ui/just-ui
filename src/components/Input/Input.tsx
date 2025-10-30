@@ -406,7 +406,7 @@ const InputBase = memo(
       // Variant styles
       const variantStyles = {
         default: cn(
-          'border bg-white',
+          'border bg-white dark:bg-gray-800',
           'focus-within:ring-2 focus-within:ring-offset-1',
           hasError && 'border-red-500 focus-within:ring-red-500',
           status === 'success' && 'border-green-500 focus-within:ring-green-500',

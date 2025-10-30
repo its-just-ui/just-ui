@@ -343,19 +343,24 @@ const DialogContent = forwardRef<HTMLDivElement, DialogContentProps>(
       size !== 'full' && 'max-h-[calc(100vh-2rem)]',
       // Variant styles (only apply if no custom backgroundColor)
       !backgroundColor && {
-        'bg-white border border-gray-200 shadow-lg': variant === 'default',
-        'bg-gray-900 text-white shadow-xl': variant === 'filled',
-        'bg-white border-2 border-gray-300': variant === 'outlined',
-        'bg-white/95 backdrop-blur-sm': variant === 'ghost',
-        'bg-white/80 backdrop-blur-md border border-white/20 shadow-xl': variant === 'glass',
+        'bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 shadow-lg':
+          variant === 'default',
+        'bg-gray-900 dark:bg-gray-950 text-white shadow-xl': variant === 'filled',
+        'bg-white dark:bg-gray-800 border-2 border-gray-300 dark:border-gray-600':
+          variant === 'outlined',
+        'bg-white/95 dark:bg-gray-800/95 backdrop-blur-sm': variant === 'ghost',
+        'bg-white/80 dark:bg-gray-800/80 backdrop-blur-md border border-white/20 dark:border-gray-700/30 shadow-xl':
+          variant === 'glass',
       },
       // Always apply variant borders and shadows
       {
-        'border border-gray-200 shadow-lg': variant === 'default' && backgroundColor,
+        'border border-gray-200 dark:border-gray-700 shadow-lg':
+          variant === 'default' && backgroundColor,
         'shadow-xl': variant === 'filled' && backgroundColor,
-        'border-2 border-gray-300': variant === 'outlined' && backgroundColor,
+        'border-2 border-gray-300 dark:border-gray-600': variant === 'outlined' && backgroundColor,
         'backdrop-blur-sm': variant === 'ghost' && backgroundColor,
-        'backdrop-blur-md border border-white/20 shadow-xl': variant === 'glass' && backgroundColor,
+        'backdrop-blur-md border border-white/20 dark:border-gray-700/30 shadow-xl':
+          variant === 'glass' && backgroundColor,
       },
       // Default rounded corners except for full size
       size !== 'full' && 'rounded-lg',

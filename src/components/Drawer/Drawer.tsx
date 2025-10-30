@@ -582,7 +582,7 @@ const DrawerContainer = React.forwardRef<HTMLDivElement, DrawerContainerProps>(
     } = useDrawer()
 
     const baseStyles = cn(
-      'fixed flex flex-col bg-white border-r border-gray-200 z-50',
+      'fixed flex flex-col bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 z-50',
       !boxShadow && 'shadow-lg',
       disabled && 'pointer-events-none opacity-50'
     )
@@ -771,7 +771,7 @@ const DrawerHeader = React.forwardRef<HTMLDivElement, DrawerHeaderProps>(
       <div
         ref={ref}
         className={cn(
-          'flex-shrink-0 border-b border-gray-200 p-4 font-semibold text-gray-900',
+          'flex-shrink-0 border-b border-gray-200 dark:border-gray-700 p-4 font-semibold text-gray-900 dark:text-gray-100',
           className
         )}
         style={customStyles}
@@ -781,7 +781,10 @@ const DrawerHeader = React.forwardRef<HTMLDivElement, DrawerHeaderProps>(
           {closeIconPosition === 'left' && showCloseIcon && (
             <button
               onClick={() => onOpenChange?.(false)}
-              className={cn('p-1 rounded hover:bg-gray-100 transition-colors', closeIconClassName)}
+              className={cn(
+                'p-1 rounded hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors',
+                closeIconClassName
+              )}
               aria-label="Close drawer"
             >
               {closeIcon || defaultCloseIcon}
@@ -791,7 +794,10 @@ const DrawerHeader = React.forwardRef<HTMLDivElement, DrawerHeaderProps>(
           {closeIconPosition === 'right' && showCloseIcon && (
             <button
               onClick={() => onOpenChange?.(false)}
-              className={cn('p-1 rounded hover:bg-gray-100 transition-colors', closeIconClassName)}
+              className={cn(
+                'p-1 rounded hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors',
+                closeIconClassName
+              )}
               aria-label="Close drawer"
             >
               {closeIcon || defaultCloseIcon}
@@ -818,8 +824,8 @@ const DrawerContent = React.forwardRef<HTMLDivElement, DrawerContentProps>(
         {loading ? (
           <div className="flex items-center justify-center p-8">
             <div className="flex items-center gap-2">
-              <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-gray-900"></div>
-              <span className="text-gray-600">{loadingMessage}</span>
+              <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-gray-900 dark:border-gray-100"></div>
+              <span className="text-gray-600 dark:text-gray-400">{loadingMessage}</span>
             </div>
           </div>
         ) : (
@@ -848,7 +854,7 @@ const DrawerFooter = React.forwardRef<HTMLDivElement, DrawerFooterProps>(
     return (
       <div
         ref={ref}
-        className={cn('flex-shrink-0 border-t border-gray-200 p-4', className)}
+        className={cn('flex-shrink-0 border-t border-gray-200 dark:border-gray-700 p-4', className)}
         style={customStyles}
         {...props}
       >
@@ -874,7 +880,7 @@ const DrawerItemList = React.forwardRef<HTMLDivElement, DrawerItemListProps>(
           {renderEmpty ? (
             renderEmpty()
           ) : (
-            <div className="text-center text-gray-500 py-8">
+            <div className="text-center text-gray-500 dark:text-gray-400 py-8">
               <div className="text-4xl mb-2">📂</div>
               <div>{emptyMessage}</div>
             </div>
@@ -930,7 +936,7 @@ const DrawerItemComponent = React.forwardRef<HTMLElement, DrawerItemProps>(
           ref={ref as React.ForwardedRef<HTMLAnchorElement>}
           className={cn(
             'w-full flex items-center gap-3 px-4 py-2 text-left transition-colors',
-            'hover:bg-gray-100 focus:bg-gray-100 focus:outline-none',
+            'hover:bg-gray-100 dark:hover:bg-gray-700 focus:bg-gray-100 dark:focus:bg-gray-700 focus:outline-none',
             item.disabled && 'cursor-not-allowed opacity-50',
             !item.disabled && 'cursor-pointer',
             className
@@ -949,16 +955,18 @@ const DrawerItemComponent = React.forwardRef<HTMLElement, DrawerItemProps>(
           )}
           {!collapsed && (
             <div className="flex-1 min-w-0">
-              <div className="truncate font-medium text-gray-900">
+              <div className="truncate font-medium text-gray-900 dark:text-gray-100">
                 {item.label}
                 {item.badge && (
-                  <span className="ml-2 inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-gray-100 text-gray-800">
+                  <span className="ml-2 inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200">
                     {item.badge}
                   </span>
                 )}
               </div>
               {item.description && (
-                <div className="truncate text-sm text-gray-500 mt-0.5">{item.description}</div>
+                <div className="truncate text-sm text-gray-500 dark:text-gray-400 mt-0.5">
+                  {item.description}
+                </div>
               )}
             </div>
           )}
@@ -990,10 +998,10 @@ const DrawerItemComponent = React.forwardRef<HTMLElement, DrawerItemProps>(
         )}
         {!collapsed && (
           <div className="flex-1 min-w-0">
-            <div className="truncate font-medium text-gray-900">
+            <div className="truncate font-medium text-gray-900 dark:text-gray-100">
               {item.label}
               {item.badge && (
-                <span className="ml-2 inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-gray-100 text-gray-800">
+                <span className="ml-2 inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200">
                   {item.badge}
                 </span>
               )}
