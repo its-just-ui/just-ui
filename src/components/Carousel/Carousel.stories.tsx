@@ -520,5 +520,5 @@ export const Playground: StoryObj<typeof meta> = {
       />
     </div>
   ),
-  args: {} as any,
+  args: {} as Record<string, never>,
 }

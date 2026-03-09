@@ -651,17 +651,18 @@ const ToggleButtonsBase = forwardRef<HTMLDivElement, ToggleButtonsProps>(
     let extractedLabel = label
     let extractedHelperText = helperText
 
-    const toggleButtons: React.ReactElement[] = []
+    const toggleButtons: React.ReactElement<ToggleButtonProps>[] = []
 
     if (children) {
       React.Children.forEach(children, (child) => {
-        if (React.isValidElement(child)) {
+        if (React.isValidElement(child) && typeof child.props === 'object' && child.props !== null) {
+          const props = child.props as { children?: React.ReactNode }
           if (child.type === ToggleButtonsLabel) {
-            extractedLabel = child.props.children
+            extractedLabel = props.children
           } else if (child.type === ToggleButtonsHelperText) {
-            extractedHelperText = child.props.children
+            extractedHelperText = props.children
           } else if (child.type === ToggleButton) {
-            toggleButtons.push(child)
+            toggleButtons.push(child as React.ReactElement<ToggleButtonProps>)
           }
         }
       })
@@ -743,13 +744,14 @@ const ToggleButtonsBase = forwardRef<HTMLDivElement, ToggleButtonsProps>(
       }
 
       return toggleButtons.map((button, index) => {
+        const btnProps = button.props as ToggleButtonProps
         if (renderButton) {
           return renderButton(
-            button.props,
+            btnProps,
             Array.isArray(value)
-              ? value.includes(button.props.value)
-              : value === button.props.value,
-            disabled || button.props.disabled
+              ? value.includes(btnProps.value)
+              : value === btnProps.value,
+            disabled || btnProps.disabled
           )
         }
 
@@ -759,7 +761,7 @@ const ToggleButtonsBase = forwardRef<HTMLDivElement, ToggleButtonsProps>(
         const positionStyles: React.CSSProperties = {}
 
         // Get the button's border radius (from props or default)
-        const buttonRadius = button.props.buttonBorderRadius || buttonBorderRadius || '0.375rem'
+        const buttonRadius = btnProps.buttonBorderRadius || buttonBorderRadius || '0.375rem'
 
         if (orientation === 'horizontal' && toggleButtons.length > 1) {
           if (isFirst) {
@@ -784,20 +786,20 @@ const ToggleButtonsBase = forwardRef<HTMLDivElement, ToggleButtonsProps>(
         }
 
         return React.cloneElement(button, {
-          key: button.props.value,
-          style: { ...button.props.style, ...positionStyles },
-          className: cn(button.props.className, fullWidth && 'flex-1'),
+          key: btnProps.value,
+          style: { ...btnProps.style, ...positionStyles },
+          className: cn(btnProps.className, fullWidth && 'flex-1'),
           // Pass down button styling props if not already set on the button
           ...(buttonBackgroundColor &&
-            !button.props.buttonBackgroundColor && { buttonBackgroundColor }),
+            !btnProps.buttonBackgroundColor && { buttonBackgroundColor }),
           ...(buttonBackgroundColorSelected &&
-            !button.props.buttonBackgroundColorSelected && { buttonBackgroundColorSelected }),
-          ...(buttonTextColor && !button.props.buttonTextColor && { buttonTextColor }),
+            !btnProps.buttonBackgroundColorSelected && { buttonBackgroundColorSelected }),
+          ...(buttonTextColor && !btnProps.buttonTextColor && { buttonTextColor }),
           ...(buttonTextColorSelected &&
-            !button.props.buttonTextColorSelected && { buttonTextColorSelected }),
+            !btnProps.buttonTextColorSelected && { buttonTextColorSelected }),
           ...(buttonBorderColorSelected &&
-            !button.props.buttonBorderColorSelected && { buttonBorderColorSelected }),
-          ...(buttonBorderWidth && !button.props.buttonBorderWidth && { buttonBorderWidth }),
+            !btnProps.buttonBorderColorSelected && { buttonBorderColorSelected }),
+          ...(buttonBorderWidth && !btnProps.buttonBorderWidth && { buttonBorderWidth }),
         })
       })
     }

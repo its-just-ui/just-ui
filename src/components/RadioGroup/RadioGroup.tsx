@@ -558,17 +558,18 @@ const RadioGroupBase = forwardRef<HTMLDivElement, RadioGroupProps>(
     let extractedLabel = label
     let extractedHelperText = helperText
 
-    const radioOptions: React.ReactElement[] = []
+    const radioOptions: React.ReactElement<RadioOptionProps>[] = []
 
     if (children) {
       React.Children.forEach(children, (child) => {
-        if (React.isValidElement(child)) {
+        if (React.isValidElement(child) && typeof child.props === 'object' && child.props !== null) {
+          const props = child.props as { children?: React.ReactNode; value?: string | number; disabled?: boolean }
           if (child.type === RadioGroupLabel) {
-            extractedLabel = child.props.children
+            extractedLabel = props.children
           } else if (child.type === RadioGroupHelperText) {
-            extractedHelperText = child.props.children
+            extractedHelperText = props.children
           } else if (child.type === RadioOption) {
-            radioOptions.push(child)
+            radioOptions.push(child as React.ReactElement<RadioOptionProps>)
           }
         }
       })
@@ -648,10 +649,11 @@ const RadioGroupBase = forwardRef<HTMLDivElement, RadioGroupProps>(
 
       return radioOptions.map((option) => {
         if (renderOption) {
+          const optProps = option.props as RadioOptionProps
           return renderOption(
-            option.props,
-            value === option.props.value,
-            disabled || option.props.disabled
+            optProps,
+            value === optProps.value,
+            disabled || optProps.disabled
           )
         }
         return option

@@ -8,7 +8,7 @@ import React, {
   useContext,
 } from 'react'
 import { cn } from '@/utils'
-import type { CascadeOption, CascadeValue } from './types'
+import type { CascadeOption, CascadeValue, CascadeLevel } from './types'
 
 // Types and Interfaces
 export interface CascadeContextValue {
@@ -26,7 +26,7 @@ export interface CascadeContextValue {
 
   // Options and levels
   options: CascadeOption[]
-  levels: any[]
+  levels: CascadeLevel[]
   filteredOptions: CascadeOption[]
 
   // Configuration
@@ -1003,7 +1003,6 @@ const Cascade = React.forwardRef<HTMLDivElement, CascadeProps>(
         onBlur,
         onOpen,
         onClose,
-        onLevelChange,
         props,
       ]
     )

@@ -173,11 +173,15 @@ const Slider = forwardRef<HTMLDivElement, SliderProps>(
 
     const trackRef = useRef<HTMLDivElement>(null)
     const isControlled = controlledValue !== undefined
-    const values = isControlled
-      ? Array.isArray(controlledValue)
-        ? controlledValue
-        : [controlledValue]
-      : uncontrolledValues
+    const values = useMemo(
+      () =>
+        isControlled
+          ? Array.isArray(controlledValue)
+            ? controlledValue
+            : [controlledValue]
+          : uncontrolledValues,
+      [isControlled, controlledValue, uncontrolledValues]
+    )
 
     const rangeConfig: SliderRange = { min, max, step }
 

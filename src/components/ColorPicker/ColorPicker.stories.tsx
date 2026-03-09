@@ -316,8 +316,8 @@ type Story = StoryObj<typeof meta>
 // Wrapper component for controlled state
 interface ColorPickerWithStateProps {
   value?: string
-  onChange?: (value: string, colorData: any) => void
-  [key: string]: any
+  onChange?: (value: string, colorData: unknown) => void
+  [key: string]: unknown
 }
 
 const ColorPickerWithState = (props: ColorPickerWithStateProps) => {

@@ -16,7 +16,10 @@ import type {
 } from './types'
 
 export interface AnchorProps
-  extends Omit<React.HTMLAttributes<HTMLDivElement>, 'onChange' | 'onClick'> {
+  extends Omit<
+    React.ComponentPropsWithoutRef<'div'>,
+    'onChange' | 'onClick' | 'onScrollEnd' | 'onScrollStart'
+  > {
   children?: React.ReactNode
 
   // Controlled/uncontrolled behavior
@@ -952,7 +955,7 @@ const AnchorContent = React.forwardRef<HTMLDivElement, AnchorContentProps>(
     const actualOffset = offset ?? contextOffset
 
     // Generate heading component based on level
-    const HeadingComponent = `h${level}` as keyof JSX.IntrinsicElements
+    const HeadingTag = `h${level}` as keyof React.JSX.IntrinsicElements
 
     // Heading styles based on level
     const headingStyles = {
@@ -993,7 +996,7 @@ const AnchorContent = React.forwardRef<HTMLDivElement, AnchorContentProps>(
         {...props}
       >
         {title && (
-          <HeadingComponent
+          <HeadingTag
             className={cn(
               'mb-6 text-gray-900 leading-tight',
               headingStyles[level],
@@ -1002,7 +1005,7 @@ const AnchorContent = React.forwardRef<HTMLDivElement, AnchorContentProps>(
             )}
           >
             {title}
-          </HeadingComponent>
+          </HeadingTag>
         )}
         <div className="space-y-4">{children}</div>
       </section>
