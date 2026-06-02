@@ -3,6 +3,14 @@ import { cn } from '@/utils'
 import { defaultTheme } from '@/components/ThemeProvider'
 import type { ThemeColors } from '@/components/ThemeProvider'
 
+/** Theme palette from `<html class="dark">` only (matches Tailwind darkMode: 'class'). */
+function getThemeColors(): ThemeColors {
+  if (typeof window === 'undefined') return defaultTheme.colors.light
+  return document.documentElement.classList.contains('dark')
+    ? defaultTheme.colors.dark
+    : defaultTheme.colors.light
+}
+
 export interface AccordionProps extends React.HTMLAttributes<HTMLDivElement> {
   type?: 'single' | 'multiple'
   defaultValue?: string | string[]
@@ -173,35 +181,6 @@ export const useAccordion = () => {
   return context
 }
 
-// Helper to read theme colors from CSS variables if available, else fall back to defaults
-const getCurrentColors = (): ThemeColors => {
-  if (typeof window === 'undefined') return defaultTheme.colors.light
-  const root = document.documentElement
-  const styles = getComputedStyle(root)
-  const getVar = (name: keyof ThemeColors) => styles.getPropertyValue(`--theme-${name}`).trim()
-  const isDark = root.classList.contains('dark')
-  const base = defaultTheme.colors[isDark ? 'dark' : 'light']
-
-  const colors: ThemeColors = {
-    primary: getVar('primary') || base.primary,
-    secondary: getVar('secondary') || base.secondary,
-    success: getVar('success') || base.success,
-    warning: getVar('warning') || base.warning,
-    error: getVar('error') || base.error,
-    info: getVar('info') || base.info,
-    background: getVar('background') || base.background,
-    surface: getVar('surface') || base.surface,
-    text: getVar('text') || base.text,
-    textSecondary: getVar('textSecondary') || base.textSecondary,
-    border: getVar('border') || base.border,
-    focus: getVar('focus') || base.focus,
-    hover: getVar('hover') || base.hover,
-    disabled: getVar('disabled') || base.disabled,
-  }
-
-  return colors
-}
-
 const Accordion = React.forwardRef<HTMLDivElement, AccordionProps>(
   (
     {
@@ -349,28 +328,27 @@ const Accordion = React.forwardRef<HTMLDivElement, AccordionProps>(
 
     // Default styles based on variant and status
     const getDefaultStyles = () => {
-      const currentColors = getCurrentColors()
+      const colors = getThemeColors()
       const statusColors = {
-        default: { border: currentColors.border, text: currentColors.text },
+        default: { border: colors.border, text: colors.text },
         success: {
-          border: successColor || currentColors.success,
-          text: successColor || currentColors.success,
+          border: successColor || colors.success,
+          text: successColor || colors.success,
         },
         warning: {
-          border: warningColor || currentColors.warning,
-          text: warningColor || currentColors.warning,
+          border: warningColor || colors.warning,
+          text: warningColor || colors.warning,
         },
         error: {
-          border: errorColor || currentColors.error,
-          text: errorColor || currentColors.error,
+          border: errorColor || colors.error,
+          text: errorColor || colors.error,
         },
       }
 
       const currentStatus = statusColors[status]
 
       return {
-        backgroundColor:
-          backgroundColor || (variant === 'filled' ? currentColors.surface : 'transparent'),
+        backgroundColor: backgroundColor || (variant === 'filled' ? colors.surface : 'transparent'),
         borderWidth:
           borderWidth || (variant === 'bordered' || variant === 'outlined' ? '1px' : '0'),
         borderColor: borderColor || currentStatus.border,
@@ -396,6 +374,7 @@ const Accordion = React.forwardRef<HTMLDivElement, AccordionProps>(
     }
 
     const defaultStyles = getDefaultStyles()
+    const usesThemeContainerText = !textColor && status === 'default'
 
     const baseStyles = 'w-full'
 
@@ -423,7 +402,7 @@ const Accordion = React.forwardRef<HTMLDivElement, AccordionProps>(
       fontSize: defaultStyles.fontSize,
       fontWeight: defaultStyles.fontWeight,
       fontFamily,
-      color: defaultStyles.textColor,
+      color: usesThemeContainerText ? undefined : defaultStyles.textColor,
       ...style,
     }
 
@@ -500,6 +479,7 @@ const Accordion = React.forwardRef<HTMLDivElement, AccordionProps>(
           className={cn(
             baseStyles,
             variants[variant],
+            usesThemeContainerText && 'text-gray-900 dark:text-gray-100',
             disabled && 'opacity-50 cursor-not-allowed',
             loading && 'animate-pulse',
             className
@@ -551,7 +531,7 @@ const AccordionItem = React.forwardRef<HTMLDivElement, AccordionItemProps>(
       dividerStyle,
     } = useAccordion()
 
-    const currentColors = getCurrentColors()
+    const colors = getThemeColors()
 
     const baseStyles = 'group'
 
@@ -577,9 +557,9 @@ const AccordionItem = React.forwardRef<HTMLDivElement, AccordionItemProps>(
       return {
         backgroundColor:
           itemBackgroundColor ||
-          (variant === 'filled' || variant === 'separated' ? currentColors.surface : 'transparent'),
+          (variant === 'filled' || variant === 'separated' ? colors.surface : 'transparent'),
         borderWidth: itemBorderWidth || (variant === 'separated' ? '1px' : '0'),
-        borderColor: itemBorderColor || currentColors.border,
+        borderColor: itemBorderColor || colors.border,
         borderStyle: itemBorderStyle || 'solid',
         borderRadius:
           itemBorderRadius || (variant === 'filled' || variant === 'separated' ? '0.375rem' : '0'),
@@ -611,7 +591,7 @@ const AccordionItem = React.forwardRef<HTMLDivElement, AccordionItemProps>(
       borderBottomWidth:
         dividerWidth ||
         (variant === 'default' || variant === 'bordered' || variant === 'outlined' ? '1px' : '0'),
-      borderBottomColor: dividerColor || currentColors.border,
+      borderBottomColor: dividerColor || colors.border,
       borderBottomStyle: (dividerStyle || 'solid') as React.CSSProperties['borderBottomStyle'],
       ...style,
     }
@@ -677,7 +657,6 @@ const AccordionTrigger = React.forwardRef<HTMLButtonElement, AccordionTriggerPro
       iconRotation,
     } = useAccordion()
     const item = useContext(AccordionItemContext)
-    const currentColors = getCurrentColors()
 
     if (!item) {
       throw new Error('AccordionTrigger must be used within an AccordionItem')
@@ -686,6 +665,8 @@ const AccordionTrigger = React.forwardRef<HTMLButtonElement, AccordionTriggerPro
     const isOpen = value.includes(item.value)
     const isDisabled = disabled || accordionDisabled || item.disabled
     const [isHovered, setIsHovered] = useState(false)
+    const usesThemeHover = !triggerHoverBackgroundColor && !triggerActiveBackgroundColor
+    const usesThemeText = !triggerTextColor && !triggerHoverTextColor && !triggerActiveTextColor
 
     const baseStyles =
       'flex w-full items-center justify-between text-left transition-all focus:outline-none focus-visible:ring'
@@ -697,16 +678,34 @@ const AccordionTrigger = React.forwardRef<HTMLButtonElement, AccordionTriggerPro
     }
 
     const getDefaultTriggerStyles = () => {
+      const colors = getThemeColors()
       const bgDefault = triggerBackgroundColor || 'transparent'
-      const bgHover = triggerHoverBackgroundColor || currentColors.hover
-      const bgActive = triggerActiveBackgroundColor || currentColors.hover
-      const textDefault = triggerTextColor || currentColors.text
-      const textHover = triggerHoverTextColor || currentColors.text
-      const textActive = triggerActiveTextColor || currentColors.text
+      const bgHover = triggerHoverBackgroundColor || colors.hover
+      const bgActive =
+        triggerActiveBackgroundColor ||
+        triggerHoverBackgroundColor ||
+        triggerBackgroundColor ||
+        colors.hover
+      const textDefault = triggerTextColor || colors.text
+      const textHover = triggerHoverTextColor || triggerTextColor || colors.text
+      const textActive =
+        triggerActiveTextColor || triggerHoverTextColor || triggerTextColor || colors.text
 
       return {
-        backgroundColor: isOpen ? bgActive : isHovered ? bgHover : bgDefault,
-        color: isOpen ? textActive : isHovered ? textHover : textDefault,
+        backgroundColor: usesThemeHover
+          ? undefined
+          : isOpen
+            ? bgActive
+            : isHovered
+              ? bgHover
+              : bgDefault,
+        color: usesThemeText
+          ? undefined
+          : isOpen
+            ? textActive
+            : isHovered
+              ? textHover
+              : textDefault,
         fontSize:
           triggerFontSize || (size === 'sm' ? '0.875rem' : size === 'lg' ? '1.125rem' : '1rem'),
         fontWeight: triggerFontWeight || '500',
@@ -723,7 +722,7 @@ const AccordionTrigger = React.forwardRef<HTMLButtonElement, AccordionTriggerPro
         '--tw-ring-color': focusRingColor || '#3b82f6',
         '--tw-ring-width': focusRingWidth || '2px',
         '--tw-ring-offset-width': focusRingOffset || '2px',
-        '--tw-ring-offset-color': focusRingOffsetColor || currentColors.background,
+        '--tw-ring-offset-color': focusRingOffsetColor || colors.background,
       } as React.CSSProperties
     }
 
@@ -745,9 +744,9 @@ const AccordionTrigger = React.forwardRef<HTMLButtonElement, AccordionTriggerPro
           width: iconSize || '1rem',
           height: iconSize || '1rem',
           color: isOpen
-            ? iconActiveColor || 'currentColor'
+            ? iconActiveColor || iconHoverColor || iconColor || 'currentColor'
             : isHovered
-              ? iconHoverColor || 'currentColor'
+              ? iconHoverColor || iconColor || 'currentColor'
               : iconColor || 'currentColor',
         }}
         fill="none"
@@ -767,13 +766,16 @@ const AccordionTrigger = React.forwardRef<HTMLButtonElement, AccordionTriggerPro
         className={cn(
           baseStyles,
           sizes[size || 'md'],
+          usesThemeText && 'text-gray-900 dark:text-gray-100',
+          usesThemeHover &&
+            'hover:bg-gray-100 dark:hover:bg-gray-700 aria-expanded:bg-gray-100 dark:aria-expanded:bg-gray-700',
           isDisabled && 'cursor-not-allowed opacity-50',
           className
         )}
         disabled={isDisabled}
         onClick={() => onItemToggle(item.value)}
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}
+        onMouseEnter={() => !usesThemeHover && setIsHovered(true)}
+        onMouseLeave={() => !usesThemeHover && setIsHovered(false)}
         onFocus={() => {
           if (focusBackgroundColor) {
             // Apply focus background color
@@ -816,7 +818,6 @@ const AccordionContent = React.forwardRef<HTMLDivElement, AccordionContentProps>
       contentBorderStyle,
     } = useAccordion()
     const item = useContext(AccordionItemContext)
-    const currentColors = getCurrentColors()
 
     if (!item) {
       throw new Error('AccordionContent must be used within an AccordionItem')
@@ -865,10 +866,13 @@ const AccordionContent = React.forwardRef<HTMLDivElement, AccordionContentProps>
       ),
     }
 
+    const usesThemeContentText = !contentTextColor
+
     const getDefaultContentStyles = () => {
+      const colors = getThemeColors()
       return {
         backgroundColor: contentBackgroundColor || 'transparent',
-        color: contentTextColor || currentColors.textSecondary,
+        color: usesThemeContentText ? undefined : contentTextColor,
         fontSize:
           contentFontSize || (size === 'sm' ? '0.875rem' : size === 'lg' ? '1rem' : '0.875rem'),
         padding:
@@ -881,7 +885,7 @@ const AccordionContent = React.forwardRef<HTMLDivElement, AccordionContentProps>
                 ? '1.25rem'
                 : '1rem'),
         borderWidth: contentBorderWidth || '0',
-        borderColor: contentBorderColor || currentColors.border,
+        borderColor: contentBorderColor || colors.border,
         borderStyle: contentBorderStyle || 'solid',
       }
     }
@@ -910,7 +914,13 @@ const AccordionContent = React.forwardRef<HTMLDivElement, AccordionContentProps>
         hidden={!forceMount && !isOpen}
         {...props}
       >
-        <div className={cn(sizes[size || 'md'])} style={customStyles}>
+        <div
+          className={cn(
+            sizes[size || 'md'],
+            usesThemeContentText && 'text-gray-600 dark:text-gray-300'
+          )}
+          style={customStyles}
+        >
           {children}
         </div>
       </div>
