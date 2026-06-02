@@ -1,5 +1,7 @@
 # Live Playground Documentation
 
+> **Stack:** Storybook 9 + **React 19** (see [React 19 guide](./REACT_19.md) for app integration outside Storybook).
+
 ## Overview
 
 The Live Playground is an interactive code editing feature introduced in its-just-ui v1.5.6 that transforms the component documentation experience. It allows developers to edit JSX code in real-time and see immediate visual feedback, making it the perfect tool for learning component APIs, testing configurations, and rapid prototyping.
