@@ -1,7 +1,6 @@
-# Robots.txt for Just UI Component Library
-# https://just-ui.vercel.app/
+# Robots.txt for its-just-ui Storybook / Documentation
+# https://docs.its-just-ui.com/
 
-# Allow all crawlers
 User-agent: *
 Allow: /
 Disallow: /static/
@@ -9,22 +8,17 @@ Disallow: /*.js$
 Disallow: /*.css$
 Disallow: /*.map$
 
-# Google
 User-agent: Googlebot
 Allow: /
 Crawl-delay: 1
 
-# Bing
 User-agent: Bingbot
 Allow: /
 Crawl-delay: 1
 
-# Important pages for search engines
+# Storybook docs and stories
 Allow: /?path=/docs/
 Allow: /?path=/story/
 
-# Sitemap location
-Sitemap: https://just-ui.vercel.app/sitemap.xml
-
-# Host
-Host: https://just-ui.vercel.app
+Sitemap: https://docs.its-just-ui.com/sitemap.xml
+Host: https://docs.its-just-ui.com

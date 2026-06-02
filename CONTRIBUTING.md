@@ -1,5 +1,11 @@
 # Contributing to UI Library
 
+## Requirements
+
+- **Node.js** 18+
+- **React 19** (dev dependency in this repo; published package supports React 18 and 19 via peer dependencies)
+- See [docs/REACT_19.md](./docs/REACT_19.md) for version alignment when testing consumer apps
+
 ## Development Setup
 
 1. Fork and clone the repository
@@ -11,6 +17,8 @@
    ```bash
    npm run storybook
    ```
+
+Storybook runs on React 19. If you reproduce bugs reported on React 18, test with `react@18` locally before opening a PR.
 
 ## Code Quality
 

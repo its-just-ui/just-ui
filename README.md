@@ -4,7 +4,7 @@ Oh, you know, it's JUST UI. Just whip up 36 production-ready React components wi
 
 **The Best Material UI Alternative 2025 | React UI Components Library | TypeScript + Tailwind CSS**
 
-its-just-ui is the easiest, fastest React UI component library with 36+ production-ready components. Zero-config Material UI, Chakra UI, and Ant Design alternative. Perfect React component library for SaaS applications, admin dashboards, and enterprise projects. Built with TypeScript and Tailwind CSS for modern React development.
+its-just-ui is the easiest, fastest **React 18 & React 19** UI component library with 36+ production-ready components. Zero-config Material UI, Chakra UI, and Ant Design alternative. Perfect React component library for SaaS applications, admin dashboards, Next.js 15 apps, and enterprise projects. Built with TypeScript and Tailwind CSS for modern React development.
 
 > **Why choose its-just-ui over Material UI, Chakra UI, or Ant Design?**  
 > ✅ Faster setup (5 minutes vs hours)  
@@ -12,6 +12,28 @@ its-just-ui is the easiest, fastest React UI component library with 36+ producti
 > ✅ Better TypeScript support  
 > ✅ Modern Tailwind CSS styling  
 > ✅ Zero configuration required
+
+---
+
+## React 19 ready — ship on the stack you want
+
+**its-just-ui v1.6+** is built and tested on **React 19**, with full **React 18** compatibility. Same components, same APIs — pick the React major version your app uses.
+
+|                    | React 18            | React 19                    |
+| ------------------ | ------------------- | --------------------------- |
+| **Support**        | ✅ Supported        | ✅ Recommended for new apps |
+| **Peer deps**      | `^18.0.0`           | `^19.0.0`                   |
+| **TypeScript**     | `@types/react` 18.x | `@types/react` 19.x         |
+| **Next.js / Vite** | Works today         | Works today                 |
+
+```bash
+# React 19 greenfield install
+npm install its-just-ui react@^19 react-dom@^19
+```
+
+📖 **[Full React 19 guide](./docs/REACT_19.md)** — migration checklist, Next.js 15 notes, troubleshooting, and FAQs.
+
+---
 
 ## Key Features - Perfect UI Kit for Rapid Development
 
@@ -27,11 +49,13 @@ its-just-ui is the easiest, fastest React UI component library with 36+ producti
 [![npm version](https://img.shields.io/npm/v/its-just-ui.svg?style=flat)](https://www.npmjs.com/package/its-just-ui)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![TypeScript](https://img.shields.io/badge/TypeScript-Ready-blue.svg)](https://www.typescriptlang.org/)
+[![React](https://img.shields.io/badge/React-18%20%7C%2019-61dafb.svg?logo=react&logoColor=white)](./docs/REACT_19.md)
 [![Bundle Size](https://img.shields.io/bundlephobia/minzip/its-just-ui)](https://bundlephobia.com/package/its-just-ui)
 [![npm downloads](https://img.shields.io/npm/dm/its-just-ui.svg?style=flat)](https://www.npmjs.com/package/its-just-ui)
 
 ## Table of Contents
 
+- [React 19 ready](#react-19-ready--ship-on-the-stack-you-want)
 - [Features](#features)
 - [Quick Start](#quick-start)
 - [Installation](#installation)
@@ -46,6 +70,8 @@ its-just-ui is the easiest, fastest React UI component library with 36+ producti
 - [TypeScript Support](#typescript-support)
 - [Accessibility](#accessibility)
 - [Browser Support](#browser-support)
+- [Framework compatibility](#framework-compatibility)
+- [FAQ](#frequently-asked-questions)
 - [Contributing](#contributing)
 - [License](#license)
 
@@ -97,8 +123,11 @@ Every component now includes an interactive playground in Storybook where you ca
 ### Installation
 
 ```bash
-# Using npm
+# Using npm (React 18 or 19 — peer deps must match your app)
 npm install its-just-ui
+
+# New React 19 project (explicit peers)
+npm install its-just-ui react@^19 react-dom@^19
 
 # Using yarn
 yarn add its-just-ui
@@ -106,6 +135,8 @@ yarn add its-just-ui
 # Using pnpm
 pnpm add its-just-ui
 ```
+
+> **React version:** `its-just-ui` declares `react` and `react-dom` as peer dependencies `^18.0.0 || ^19.0.0`. See the [React 19 guide](./docs/REACT_19.md) for framework-specific setup.
 
 **Package Details:**
 
@@ -1730,6 +1761,27 @@ Modern browser support with graceful degradation:
 | iOS Safari     | 12.0+           |
 | Chrome Android | Last 2 versions |
 
+### React version support
+
+| React | Status                | Notes                                               |
+| ----- | --------------------- | --------------------------------------------------- |
+| 18.x  | ✅ Supported          | Stable for existing production apps                 |
+| 19.x  | ✅ Supported & tested | Recommended for new projects; used in Storybook dev |
+
+## Framework compatibility
+
+its-just-ui works anywhere React runs. Common setups:
+
+| Framework                  | React 19 | Setup notes                                                                                 |
+| -------------------------- | -------- | ------------------------------------------------------------------------------------------- |
+| **Vite**                   | ✅       | Import `its-just-ui/styles.css` in `main.tsx`; wrap with `ThemeProvider`                    |
+| **Next.js 15**             | ✅       | Use `'use client'` for interactive components; import styles in root layout or client shell |
+| **Create React App**       | ✅       | Import styles in `index.tsx`                                                                |
+| **Remix / React Router 7** | ✅       | Import styles in root route; wrap outlet with `ThemeProvider`                               |
+| **Storybook 9**            | ✅       | Same pattern as this repo — see [Live Playground](./docs/LIVE_PLAYGROUND.md)                |
+
+Detailed recipes: **[React 19 documentation](./docs/REACT_19.md)**.
+
 ## Performance
 
 ### Bundle Size
@@ -1753,6 +1805,32 @@ Components support lazy loading:
 const Dialog = lazy(() => import('its-just-ui/Dialog'))
 const Table = lazy(() => import('its-just-ui/Table'))
 ```
+
+## Frequently Asked Questions
+
+### Is its-just-ui compatible with React 19?
+
+Yes. v1.6+ is tested on React 19 while supporting React 18 via peer dependencies (`^18.0.0 || ^19.0.0`). See [docs/REACT_19.md](./docs/REACT_19.md).
+
+### Is its-just-ui a good Material UI alternative?
+
+its-just-ui targets faster setup, a smaller bundle (~150KB gzipped vs 1MB+ for many alternatives), native TypeScript, and Tailwind-friendly styling with zero config. Compare libraries in the table above.
+
+### Does its-just-ui work with Next.js and Server Components?
+
+Use interactive components in client components (`'use client'` in the App Router). Import `its-just-ui/styles.css` once at the app shell level.
+
+### How do I try components without installing?
+
+Use the [Live Playground](https://its-just-ui.com/storybook) or run `npm run storybook` locally.
+
+### Is the library accessible?
+
+Components follow WAI-ARIA patterns with keyboard navigation, focus management, and WCAG AA contrast targets. See [Accessibility](#accessibility).
+
+### What is the bundle size?
+
+Tree-shakeable imports; typical gzipped footprint ~150KB when using a moderate subset of components.
 
 ## Contributing
 
@@ -1805,13 +1883,13 @@ MIT © its-just-ui
 - 📧 Email: support@its-just-ui.com
 - 💬 Linkedin: [Follow our page](https://www.linkedin.com/company/its-just-ui/)
 - 🐛 Issues: [GitHub Issues](https://github.com/its-just-ui/its-just-ui/issues)
-- 📚 Docs: [Documentation](https://docs.its-just-ui.com/)
+- 📚 Docs: [Storybook](https://docs.its-just-ui.com/) · [Documentation index](./docs/README.md) · [React 19 guide](./docs/REACT_19.md)
 
 ## Acknowledgments
 
 Built with ❤️ using:
 
-- [React](https://reactjs.org/) - UI framework
+- [React 19](https://react.dev/) - UI framework (React 18 also supported)
 - [TypeScript](https://www.typescriptlang.org/) - Type safety
 - [Tailwind CSS](https://tailwindcss.com/) - Styling
 - [Vite](https://vitejs.dev/) - Build tool

@@ -5,6 +5,25 @@ All notable changes to its-just-ui will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.6.2] - 2025-06-02
+
+### Added
+
+- ⚛️ **React 19 support** — Library tested on React 19; peer dependencies accept `react` and `react-dom` `^18.0.0 || ^19.0.0`
+- 📚 **React 19 documentation** — [docs/REACT_19.md](./docs/REACT_19.md) with migration checklist, framework recipes (Vite, Next.js 15, Remix), troubleshooting, and FAQ
+- 📖 **Documentation hub** — [docs/README.md](./docs/README.md) indexes all guides for discoverability
+
+### Changed
+
+- README expanded with React 19 quick start, framework compatibility table, and SEO-friendly FAQ
+- Storybook meta tags and structured data updated for React 19 (page titles unchanged)
+- npm `description` and `keywords` include React 19 search terms
+
+### Dependencies
+
+- Dev: `react` and `react-dom` `^19.0.0`
+- Dev: `@types/react` and `@types/react-dom` `^19.0.0`
+
 ## [1.5.6] - 2025-01-11
 
 ### Added
@@ -115,6 +134,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - npm package publication
 
 ## Migration Guide
+
+### Upgrading to 1.6.x (React 19)
+
+1. Update the package:
+
+```bash
+npm install its-just-ui@latest
+```
+
+2. **Optional** — move your app to React 19 when your framework supports it:
+
+```bash
+npm install react@^19 react-dom@^19
+npm install -D @types/react@^19 @types/react-dom@^19
+```
+
+3. No its-just-ui API changes are required for React 19.
+
+4. Read [docs/REACT_19.md](./docs/REACT_19.md) for Next.js client boundaries and hydration notes.
+
+Staying on React 18? Install `its-just-ui@latest` only — peer dependencies still allow React 18.
 
 ### Upgrading to 1.5.6
 
