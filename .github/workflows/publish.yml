@@ -91,10 +91,16 @@ jobs:
           GH_TOKEN: ${{ secrets.GH_PAT }}
           TAG: v${{ steps.version-bump.outputs.new_version }}
         run: |
+          # Authenticate.
           git remote set-url origin https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }}.git
 
+          # Fetch and rebase latest remote changes to avoid non-fast-forward errors.
+          git pull --rebase origin master
+
+          # Push local commits (for example, the version bump).
           git push origin HEAD:master
 
+          # Recreate and push the release tag.
           git tag -d $TAG 2>/dev/null || true
           git push origin :refs/tags/$TAG 2>/dev/null || true
 
