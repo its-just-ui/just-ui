@@ -225,8 +225,7 @@ export interface RatingBaseProps {
 }
 
 export interface RatingProps
-  extends Omit<React.HTMLAttributes<HTMLDivElement>, keyof RatingBaseProps>,
-    RatingBaseProps {
+  extends Omit<React.HTMLAttributes<HTMLDivElement>, keyof RatingBaseProps>, RatingBaseProps {
   children?: React.ReactNode
 }
 
@@ -1026,8 +1025,9 @@ const RatingBase = memo(
 RatingBase.displayName = 'Rating'
 
 // Compound component interface
-interface RatingComponent
-  extends React.ForwardRefExoticComponent<RatingProps & React.RefAttributes<HTMLDivElement>> {
+interface RatingComponent extends React.ForwardRefExoticComponent<
+  RatingProps & React.RefAttributes<HTMLDivElement>
+> {
   Star: typeof RatingStar
   Label: typeof RatingLabel
   Description: typeof RatingDescription

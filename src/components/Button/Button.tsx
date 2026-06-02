@@ -181,7 +181,8 @@ export interface ButtonBaseProps {
 }
 
 export interface ButtonProps
-  extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, keyof ButtonBaseProps>,
+  extends
+    Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, keyof ButtonBaseProps>,
     ButtonBaseProps {
   children?: React.ReactNode
 }
@@ -852,8 +853,9 @@ const ButtonBase = memo(
 ButtonBase.displayName = 'Button'
 
 // Compound component interface
-interface ButtonComponent
-  extends React.ForwardRefExoticComponent<ButtonProps & React.RefAttributes<HTMLButtonElement>> {
+interface ButtonComponent extends React.ForwardRefExoticComponent<
+  ButtonProps & React.RefAttributes<HTMLButtonElement>
+> {
   Icon: typeof ButtonIcon
   Label: typeof ButtonLabel
   Spinner: typeof ButtonSpinner

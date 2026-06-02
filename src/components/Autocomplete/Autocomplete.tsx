@@ -472,8 +472,10 @@ const Autocomplete = React.forwardRef<HTMLDivElement, AutocompleteProps>(
 
 Autocomplete.displayName = 'Autocomplete'
 
-export interface AutocompleteInputProps
-  extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'size'> {
+export interface AutocompleteInputProps extends Omit<
+  React.InputHTMLAttributes<HTMLInputElement>,
+  'size'
+> {
   clearable?: boolean
   clearIcon?: React.ReactNode
   dropdownIcon?: React.ReactNode

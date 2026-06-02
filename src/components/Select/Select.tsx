@@ -6,8 +6,10 @@ import { useSelect } from './hooks'
 
 // SelectOption type is imported from types.ts
 
-export interface SelectProps
-  extends Omit<React.HTMLAttributes<HTMLDivElement>, 'onChange' | 'defaultValue'> {
+export interface SelectProps extends Omit<
+  React.HTMLAttributes<HTMLDivElement>,
+  'onChange' | 'defaultValue'
+> {
   // Core functionality
   options: SelectOption[]
   value?: SelectOption | SelectOption[] | null
@@ -1093,8 +1095,9 @@ const SelectEmpty = React.forwardRef<HTMLDivElement, SelectEmptyProps>(
 SelectEmpty.displayName = 'SelectEmpty'
 
 // Compound component interface
-interface SelectComponent
-  extends React.ForwardRefExoticComponent<SelectProps & React.RefAttributes<HTMLDivElement>> {
+interface SelectComponent extends React.ForwardRefExoticComponent<
+  SelectProps & React.RefAttributes<HTMLDivElement>
+> {
   Input: typeof SelectInput
   Dropdown: typeof SelectDropdown
   Option: typeof SelectOptionComponent

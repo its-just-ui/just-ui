@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import type { Meta, StoryObj } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react-vite'
 import { Badge } from './Badge'
 import LivePlayground from '../../../.storybook/components/LivePlayground'
 
@@ -1409,5 +1409,5 @@ export const Playground: Story = {
       />
     </div>
   ),
-  args: {} as any,
+  args: {} as Record<string, never>,
 }

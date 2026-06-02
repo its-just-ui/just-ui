@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Meta, StoryObj } from '@storybook/react'
+import { Meta, StoryObj } from '@storybook/react-vite'
 import { Carousel, CarouselSlide } from './Carousel'
 import LivePlayground from '../../../.storybook/components/LivePlayground'
 
@@ -520,5 +520,5 @@ export const Playground: StoryObj<typeof meta> = {
       />
     </div>
   ),
-  args: {} as any,
+  args: {} as Record<string, never>,
 }

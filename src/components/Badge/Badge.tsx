@@ -539,8 +539,9 @@ const Badge = forwardRef<HTMLDivElement, BadgeProps>(
 Badge.displayName = 'Badge'
 
 // Compound component interface
-interface BadgeComponent
-  extends React.ForwardRefExoticComponent<BadgeProps & React.RefAttributes<HTMLDivElement>> {
+interface BadgeComponent extends React.ForwardRefExoticComponent<
+  BadgeProps & React.RefAttributes<HTMLDivElement>
+> {
   Icon: typeof BadgeIcon
   CloseButton: typeof BadgeCloseButton
   Label: typeof BadgeLabel

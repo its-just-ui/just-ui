@@ -155,11 +155,10 @@ export type HeaderRenderer = (
 
 export type FooterRenderer = () => React.ReactNode
 
-export interface DatePickerProps
-  extends Omit<
-    React.HTMLAttributes<HTMLDivElement>,
-    'onChange' | 'onFocus' | 'onBlur' | 'defaultValue'
-  > {
+export interface DatePickerProps extends Omit<
+  React.HTMLAttributes<HTMLDivElement>,
+  'onChange' | 'onFocus' | 'onBlur' | 'defaultValue'
+> {
   // Core props
   value?: Date | DateRange | Date[]
   defaultValue?: Date | DateRange | Date[]
@@ -874,7 +873,10 @@ export const DatePickerDaysView = memo(
       renderDay,
     } = useDatePicker()
 
-    const dayNamesShort = locale.dayNamesShort || ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
+    const dayNamesShort = useMemo(
+      () => locale.dayNamesShort || ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+      [locale.dayNamesShort]
+    )
     const firstDayOfWeek = locale.firstDayOfWeek || 0
 
     const orderedDayNames = useMemo(() => {
@@ -1498,6 +1500,7 @@ const DatePickerBase = memo(
           isDateInRangeUtil,
           isDateTodayUtil,
           formatDateUtil,
+          _renderDay,
           inputId,
           calendarId,
           label,
@@ -1702,8 +1705,9 @@ const DatePickerBase = memo(
 DatePickerBase.displayName = 'DatePicker'
 
 // Compound component interface
-interface DatePickerComponent
-  extends React.ForwardRefExoticComponent<DatePickerProps & React.RefAttributes<HTMLDivElement>> {
+interface DatePickerComponent extends React.ForwardRefExoticComponent<
+  DatePickerProps & React.RefAttributes<HTMLDivElement>
+> {
   Input: typeof DatePickerInput
   Calendar: typeof DatePickerCalendar
   Header: typeof DatePickerHeader

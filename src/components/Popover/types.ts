@@ -71,9 +71,9 @@ export interface PopoverContextValue {
   contentId: string
   titleId: string
   descriptionId: string
-  arrowRef: React.RefObject<HTMLDivElement>
-  triggerRef: React.RefObject<HTMLElement>
-  contentRef: React.RefObject<HTMLDivElement>
+  arrowRef: React.RefObject<HTMLDivElement | null>
+  triggerRef: React.RefObject<HTMLElement | null>
+  contentRef: React.RefObject<HTMLDivElement | null>
 
   // Animation config
   animation: PopoverAnimationConfig

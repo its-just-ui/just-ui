@@ -1,8 +1,10 @@
 import React, { createContext, useContext, useState, useCallback, useMemo } from 'react'
 import { cn } from '@/utils'
 
-export interface ChipProps
-  extends Omit<React.HTMLAttributes<HTMLDivElement>, 'onChange' | 'onSelect'> {
+export interface ChipProps extends Omit<
+  React.HTMLAttributes<HTMLDivElement>,
+  'onChange' | 'onSelect'
+> {
   value?: string | string[]
   onChange?: (value: string | string[] | null) => void
   variant?: 'default' | 'filled' | 'outlined' | 'soft' | 'gradient'

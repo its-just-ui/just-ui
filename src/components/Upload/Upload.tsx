@@ -182,7 +182,8 @@ export interface UploadStyleProps {
 }
 
 export interface UploadProps
-  extends Omit<HTMLAttributes<HTMLDivElement>, 'onChange' | 'onError' | 'onDrop'>,
+  extends
+    Omit<HTMLAttributes<HTMLDivElement>, 'onChange' | 'onError' | 'onDrop'>,
     UploadStyleProps {
   // Controlled component props
   files?: File[]
@@ -435,9 +436,9 @@ const Preview = forwardRef<HTMLDivElement, PreviewProps>(
   ({ file, className, style, ...props }, ref) => {
     const { props: uploadProps } = useUploadContext()
     const [preview, setPreview] = useState<string | null>(null)
+    const actualFile = file.file
 
     React.useEffect(() => {
-      const actualFile = (file as any).file || file
       if (actualFile.type && actualFile.type.startsWith('image/')) {
         const reader = new FileReader()
         reader.onloadend = () => {
@@ -461,11 +462,7 @@ const Preview = forwardRef<HTMLDivElement, PreviewProps>(
     return (
       <div ref={ref} className={previewClasses} style={mergedStyle} {...props}>
         {preview ? (
-          <img
-            src={preview}
-            alt={(file as any).file?.name || (file as any).name}
-            className="w-full h-full object-cover"
-          />
+          <img src={preview} alt={actualFile.name} className="w-full h-full object-cover" />
         ) : (
           <div className="flex items-center justify-center w-full h-full">
             <svg
@@ -509,8 +506,7 @@ const FileList = forwardRef<HTMLDivElement, FileListProps>(
 
     const handleRemove = (fileId: string, file: FileWithProgress) => {
       removeFile(fileId)
-      const actualFile = (file as any).file || file
-      uploadProps.onRemoveFile?.(actualFile)
+      uploadProps.onRemoveFile?.(file.file)
     }
 
     return (
@@ -524,12 +520,8 @@ const FileList = forwardRef<HTMLDivElement, FileListProps>(
                 <div className="flex items-center space-x-3">
                   <Preview file={file} className="w-10 h-10" />
                   <div>
-                    <p className="text-sm font-medium text-gray-900">
-                      {(file as any).file?.name || (file as any).name}
-                    </p>
-                    <p className="text-xs text-gray-500">
-                      {formatFileSize((file as any).file?.size || (file as any).size)}
-                    </p>
+                    <p className="text-sm font-medium text-gray-900">{file.file.name}</p>
+                    <p className="text-xs text-gray-500">{formatFileSize(file.file.size)}</p>
                   </div>
                 </div>
                 <div className="flex items-center space-x-2">
@@ -874,7 +866,12 @@ const UploadRoot = forwardRef<HTMLDivElement, UploadProps>((props, ref) => {
 
   return (
     <UploadContext.Provider value={contextValue}>
-      <div ref={ref} className={uploadClasses} style={mergedStyle} {...(restProps as any)}>
+      <div
+        ref={ref}
+        className={uploadClasses}
+        style={mergedStyle}
+        {...(restProps as HTMLAttributes<HTMLDivElement>)}
+      >
         {label && (
           <label className="block mb-2 font-medium text-gray-700">
             {label}

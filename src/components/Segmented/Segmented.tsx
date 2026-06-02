@@ -618,8 +618,9 @@ const SegmentedIndicator = () => {
 SegmentedIndicator.displayName = 'SegmentedIndicator'
 
 // Export compound component
-interface SegmentedComponent
-  extends React.ForwardRefExoticComponent<SegmentedProps & React.RefAttributes<HTMLDivElement>> {
+interface SegmentedComponent extends React.ForwardRefExoticComponent<
+  SegmentedProps & React.RefAttributes<HTMLDivElement>
+> {
   Item: typeof SegmentedItem
   Indicator: typeof SegmentedIndicator
 }

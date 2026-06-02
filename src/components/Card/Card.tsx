@@ -21,8 +21,10 @@ import type {
   ActionClickHandler,
 } from './types'
 
-export interface CardProps
-  extends Omit<React.HTMLAttributes<HTMLDivElement>, 'onClick' | 'onDoubleClick'> {
+export interface CardProps extends Omit<
+  React.HTMLAttributes<HTMLDivElement>,
+  'onClick' | 'onDoubleClick'
+> {
   children?: React.ReactNode
 
   // Core functionality - controlled/uncontrolled support
@@ -1483,8 +1485,9 @@ export {
 }
 
 // Compound component interface
-interface CardComponent
-  extends React.ForwardRefExoticComponent<CardProps & React.RefAttributes<HTMLDivElement>> {
+interface CardComponent extends React.ForwardRefExoticComponent<
+  CardProps & React.RefAttributes<HTMLDivElement>
+> {
   Header: typeof CardHeader
   Media: typeof CardMedia
   Body: typeof CardBody

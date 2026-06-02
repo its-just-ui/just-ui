@@ -83,8 +83,7 @@ export interface SplitterBaseProps {
  * Props for the main Splitter component
  */
 export interface SplitterProps
-  extends Omit<React.HTMLAttributes<HTMLDivElement>, keyof SplitterBaseProps>,
-    SplitterBaseProps {
+  extends Omit<React.HTMLAttributes<HTMLDivElement>, keyof SplitterBaseProps>, SplitterBaseProps {
   children?: React.ReactNode
 }
 

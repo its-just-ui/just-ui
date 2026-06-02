@@ -8,7 +8,7 @@ import React, {
   useContext,
 } from 'react'
 import { cn } from '@/utils'
-import type { CascadeOption, CascadeValue } from './types'
+import type { CascadeOption, CascadeValue, CascadeLevel } from './types'
 
 // Types and Interfaces
 export interface CascadeContextValue {
@@ -26,7 +26,7 @@ export interface CascadeContextValue {
 
   // Options and levels
   options: CascadeOption[]
-  levels: any[]
+  levels: CascadeLevel[]
   filteredOptions: CascadeOption[]
 
   // Configuration
@@ -239,8 +239,7 @@ export interface CascadeBaseProps {
 }
 
 export interface CascadeProps
-  extends Omit<React.HTMLAttributes<HTMLDivElement>, keyof CascadeBaseProps>,
-    CascadeBaseProps {
+  extends Omit<React.HTMLAttributes<HTMLDivElement>, keyof CascadeBaseProps>, CascadeBaseProps {
   children?: React.ReactNode
 }
 
@@ -1003,7 +1002,6 @@ const Cascade = React.forwardRef<HTMLDivElement, CascadeProps>(
         onBlur,
         onOpen,
         onClose,
-        onLevelChange,
         props,
       ]
     )
@@ -1062,8 +1060,9 @@ const Cascade = React.forwardRef<HTMLDivElement, CascadeProps>(
 Cascade.displayName = 'Cascade'
 
 // Compound component pattern
-interface CascadeComponent
-  extends React.ForwardRefExoticComponent<CascadeProps & React.RefAttributes<HTMLDivElement>> {
+interface CascadeComponent extends React.ForwardRefExoticComponent<
+  CascadeProps & React.RefAttributes<HTMLDivElement>
+> {
   Input: typeof CascadeInput
   Dropdown: typeof CascadeDropdown
   Option: typeof CascadeOptionComponent

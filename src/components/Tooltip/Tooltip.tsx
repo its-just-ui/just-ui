@@ -103,7 +103,7 @@ const Tooltip = forwardRef<HTMLDivElement, TooltipProps>(
 
     const triggerRef = useRef<HTMLElement>(null)
     const contentRef = useRef<HTMLDivElement>(null)
-    const timeoutRef = useRef<NodeJS.Timeout>()
+    const timeoutRef = useRef<NodeJS.Timeout | undefined>(undefined)
     const contentId = useId()
 
     const isControlled = controlledIsOpen !== undefined

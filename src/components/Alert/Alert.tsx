@@ -68,8 +68,10 @@ export interface AlertCustomStyles {
   dismissButtonStyles?: React.CSSProperties
 }
 
-export interface AlertProps
-  extends Omit<React.HTMLAttributes<HTMLDivElement>, 'onChange' | 'title'> {
+export interface AlertProps extends Omit<
+  React.HTMLAttributes<HTMLDivElement>,
+  'onChange' | 'title'
+> {
   // State props
   value?: boolean
   onChange?: (value: boolean) => void

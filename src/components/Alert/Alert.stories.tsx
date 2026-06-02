@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react-vite'
 import React, { useState } from 'react'
 import { Alert, AlertTitle, AlertDescription, AlertIcon, AlertDismissButton } from './Alert'
 import LivePlayground from '../../../.storybook/components/LivePlayground'

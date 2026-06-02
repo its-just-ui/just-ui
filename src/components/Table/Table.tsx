@@ -1805,8 +1805,9 @@ const TableGlobalFilter: React.FC<TableGlobalFilterProps> = ({
 }
 
 // Create compound component interface
-interface TableComponent
-  extends React.ForwardRefExoticComponent<TableProps & React.RefAttributes<HTMLTableElement>> {
+interface TableComponent extends React.ForwardRefExoticComponent<
+  TableProps & React.RefAttributes<HTMLTableElement>
+> {
   Header: typeof TableHeader
   Body: typeof TableBody
   Footer: typeof TableFooter

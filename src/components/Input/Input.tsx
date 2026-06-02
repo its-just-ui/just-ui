@@ -128,8 +128,7 @@ export interface InputBaseProps {
 }
 
 export interface InputProps
-  extends Omit<React.InputHTMLAttributes<HTMLInputElement>, keyof InputBaseProps>,
-    InputBaseProps {
+  extends Omit<React.InputHTMLAttributes<HTMLInputElement>, keyof InputBaseProps>, InputBaseProps {
   value?: string
   defaultValue?: string
   children?: React.ReactNode
@@ -359,19 +358,24 @@ const InputBase = memo(
       const hasIcon = Boolean(icon)
 
       // Extract compound components from children
-      let extractedLabel = label
-      let extractedHelperText = helperText
-      let extractedIcon = icon
+      let extractedLabel: React.ReactNode = label
+      let extractedHelperText: React.ReactNode = helperText
+      let extractedIcon: React.ReactNode = icon
 
       if (children) {
         React.Children.forEach(children, (child) => {
-          if (React.isValidElement(child)) {
+          if (
+            React.isValidElement(child) &&
+            typeof child.props === 'object' &&
+            child.props !== null
+          ) {
+            const props = child.props as { children?: React.ReactNode }
             if (child.type === InputLabel) {
-              extractedLabel = child.props.children
+              extractedLabel = props.children
             } else if (child.type === InputHelperText) {
-              extractedHelperText = child.props.children
+              extractedHelperText = props.children
             } else if (child.type === InputIcon) {
-              extractedIcon = child.props.children
+              extractedIcon = props.children
             }
           }
         })
@@ -643,8 +647,9 @@ const InputBase = memo(
 InputBase.displayName = 'Input'
 
 // Compound component interface
-interface InputComponent
-  extends React.ForwardRefExoticComponent<InputProps & React.RefAttributes<HTMLInputElement>> {
+interface InputComponent extends React.ForwardRefExoticComponent<
+  InputProps & React.RefAttributes<HTMLInputElement>
+> {
   Icon: typeof InputIcon
   Label: typeof InputLabel
   HelperText: typeof InputHelperText
