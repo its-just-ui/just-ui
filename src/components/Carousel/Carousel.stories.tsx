@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Meta, StoryObj } from '@storybook/react'
+import { Meta, StoryObj } from '@storybook/react-vite'
 import { Carousel, CarouselSlide } from './Carousel'
 import LivePlayground from '../../../.storybook/components/LivePlayground'
 

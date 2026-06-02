@@ -19,7 +19,7 @@ import { cn } from '../../utils'
 export interface TreeNode {
   key: string
   title: ReactNode
-  value?: any
+  value?: unknown
   children?: TreeNode[]
   disabled?: boolean
   checkable?: boolean
@@ -29,7 +29,7 @@ export interface TreeNode {
   icon?: ReactNode
   className?: string
   style?: React.CSSProperties
-  [key: string]: any
+  [key: string]: unknown
 }
 
 export type CheckStrategy = 'SHOW_PARENT' | 'SHOW_CHILD' | 'SHOW_ALL'
@@ -55,7 +55,7 @@ export type NodeStatus =
 export interface TreeSelectValue {
   key: string
   title: ReactNode
-  value?: any
+  value?: unknown
 }
 
 export interface TreeSelectProps {

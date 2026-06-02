@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import type { Meta, StoryObj } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react-vite'
 import { SelectCompound as Select } from './Select'
 import type { SelectOption } from './types'
 import LivePlayground from '../../../.storybook/components/LivePlayground'

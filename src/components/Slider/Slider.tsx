@@ -188,13 +188,21 @@ const Slider = forwardRef<HTMLDivElement, SliderProps>(
     const rangeConfig: SliderRange = { min, max, step }
 
     // Utility functions
+    const snapToStep = useCallback(
+      (value: number): number => {
+        const steps = Math.round((value - min) / step)
+        return min + steps * step
+      },
+      [min, step]
+    )
+
     const getValueFromPercentage = useCallback(
       (percentage: number): number => {
         const clampedPercentage = Math.max(0, Math.min(100, percentage))
         const value = min + (clampedPercentage / 100) * (max - min)
         return snapToStep(value)
       },
-      [min, max, step]
+      [min, max, snapToStep]
     )
 
     const getPercentageFromValue = useCallback(
@@ -203,14 +211,6 @@ const Slider = forwardRef<HTMLDivElement, SliderProps>(
         return ((clampedValue - min) / (max - min)) * 100
       },
       [min, max]
-    )
-
-    const snapToStep = useCallback(
-      (value: number): number => {
-        const steps = Math.round((value - min) / step)
-        return min + steps * step
-      },
-      [min, step]
     )
 
     const formatValue = useCallback(

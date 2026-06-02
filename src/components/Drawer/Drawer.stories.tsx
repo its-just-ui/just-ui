@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import type { Meta, StoryObj } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react-vite'
 import { DrawerCompound as Drawer, type DrawerItem } from './Drawer'
 import { cn } from '../../utils/cn'
 import LivePlayground from '../../../.storybook/components/LivePlayground'

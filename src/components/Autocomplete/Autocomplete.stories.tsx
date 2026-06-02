@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import type { Meta, StoryObj } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react-vite'
 import { Autocomplete, AutocompleteOption } from './Autocomplete'
 import LivePlayground from '../../../.storybook/components/LivePlayground'
 

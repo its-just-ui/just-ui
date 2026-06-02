@@ -1,6 +1,6 @@
-import type { Meta, StoryObj } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react-vite'
 import React, { useState } from 'react'
-import { Upload, FileWithProgress } from './Upload'
+import { Upload, FileWithProgress, type UploadProps } from './Upload'
 import LivePlayground from '../../../.storybook/components/LivePlayground'
 
 /**
@@ -205,7 +205,7 @@ export default meta
 type Story = StoryObj<typeof meta>
 
 // Wrapper component for controlled behavior
-const UploadWithState = (props: any) => {
+const UploadWithState = (props: UploadProps) => {
   const [files, setFiles] = useState<File[]>([])
 
   return (
@@ -387,55 +387,19 @@ export const CustomStyling: Story = {
 export const AsyncUpload: Story = {
   render: () => {
     const AsyncUploadComponent = () => {
-      const [files, setFiles] = useState<FileWithProgress[]>([])
-
-      const simulateUpload = (file: FileWithProgress) => {
-        let progress = 0
-        const interval = setInterval(() => {
-          progress += 10
-
-          // Update file progress
-          setFiles((prev) =>
-            prev.map((f) =>
-              f.id === file.id
-                ? ({
-                    ...f,
-                    progress,
-                    status: progress < 100 ? 'uploading' : 'success',
-                  } as FileWithProgress)
-                : f
-            )
-          )
-
-          if (progress >= 100) {
-            clearInterval(interval)
-          }
-        }, 200)
-      }
+      const [files, setFiles] = useState<File[]>([])
 
       const handleChange = (newFiles: File[]) => {
-        const filesWithProgress = newFiles.map((file) => ({
-          id: Math.random().toString(36).substr(2, 9),
-          file,
-          progress: 0,
-          status: 'pending' as const,
-        }))
-
-        setFiles(filesWithProgress)
-
-        // Start upload simulation for each file
-        filesWithProgress.forEach((file) => {
-          setTimeout(() => simulateUpload(file), 500)
-        })
+        setFiles(newFiles)
       }
 
       return (
         <div className="w-full max-w-2xl">
           <Upload
-            files={files as any}
-            onChange={handleChange as any}
+            files={files}
+            onChange={handleChange}
             multiple
-            helperText="Files will automatically upload with progress simulation"
+            helperText="Demonstrates controlled async-style change handling"
           />
         </div>
       )
@@ -552,10 +516,8 @@ export const CustomFilePreview: Story = {
             {getFileIcon(file)}
           </div>
           <div className="ml-4 flex-grow">
-            <p className="font-medium text-gray-900">{file.file?.name || (file as any).name}</p>
-            <p className="text-sm text-gray-500">
-              {((file.file?.size || (file as any).size) / 1024).toFixed(1)} KB
-            </p>
+            <p className="font-medium text-gray-900">{file.file.name}</p>
+            <p className="text-sm text-gray-500">{(file.file.size / 1024).toFixed(1)} KB</p>
             {file.status === 'uploading' && <Upload.Progress file={file} className="mt-2" />}
           </div>
         </div>
