@@ -101,8 +101,10 @@ export interface RadioGroupProps extends Omit<React.HTMLAttributes<HTMLDivElemen
   children?: React.ReactNode
 }
 
-export interface RadioOptionProps
-  extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'size'> {
+export interface RadioOptionProps extends Omit<
+  React.InputHTMLAttributes<HTMLInputElement>,
+  'size'
+> {
   value: string
   label?: React.ReactNode
   description?: React.ReactNode
@@ -562,8 +564,16 @@ const RadioGroupBase = forwardRef<HTMLDivElement, RadioGroupProps>(
 
     if (children) {
       React.Children.forEach(children, (child) => {
-        if (React.isValidElement(child) && typeof child.props === 'object' && child.props !== null) {
-          const props = child.props as { children?: React.ReactNode; value?: string | number; disabled?: boolean }
+        if (
+          React.isValidElement(child) &&
+          typeof child.props === 'object' &&
+          child.props !== null
+        ) {
+          const props = child.props as {
+            children?: React.ReactNode
+            value?: string | number
+            disabled?: boolean
+          }
           if (child.type === RadioGroupLabel) {
             extractedLabel = props.children
           } else if (child.type === RadioGroupHelperText) {
@@ -650,11 +660,7 @@ const RadioGroupBase = forwardRef<HTMLDivElement, RadioGroupProps>(
       return radioOptions.map((option) => {
         if (renderOption) {
           const optProps = option.props as RadioOptionProps
-          return renderOption(
-            optProps,
-            value === optProps.value,
-            disabled || optProps.disabled
-          )
+          return renderOption(optProps, value === optProps.value, disabled || optProps.disabled)
         }
         return option
       })
@@ -729,8 +735,9 @@ const RadioGroupBase = forwardRef<HTMLDivElement, RadioGroupProps>(
 RadioGroupBase.displayName = 'RadioGroup'
 
 // Compound component interface
-interface RadioGroupComponent
-  extends React.ForwardRefExoticComponent<RadioGroupProps & React.RefAttributes<HTMLDivElement>> {
+interface RadioGroupComponent extends React.ForwardRefExoticComponent<
+  RadioGroupProps & React.RefAttributes<HTMLDivElement>
+> {
   Option: typeof RadioOption
   Label: typeof RadioGroupLabel
   HelperText: typeof RadioGroupHelperText

@@ -128,8 +128,7 @@ export interface InputBaseProps {
 }
 
 export interface InputProps
-  extends Omit<React.InputHTMLAttributes<HTMLInputElement>, keyof InputBaseProps>,
-    InputBaseProps {
+  extends Omit<React.InputHTMLAttributes<HTMLInputElement>, keyof InputBaseProps>, InputBaseProps {
   value?: string
   defaultValue?: string
   children?: React.ReactNode
@@ -365,7 +364,11 @@ const InputBase = memo(
 
       if (children) {
         React.Children.forEach(children, (child) => {
-          if (React.isValidElement(child) && typeof child.props === 'object' && child.props !== null) {
+          if (
+            React.isValidElement(child) &&
+            typeof child.props === 'object' &&
+            child.props !== null
+          ) {
             const props = child.props as { children?: React.ReactNode }
             if (child.type === InputLabel) {
               extractedLabel = props.children
@@ -644,8 +647,9 @@ const InputBase = memo(
 InputBase.displayName = 'Input'
 
 // Compound component interface
-interface InputComponent
-  extends React.ForwardRefExoticComponent<InputProps & React.RefAttributes<HTMLInputElement>> {
+interface InputComponent extends React.ForwardRefExoticComponent<
+  InputProps & React.RefAttributes<HTMLInputElement>
+> {
   Icon: typeof InputIcon
   Label: typeof InputLabel
   HelperText: typeof InputHelperText

@@ -182,7 +182,8 @@ export interface UploadStyleProps {
 }
 
 export interface UploadProps
-  extends Omit<HTMLAttributes<HTMLDivElement>, 'onChange' | 'onError' | 'onDrop'>,
+  extends
+    Omit<HTMLAttributes<HTMLDivElement>, 'onChange' | 'onError' | 'onDrop'>,
     UploadStyleProps {
   // Controlled component props
   files?: File[]

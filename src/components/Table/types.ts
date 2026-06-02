@@ -395,8 +395,7 @@ export interface TableContextValue<TData extends RowData = RowData> {
 
 // Component prop interfaces
 export interface TableProps<TData extends RowData = RowData>
-  extends Omit<HTMLAttributes<HTMLTableElement>, 'onSelect' | 'onChange'>,
-    TableBaseProps<TData> {}
+  extends Omit<HTMLAttributes<HTMLTableElement>, 'onSelect' | 'onChange'>, TableBaseProps<TData> {}
 
 export type TableHeaderProps = ThHTMLAttributes<HTMLTableSectionElement>
 
@@ -453,8 +452,10 @@ export interface TableExpandButtonProps extends HTMLAttributes<HTMLButtonElement
   onToggle: () => void
 }
 
-export interface TableSelectCheckboxProps
-  extends Omit<HTMLAttributes<HTMLInputElement>, 'onChange'> {
+export interface TableSelectCheckboxProps extends Omit<
+  HTMLAttributes<HTMLInputElement>,
+  'onChange'
+> {
   checked: boolean
   indeterminate?: boolean
   onChange: () => void

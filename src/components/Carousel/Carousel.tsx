@@ -662,7 +662,10 @@ const CarouselSlide = React.forwardRef<HTMLDivElement, CarouselSlideProps>(
         {...props}
       >
         {React.Children.map(children, (child) => {
-          if (React.isValidElement<{ style?: React.CSSProperties }>(child) && child.type === 'img') {
+          if (
+            React.isValidElement<{ style?: React.CSSProperties }>(child) &&
+            child.type === 'img'
+          ) {
             const childStyle = (child.props as { style?: React.CSSProperties }).style
             return React.cloneElement(child, {
               style: {

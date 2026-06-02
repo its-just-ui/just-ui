@@ -1,8 +1,10 @@
 import React, { createContext, useContext, useState, useCallback, forwardRef } from 'react'
 import { cn } from '@/utils'
 
-export interface SwitchProps
-  extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'size' | 'onChange'> {
+export interface SwitchProps extends Omit<
+  React.InputHTMLAttributes<HTMLInputElement>,
+  'size' | 'onChange'
+> {
   // Core props
   checked?: boolean
   defaultChecked?: boolean

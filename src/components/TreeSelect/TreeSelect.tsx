@@ -1417,8 +1417,9 @@ TreeSelectBase.displayName = 'TreeSelect'
 // Compound Component Interface
 // ============================================================================
 
-interface TreeSelectComponent
-  extends React.ForwardRefExoticComponent<TreeSelectProps & React.RefAttributes<HTMLDivElement>> {
+interface TreeSelectComponent extends React.ForwardRefExoticComponent<
+  TreeSelectProps & React.RefAttributes<HTMLDivElement>
+> {
   Input: typeof TreeSelectInput
   Popup: typeof TreeSelectPopup
   Node: typeof TreeSelectNode

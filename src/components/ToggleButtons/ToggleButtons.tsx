@@ -116,8 +116,10 @@ export interface ToggleButtonsProps extends Omit<React.HTMLAttributes<HTMLDivEle
   children?: React.ReactNode
 }
 
-export interface ToggleButtonProps
-  extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'value'> {
+export interface ToggleButtonProps extends Omit<
+  React.ButtonHTMLAttributes<HTMLButtonElement>,
+  'value'
+> {
   value: string
   label?: React.ReactNode
   icon?: React.ReactNode
@@ -655,7 +657,11 @@ const ToggleButtonsBase = forwardRef<HTMLDivElement, ToggleButtonsProps>(
 
     if (children) {
       React.Children.forEach(children, (child) => {
-        if (React.isValidElement(child) && typeof child.props === 'object' && child.props !== null) {
+        if (
+          React.isValidElement(child) &&
+          typeof child.props === 'object' &&
+          child.props !== null
+        ) {
           const props = child.props as { children?: React.ReactNode }
           if (child.type === ToggleButtonsLabel) {
             extractedLabel = props.children
@@ -748,9 +754,7 @@ const ToggleButtonsBase = forwardRef<HTMLDivElement, ToggleButtonsProps>(
         if (renderButton) {
           return renderButton(
             btnProps,
-            Array.isArray(value)
-              ? value.includes(btnProps.value)
-              : value === btnProps.value,
+            Array.isArray(value) ? value.includes(btnProps.value) : value === btnProps.value,
             disabled || btnProps.disabled
           )
         }
@@ -875,10 +879,9 @@ const ToggleButtonsBase = forwardRef<HTMLDivElement, ToggleButtonsProps>(
 ToggleButtonsBase.displayName = 'ToggleButtons'
 
 // Compound component interface
-interface ToggleButtonsComponent
-  extends React.ForwardRefExoticComponent<
-    ToggleButtonsProps & React.RefAttributes<HTMLDivElement>
-  > {
+interface ToggleButtonsComponent extends React.ForwardRefExoticComponent<
+  ToggleButtonsProps & React.RefAttributes<HTMLDivElement>
+> {
   Button: typeof ToggleButton
   Label: typeof ToggleButtonsLabel
   HelperText: typeof ToggleButtonsHelperText

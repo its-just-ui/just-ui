@@ -160,8 +160,10 @@ export interface ProgressContextValue {
 }
 
 // Component Props
-export interface ProgressProps
-  extends Omit<React.HTMLAttributes<HTMLDivElement>, 'onChange' | 'onError'> {
+export interface ProgressProps extends Omit<
+  React.HTMLAttributes<HTMLDivElement>,
+  'onChange' | 'onError'
+> {
   // Core functionality
   value?: number
   bufferValue?: number

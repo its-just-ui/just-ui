@@ -59,8 +59,10 @@ export interface SliderContextValue {
   status: 'default' | 'success' | 'warning' | 'error' | 'info'
 }
 
-export interface SliderProps
-  extends Omit<React.HTMLAttributes<HTMLDivElement>, 'onChange' | 'value' | 'defaultValue'> {
+export interface SliderProps extends Omit<
+  React.HTMLAttributes<HTMLDivElement>,
+  'onChange' | 'value' | 'defaultValue'
+> {
   value?: number | number[]
   defaultValue?: number | number[]
   min?: number
@@ -948,8 +950,9 @@ const SliderMarks = forwardRef<HTMLDivElement, SliderMarksProps>(
 SliderMarks.displayName = 'SliderMarks'
 
 // Create compound component type
-interface SliderComponent
-  extends React.ForwardRefExoticComponent<SliderProps & React.RefAttributes<HTMLDivElement>> {
+interface SliderComponent extends React.ForwardRefExoticComponent<
+  SliderProps & React.RefAttributes<HTMLDivElement>
+> {
   Track: typeof SliderTrack
   Range: typeof SliderRange
   Thumb: typeof SliderThumb

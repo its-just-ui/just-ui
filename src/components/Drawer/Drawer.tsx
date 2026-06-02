@@ -18,8 +18,10 @@ export interface DrawerItemData {
 // Alias so external code can still refer to `DrawerItem` as the type
 export type DrawerItem = DrawerItemData
 
-export interface DrawerProps
-  extends Omit<React.HTMLAttributes<HTMLDivElement>, 'onChange' | 'defaultValue'> {
+export interface DrawerProps extends Omit<
+  React.HTMLAttributes<HTMLDivElement>,
+  'onChange' | 'defaultValue'
+> {
   // Core functionality
   items?: DrawerItemData[]
   open?: boolean
@@ -1019,8 +1021,9 @@ const DrawerItemComponent = React.forwardRef<HTMLElement, DrawerItemProps>(
 DrawerItemComponent.displayName = 'DrawerItem'
 
 // Compound component interface
-interface DrawerComponent
-  extends React.ForwardRefExoticComponent<DrawerProps & React.RefAttributes<HTMLDivElement>> {
+interface DrawerComponent extends React.ForwardRefExoticComponent<
+  DrawerProps & React.RefAttributes<HTMLDivElement>
+> {
   Container: typeof DrawerContainer
   Overlay: typeof DrawerOverlay
   Header: typeof DrawerHeader

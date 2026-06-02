@@ -239,8 +239,7 @@ export interface CascadeBaseProps {
 }
 
 export interface CascadeProps
-  extends Omit<React.HTMLAttributes<HTMLDivElement>, keyof CascadeBaseProps>,
-    CascadeBaseProps {
+  extends Omit<React.HTMLAttributes<HTMLDivElement>, keyof CascadeBaseProps>, CascadeBaseProps {
   children?: React.ReactNode
 }
 
@@ -1061,8 +1060,9 @@ const Cascade = React.forwardRef<HTMLDivElement, CascadeProps>(
 Cascade.displayName = 'Cascade'
 
 // Compound component pattern
-interface CascadeComponent
-  extends React.ForwardRefExoticComponent<CascadeProps & React.RefAttributes<HTMLDivElement>> {
+interface CascadeComponent extends React.ForwardRefExoticComponent<
+  CascadeProps & React.RefAttributes<HTMLDivElement>
+> {
   Input: typeof CascadeInput
   Dropdown: typeof CascadeDropdown
   Option: typeof CascadeOptionComponent

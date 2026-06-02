@@ -1047,8 +1047,9 @@ export {
 }
 
 // Compound component interface
-interface PopoverComponent
-  extends React.ForwardRefExoticComponent<PopoverProps & React.RefAttributes<HTMLDivElement>> {
+interface PopoverComponent extends React.ForwardRefExoticComponent<
+  PopoverProps & React.RefAttributes<HTMLDivElement>
+> {
   Trigger: typeof PopoverTrigger
   Content: typeof PopoverContent
   Arrow: typeof PopoverArrow

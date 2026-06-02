@@ -155,11 +155,10 @@ export type HeaderRenderer = (
 
 export type FooterRenderer = () => React.ReactNode
 
-export interface DatePickerProps
-  extends Omit<
-    React.HTMLAttributes<HTMLDivElement>,
-    'onChange' | 'onFocus' | 'onBlur' | 'defaultValue'
-  > {
+export interface DatePickerProps extends Omit<
+  React.HTMLAttributes<HTMLDivElement>,
+  'onChange' | 'onFocus' | 'onBlur' | 'defaultValue'
+> {
   // Core props
   value?: Date | DateRange | Date[]
   defaultValue?: Date | DateRange | Date[]
@@ -1706,8 +1705,9 @@ const DatePickerBase = memo(
 DatePickerBase.displayName = 'DatePicker'
 
 // Compound component interface
-interface DatePickerComponent
-  extends React.ForwardRefExoticComponent<DatePickerProps & React.RefAttributes<HTMLDivElement>> {
+interface DatePickerComponent extends React.ForwardRefExoticComponent<
+  DatePickerProps & React.RefAttributes<HTMLDivElement>
+> {
   Input: typeof DatePickerInput
   Calendar: typeof DatePickerCalendar
   Header: typeof DatePickerHeader

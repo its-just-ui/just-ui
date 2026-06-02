@@ -1178,8 +1178,9 @@ const ColorPickerPresets: React.FC = () => {
 }
 
 // Export compound component
-interface ColorPickerComponent
-  extends React.ForwardRefExoticComponent<ColorPickerProps & React.RefAttributes<HTMLDivElement>> {
+interface ColorPickerComponent extends React.ForwardRefExoticComponent<
+  ColorPickerProps & React.RefAttributes<HTMLDivElement>
+> {
   Trigger: typeof ColorPickerTrigger
   Content: typeof ColorPickerContent
   Sliders: typeof ColorPickerSliders

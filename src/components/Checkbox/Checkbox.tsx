@@ -97,8 +97,10 @@ export interface CheckboxGroupContextValue {
   status: CheckboxStatus
 }
 
-export interface CheckboxProps
-  extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'size' | 'onChange'> {
+export interface CheckboxProps extends Omit<
+  React.InputHTMLAttributes<HTMLInputElement>,
+  'size' | 'onChange'
+> {
   // Core functionality
   checked?: boolean
   defaultChecked?: boolean
@@ -564,8 +566,10 @@ const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(
 Checkbox.displayName = 'Checkbox'
 
 // Sub-components
-export interface CheckboxInputProps
-  extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'size'> {
+export interface CheckboxInputProps extends Omit<
+  React.InputHTMLAttributes<HTMLInputElement>,
+  'size'
+> {
   // Additional props can be added here in the future
   variant?: CheckboxVariant
 }
@@ -1134,8 +1138,10 @@ const CheckboxItem = React.forwardRef<HTMLInputElement, CheckboxItemProps>(
 CheckboxItem.displayName = 'CheckboxItem'
 
 // Select All component
-export interface CheckboxSelectAllProps
-  extends Omit<CheckboxProps, 'checked' | 'indeterminate' | 'onChange'> {
+export interface CheckboxSelectAllProps extends Omit<
+  CheckboxProps,
+  'checked' | 'indeterminate' | 'onChange'
+> {
   children?: React.ReactNode
 }
 
@@ -1177,8 +1183,9 @@ const CheckboxSelectAll = React.forwardRef<HTMLInputElement, CheckboxSelectAllPr
 CheckboxSelectAll.displayName = 'CheckboxSelectAll'
 
 // Compound component interface
-interface CheckboxComponent
-  extends React.ForwardRefExoticComponent<CheckboxProps & React.RefAttributes<HTMLInputElement>> {
+interface CheckboxComponent extends React.ForwardRefExoticComponent<
+  CheckboxProps & React.RefAttributes<HTMLInputElement>
+> {
   Input: typeof CheckboxInput
   Label: typeof CheckboxLabel
   Description: typeof CheckboxDescription
