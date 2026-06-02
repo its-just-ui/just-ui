@@ -1,6 +1,6 @@
 {
   "name": "its-just-ui",
-  "version": "1.6.2",
+  "version": "2.0.0",
   "description": "ITS Just UI - React 18 & React 19 UI component library. 36+ accessible, TypeScript-native components with Tailwind CSS. Zero-config Material UI alternative for SaaS dashboards and enterprise apps.",
   "type": "module",
   "main": "./dist/index.js",
